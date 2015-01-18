@@ -11,8 +11,6 @@ import XCTest
 
 import Timber
 
-/*
-
 class LoggerTests: XCTestCase {
     
     // MARK: - Mock Classes
@@ -634,5 +632,3 @@ class LoggerTests: XCTestCase {
         return logger
     }
 }
-
-*/

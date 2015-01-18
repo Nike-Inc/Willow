@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		321F2DF335043A818DBEC881 /* libPods-TimberTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A7C054C76B0713278F5430 /* libPods-TimberTests.a */; };
 		4C1BBA661A6C518000D39EE1 /* ColorProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */; };
 		4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
 		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
@@ -27,16 +28,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		35A7C054C76B0713278F5430 /* libPods-TimberTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TimberTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		499927CB6AEAD4B17ED64ED5 /* Pods-TimberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimberTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TimberTests/Pods-TimberTests.release.xcconfig"; sourceTree = "<group>"; };
 		4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorProfile.swift; sourceTree = "<group>"; };
 		4C1BBA641A6C518000D39EE1 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4C1BBA651A6C518000D39EE1 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* ColorProfileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorProfileTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		4C66B0171A6C53840083F56E /* TimberTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TimberTests-Bridging-Header.h"; path = "Tests/TimberTests-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA75D421A6C493800275DC5 /* Timber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timber.h; sourceTree = "<group>"; };
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		4CFE82991A6C484A0002868E /* Timber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Timber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CFE82A41A6C484A0002868E /* TimberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		527439AF26FA2A70D42C2B7D /* Pods-TimberTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimberTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TimberTests/Pods-TimberTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,12 +57,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */,
+				321F2DF335043A818DBEC881 /* libPods-TimberTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3581543D732BCD1FE635B613 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				35A7C054C76B0713278F5430 /* libPods-TimberTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4CA75D401A6C493800275DC5 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +108,8 @@
 				4CA75D401A6C493800275DC5 /* Source */,
 				4CA75D461A6C495C00275DC5 /* Tests */,
 				4CFE829A1A6C484A0002868E /* Products */,
+				89F1D7B725392FF194B213F8 /* Pods */,
+				3581543D732BCD1FE635B613 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,10 +125,20 @@
 		4CFE82A91A6C484B0002868E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4C66B0171A6C53840083F56E /* TimberTests-Bridging-Header.h */,
 				4CA75D4B1A6C498300275DC5 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			path = ../TimberTests;
+			sourceTree = "<group>";
+		};
+		89F1D7B725392FF194B213F8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				527439AF26FA2A70D42C2B7D /* Pods-TimberTests.debug.xcconfig */,
+				499927CB6AEAD4B17ED64ED5 /* Pods-TimberTests.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,9 +177,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "TimberTests" */;
 			buildPhases = (
+				11F7B8018A0757588267CB52 /* Check Pods Manifest.lock */,
 				4CFE82A01A6C484A0002868E /* Sources */,
 				4CFE82A11A6C484A0002868E /* Frameworks */,
 				4CFE82A21A6C484A0002868E /* Resources */,
+				BF23BF6754DA4C0C35F96772 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -216,6 +244,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		11F7B8018A0757588267CB52 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BF23BF6754DA4C0C35F96772 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TimberTests/Pods-TimberTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4CFE82941A6C484A0002868E /* Sources */ = {
@@ -370,6 +431,7 @@
 		};
 		4CFE82B31A6C484B0002868E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 527439AF26FA2A70D42C2B7D /* Pods-TimberTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -382,11 +444,13 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/TimberTests-Bridging-Header.h";
 			};
 			name = Debug;
 		};
 		4CFE82B41A6C484B0002868E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 499927CB6AEAD4B17ED64ED5 /* Pods-TimberTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -395,6 +459,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/TimberTests-Bridging-Header.h";
 			};
 			name = Release;
 		};
