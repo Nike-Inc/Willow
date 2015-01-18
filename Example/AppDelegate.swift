@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Timber
+
+var log: Logger!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,10 +17,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var window = UIWindow(frame: UIScreen.mainScreen().bounds)
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        window.rootViewController = ViewController()
+        configureTimberLogger()
+        
+        window.rootViewController = UINavigationController(rootViewController: ViewController())
         window.backgroundColor = UIColor.whiteColor()
         window.makeKeyAndVisible()
         
         return true
+    }
+    
+    func configureTimberLogger() {
+        log = Logger(
+            name: "Timber-Example",
+            logLevel: Logger.LogLevel.All,
+            printTimestamp: true,
+            printLogLevel: true,
+            timestampFormatter: nil,
+            writer: nil
+        )
     }
 }
