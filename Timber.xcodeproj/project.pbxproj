@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4CA75D441A6C493800275DC5 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; };
-		4CA75D4A1A6C495C00275DC5 /* TimberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA75D481A6C495C00275DC5 /* TimberTests.swift */; };
+		4C1BBA661A6C518000D39EE1 /* ColorProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */; };
+		4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
+		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
+		4C1BBA6B1A6C518800D39EE1 /* ColorProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* ColorProfileTests.swift */; };
+		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
+		4CA75D441A6C493800275DC5 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Timber.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,9 +27,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorProfile.swift; sourceTree = "<group>"; };
+		4C1BBA641A6C518000D39EE1 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		4C1BBA651A6C518000D39EE1 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
+		4C1BBA691A6C518800D39EE1 /* ColorProfileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorProfileTests.swift; sourceTree = "<group>"; };
+		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA75D421A6C493800275DC5 /* Timber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timber.h; sourceTree = "<group>"; };
-		4CA75D481A6C495C00275DC5 /* TimberTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimberTests.swift; sourceTree = "<group>"; };
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		4CFE82991A6C484A0002868E /* Timber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Timber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CFE82A41A6C484A0002868E /* TimberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				4CA75D421A6C493800275DC5 /* Timber.h */,
+				4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */,
+				4C1BBA641A6C518000D39EE1 /* Logger.swift */,
+				4C1BBA651A6C518000D39EE1 /* Writer.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
 			);
 			path = Source;
@@ -70,7 +81,8 @@
 		4CA75D461A6C495C00275DC5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				4CA75D481A6C495C00275DC5 /* TimberTests.swift */,
+				4C1BBA691A6C518800D39EE1 /* ColorProfileTests.swift */,
+				4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */,
 				4CFE82A91A6C484B0002868E /* Supporting Files */,
 			);
 			path = Tests;
@@ -210,6 +222,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */,
+				4C1BBA661A6C518000D39EE1 /* ColorProfile.swift in Sources */,
+				4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,7 +232,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CA75D4A1A6C495C00275DC5 /* TimberTests.swift in Sources */,
+				4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */,
+				4C1BBA6B1A6C518800D39EE1 /* ColorProfileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +336,7 @@
 		4CFE82B01A6C484B0002868E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -328,13 +345,16 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		4CFE82B11A6C484B0002868E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -343,6 +363,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
