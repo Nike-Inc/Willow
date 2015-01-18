@@ -11,7 +11,47 @@
 		4C2776AF1A6C55F4007B1133 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2776AE1A6C55F4007B1133 /* ViewController.swift */; };
 		4C2776B41A6C55F4007B1133 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C2776B31A6C55F4007B1133 /* Images.xcassets */; };
 		4C2776B71A6C55F4007B1133 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C2776B51A6C55F4007B1133 /* LaunchScreen.xib */; };
+		4C8EA0C21A6C5F05001782BA /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8EA0BF1A6C5EF9001782BA /* Timber.framework */; };
+		4C8EA0C31A6C5F05001782BA /* Timber.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8EA0BF1A6C5EF9001782BA /* Timber.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4C8EA0BE1A6C5EF9001782BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CFE82991A6C484A0002868E;
+			remoteInfo = Timber;
+		};
+		4C8EA0C01A6C5EF9001782BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CFE82A41A6C484A0002868E;
+			remoteInfo = TimberTests;
+		};
+		4C8EA0C41A6C5F05001782BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4CFE82981A6C484A0002868E;
+			remoteInfo = Timber;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4C8EA0C61A6C5F05001782BA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4C8EA0C31A6C5F05001782BA /* Timber.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4C2776A71A6C55F4007B1133 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,6 +60,7 @@
 		4C2776AE1A6C55F4007B1133 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4C2776B31A6C55F4007B1133 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4C2776B61A6C55F4007B1133 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Timber.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C8EA0C21A6C5F05001782BA /* Timber.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +80,7 @@
 			children = (
 				4C2776A91A6C55F4007B1133 /* Example */,
 				4C2776A81A6C55F4007B1133 /* Products */,
+				4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,6 +112,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4C8EA0BA1A6C5EF9001782BA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4C8EA0BF1A6C5EF9001782BA /* Timber.framework */,
+				4C8EA0C11A6C5EF9001782BA /* TimberTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -79,10 +131,12 @@
 				4C2776A31A6C55F4007B1133 /* Sources */,
 				4C2776A41A6C55F4007B1133 /* Frameworks */,
 				4C2776A51A6C55F4007B1133 /* Resources */,
+				4C8EA0C61A6C5F05001782BA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4C8EA0C51A6C5F05001782BA /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -114,12 +168,35 @@
 			mainGroup = 4C27769E1A6C55F4007B1133;
 			productRefGroup = 4C2776A81A6C55F4007B1133 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4C8EA0BA1A6C5EF9001782BA /* Products */;
+					ProjectRef = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4C2776A61A6C55F4007B1133 /* Example */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4C8EA0BF1A6C5EF9001782BA /* Timber.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Timber.framework;
+			remoteRef = 4C8EA0BE1A6C5EF9001782BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C8EA0C11A6C5EF9001782BA /* TimberTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TimberTests.xctest;
+			remoteRef = 4C8EA0C01A6C5EF9001782BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4C2776A51A6C55F4007B1133 /* Resources */ = {
@@ -144,6 +221,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4C8EA0C51A6C5F05001782BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Timber;
+			targetProxy = 4C8EA0C41A6C5F05001782BA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4C2776B51A6C55F4007B1133 /* LaunchScreen.xib */ = {
@@ -240,6 +325,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -250,6 +336,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
