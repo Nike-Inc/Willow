@@ -1,5 +1,5 @@
 //
-//  ColorFormatter.swift
+//  Formatter.swift
 //  Timber
 //
 //  Created by Christian Noon on 11/24/14.
@@ -9,20 +9,20 @@
 import UIKit
 
 /**
-    The ColorFormatter protocol defines a single method for applying color formatting to a message. This is very
-    flexible allowing any object that conforms to use any coloring scheme it wants.
+    The Formatter protocol defines a single method for formatting a message after it has been constructed. This is very
+    flexible allowing any object that conforms to use formatting scheme it wants.
 */
-@objc public protocol ColorFormatter {
-    func applyColorFormattingToMessage(message: String) -> String
+@objc public protocol Formatter {
+    func formatMessage(message: String) -> String
 }
 
 /**
-    The XcodeColorsColorFormatter class takes foreground and background colors and applies them to a given message. It
-    uses the XcodeColors plugin color formatting scheme.
+    The ColorFormatter class takes foreground and background colors and applies them to a given message. It uses the
+    XcodeColors plugin color formatting scheme.
 
     NOTE: These should only be used with the XcodeColors plugin.
 */
-@objc public class XcodeColorsColorFormatter: ColorFormatter {
+@objc public class ColorFormatter: Formatter {
     
     // MARK: - Private - ColorConstants Struct
     
@@ -51,8 +51,8 @@ import UIKit
     public init(foregroundColor: UIColor?, backgroundColor: UIColor?) {
         assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
         
-        let foregroundTextString = XcodeColorsColorFormatter.textStringForColor(foregroundColor)
-        let backgroundTextString = XcodeColorsColorFormatter.textStringForColor(backgroundColor)
+        let foregroundTextString = ColorFormatter.textStringForColor(foregroundColor)
+        let backgroundTextString = ColorFormatter.textStringForColor(backgroundColor)
         
         if (!foregroundTextString.isEmpty) {
             self.foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
@@ -63,7 +63,7 @@ import UIKit
         }
     }
     
-    // MARK: - ColorFormatter Methods
+    // MARK: - Formatter Methods
     
     /**
         Applies the foreground, background and reset color formatting values to the given message.
@@ -72,7 +72,7 @@ import UIKit
         
         :returns: A new string with all the color formatting values added.
     */
-    public func applyColorFormattingToMessage(message: String) -> String {
+    public func formatMessage(message: String) -> String {
         return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
     }
     

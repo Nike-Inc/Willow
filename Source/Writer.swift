@@ -18,12 +18,11 @@
 }
 
 /**
-    The ColorWriter protocol defines a single API for writing a message and is provided a ColorFormatter. The 
-    conforming object can use the color formatter API to apply the coloring to the message, then write the message 
-    anywhere it wants.
+    The FormatWriter protocol defines a single API for writing a message and is provided a `Formatter`. The
+    conforming object can use the formatter API to format the message, then write the message anywhere it wants.
 */
-@objc public protocol ColorWriter: Writer {
-    func writeMessage(message: String, colorFormatter: ColorFormatter)
+@objc public protocol FormatWriter: Writer {
+    func writeMessage(message: String, formatter: Formatter)
 }
 
 // MARK: - ConsoleWriter
@@ -37,14 +36,14 @@ public class ConsoleWriter: Writer {
     }
 }
 
-// MARK: - ConsoleColorWriter
+// MARK: - ConsoleFormatWriter
 
 /**
-    The ConsoleColorWriter class is a ColorWriter that prints both colored and non-colored messages to the console.
+    The ConsoleFormatWriter class is a FormatWriter that prints both default and formatted messages to the console.
 */
-public class ConsoleColorWriter: ConsoleWriter, ColorWriter {
-    public func writeMessage(var message: String, colorFormatter: ColorFormatter) {
-        message = colorFormatter.applyColorFormattingToMessage(message)
+public class ConsoleFormatWriter: ConsoleWriter, FormatWriter {
+    public func writeMessage(var message: String, formatter: Formatter) {
+        message = formatter.formatMessage(message)
         println(message)
     }
 }

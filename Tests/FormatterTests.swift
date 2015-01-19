@@ -1,5 +1,5 @@
 //
-//  ColorFormatterTests.swift
+//  FormatterTests.swift
 //  Timber
 //
 //  Created by Christian Noon on 11/24/14.
@@ -11,7 +11,7 @@ import XCTest
 
 import Timber
 
-class XcodeColorsColorFormatterTestCase: XCTestCase {
+class ColorFormatterTestCase: XCTestCase {
     
     // MARK: - Private Properties
     
@@ -35,10 +35,10 @@ class XcodeColorsColorFormatterTestCase: XCTestCase {
         
         // Given
         let red = UIColor(red: 0.95, green: 0.0, blue: 0.0, alpha: 1.0)
-        let colorFormatter = XcodeColorsColorFormatter(foregroundColor: red, backgroundColor: nil)
+        let colorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
         
         // When
-        let coloredMessage = colorFormatter.applyColorFormattingToMessage(self.message)
+        let coloredMessage = colorFormatter.formatMessage(self.message)
         
         // Then
         let expected = "\(self.escape)fg242,0,0;Test Message\(self.reset)"
@@ -49,10 +49,10 @@ class XcodeColorsColorFormatterTestCase: XCTestCase {
 
         // Given
         let blue = UIColor(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
-        let colorFormatter = XcodeColorsColorFormatter(foregroundColor: nil, backgroundColor: blue)
+        let colorFormatter = ColorFormatter(foregroundColor: nil, backgroundColor: blue)
         
         // When
-        let coloredMessage = colorFormatter.applyColorFormattingToMessage(self.message)
+        let coloredMessage = colorFormatter.formatMessage(self.message)
         
         // Then
         let expected = "\(self.escape)bg45,145,255;Test Message\(self.reset)"
@@ -64,10 +64,10 @@ class XcodeColorsColorFormatterTestCase: XCTestCase {
         // Given
         let purple = UIColor(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
         let green = UIColor(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
-        let colorFormatter = XcodeColorsColorFormatter(foregroundColor: purple, backgroundColor: green)
+        let colorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: green)
         
         // When
-        let coloredMessage = colorFormatter.applyColorFormattingToMessage(self.message)
+        let coloredMessage = colorFormatter.formatMessage(self.message)
         
         // Then
         let expected = "\(self.escape)fg153,63,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"

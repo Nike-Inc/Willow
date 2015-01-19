@@ -11,7 +11,7 @@ import XCTest
 
 import Timber
 
-class TestWriter: ColorWriter {
+class TestWriter: FormatWriter {
     private let expectation: XCTestExpectation
     private let expectedNumberOfWrites: Int
     
@@ -33,8 +33,8 @@ class TestWriter: ColorWriter {
         }
     }
     
-    func writeMessage(message: String, colorFormatter: ColorFormatter) {
-        self.colorMessages.append(colorFormatter.applyColorFormattingToMessage(message))
+    func writeMessage(message: String, formatter: Formatter) {
+        self.colorMessages.append(formatter.formatMessage(message))
         
         ++self.actualNumberOfWrites
         
@@ -91,7 +91,7 @@ class LoggerTestCase: XCTestCase {
         printTimestamp: Bool = false,
         printLogLevel: Bool = false,
         timestampFormatter: NSDateFormatter? = nil,
-        colorFormatters: [Logger.LogLevel: ColorFormatter]? = nil,
+        formatters: [Logger.LogLevel: Formatter]? = nil,
         expectedNumberOfWrites: Int = 1) -> (Logger, TestWriter)
     {
         let expectation = expectationWithDescription("Test writer should receive expected number of writes")
@@ -102,7 +102,7 @@ class LoggerTestCase: XCTestCase {
             printTimestamp: printTimestamp,
             printLogLevel: printLogLevel,
             timestampFormatter: timestampFormatter,
-            colorFormatters: colorFormatters,
+            formatters: formatters,
             writers: [writer]
         )
         
@@ -352,11 +352,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
-            .Debug: XcodeColorsColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)
+        let colorFormatters: [Logger.LogLevel: Formatter] = [
+            .Debug: ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)
         ]
         
-        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
         log.debug(self.message)
@@ -381,11 +381,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToInfoLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
-            .Info: XcodeColorsColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)
+        let colorFormatters: [Logger.LogLevel: Formatter] = [
+            .Info: ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)
         ]
         
-        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
         log.debug(self.message)
@@ -410,11 +410,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToEventLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
-            .Event: XcodeColorsColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)
+        let colorFormatters: [Logger.LogLevel: Formatter] = [
+            .Event: ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)
         ]
         
-        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
         log.debug(self.message)
@@ -439,11 +439,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToWarnLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
-            Logger.LogLevel.Warn: XcodeColorsColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)
+        let colorFormatters: [Logger.LogLevel: Formatter] = [
+            Logger.LogLevel.Warn: ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)
         ]
         
-        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
         log.debug(self.message)
@@ -468,11 +468,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToErrorLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
-            .Error: XcodeColorsColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)
+        let colorFormatters: [Logger.LogLevel: Formatter] = [
+            .Error: ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)
         ]
         
-        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
         log.debug(self.message)
@@ -493,73 +493,4 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
             }
         }
     }
-    
-    /*
-
-    func testThatItAddsColorToErrorLogLevel() {
-        
-        // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
-        
-        logger.setForegroundColor(self.purpleColor, backgroundColor: self.redColor, forLogLevel: .Error)
-        
-        // When
-        logger.error(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        
-        let expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;Test Message\(self.reset)"
-        let actual = mockWriter.message!
-        let failureMessage = "Failed to apply color formatting to error log level"
-        
-        XCTAssertEqual(expected, actual, failureMessage)
-    }
-    */
-    
-//    // MARK: - Tester Helper Methods
-//    
-//    func mockWriterWithExpectation() -> MockWriter {
-//        let expectation = expectationWithDescription("mock writer expectation")
-//        return MockWriter(expectation: expectation)
-//    }
-//    
-//    func writeMessageCalledWithLogger(logger: Logger) -> Bool {
-//        let writer = logger.writer as MockWriter
-//        return writer.writeMessageCalled
-//    }
-//    
-//    func loggerWithLogLevel(logLevel: Logger.LogLevel) -> Logger {
-//        let logger = Logger(
-//            name: self.loggerName,
-//            logLevel: logLevel,
-//            printTimestamp: true,
-//            printLogLevel: true,
-//            timestampFormatter: nil,
-//            writers: [MockWriter()]
-//        )
-//        
-//        return logger
-//    }
-//    
-//    func expectationLoggerWithLogLevel(logLevel: Logger.LogLevel) -> Logger {
-//        let logger = Logger(
-//            name: self.loggerName,
-//            logLevel: logLevel,
-//            printTimestamp: true,
-//            printLogLevel: true,
-//            timestampFormatter: nil,
-//            writers: [mockWriterWithExpectation()]
-//        )
-//        
-//        return logger
-//    }
 }

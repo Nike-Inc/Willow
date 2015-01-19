@@ -54,7 +54,7 @@ public class Logger {
     private let logLevel: LogLevel
     private let printTimestamp: Bool
     private let printLogLevel: Bool
-    private var colorFormatters = [LogLevel: ColorFormatter]()
+    private var formatters = [LogLevel: Formatter]()
     private let writers = [Writer]()
     
     private lazy var timestampFormatter: NSDateFormatter = {
@@ -77,7 +77,7 @@ public class Logger {
         :param: printTimestamp     Whether to print out the timestamp when messages are written. `false` by default.
         :param: printLogLevel      Whether to print out the log level when messages are written. `false` by default.
         :param: timestampFormatter The timestamp formatter used when messages are written. `nil` by default.
-        :param: colorFormatters    The dictionary of color formatters to apply to each associated log level. `nil` by default.
+        :param: formatters         The dictionary of formatters to apply to each associated log level. `nil` by default.
         :param: writers            The writers to use when messages are written. `nil` by default.
     
         :returns: A fully initialized logger instance.
@@ -88,7 +88,7 @@ public class Logger {
         printTimestamp: Bool = false,
         printLogLevel: Bool = false,
         timestampFormatter: NSDateFormatter? = nil,
-        colorFormatters: [LogLevel: ColorFormatter]? = nil,
+        formatters: [LogLevel: Formatter]? = nil,
         writers: [Writer]? = nil)
     {
         self.name = name
@@ -96,14 +96,14 @@ public class Logger {
         self.printTimestamp = printTimestamp
         self.printLogLevel = printLogLevel
         
-        if let colorFormatters = colorFormatters {
-            self.colorFormatters = colorFormatters
+        if let formatters = formatters {
+            self.formatters = formatters
         }
         
         if let writers = writers {
             self.writers = writers
         } else {
-            self.writers.append(self.colorFormatters.isEmpty ? ConsoleWriter() : ConsoleColorWriter())
+            self.writers.append(self.formatters.isEmpty ? ConsoleWriter() : ConsoleFormatWriter())
         }
         
         if let timestampFormatterValue = timestampFormatter {
@@ -261,12 +261,12 @@ public class Logger {
         }
         
         message = " ".join(logComponents)
-        let colorFormatter = self.colorFormatters[logLevel]
+        let formatter = self.formatters[logLevel]
         
         for writer in writers {
-            if writer is ColorWriter && colorFormatter != nil {
-                let colorWriter = writer as ColorWriter
-                colorWriter.writeMessage(message, colorFormatter: colorFormatter!)
+            if writer is FormatWriter && formatter != nil {
+                let formatWriter = writer as FormatWriter
+                formatWriter.writeMessage(message, formatter: formatter!)
             } else {
                 writer.writeMessage(message)
             }

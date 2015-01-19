@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		321F2DF335043A818DBEC881 /* libPods-TimberTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A7C054C76B0713278F5430 /* libPods-TimberTests.a */; };
-		4C1BBA661A6C518000D39EE1 /* ColorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* ColorFormatter.swift */; };
+		4C1BBA661A6C518000D39EE1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* Formatter.swift */; };
 		4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
 		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
-		4C1BBA6B1A6C518800D39EE1 /* ColorFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* ColorFormatterTests.swift */; };
+		4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
 		4CA75D441A6C493800275DC5 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Timber.framework */; };
@@ -30,10 +30,10 @@
 /* Begin PBXFileReference section */
 		35A7C054C76B0713278F5430 /* libPods-TimberTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TimberTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		499927CB6AEAD4B17ED64ED5 /* Pods-TimberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimberTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TimberTests/Pods-TimberTests.release.xcconfig"; sourceTree = "<group>"; };
-		4C1BBA631A6C518000D39EE1 /* ColorFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorFormatter.swift; sourceTree = "<group>"; };
+		4C1BBA631A6C518000D39EE1 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		4C1BBA641A6C518000D39EE1 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4C1BBA651A6C518000D39EE1 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
-		4C1BBA691A6C518800D39EE1 /* ColorFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorFormatterTests.swift; sourceTree = "<group>"; };
+		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4C66B0171A6C53840083F56E /* TimberTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TimberTests-Bridging-Header.h"; path = "Tests/TimberTests-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				4CA75D421A6C493800275DC5 /* Timber.h */,
-				4C1BBA631A6C518000D39EE1 /* ColorFormatter.swift */,
+				4C1BBA631A6C518000D39EE1 /* Formatter.swift */,
 				4C1BBA641A6C518000D39EE1 /* Logger.swift */,
 				4C1BBA651A6C518000D39EE1 /* Writer.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
@@ -95,7 +95,7 @@
 		4CA75D461A6C495C00275DC5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				4C1BBA691A6C518800D39EE1 /* ColorFormatterTests.swift */,
+				4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */,
 				4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */,
 				4CFE82A91A6C484B0002868E /* Supporting Files */,
 			);
@@ -284,7 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */,
-				4C1BBA661A6C518000D39EE1 /* ColorFormatter.swift in Sources */,
+				4C1BBA661A6C518000D39EE1 /* Formatter.swift in Sources */,
 				4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,7 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */,
-				4C1BBA6B1A6C518800D39EE1 /* ColorFormatterTests.swift in Sources */,
+				4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
