@@ -1,5 +1,5 @@
 //
-//  ColorProfile.swift
+//  ColorFormatter.swift
 //  Timber
 //
 //  Created by Christian Noon on 11/24/14.
@@ -8,8 +8,18 @@
 
 import UIKit
 
-@objc public class ColorProfile {
+@objc public protocol ColorFormatter {
+    func applyColorFormattingToMessage(message: String) -> String
+}
 
+/**
+    The XcodeColorsColorFormatter class takes foreground and background colors and applies them to a given message. It
+    uses the XcodeColors plugin color formatting scheme.
+
+    NOTE: These should only be used with the XcodeColors plugin.
+*/
+@objc public class XcodeColorsColorFormatter: ColorFormatter {
+    
     // MARK: - Private - ColorConstants Struct
     
     private struct ColorConstants {
@@ -37,8 +47,8 @@ import UIKit
     public init(foregroundColor: UIColor?, backgroundColor: UIColor?) {
         assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
         
-        let foregroundTextString = ColorProfile.textStringForColor(foregroundColor)
-        let backgroundTextString = ColorProfile.textStringForColor(backgroundColor)
+        let foregroundTextString = XcodeColorsColorFormatter.textStringForColor(foregroundColor)
+        let backgroundTextString = XcodeColorsColorFormatter.textStringForColor(backgroundColor)
         
         if (!foregroundTextString.isEmpty) {
             self.foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
@@ -49,7 +59,7 @@ import UIKit
         }
     }
     
-    // MARK: - Color Methods
+    // MARK: - ColorFormatter Methods
     
     /**
         Applies the foreground, background and reset color formatting values to the given message.

@@ -8,13 +8,37 @@
 
 import Foundation
 
+/**
+    The Logger class is a fully thread-safe, asynchronous logging solution using dependency injection to allow custom
+    Writable and Colorable writers. It also manages all the logic to determine whether to log a particular message with
+    a given log level.
+
+    Loggers can only be configured during initialization. If you need to change a logger at runtime, it is advised to
+    create an additional logger with a custom configuration to fit your needs.
+*/
 public class Logger {
 
     // MARK: - LogLevel Enum
     
+    /**
+        The LogLevel enum defines all the possible logging levels for Timber.
+        
+        - Off:   No messages will ever be logged.
+        - Error: Allows Error messages to be logged.
+        - Warn:  Allows Warn and Error messages to be logged.
+        - Event: Allows Event, Warn and Error messages to be logged.
+        - Info:  Allows Info, Event, Warn and Error messages to be logged.
+        - Debug: Allows Debug, Info, Event, Warn and Error messages to be logged.
+        - All:   Always logs the message.
+    */
     public enum LogLevel: UInt {
         case Off = 0, Error, Warn, Event, Info, Debug, All
         
+        /**
+            Returns a string representation of the LogLevel.
+            
+            :returns: A string.
+        */
         public func toString() -> String {
             switch self {
             case .Off:
@@ -41,8 +65,8 @@ public class Logger {
     private let logLevel: LogLevel
     private let printTimestamp: Bool
     private let printLogLevel: Bool
-    private var colorProfiles = [LogLevel: ColorProfile]()
-    private let writers = [Writable]()
+    private var colorFormatters = [LogLevel: ColorFormatter]()
+    private let writers = [Writer]()
     
     private lazy var timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
@@ -64,7 +88,7 @@ public class Logger {
         :param: printTimestamp     Whether to print out the timestamp when messages are written. `false` by default.
         :param: printLogLevel      Whether to print out the log level when messages are written. `false` by default.
         :param: timestampFormatter The timestamp formatter used when messages are written. `nil` by default.
-        :param: colorProfiles      The dictionary of color profiles to apply to each associated log level. `nil` by default.
+        :param: colorFormatters    The dictionary of color formatters to apply to each associated log level. `nil` by default.
         :param: writers            The writers to use when messages are written. `nil` by default.
     
         :returns: A fully initialized logger instance.
@@ -75,22 +99,22 @@ public class Logger {
         printTimestamp: Bool = false,
         printLogLevel: Bool = false,
         timestampFormatter: NSDateFormatter? = nil,
-        colorProfiles: [LogLevel: ColorProfile]? = nil,
-        writers: [Writable]? = nil)
+        colorFormatters: [LogLevel: ColorFormatter]? = nil,
+        writers: [Writer]? = nil)
     {
         self.name = name
         self.logLevel = logLevel
         self.printTimestamp = printTimestamp
         self.printLogLevel = printLogLevel
         
-        if let colorProfiles = colorProfiles {
-            self.colorProfiles = colorProfiles
+        if let colorFormatters = colorFormatters {
+            self.colorFormatters = colorFormatters
         }
         
         if let writers = writers {
             self.writers = writers
         } else {
-            self.writers.append(self.colorProfiles.isEmpty ? ConsoleWriter() : ConsoleColorWriter())
+            self.writers.append(self.colorFormatters.isEmpty ? ConsoleWriter() : ConsoleColorWriter())
         }
         
         if let timestampFormatterValue = timestampFormatter {
@@ -250,12 +274,12 @@ public class Logger {
         }
         
         message = " ".join(logComponents)
-        let colorProfile = self.colorProfiles[logLevel]
+        let colorFormatter = self.colorFormatters[logLevel]
         
         for writer in writers {
-            if writer is Colorable && colorProfile != nil {
-                let colorWriter = writer as Colorable
-                colorWriter.writeMessage(message, colorProfile: colorProfile!)
+            if writer is ColorWriter && colorFormatter != nil {
+                let colorWriter = writer as ColorWriter
+                colorWriter.writeMessage(message, colorFormatter: colorFormatter!)
             } else {
                 writer.writeMessage(message)
             }

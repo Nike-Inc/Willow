@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             printTimestamp: true,
             printLogLevel: true,
             timestampFormatter: nil,
-            colorProfiles: nil,
+            colorFormatters: nil,
             writers: nil
         )
     }
@@ -54,21 +54,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let white = UIColor.whiteColor()
         let black = UIColor.blackColor()
         
-        let colorProfiles = [
-            Logger.LogLevel.Debug: ColorProfile(foregroundColor: purple, backgroundColor: nil),
-            Logger.LogLevel.Info: ColorProfile(foregroundColor: blue, backgroundColor: nil),
-            Logger.LogLevel.Event: ColorProfile(foregroundColor: green, backgroundColor: nil),
-            Logger.LogLevel.Warn: ColorProfile(foregroundColor: black, backgroundColor: orange),
-            Logger.LogLevel.Error: ColorProfile(foregroundColor: white, backgroundColor: red)
+        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
+            Logger.LogLevel.Debug: XcodeColorsColorFormatter(foregroundColor: purple, backgroundColor: nil),
+            Logger.LogLevel.Info: XcodeColorsColorFormatter(foregroundColor: blue, backgroundColor: nil),
+            Logger.LogLevel.Event: XcodeColorsColorFormatter(foregroundColor: green, backgroundColor: nil),
+            Logger.LogLevel.Warn: XcodeColorsColorFormatter(foregroundColor: black, backgroundColor: orange),
+            Logger.LogLevel.Error: XcodeColorsColorFormatter(foregroundColor: white, backgroundColor: red)
         ]
         
         log = Logger(
             name: "Timber-Example-Colored-Logger",
-            logLevel: .All,
+            logLevel: Logger.LogLevel.All,
             printTimestamp: true,
             printLogLevel: true,
             timestampFormatter: nil,
-            colorProfiles: colorProfiles,
+            colorFormatters: colorFormatters,
             writers: nil
         )
     }

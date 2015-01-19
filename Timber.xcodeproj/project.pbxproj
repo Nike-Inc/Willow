@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		321F2DF335043A818DBEC881 /* libPods-TimberTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A7C054C76B0713278F5430 /* libPods-TimberTests.a */; };
-		4C1BBA661A6C518000D39EE1 /* ColorProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */; };
+		4C1BBA661A6C518000D39EE1 /* ColorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* ColorFormatter.swift */; };
 		4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
 		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
 		4C1BBA6B1A6C518800D39EE1 /* ColorProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* ColorProfileTests.swift */; };
@@ -30,7 +30,7 @@
 /* Begin PBXFileReference section */
 		35A7C054C76B0713278F5430 /* libPods-TimberTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TimberTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		499927CB6AEAD4B17ED64ED5 /* Pods-TimberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimberTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TimberTests/Pods-TimberTests.release.xcconfig"; sourceTree = "<group>"; };
-		4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorProfile.swift; sourceTree = "<group>"; };
+		4C1BBA631A6C518000D39EE1 /* ColorFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorFormatter.swift; sourceTree = "<group>"; };
 		4C1BBA641A6C518000D39EE1 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4C1BBA651A6C518000D39EE1 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* ColorProfileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorProfileTests.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				4CA75D421A6C493800275DC5 /* Timber.h */,
-				4C1BBA631A6C518000D39EE1 /* ColorProfile.swift */,
+				4C1BBA631A6C518000D39EE1 /* ColorFormatter.swift */,
 				4C1BBA641A6C518000D39EE1 /* Logger.swift */,
 				4C1BBA651A6C518000D39EE1 /* Writer.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
@@ -284,7 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */,
-				4C1BBA661A6C518000D39EE1 /* ColorProfile.swift in Sources */,
+				4C1BBA661A6C518000D39EE1 /* ColorFormatter.swift in Sources */,
 				4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

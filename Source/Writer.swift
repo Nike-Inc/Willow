@@ -8,17 +8,17 @@
 
 // MARK: - Protocols
 
-@objc public protocol Writable {
+@objc public protocol Writer {
     func writeMessage(message: String)
 }
 
-@objc public protocol Colorable: Writable {
-    func writeMessage(message: String, colorProfile: ColorProfile)
+@objc public protocol ColorWriter: Writer {
+    func writeMessage(message: String, colorFormatter: ColorFormatter)
 }
 
 // MARK: - Internal - ConsoleWriter
 
-class ConsoleWriter: Writable {
+class ConsoleWriter: Writer {
     func writeMessage(message: String) {
         println(message)
     }
@@ -26,9 +26,9 @@ class ConsoleWriter: Writable {
 
 // MARK: - Internal - ConsoleColorWriter
 
-class ConsoleColorWriter: ConsoleWriter, Colorable {
-    func writeMessage(var message: String, colorProfile: ColorProfile) {
-        message = colorProfile.applyColorFormattingToMessage(message)
+class ConsoleColorWriter: ConsoleWriter, ColorWriter {
+    func writeMessage(var message: String, colorFormatter: ColorFormatter) {
+        message = colorFormatter.applyColorFormattingToMessage(message)
         println(message)
     }
 }
