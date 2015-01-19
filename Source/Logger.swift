@@ -22,27 +22,18 @@ public class Logger {
     
     /**
         The LogLevel enum defines all the possible logging levels for Timber.
-        
-        - Off:   No messages will ever be logged.
+    
         - Error: Allows Error messages to be logged.
         - Warn:  Allows Warn and Error messages to be logged.
         - Event: Allows Event, Warn and Error messages to be logged.
         - Info:  Allows Info, Event, Warn and Error messages to be logged.
         - Debug: Allows Debug, Info, Event, Warn and Error messages to be logged.
-        - All:   Always logs the message.
     */
-    public enum LogLevel: UInt {
-        case Off = 0, Error, Warn, Event, Info, Debug, All
+    public enum LogLevel: UInt, Printable {
+        case Error = 0, Warn, Event, Info, Debug
         
-        /**
-            Returns a string representation of the LogLevel.
-            
-            :returns: A string.
-        */
-        public func toString() -> String {
+        public var description: String {
             switch self {
-            case .Off:
-                return "Off"
             case .Error:
                 return "Error"
             case .Warn:
@@ -53,8 +44,6 @@ public class Logger {
                 return "Info"
             case .Debug:
                 return "Debug"
-            case .All:
-                return "All"
             }
         }
     }
@@ -260,7 +249,7 @@ public class Logger {
         }
         
         if self.printLogLevel {
-            logComponents.append(logLevel.toString())
+            logComponents.append("\(logLevel)")
         }
         
         logComponents.append(message)

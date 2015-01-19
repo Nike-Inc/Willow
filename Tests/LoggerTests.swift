@@ -11,30 +11,45 @@ import XCTest
 
 import Timber
 
-class LoggerTests: XCTestCase {
+class TestWriter: ColorWriter {
+    private let expectation: XCTestExpectation
+    private let expectedNumberOfWrites: Int
     
-    // MARK: - Mock Classes
+    private(set) var actualNumberOfWrites: Int = 0
+    private(set) var message: String?
+    private(set) var colorMessages = [String]()
     
-    class MockWriter: Writable {
-        var message: String?
-        var writeMessageCalled = false
-        var expectation: XCTestExpectation?
+    init(expectation: XCTestExpectation, expectedNumberOfWrites: Int) {
+        self.expectation = expectation
+        self.expectedNumberOfWrites = expectedNumberOfWrites
+    }
+    
+    func writeMessage(message: String) {
+        self.message = message
+        ++self.actualNumberOfWrites
         
-        init(expectation: XCTestExpectation? = nil) {
-            self.expectation = expectation
-        }
-        
-        func writeMessage(message: String) {
-            self.message = message
-            self.writeMessageCalled = true
-            self.expectation?.fulfill()
+        if self.actualNumberOfWrites == self.expectedNumberOfWrites {
+            self.expectation.fulfill()
         }
     }
+    
+    func writeMessage(message: String, colorFormatter: ColorFormatter) {
+        self.colorMessages.append(colorFormatter.applyColorFormattingToMessage(message))
+        
+        ++self.actualNumberOfWrites
+        
+        if self.actualNumberOfWrites == self.expectedNumberOfWrites {
+            self.expectation.fulfill()
+        }
+    }
+}
 
+class LoggerTestCase: XCTestCase {
+    
     // MARK: - Private Properties
     
     var message = ""
-    let writeMessageDelay = 0.1
+    let defaultTimeout = 0.1
     let loggerName = "timber-logger-tests"
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
@@ -68,503 +83,418 @@ class LoggerTests: XCTestCase {
     override func tearDown() {
         TUDelorean.backToThePresent()
     }
+
+    // MARK: - Helper Methods
     
-    // MARK: - Log Message Tests
-    
-    func testThatItLogsDebugMessages() {
+    func logger(
+        logLevel: Logger.LogLevel = .Debug,
+        printTimestamp: Bool = false,
+        printLogLevel: Bool = false,
+        timestampFormatter: NSDateFormatter? = nil,
+        colorFormatters: [Logger.LogLevel: ColorFormatter]? = nil,
+        expectedNumberOfWrites: Int = 1) -> (Logger, TestWriter)
+    {
+        let expectation = expectationWithDescription("Test writer should receive expected number of writes")
+        let writer = TestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
+        let logger = Logger(
+            name: self.loggerName,
+            logLevel: logLevel,
+            printTimestamp: printTimestamp,
+            printLogLevel: printLogLevel,
+            timestampFormatter: timestampFormatter,
+            colorFormatters: colorFormatters,
+            writers: [writer]
+        )
         
-        // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = loggerWithLogLevel(.Info)
-        let eventLogger = loggerWithLogLevel(.Event)
-        let warnLogger = loggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
-        
-        // When
-        allLogger.debug("")
-        debugLogger.debug("")
-        infoLogger.debug("")
-        eventLogger.debug("")
-        warnLogger.debug("")
-        errorLogger.debug("")
-        offLogger.debug("")
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(infoLogger), "Info logger should not write debug message")
-        XCTAssertFalse(writeMessageCalledWithLogger(eventLogger), "Event logger should not write debug message")
-        XCTAssertFalse(writeMessageCalledWithLogger(warnLogger), "Warn logger should not write debug message")
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write debug message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write debug message")
+        return (logger, writer)
     }
+}
+
+class LoggerLogLevelTestCase: LoggerTestCase {
     
-    func testThatItLogsInfoMessages() {
+    func testThatItLogsAsExpectedWithDebugLogLevel() {
         
         // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = loggerWithLogLevel(.Event)
-        let warnLogger = loggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
+        let (log, writer) = logger(logLevel: .Debug, expectedNumberOfWrites: 10)
         
         // When
-        allLogger.info("")
-        debugLogger.info("")
-        infoLogger.info("")
-        eventLogger.info("")
-        warnLogger.info("")
-        errorLogger.info("")
-        offLogger.info("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(eventLogger), "Event logger should not write info message")
-        XCTAssertFalse(writeMessageCalledWithLogger(warnLogger), "Warn logger should not write info message")
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write info message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write info message")
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
     }
     
-    func testThatItLogsEventMessages() {
+    func testThatItLogsAsExpectedWithInfoLogLevel() {
         
         // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = expectationLoggerWithLogLevel(.Event)
-        let warnLogger = loggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
+        let (log, writer) = logger(logLevel: .Info, expectedNumberOfWrites: 8)
         
         // When
-        allLogger.event("")
-        debugLogger.event("")
-        infoLogger.event("")
-        eventLogger.event("")
-        warnLogger.event("")
-        errorLogger.event("")
-        offLogger.event("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+        
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(warnLogger), "Warn logger should not write event message")
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write event message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write event message")
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
     }
 
-    func testThatItLogsWarnMessages() {
+    func testThatItLogsAsExpectedWithEventLogLevel() {
         
         // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = expectationLoggerWithLogLevel(.Event)
-        let warnLogger = expectationLoggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
+        let (log, writer) = logger(logLevel: .Event, expectedNumberOfWrites: 6)
         
         // When
-        allLogger.warn("")
-        debugLogger.warn("")
-        infoLogger.warn("")
-        eventLogger.warn("")
-        warnLogger.warn("")
-        errorLogger.warn("")
-        offLogger.warn("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+        
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write warn message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write warn message")
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
     }
 
-    func testThatItLogsErrorMessages() {
+    func testThatItLogsAsExpectedWithWarnLogLevel() {
         
         // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = expectationLoggerWithLogLevel(.Event)
-        let warnLogger = expectationLoggerWithLogLevel(.Warn)
-        let errorLogger = expectationLoggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
+        let (log, writer) = logger(logLevel: .Warn, expectedNumberOfWrites: 4)
         
         // When
-        allLogger.error("")
-        debugLogger.error("")
-        infoLogger.error("")
-        eventLogger.error("")
-        warnLogger.error("")
-        errorLogger.error("")
-        offLogger.error("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+        
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write error message")
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
     }
     
-    // MARK: - Log Message Closure Tests
-    
-    func testThatItLogsDebugClosureMessages() {
+    func testThatItLogsAsExpectedWithErrorLogLevel() {
         
         // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = loggerWithLogLevel(.Info)
-        let eventLogger = loggerWithLogLevel(.Event)
-        let warnLogger = loggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
+        let (log, writer) = logger(logLevel: .Error, expectedNumberOfWrites: 2)
         
         // When
-        allLogger.debug { "" }
-        debugLogger.debug { "" }
-        infoLogger.debug { "" }
-        eventLogger.debug { "" }
-        warnLogger.debug { "" }
-        errorLogger.debug { "" }
-        offLogger.debug { "" }
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+        
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(infoLogger), "Info logger should not write debug closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(eventLogger), "Event logger should not write debug closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(warnLogger), "Warn logger should not write debug closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write debug closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write debug closure message")
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
     }
-  
-    func testThatItLogsInfoClosureMessages() {
-        
-        // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = loggerWithLogLevel(.Event)
-        let warnLogger = loggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
-        
-        // When
-        allLogger.info { "" }
-        debugLogger.info { "" }
-        infoLogger.info { "" }
-        eventLogger.info { "" }
-        warnLogger.info { "" }
-        errorLogger.info { "" }
-        offLogger.info { "" }
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(eventLogger), "Event logger should not write info closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(warnLogger), "Warn logger should not write info closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write info closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write info closure message")
-    }
+}
 
-    func testThatItLogsEventClosureMessages() {
-        
-        // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = expectationLoggerWithLogLevel(.Event)
-        let warnLogger = loggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
-        
-        // When
-        allLogger.event { "" }
-        debugLogger.event { "" }
-        infoLogger.event { "" }
-        eventLogger.event { "" }
-        warnLogger.event { "" }
-        errorLogger.event { "" }
-        offLogger.event { "" }
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(warnLogger), "Warn logger should not write event closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write event closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write event closure message")
-    }
+// MARK: -
 
-    func testThatItLogsWarnClosureMessages() {
-        
-        // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = expectationLoggerWithLogLevel(.Event)
-        let warnLogger = expectationLoggerWithLogLevel(.Warn)
-        let errorLogger = loggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
-        
-        // When
-        allLogger.warn { "" }
-        debugLogger.warn { "" }
-        infoLogger.warn { "" }
-        eventLogger.warn { "" }
-        warnLogger.warn { "" }
-        errorLogger.warn { "" }
-        offLogger.warn { "" }
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(errorLogger), "Error logger should not write warn closure message")
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write warn closure message")
-    }
-
-    func testThatItLogsErrorClosureMessages() {
-        
-        // Given
-        let allLogger = expectationLoggerWithLogLevel(.All)
-        let debugLogger = expectationLoggerWithLogLevel(.Debug)
-        let infoLogger = expectationLoggerWithLogLevel(.Info)
-        let eventLogger = expectationLoggerWithLogLevel(.Event)
-        let warnLogger = expectationLoggerWithLogLevel(.Warn)
-        let errorLogger = expectationLoggerWithLogLevel(.Error)
-        let offLogger = loggerWithLogLevel(.Off)
-        
-        // When
-        allLogger.error { "" }
-        debugLogger.error { "" }
-        infoLogger.error { "" }
-        eventLogger.error { "" }
-        warnLogger.error { "" }
-        errorLogger.error { "" }
-        offLogger.error { "" }
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        XCTAssertFalse(writeMessageCalledWithLogger(offLogger), "Off logger should not write error closure message")
-    }
-
-    // MARK: - Log Output Tests
+class LoggerOutputFormatTestCase: LoggerTestCase {
     
     func testThatItFormatsOutputCorrectlyWithNoPrintOptionsEnabled() {
 
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
+        let (log, writer) = logger()
         
         // When
-        logger.debug(self.message)
+        log.debug(self.message)
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        XCTAssertEqual("Test Message", mockWriter.message!)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            
+            if let actualMessage = writer.message {
+                let expectedMessage = "Test Message"
+                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
+            } else {
+                XCTFail("The writer message should NOT be nil")
+            }
+        }
     }
     
     func testThatItFormatsOutputCorrectlyWithPrintTimestampEnabled() {
-
+        
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: true,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
+        let (log, writer) = logger(printTimestamp: true)
         
         // When
-        logger.debug(self.message)
-
+        log.debug(self.message)
+        
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        XCTAssertEqual("[2014-10-03 08:20:45.000] Test Message", mockWriter.message!)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+
+            if let actualMessage = writer.message {
+                let expectedMessage = "[2014-10-03 08:20:45.000] Test Message"
+                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
+            } else {
+                XCTFail("The writer message should NOT be nil")
+            }
+        }
     }
 
     func testThatItFormatsOutputCorrectlyWithPrintLogLevelEnabled() {
-
+        
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: true,
-            writer: mockWriterWithExpectation()
-        )
+        let (log, writer) = logger(printLogLevel: true)
         
         // When
-        logger.debug(self.message)
-
+        log.debug(self.message)
+        
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        XCTAssertEqual("[Debug] Test Message", mockWriter.message!)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            
+            if let actualMessage = writer.message {
+                let expectedMessage = "[Debug] Test Message"
+                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
+            } else {
+                XCTFail("The writer message should NOT be nil")
+            }
+        }
     }
 
     func testThatItFormatsOutputCorrectlyWithAllPrintOptionsEnabled() {
-
+        
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: true,
-            printLogLevel: true,
-            writer: mockWriterWithExpectation()
-        )
+        let (log, writer) = logger(printTimestamp: true, printLogLevel: true)
         
         // When
-        logger.debug(self.message)
+        log.debug(self.message)
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        XCTAssertEqual("2014-10-03 08:20:45.000 [Debug] Test Message", mockWriter.message!)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            
+            if let actualMessage = writer.message {
+                let expectedMessage = "2014-10-03 08:20:45.000 [Debug] Test Message"
+                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
+            } else {
+                XCTFail("The writer message should NOT be nil")
+            }
+        }
     }
-    
-    func testThatItWorksWithCustomDateFormatters() {
 
+    func testThatItFormatsOutputCorrectlyWithCustomDateFormatters() {
+        
         // Given
         let timestampFormatter = NSDateFormatter()
         timestampFormatter.locale = NSLocale.currentLocale()
         timestampFormatter.dateFormat = "yyyy-MM-dd"
         
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: true,
-            printLogLevel: true,
-            timestampFormatter: timestampFormatter,
-            writer: mockWriterWithExpectation()
-        )
+        let (log, writer) = logger(printTimestamp: true, printLogLevel: true, timestampFormatter: timestampFormatter)
         
         // When
-        logger.debug(self.message)
+        log.debug(self.message)
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        XCTAssertEqual("2014-10-03 [Debug] Test Message", mockWriter.message!)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            
+            if let actualMessage = writer.message {
+                let expectedMessage = "2014-10-03 [Debug] Test Message"
+                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
+            } else {
+                XCTFail("The writer message should NOT be nil")
+            }
+        }
+    }
+}
+
+class LoggerColorFormatterTestCase: LoggerTestCase {
+    
+    func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
+        
+        // Given
+        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
+            .Debug: XcodeColorsColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)
+        ]
+        
+        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        
+        // When
+        log.debug(self.message)
+        log.info(self.message)
+        log.event(self.message)
+        log.warn(self.message)
+        log.error(self.message)
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            
+            if writer.colorMessages.count == 1 {
+                let expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;Test Message\(self.reset)"
+                let actual = writer.colorMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            }
+        }
+    }
+
+    func testThatItAppliesCorrectColorFormatterToInfoLogLevel() {
+        
+        // Given
+        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
+            .Info: XcodeColorsColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)
+        ]
+        
+        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
+        
+        // When
+        log.debug(self.message)
+        log.info(self.message)
+        log.event(self.message)
+        log.warn(self.message)
+        log.error(self.message)
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            
+            if writer.colorMessages.count == 1 {
+                let expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;Test Message\(self.reset)"
+                let actual = writer.colorMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            }
+        }
     }
     
-    // MARK: - Log Output Color Tests
-    
-    func testThatItAddsColorToDebugLogLevel() {
+    func testThatItAppliesCorrectColorFormatterToEventLogLevel() {
         
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
+        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
+            .Event: XcodeColorsColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)
+        ]
         
-        logger.setForegroundColor(self.purpleColor, backgroundColor: self.blueColor, forLogLevel: .Debug)
+        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
-        logger.debug(self.message)
+        log.debug(self.message)
+        log.info(self.message)
+        log.event(self.message)
+        log.warn(self.message)
+        log.error(self.message)
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        
-        let expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;Test Message\(self.reset)"
-        let actual = mockWriter.message!
-        let failureMessage = "Failed to apply color formatting to debug log level"
-        
-        XCTAssertEqual(expected, actual, failureMessage)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            
+            if writer.colorMessages.count == 1 {
+                let expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;Test Message\(self.reset)"
+                let actual = writer.colorMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            }
+        }
     }
     
-    func testThatItAddsColorToInfoLogLevel() {
+    func testThatItAppliesCorrectColorFormatterToWarnLogLevel() {
         
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
+        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
+            Logger.LogLevel.Warn: XcodeColorsColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)
+        ]
         
-        logger.setForegroundColor(self.greenColor, backgroundColor: self.orangeColor, forLogLevel: .Info)
+        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
-        logger.info(self.message)
+        log.debug(self.message)
+        log.info(self.message)
+        log.event(self.message)
+        log.warn(self.message)
+        log.error(self.message)
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        
-        let expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;Test Message\(self.reset)"
-        let actual = mockWriter.message!
-        let failureMessage = "Failed to apply color formatting to info log level"
-        
-        XCTAssertEqual(expected, actual, failureMessage)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            
+            if writer.colorMessages.count == 1 {
+                let expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
+                let actual = writer.colorMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            }
+        }
     }
-
-    func testThatItAddsColorToEventLogLevel() {
-
+    
+    func testThatItAppliesCorrectColorFormatterToErrorLogLevel() {
+        
         // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
+        let colorFormatters: [Logger.LogLevel: ColorFormatter] = [
+            .Error: XcodeColorsColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)
+        ]
         
-        logger.setForegroundColor(self.redColor, backgroundColor: self.purpleColor, forLogLevel: .Event)
+        let (log, writer) = logger(colorFormatters: colorFormatters, expectedNumberOfWrites: 5)
         
         // When
-        logger.event(self.message)
+        log.debug(self.message)
+        log.info(self.message)
+        log.event(self.message)
+        log.warn(self.message)
+        log.error(self.message)
         
         // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        
-        let expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;Test Message\(self.reset)"
-        let actual = mockWriter.message!
-        let failureMessage = "Failed to apply color formatting to event log level"
-        
-        XCTAssertEqual(expected, actual, failureMessage)
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            
+            if writer.colorMessages.count == 1 {
+                let expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;Test Message\(self.reset)"
+                let actual = writer.colorMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            }
+        }
     }
-
-    func testThatItAddsColorToWarnLogLevel() {
-
-        // Given
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: .All,
-            printTimestamp: false,
-            printLogLevel: false,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
-        
-        logger.setForegroundColor(self.blueColor, backgroundColor: self.greenColor, forLogLevel: .Warn)
-        
-        // When
-        logger.warn(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.writeMessageDelay, handler: nil)
-        let mockWriter = logger.writer as MockWriter
-        
-        let expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
-        let actual = mockWriter.message!
-        let failureMessage = "Failed to apply color formatting to warn log level"
-        
-        XCTAssertEqual(expected, actual, failureMessage)
-    }
+    
+    /*
 
     func testThatItAddsColorToErrorLogLevel() {
         
@@ -593,42 +523,43 @@ class LoggerTests: XCTestCase {
         
         XCTAssertEqual(expected, actual, failureMessage)
     }
+    */
     
-    // MARK: - Tester Helper Methods
-    
-    func mockWriterWithExpectation() -> MockWriter {
-        let expectation = expectationWithDescription("mock writer expectation")
-        return MockWriter(expectation: expectation)
-    }
-    
-    func writeMessageCalledWithLogger(logger: Logger) -> Bool {
-        let writer = logger.writer as MockWriter
-        return writer.writeMessageCalled
-    }
-    
-    func loggerWithLogLevel(logLevel: Logger.LogLevel) -> Logger {
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: logLevel,
-            printTimestamp: true,
-            printLogLevel: true,
-            timestampFormatter: nil,
-            writer: MockWriter()
-        )
-        
-        return logger
-    }
-    
-    func expectationLoggerWithLogLevel(logLevel: Logger.LogLevel) -> Logger {
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: logLevel,
-            printTimestamp: true,
-            printLogLevel: true,
-            timestampFormatter: nil,
-            writer: mockWriterWithExpectation()
-        )
-        
-        return logger
-    }
+//    // MARK: - Tester Helper Methods
+//    
+//    func mockWriterWithExpectation() -> MockWriter {
+//        let expectation = expectationWithDescription("mock writer expectation")
+//        return MockWriter(expectation: expectation)
+//    }
+//    
+//    func writeMessageCalledWithLogger(logger: Logger) -> Bool {
+//        let writer = logger.writer as MockWriter
+//        return writer.writeMessageCalled
+//    }
+//    
+//    func loggerWithLogLevel(logLevel: Logger.LogLevel) -> Logger {
+//        let logger = Logger(
+//            name: self.loggerName,
+//            logLevel: logLevel,
+//            printTimestamp: true,
+//            printLogLevel: true,
+//            timestampFormatter: nil,
+//            writers: [MockWriter()]
+//        )
+//        
+//        return logger
+//    }
+//    
+//    func expectationLoggerWithLogLevel(logLevel: Logger.LogLevel) -> Logger {
+//        let logger = Logger(
+//            name: self.loggerName,
+//            logLevel: logLevel,
+//            printTimestamp: true,
+//            printLogLevel: true,
+//            timestampFormatter: nil,
+//            writers: [mockWriterWithExpectation()]
+//        )
+//        
+//        return logger
+//    }
 }
