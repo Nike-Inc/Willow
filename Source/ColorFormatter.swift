@@ -8,6 +8,10 @@
 
 import UIKit
 
+/**
+    The ColorFormatter protocol defines a single method for applying color formatting to a message. This is very
+    flexible allowing any object that conforms to use any coloring scheme it wants.
+*/
 @objc public protocol ColorFormatter {
     func applyColorFormattingToMessage(message: String) -> String
 }
