@@ -90,7 +90,7 @@ public class Logger {
         if let writers = writers {
             self.writers = writers
         } else {
-            self.writers.append(self.colorProfiles.isEmpty ? Writer() : ColorWriter())
+            self.writers.append(self.colorProfiles.isEmpty ? ConsoleWriter() : ConsoleColorWriter())
         }
         
         if let timestampFormatterValue = timestampFormatter {

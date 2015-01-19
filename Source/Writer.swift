@@ -16,18 +16,18 @@
     func writeMessage(message: String, colorProfile: ColorProfile)
 }
 
-// MARK: - Writer
+// MARK: - Internal - ConsoleWriter
 
-public class Writer: Writable {
-    public func writeMessage(message: String) {
+class ConsoleWriter: Writable {
+    func writeMessage(message: String) {
         println(message)
     }
 }
 
-// MARK: - ColorWriter
+// MARK: - Internal - ConsoleColorWriter
 
-public class ColorWriter: Writer, Colorable {
-    public func writeMessage(var message: String, colorProfile: ColorProfile) {
+class ConsoleColorWriter: ConsoleWriter, Colorable {
+    func writeMessage(var message: String, colorProfile: ColorProfile) {
         message = colorProfile.applyColorFormattingToMessage(message)
         println(message)
     }
