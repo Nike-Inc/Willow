@@ -56,10 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             .Error: [defaultFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
         ]
         
-        log = Logger(
-            logLevel: .Debug,
-            formatters: colorFormatters,
-            writers: nil
-        )
+        log = Logger(logLevel: .Debug, formatters: colorFormatters)
     }
 }

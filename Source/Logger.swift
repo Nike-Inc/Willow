@@ -51,13 +51,9 @@ public class Logger {
     // MARK: - Private - Properties
     
     private let logLevel: LogLevel
-    private var formatters = [LogLevel: [Formatter]]()
-    private let writers = [Writer]()
-    
-    private lazy var queue: dispatch_queue_t = {
-        let label = NSString(format: "com.timber.logger-%08x%08x", arc4random(), arc4random())
-        return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
-    }()
+    private let formatters: [LogLevel: [Formatter]]
+    private let writers: [Writer]
+    private let queue: dispatch_queue_t
     
     // MARK: - Initialization Methods
     
@@ -66,7 +62,7 @@ public class Logger {
     
         :param: logLevel   The logging level used to determine which messages are written. `.Info` by default.
         :param: formatters The dictionary of formatters to apply to each associated log level. `nil` by default.
-        :param: writers    The writers to use when messages are written. `nil` by default.
+        :param: writers    The writers to use when messages are written. `[ConsoleWriter()]` by default.
         :param: queue      A custom queue to swap out for the default one. This allows sharing queues between multiple
                            logger instances. `nil` by default.
     
@@ -75,39 +71,16 @@ public class Logger {
     public init(
         logLevel: LogLevel = .Info,
         formatters: [LogLevel: [Formatter]]? = nil,
-        writers: [Writer]? = nil,
+        writers: [Writer] = [ConsoleWriter()],
         queue: dispatch_queue_t? = nil)
     {
         self.logLevel = logLevel
-        
-        if let formatters = formatters {
-            for (logLevel, logLevelFormatters) in formatters {
-                assert(!logLevelFormatters.isEmpty, "The [\(logLevel)] formatters array CANNOT be empty")
-            }
-            
-            self.formatters = formatters
-        } else {
-            self.formatters = {
-                var formatters = [LogLevel: [Formatter]]()
-                let defaultFormatter = DefaultFormatter()
-                
-                for index in LogLevel.Error.rawValue...LogLevel.Debug.rawValue {
-                    formatters[LogLevel(rawValue: index)!] = [defaultFormatter]
-                }
-                
-                return formatters
-            }()
-        }
-        
-        if let writers = writers {
-            self.writers = writers
-        } else {
-            self.writers.append(self.formatters.isEmpty ? ConsoleWriter() : ConsoleFormatWriter())
-        }
-        
-        if let queue = queue {
-            self.queue = queue
-        }
+        self.formatters = formatters ?? [LogLevel: [Formatter]]()
+        self.writers = writers
+        self.queue = queue ?? {
+            let label = NSString(format: "com.timber.logger-%08x%08x", arc4random(), arc4random())
+            return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
+        }()
     }
     
     // MARK: - Logging Methods
@@ -242,14 +215,6 @@ public class Logger {
     
     private func logMessage(var message: String, logLevel: LogLevel) {
         let formatters = self.formatters[logLevel]
-        
-        for writer in writers {
-            if writer is FormatWriter && formatters != nil {
-                let formatWriter = writer as FormatWriter
-                formatWriter.writeMessage(message, logLevel: logLevel.rawValue, formatters: formatters!)
-            } else {
-                writer.writeMessage(message, logLevel: logLevel.rawValue)
-            }
-        }
+        self.writers.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
     }
 }

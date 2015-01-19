@@ -11,7 +11,7 @@ import XCTest
 
 import Timber
 
-class TestWriter: FormatWriter {
+class TestWriter: Writer {
     
     private let expectation: XCTestExpectation
     private let expectedNumberOfWrites: Int
@@ -25,21 +25,13 @@ class TestWriter: FormatWriter {
         self.expectedNumberOfWrites = expectedNumberOfWrites
     }
     
-    func writeMessage(message: String, logLevel: UInt) {
+    func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
+        if let formatters = formatters {
+            formatters.map { message = $0.formatMessage(message, logLevel: logLevel) }
+            self.formattedMessages.append(message)
+        }
+        
         self.message = message
-        ++self.actualNumberOfWrites
-        
-        if self.actualNumberOfWrites == self.expectedNumberOfWrites {
-            self.expectation.fulfill()
-        }
-    }
-    
-    func writeMessage(var message: String, logLevel: UInt, formatters: [Formatter]) {
-        for formatter in formatters {
-            message = formatter.formatMessage(message, logLevel: logLevel)
-        }
-        
-        self.formattedMessages.append(message)
         
         ++self.actualNumberOfWrites
         

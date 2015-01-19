@@ -12,8 +12,8 @@ import UIKit
     The Formatter protocol defines a single method for formatting a message after it has been constructed. This is very
     flexible allowing any object that conforms to use formatting scheme it wants.
 */
-@objc public protocol Formatter {
-    func formatMessage(message: String, logLevel: UInt) -> String
+public protocol Formatter {
+    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String
 }
 
 // MARK: -
@@ -21,7 +21,7 @@ import UIKit
 /**
     The DefaultFormatter class applies a timestamp and log level prefix to the message.
 */
-@objc public class DefaultFormatter: Formatter {
+public class DefaultFormatter: Formatter {
     
     private let timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
@@ -40,11 +40,9 @@ import UIKit
     
         :returns: A newly formatted message.
     */
-    public func formatMessage(message: String, logLevel: UInt) -> String {
+    public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
         let timestampString = self.timestampFormatter.stringFromDate(NSDate())
-        let logLevelString = Logger.LogLevel(rawValue: logLevel)!.description
-        
-        return "\(timestampString) [\(logLevelString)] \(message)"
+        return "\(timestampString) [\(logLevel)] \(message)"
     }
 }
 
@@ -56,7 +54,7 @@ import UIKit
 
     NOTE: These should only be used with the XcodeColors plugin.
 */
-@objc public class ColorFormatter: Formatter {
+public class ColorFormatter: Formatter {
     
     // MARK: - Private - ColorConstants Struct
     
@@ -106,7 +104,7 @@ import UIKit
         
         :returns: A new string with all the color formatting values added.
     */
-    public func formatMessage(message: String, logLevel: UInt) -> String {
+    public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
         return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
     }
     

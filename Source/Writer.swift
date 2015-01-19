@@ -11,40 +11,20 @@
     conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
     party service, etc.
 */
-@objc public protocol Writer {
-    func writeMessage(message: String, logLevel: UInt)
-}
-
-/**
-    The FormatWriter protocol defines a single API for writing a message and is provided a `Formatter`. The
-    conforming object can use the formatter API to format the message, then write the message anywhere it wants.
-*/
-@objc public protocol FormatWriter: Writer {
-    func writeMessage(message: String, logLevel: UInt, formatters: [Formatter])
+public protocol Writer {
+    func writeMessage(message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?)
 }
 
 // MARK: -
 
 /**
-    The ConsoleWriter class is a simple Writer that prints the message to the console.
+    The ConsoleWriter class runs all formatters in the order they were created and prints the resulting message
+    to the console.
 */
 public class ConsoleWriter: Writer {
-    public func writeMessage(message: String, logLevel: UInt) {
-        println(message)
-    }
-}
-
-// MARK: -
-
-/**
-    The ConsoleFormatWriter class is a FormatWriter that prints both default and formatted messages to the console.
-*/
-public class ConsoleFormatWriter: ConsoleWriter, FormatWriter {
-    public func writeMessage(var message: String, logLevel: UInt, formatters: [Formatter]) {
-        for formatter in formatters {
-            message = formatter.formatMessage(message, logLevel: logLevel)
-        }
-        
+    
+    public func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
+        formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
         println(message)
     }
 }
