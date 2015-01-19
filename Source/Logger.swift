@@ -54,7 +54,7 @@ public class Logger {
     private let logLevel: LogLevel
     private let printTimestamp: Bool
     private let printLogLevel: Bool
-    private var formatters = [LogLevel: Formatter]()
+    private var formatters = [LogLevel: [Formatter]]()
     private let writers = [Writer]()
     
     private lazy var timestampFormatter: NSDateFormatter = {
@@ -88,7 +88,7 @@ public class Logger {
         printTimestamp: Bool = false,
         printLogLevel: Bool = false,
         timestampFormatter: NSDateFormatter? = nil,
-        formatters: [LogLevel: Formatter]? = nil,
+        formatters: [LogLevel: [Formatter]]? = nil,
         writers: [Writer]? = nil)
     {
         self.name = name
@@ -261,12 +261,12 @@ public class Logger {
         }
         
         message = " ".join(logComponents)
-        let formatter = self.formatters[logLevel]
+        let formatters = self.formatters[logLevel]
         
         for writer in writers {
-            if writer is FormatWriter && formatter != nil {
+            if writer is FormatWriter && formatters != nil {
                 let formatWriter = writer as FormatWriter
-                formatWriter.writeMessage(message, formatter: formatter!)
+                formatWriter.writeMessage(message, formatters: formatters!)
             } else {
                 writer.writeMessage(message)
             }

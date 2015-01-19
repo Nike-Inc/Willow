@@ -22,7 +22,7 @@
     conforming object can use the formatter API to format the message, then write the message anywhere it wants.
 */
 @objc public protocol FormatWriter: Writer {
-    func writeMessage(message: String, formatter: Formatter)
+    func writeMessage(message: String, formatters: [Formatter])
 }
 
 // MARK: - ConsoleWriter
@@ -42,8 +42,11 @@ public class ConsoleWriter: Writer {
     The ConsoleFormatWriter class is a FormatWriter that prints both default and formatted messages to the console.
 */
 public class ConsoleFormatWriter: ConsoleWriter, FormatWriter {
-    public func writeMessage(var message: String, formatter: Formatter) {
-        message = formatter.formatMessage(message)
+    public func writeMessage(var message: String, formatters: [Formatter]) {
+        for formatter in formatters {
+            message = formatter.formatMessage(message)
+        }
+        
         println(message)
     }
 }

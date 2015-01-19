@@ -33,8 +33,12 @@ class TestWriter: FormatWriter {
         }
     }
     
-    func writeMessage(message: String, formatter: Formatter) {
-        self.colorMessages.append(formatter.formatMessage(message))
+    func writeMessage(var message: String, formatters: [Formatter]) {
+        for formatter in formatters {
+            message = formatter.formatMessage(message)
+        }
+        
+        self.colorMessages.append(message)
         
         ++self.actualNumberOfWrites
         
@@ -91,7 +95,7 @@ class LoggerTestCase: XCTestCase {
         printTimestamp: Bool = false,
         printLogLevel: Bool = false,
         timestampFormatter: NSDateFormatter? = nil,
-        formatters: [Logger.LogLevel: Formatter]? = nil,
+        formatters: [Logger.LogLevel: [Formatter]]? = nil,
         expectedNumberOfWrites: Int = 1) -> (Logger, TestWriter)
     {
         let expectation = expectationWithDescription("Test writer should receive expected number of writes")
@@ -352,8 +356,8 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: Formatter] = [
-            .Debug: ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)
+        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+            .Debug: [ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)]
         ]
         
         let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
@@ -381,8 +385,8 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToInfoLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: Formatter] = [
-            .Info: ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)
+        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+            .Info: [ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)]
         ]
         
         let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
@@ -410,8 +414,8 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToEventLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: Formatter] = [
-            .Event: ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)
+        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+            .Event: [ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)]
         ]
         
         let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
@@ -439,8 +443,8 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToWarnLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: Formatter] = [
-            Logger.LogLevel.Warn: ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)
+        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+            Logger.LogLevel.Warn: [ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)]
         ]
         
         let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
@@ -468,8 +472,8 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToErrorLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: Formatter] = [
-            .Error: ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)
+        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+            .Error: [ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
         ]
         
         let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)

@@ -54,12 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let white = UIColor.whiteColor()
         let black = UIColor.blackColor()
         
-        let colorFormatters: [Logger.LogLevel: Formatter] = [
-            Logger.LogLevel.Debug: ColorFormatter(foregroundColor: purple, backgroundColor: nil),
-            Logger.LogLevel.Info: ColorFormatter(foregroundColor: blue, backgroundColor: nil),
-            Logger.LogLevel.Event: ColorFormatter(foregroundColor: green, backgroundColor: nil),
-            Logger.LogLevel.Warn: ColorFormatter(foregroundColor: black, backgroundColor: orange),
-            Logger.LogLevel.Error: ColorFormatter(foregroundColor: white, backgroundColor: red)
+        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+            Logger.LogLevel.Debug: [ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
+            Logger.LogLevel.Info: [ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
+            Logger.LogLevel.Event: [ColorFormatter(foregroundColor: green, backgroundColor: nil)],
+            Logger.LogLevel.Warn: [ColorFormatter(foregroundColor: black, backgroundColor: orange)],
+            Logger.LogLevel.Error: [ColorFormatter(foregroundColor: white, backgroundColor: red)]
         ]
         
         log = Logger(
