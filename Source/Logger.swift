@@ -249,9 +249,7 @@ public class Logger {
     }
     
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
-        // We cannot use "<=" here due to a compiler issue with Swift 1.0. Therefore,
-        // the return has been modified to use "<" as a workaround.
-        return logLevel.rawValue < self.logLevel.rawValue + 1
+        return logLevel.rawValue <= self.logLevel.rawValue
     }
     
     private func logMessage(var message: String, withLogLevel logLevel: LogLevel) {
