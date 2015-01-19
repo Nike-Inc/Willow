@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func configureTimberLogger() {
         log = Logger(
             name: "Timber-Example-Logger",
-            logLevel: .All,
+            logLevel: .Debug,
             printTimestamp: true,
             printLogLevel: true,
             timestampFormatter: nil,
@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         log = Logger(
             name: "Timber-Example-Colored-Logger",
-            logLevel: Logger.LogLevel.All,
+            logLevel: .Debug,
             printTimestamp: true,
             printLogLevel: true,
             timestampFormatter: nil,
