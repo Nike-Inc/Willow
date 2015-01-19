@@ -13,6 +13,7 @@
 		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
 		4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
+		4C4617121A6D13D2000F4F4F /* TimberTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4617111A6D13D2000F4F4F /* TimberTestCase.swift */; };
 		4CA75D441A6C493800275DC5 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Timber.framework */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 		4C1BBA651A6C518000D39EE1 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		4C4617111A6D13D2000F4F4F /* TimberTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimberTestCase.swift; sourceTree = "<group>"; };
 		4C66B0171A6C53840083F56E /* TimberTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TimberTests-Bridging-Header.h"; path = "Tests/TimberTests-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA75D421A6C493800275DC5 /* Timber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timber.h; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			children = (
 				4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */,
 				4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */,
+				4C4617111A6D13D2000F4F4F /* TimberTestCase.swift */,
 				4CFE82A91A6C484B0002868E /* Supporting Files */,
 			);
 			path = Tests;
@@ -295,6 +298,7 @@
 			files = (
 				4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */,
 				4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */,
+				4C4617121A6D13D2000F4F4F /* TimberTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,19 +12,20 @@ import XCTest
 import Timber
 
 class TestWriter: FormatWriter {
+    
     private let expectation: XCTestExpectation
     private let expectedNumberOfWrites: Int
     
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
-    private(set) var colorMessages = [String]()
+    private(set) var formattedMessages = [String]()
     
     init(expectation: XCTestExpectation, expectedNumberOfWrites: Int) {
         self.expectation = expectation
         self.expectedNumberOfWrites = expectedNumberOfWrites
     }
     
-    func writeMessage(message: String) {
+    func writeMessage(message: String, logLevel: UInt) {
         self.message = message
         ++self.actualNumberOfWrites
         
@@ -33,12 +34,12 @@ class TestWriter: FormatWriter {
         }
     }
     
-    func writeMessage(var message: String, formatters: [Formatter]) {
+    func writeMessage(var message: String, logLevel: UInt, formatters: [Formatter]) {
         for formatter in formatters {
-            message = formatter.formatMessage(message)
+            message = formatter.formatMessage(message, logLevel: logLevel)
         }
         
-        self.colorMessages.append(message)
+        self.formattedMessages.append(message)
         
         ++self.actualNumberOfWrites
         
@@ -48,13 +49,12 @@ class TestWriter: FormatWriter {
     }
 }
 
-class LoggerTestCase: XCTestCase {
+// MARK: -
+
+class LoggerTestCase: TimberTestCase {
     
-    // MARK: - Private Properties
-    
-    var message = ""
+    var message = "Test Message"
     let defaultTimeout = 0.1
-    let loggerName = "timber-logger-tests"
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
     
@@ -64,55 +64,20 @@ class LoggerTestCase: XCTestCase {
     let orangeColor = UIColor(red: 233.0 / 255.0, green: 165.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
     let redColor = UIColor(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
     
-    // MARK: - Setup / Teardown
-    
-    override func setUp() {
-        self.message = "Test Message"
-        
-        let calendar = NSCalendar.currentCalendar()
-        
-        var components = NSDateComponents()
-        components.year = 2014
-        components.month = 10
-        components.day = 3
-        components.hour = 8
-        components.minute = 20
-        components.second = 45
-        
-        let frozenDate = calendar.dateFromComponents(components)
-        
-        TUDelorean.freeze(frozenDate)
-    }
-    
-    override func tearDown() {
-        TUDelorean.backToThePresent()
-    }
-
-    // MARK: - Helper Methods
-    
     func logger(
         logLevel: Logger.LogLevel = .Debug,
-        printTimestamp: Bool = false,
-        printLogLevel: Bool = false,
-        timestampFormatter: NSDateFormatter? = nil,
         formatters: [Logger.LogLevel: [Formatter]]? = nil,
         expectedNumberOfWrites: Int = 1) -> (Logger, TestWriter)
     {
         let expectation = expectationWithDescription("Test writer should receive expected number of writes")
         let writer = TestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
-        let logger = Logger(
-            name: self.loggerName,
-            logLevel: logLevel,
-            printTimestamp: printTimestamp,
-            printLogLevel: printLogLevel,
-            timestampFormatter: timestampFormatter,
-            formatters: formatters,
-            writers: [writer]
-        )
+        let logger = Logger(logLevel: logLevel, formatters: formatters, writers: [writer])
         
         return (logger, writer)
     }
 }
+
+// MARK: -
 
 class LoggerLogLevelTestCase: LoggerTestCase {
     
@@ -239,118 +204,6 @@ class LoggerLogLevelTestCase: LoggerTestCase {
 
 // MARK: -
 
-class LoggerOutputFormatTestCase: LoggerTestCase {
-    
-    func testThatItFormatsOutputCorrectlyWithNoPrintOptionsEnabled() {
-
-        // Given
-        let (log, writer) = logger()
-        
-        // When
-        log.debug(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            
-            if let actualMessage = writer.message {
-                let expectedMessage = "Test Message"
-                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
-            } else {
-                XCTFail("The writer message should NOT be nil")
-            }
-        }
-    }
-    
-    func testThatItFormatsOutputCorrectlyWithPrintTimestampEnabled() {
-        
-        // Given
-        let (log, writer) = logger(printTimestamp: true)
-        
-        // When
-        log.debug(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-
-            if let actualMessage = writer.message {
-                let expectedMessage = "[2014-10-03 08:20:45.000] Test Message"
-                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
-            } else {
-                XCTFail("The writer message should NOT be nil")
-            }
-        }
-    }
-
-    func testThatItFormatsOutputCorrectlyWithPrintLogLevelEnabled() {
-        
-        // Given
-        let (log, writer) = logger(printLogLevel: true)
-        
-        // When
-        log.debug(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            
-            if let actualMessage = writer.message {
-                let expectedMessage = "[Debug] Test Message"
-                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
-            } else {
-                XCTFail("The writer message should NOT be nil")
-            }
-        }
-    }
-
-    func testThatItFormatsOutputCorrectlyWithAllPrintOptionsEnabled() {
-        
-        // Given
-        let (log, writer) = logger(printTimestamp: true, printLogLevel: true)
-        
-        // When
-        log.debug(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            
-            if let actualMessage = writer.message {
-                let expectedMessage = "2014-10-03 08:20:45.000 [Debug] Test Message"
-                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
-            } else {
-                XCTFail("The writer message should NOT be nil")
-            }
-        }
-    }
-
-    func testThatItFormatsOutputCorrectlyWithCustomDateFormatters() {
-        
-        // Given
-        let timestampFormatter = NSDateFormatter()
-        timestampFormatter.locale = NSLocale.currentLocale()
-        timestampFormatter.dateFormat = "yyyy-MM-dd"
-        
-        let (log, writer) = logger(printTimestamp: true, printLogLevel: true, timestampFormatter: timestampFormatter)
-        
-        // When
-        log.debug(self.message)
-        
-        // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            
-            if let actualMessage = writer.message {
-                let expectedMessage = "2014-10-03 [Debug] Test Message"
-                XCTAssertEqual(expectedMessage, actualMessage, "Expected message should be equal to actual message")
-            } else {
-                XCTFail("The writer message should NOT be nil")
-            }
-        }
-    }
-}
-
 class LoggerColorFormatterTestCase: LoggerTestCase {
     
     func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
@@ -372,11 +225,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
         // Then
         waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
             
-            if writer.colorMessages.count == 1 {
+            if writer.formattedMessages.count == 1 {
                 let expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;Test Message\(self.reset)"
-                let actual = writer.colorMessages[0]
+                let actual = writer.formattedMessages[0]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
             }
         }
@@ -401,11 +254,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
         // Then
         waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
             
-            if writer.colorMessages.count == 1 {
+            if writer.formattedMessages.count == 1 {
                 let expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;Test Message\(self.reset)"
-                let actual = writer.colorMessages[0]
+                let actual = writer.formattedMessages[0]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
             }
         }
@@ -430,11 +283,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
         // Then
         waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
             
-            if writer.colorMessages.count == 1 {
+            if writer.formattedMessages.count == 1 {
                 let expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;Test Message\(self.reset)"
-                let actual = writer.colorMessages[0]
+                let actual = writer.formattedMessages[0]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
             }
         }
@@ -459,11 +312,11 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
         // Then
         waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
             
-            if writer.colorMessages.count == 1 {
+            if writer.formattedMessages.count == 1 {
                 let expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
-                let actual = writer.colorMessages[0]
+                let actual = writer.formattedMessages[0]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
             }
         }
@@ -488,11 +341,68 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
         // Then
         waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-            XCTAssertEqual(1, writer.colorMessages.count, "Color message count should be 1")
+            XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
             
-            if writer.colorMessages.count == 1 {
+            if writer.formattedMessages.count == 1 {
                 let expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;Test Message\(self.reset)"
-                let actual = writer.colorMessages[0]
+                let actual = writer.formattedMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            }
+        }
+    }
+}
+
+// MARK: -
+
+class LoggerMultiFormatterTestCase: LoggerTestCase {
+    
+    func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
+        
+        // Given
+        let defaultFormatter = DefaultFormatter()
+        let formatters: [Logger.LogLevel: [Formatter]] = [
+            .Debug: [defaultFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)],
+            .Info: [defaultFormatter, ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)],
+            .Event: [defaultFormatter, ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)],
+            .Warn: [defaultFormatter, ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)],
+            .Error: [defaultFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
+        ]
+        
+        let (log, writer) = logger(formatters: formatters, expectedNumberOfWrites: 5)
+        
+        // When
+        log.debug(self.message)
+        log.info(self.message)
+        log.event(self.message)
+        log.warn(self.message)
+        log.error(self.message)
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+            XCTAssertEqual(5, writer.formattedMessages.count, "Formatted message count should be 5")
+            
+            let message = "2015-01-19 02:20:17.754 [Info] Test Message"
+            
+            if writer.formattedMessages.count == 5 {
+                var expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;2014-10-03 08:20:45.000 [Debug] Test Message\(self.reset)"
+                var actual = writer.formattedMessages[0]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+
+                expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;2014-10-03 08:20:45.000 [Info] Test Message\(self.reset)"
+                actual = writer.formattedMessages[1]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+
+                expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;2014-10-03 08:20:45.000 [Event] Test Message\(self.reset)"
+                actual = writer.formattedMessages[2]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+
+                expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;2014-10-03 08:20:45.000 [Warn] Test Message\(self.reset)"
+                actual = writer.formattedMessages[3]
+                XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+
+                expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;2014-10-03 08:20:45.000 [Error] Test Message\(self.reset)"
+                actual = writer.formattedMessages[4]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
             }
         }

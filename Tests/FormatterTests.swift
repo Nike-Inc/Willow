@@ -11,6 +11,32 @@ import XCTest
 
 import Timber
 
+class DefaultFormatterTestCase: TimberTestCase {
+    
+    func testThatItFormatsMessagesAsExpected() {
+        
+        // Given
+        let formatter = DefaultFormatter()
+        let message = "Test Message"
+        let range = Logger.LogLevel.Error.rawValue...Logger.LogLevel.Debug.rawValue
+        
+        // When
+        var actualMessages = [String]()
+        for index in range {
+            let formattedMessage = formatter.formatMessage(message, logLevel: index)
+            actualMessages.append(formattedMessage)
+        }
+        
+        // Then
+        for index in range {
+            let expectedMessage = "2014-10-03 08:20:45.000 [\(Logger.LogLevel(rawValue: index)!)] \(message)"
+            XCTAssertEqual(actualMessages[Int(index)], expectedMessage, "Actual formatted message should equal the expected message")
+        }
+    }
+}
+
+// MARK: -
+
 class ColorFormatterTestCase: XCTestCase {
     
     // MARK: - Private Properties
@@ -38,7 +64,7 @@ class ColorFormatterTestCase: XCTestCase {
         let colorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
         
         // When
-        let coloredMessage = colorFormatter.formatMessage(self.message)
+        let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: 0)
         
         // Then
         let expected = "\(self.escape)fg242,0,0;Test Message\(self.reset)"
@@ -52,7 +78,7 @@ class ColorFormatterTestCase: XCTestCase {
         let colorFormatter = ColorFormatter(foregroundColor: nil, backgroundColor: blue)
         
         // When
-        let coloredMessage = colorFormatter.formatMessage(self.message)
+        let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: 0)
         
         // Then
         let expected = "\(self.escape)bg45,145,255;Test Message\(self.reset)"
@@ -67,7 +93,7 @@ class ColorFormatterTestCase: XCTestCase {
         let colorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: green)
         
         // When
-        let coloredMessage = colorFormatter.formatMessage(self.message)
+        let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: 0)
         
         // Then
         let expected = "\(self.escape)fg153,63,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"

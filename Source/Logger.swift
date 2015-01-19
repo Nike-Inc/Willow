@@ -10,8 +10,8 @@ import Foundation
 
 /**
     The Logger class is a fully thread-safe, asynchronous logging solution using dependency injection to allow custom
-    Writable and Colorable writers. It also manages all the logic to determine whether to log a particular message with
-    a given log level.
+    Formatters and Writers. It also manages all the logic to determine whether to log a particular message with a given
+    log level.
 
     Loggers can only be configured during initialization. If you need to change a logger at runtime, it is advised to
     create an additional logger with a custom configuration to fit your needs.
@@ -50,54 +50,53 @@ public class Logger {
     
     // MARK: - Private - Properties
     
-    private let name: String
     private let logLevel: LogLevel
-    private let printTimestamp: Bool
-    private let printLogLevel: Bool
     private var formatters = [LogLevel: [Formatter]]()
     private let writers = [Writer]()
     
-    private lazy var timestampFormatter: NSDateFormatter = {
-        var formatter = NSDateFormatter()
-        formatter.locale = NSLocale.currentLocale()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        return formatter
+    private lazy var queue: dispatch_queue_t = {
+        let label = NSString(format: "com.timber.logger-%08x%08x", arc4random(), arc4random())
+        return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
     }()
-    
-    private let operationQueue = NSOperationQueue()
     
     // MARK: - Initialization Methods
     
     /**
         Initializes a logger instance.
     
-        :param: name               The name of the logger for internal use which is required to not be empty. This is
-                                   used for naming the internal operationQueue. Asserts if `name` is empty.
-        :param: logLevel           The logging level used to determine which messages are written. `.Info` by default.
-        :param: printTimestamp     Whether to print out the timestamp when messages are written. `false` by default.
-        :param: printLogLevel      Whether to print out the log level when messages are written. `false` by default.
-        :param: timestampFormatter The timestamp formatter used when messages are written. `nil` by default.
-        :param: formatters         The dictionary of formatters to apply to each associated log level. `nil` by default.
-        :param: writers            The writers to use when messages are written. `nil` by default.
+        :param: logLevel   The logging level used to determine which messages are written. `.Info` by default.
+        :param: formatters The dictionary of formatters to apply to each associated log level. `nil` by default.
+        :param: writers    The writers to use when messages are written. `nil` by default.
+        :param: queue      A custom queue to swap out for the default one. This allows sharing queues between multiple
+                           logger instances. `nil` by default.
     
         :returns: A fully initialized logger instance.
     */
     public init(
-        name: String,
         logLevel: LogLevel = .Info,
-        printTimestamp: Bool = false,
-        printLogLevel: Bool = false,
-        timestampFormatter: NSDateFormatter? = nil,
         formatters: [LogLevel: [Formatter]]? = nil,
-        writers: [Writer]? = nil)
+        writers: [Writer]? = nil,
+        queue: dispatch_queue_t? = nil)
     {
-        self.name = name
         self.logLevel = logLevel
-        self.printTimestamp = printTimestamp
-        self.printLogLevel = printLogLevel
         
         if let formatters = formatters {
+            for (logLevel, logLevelFormatters) in formatters {
+                assert(!logLevelFormatters.isEmpty, "The [\(logLevel)] formatters array CANNOT be empty")
+            }
+            
             self.formatters = formatters
+        } else {
+            self.formatters = {
+                var formatters = [LogLevel: [Formatter]]()
+                let defaultFormatter = DefaultFormatter()
+                
+                for index in LogLevel.Error.rawValue...LogLevel.Debug.rawValue {
+                    formatters[LogLevel(rawValue: index)!] = [defaultFormatter]
+                }
+                
+                return formatters
+            }()
         }
         
         if let writers = writers {
@@ -106,17 +105,9 @@ public class Logger {
             self.writers.append(self.formatters.isEmpty ? ConsoleWriter() : ConsoleFormatWriter())
         }
         
-        if let timestampFormatterValue = timestampFormatter {
-            self.timestampFormatter = timestampFormatterValue
+        if let queue = queue {
+            self.queue = queue
         }
-        
-        assert(!name.isEmpty, "A logger must have a name to properly set up the operation queue")
-        
-        setUpOperationQueue()
-    }
-    
-    deinit {
-        self.operationQueue.cancelAllOperations()
     }
     
     // MARK: - Logging Methods
@@ -127,7 +118,9 @@ public class Logger {
         :param: message The message to write out.
     */
     public func debug(message: String) {
-        logMessageIfAllowed(message, withLogLevel: .Debug)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(message, logLevel: .Debug)
+        }
     }
 
     /**
@@ -136,7 +129,9 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func debug(closure: () -> String) {
-        logMessageIfAllowed(closure, withLogLevel: .Debug)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(closure, logLevel: .Debug)
+        }
     }
     
     /**
@@ -145,7 +140,9 @@ public class Logger {
         :param: message The message to write out.
     */
     public func info(message: String) {
-        logMessageIfAllowed(message, withLogLevel: .Info)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(message, logLevel: .Info)
+        }
     }
 
     /**
@@ -154,7 +151,9 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func info(closure: () -> String) {
-        logMessageIfAllowed(closure, withLogLevel: .Info)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(closure, logLevel: .Info)
+        }
     }
 
     /**
@@ -163,7 +162,9 @@ public class Logger {
         :param: message The message to write out.
     */
     public func event(message: String) {
-        logMessageIfAllowed(message, withLogLevel: .Event)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(message, logLevel: .Event)
+        }
     }
     
     /**
@@ -172,7 +173,9 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func event(closure: () -> String) {
-        logMessageIfAllowed(closure, withLogLevel: .Event)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(closure, logLevel: .Event)
+        }
     }
     
     /**
@@ -181,7 +184,9 @@ public class Logger {
         :param: message The message to write out.
     */
     public func warn(message: String) {
-        logMessageIfAllowed(message, withLogLevel: .Warn)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(message, logLevel: .Warn)
+        }
     }
     
     /**
@@ -190,7 +195,9 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func warn(closure: () -> String) {
-        logMessageIfAllowed(closure, withLogLevel: .Warn)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(closure, logLevel: .Warn)
+        }
     }
 
     /**
@@ -199,7 +206,9 @@ public class Logger {
         :param: message The message to write out.
     */
     public func error(message: String) {
-        logMessageIfAllowed(message, withLogLevel: .Error)
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(message, logLevel: .Error)
+        }
     }
     
     /**
@@ -208,32 +217,22 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func error(closure: () -> String) {
-        logMessageIfAllowed(closure, withLogLevel: .Error)
-    }
-    
-    // MARK: - Private - Set Up Methods
-    
-    private func setUpOperationQueue() {
-        self.operationQueue.qualityOfService = NSQualityOfService.Background
-        self.operationQueue.maxConcurrentOperationCount = 1
-        self.operationQueue.name = "com.nike.timber.logger.\(name)"
+        dispatch_async(self.queue) { [unowned self] in
+            self.logMessageIfAllowed(closure, logLevel: .Error)
+        }
     }
     
     // MARK: - Private - Logging Helper Methods
     
-    private func logMessageIfAllowed(message: String, withLogLevel logLevel: LogLevel) {
+    private func logMessageIfAllowed(message: String, logLevel: LogLevel) {
         if logLevelAllowed(logLevel) {
-            self.operationQueue.addOperationWithBlock {
-                self.logMessage(message, withLogLevel: logLevel)
-            }
+            logMessage(message, logLevel: logLevel)
         }
     }
     
-    private func logMessageIfAllowed(messageClosure: () -> String, withLogLevel logLevel: LogLevel) {
+    private func logMessageIfAllowed(closure: () -> String, logLevel: LogLevel) {
         if logLevelAllowed(logLevel) {
-            self.operationQueue.addOperationWithBlock {
-                self.logMessage(messageClosure(), withLogLevel: logLevel)
-            }
+            logMessage(closure(), logLevel: logLevel)
         }
     }
     
@@ -241,34 +240,15 @@ public class Logger {
         return logLevel.rawValue <= self.logLevel.rawValue
     }
     
-    private func logMessage(var message: String, withLogLevel logLevel: LogLevel) {
-        var logComponents = [String]()
-        
-        if self.printTimestamp {
-            logComponents.append(self.timestampFormatter.stringFromDate(NSDate()))
-        }
-        
-        if self.printLogLevel {
-            logComponents.append("\(logLevel)")
-        }
-        
-        logComponents.append(message)
-        
-        if logComponents.count == 2 {
-            logComponents[0] = "[" + logComponents[0] + "]"
-        } else if logComponents.count == 3 {
-            logComponents[1] = "[" + logComponents[1] + "]"
-        }
-        
-        message = " ".join(logComponents)
+    private func logMessage(var message: String, logLevel: LogLevel) {
         let formatters = self.formatters[logLevel]
         
         for writer in writers {
             if writer is FormatWriter && formatters != nil {
                 let formatWriter = writer as FormatWriter
-                formatWriter.writeMessage(message, formatters: formatters!)
+                formatWriter.writeMessage(message, logLevel: logLevel.rawValue, formatters: formatters!)
             } else {
-                writer.writeMessage(message)
+                writer.writeMessage(message, logLevel: logLevel.rawValue)
             }
         }
     }

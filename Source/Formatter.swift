@@ -13,8 +13,42 @@ import UIKit
     flexible allowing any object that conforms to use formatting scheme it wants.
 */
 @objc public protocol Formatter {
-    func formatMessage(message: String) -> String
+    func formatMessage(message: String, logLevel: UInt) -> String
 }
+
+// MARK: -
+
+/**
+    The DefaultFormatter class applies a timestamp and log level prefix to the message.
+*/
+@objc public class DefaultFormatter: Formatter {
+    
+    private let timestampFormatter: NSDateFormatter = {
+        var formatter = NSDateFormatter()
+        formatter.locale = NSLocale.currentLocale()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        return formatter
+    }()
+    
+    public init() {}
+    
+    /**
+        Applies a timestamp and log level prefix to the message.
+    
+        :param: message  The original message to format.
+        :param: logLevel The log level set for the message.
+    
+        :returns: A newly formatted message.
+    */
+    public func formatMessage(message: String, logLevel: UInt) -> String {
+        let timestampString = self.timestampFormatter.stringFromDate(NSDate())
+        let logLevelString = Logger.LogLevel(rawValue: logLevel)!.description
+        
+        return "\(timestampString) [\(logLevelString)] \(message)"
+    }
+}
+
+// MARK: -
 
 /**
     The ColorFormatter class takes foreground and background colors and applies them to a given message. It uses the
@@ -41,12 +75,12 @@ import UIKit
     // MARK: - Initialization Methods
     
     /**
-        Returns a fully constructed ColorProfile from the given UIColor objects.
+        Returns a fully constructed ColorFormatter from the given UIColor objects.
         
         :param: foregroundColor The color to apply to the foreground.
         :param: backgroundColor The color to apply to the background.
         
-        :returns: A fully constructed ColorProfile from the given UIColor objects.
+        :returns: A fully constructed ColorFormatter from the given UIColor objects.
     */
     public init(foregroundColor: UIColor?, backgroundColor: UIColor?) {
         assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
@@ -72,7 +106,7 @@ import UIKit
         
         :returns: A new string with all the color formatting values added.
     */
-    public func formatMessage(message: String) -> String {
+    public func formatMessage(message: String, logLevel: UInt) -> String {
         return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
     }
     

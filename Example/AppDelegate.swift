@@ -34,15 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func configureTimberLogger() {
-        log = Logger(
-            name: "Timber-Example-Logger",
-            logLevel: .Debug,
-            printTimestamp: true,
-            printLogLevel: true,
-            timestampFormatter: nil,
-            formatters: nil,
-            writers: nil
-        )
+        log = Logger(logLevel: .Debug)
     }
     
     func configureColoredTimberLogger() {
@@ -54,20 +46,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let white = UIColor.whiteColor()
         let black = UIColor.blackColor()
         
+        let defaultFormatter = DefaultFormatter()
+        
         let colorFormatters: [Logger.LogLevel: [Formatter]] = [
-            Logger.LogLevel.Debug: [ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-            Logger.LogLevel.Info: [ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-            Logger.LogLevel.Event: [ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-            Logger.LogLevel.Warn: [ColorFormatter(foregroundColor: black, backgroundColor: orange)],
-            Logger.LogLevel.Error: [ColorFormatter(foregroundColor: white, backgroundColor: red)]
+            .Debug: [defaultFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
+            .Info: [defaultFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
+            .Event: [defaultFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
+            .Warn: [defaultFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
+            .Error: [defaultFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
         ]
         
         log = Logger(
-            name: "Timber-Example-Colored-Logger",
             logLevel: .Debug,
-            printTimestamp: true,
-            printLogLevel: true,
-            timestampFormatter: nil,
             formatters: colorFormatters,
             writers: nil
         )
