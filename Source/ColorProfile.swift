@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Nike. All rights reserved.
 //
 
-public class ColorProfile {
+import UIKit
 
-    // MARK: - Private - Helper Structs
+@objc public class ColorProfile {
+
+    // MARK: - Private - ColorConstants Struct
     
     private struct ColorConstants {
         static let ESCAPE = "\u{001b}["
@@ -16,25 +18,27 @@ public class ColorProfile {
         static let RESET_BG = ESCAPE + "bg;"
         static let RESET = ESCAPE + ";"
     }
-
+    
     // MARK: - Private - Properties
     
-    private let foregroundText: String = ""
-    private let backgroundText: String = ""
+    private let foregroundText = ""
+    private let backgroundText = ""
     
-    // MARK: - API - Initialization Methods
+    // MARK: - Initialization Methods
     
     /**
-    Returns a fully constructed ColorProfile from the given UIColor objects.
-    
-    :param: foregroundColor The color to apply to the foreground.
-    :param: backgroundColor The color to apply to the background.
-    
-    :returns: A fully constructed ColorProfile from the given UIColor objects.
+        Returns a fully constructed ColorProfile from the given UIColor objects.
+        
+        :param: foregroundColor The color to apply to the foreground.
+        :param: backgroundColor The color to apply to the background.
+        
+        :returns: A fully constructed ColorProfile from the given UIColor objects.
     */
     public init(foregroundColor: UIColor?, backgroundColor: UIColor?) {
-        let foregroundTextString = textStringForColor(foregroundColor)
-        let backgroundTextString = textStringForColor(backgroundColor)
+        assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
+        
+        let foregroundTextString = ColorProfile.textStringForColor(foregroundColor)
+        let backgroundTextString = ColorProfile.textStringForColor(backgroundColor)
         
         if (!foregroundTextString.isEmpty) {
             self.foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
@@ -45,14 +49,14 @@ public class ColorProfile {
         }
     }
     
-    // MARK: - API - Color Methods
+    // MARK: - Color Methods
     
     /**
-    Applies the foreground, background and reset color formatting values to the given message.
-    
-    :param: message The message to apply the color formatting to.
-    
-    :returns: A new string with all the color formatting values added.
+        Applies the foreground, background and reset color formatting values to the given message.
+        
+        :param: message The message to apply the color formatting to.
+        
+        :returns: A new string with all the color formatting values added.
     */
     public func applyColorFormattingToMessage(message: String) -> String {
         return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
@@ -60,7 +64,7 @@ public class ColorProfile {
     
     // MARK: - Private - Helper Methods
     
-    private func textStringForColor(color: UIColor?) -> String {
+    private class func textStringForColor(color: UIColor?) -> String {
         var textString = ""
         
         if let colorValue = color {

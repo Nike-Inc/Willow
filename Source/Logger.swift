@@ -10,7 +10,7 @@ import Foundation
 
 public class Logger {
 
-    // MARK: - API - Enums
+    // MARK: - LogLevel Enum
     
     public enum LogLevel: UInt {
         case Off = 0, Error, Warn, Event, Info, Debug, All
@@ -35,54 +35,39 @@ public class Logger {
         }
     }
     
-    // MARK: - API - Properties
+    // MARK: - Private - Properties
     
-    /// The name of the logger for internal use.
-    public internal(set) var name: String
+    private let name: String
+    private let logLevel: LogLevel
+    private let printTimestamp: Bool
+    private let printLogLevel: Bool
+    private var colorProfiles = [LogLevel: ColorProfile]()
+    private let writers = [Writable]()
     
-    /// The logging level used to determine which messages are written.
-    public var logLevel: LogLevel {
-        willSet {
-            self.operationQueue.cancelAllOperations()
-        }
-    }
-    
-    /// Whether to print out the timestamp when messages are written.
-    public internal(set) var printTimestamp: Bool
-    
-    /// Whether to print out the log level when messages are written.
-    public internal(set) var printLogLevel: Bool
-
-    /// The writer to use when messages are written.
-    public internal(set) var writer: Writable
-    
-    /// The timestamp formatter to use when messages are written.
-    public lazy internal(set) var timestampFormatter: NSDateFormatter = {
+    private lazy var timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
         formatter.locale = NSLocale.currentLocale()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         return formatter
     }()
     
-    // MARK: - Private - Properties
-    
     private let operationQueue = NSOperationQueue()
-    private var colorProfiles = [LogLevel: ColorProfile]()
     
-    // MARK: - API - Initialization Methods
+    // MARK: - Initialization Methods
     
     /**
-    Initializes a logger instance.
+        Initializes a logger instance.
     
-    :param: name               The name of the logger for internal use which is required to not be empty. This is
-                               used for naming the internal operationQueue.
-    :param: logLevel           The logging level used to determine which messages are written.
-    :param: printTimestamp     Whether to print out the timestamp when messages are written.
-    :param: printLogLevel      Whether to print out the log level when messages are written.
-    :param: timestampFormatter The timestamp formatter used when messages are written.
-    :param: writer             The writer to use when messages are written.
+        :param: name               The name of the logger for internal use which is required to not be empty. This is
+                                   used for naming the internal operationQueue. Asserts if `name` is empty.
+        :param: logLevel           The logging level used to determine which messages are written. `.Info` by default.
+        :param: printTimestamp     Whether to print out the timestamp when messages are written. `false` by default.
+        :param: printLogLevel      Whether to print out the log level when messages are written. `false` by default.
+        :param: timestampFormatter The timestamp formatter used when messages are written. `nil` by default.
+        :param: colorProfiles      The dictionary of color profiles to apply to each associated log level. `nil` by default.
+        :param: writers            The writers to use when messages are written. `nil` by default.
     
-    :returns: A fully initialized logger instance.
+        :returns: A fully initialized logger instance.
     */
     public init(
         name: String,
@@ -90,17 +75,22 @@ public class Logger {
         printTimestamp: Bool = false,
         printLogLevel: Bool = false,
         timestampFormatter: NSDateFormatter? = nil,
-        writer: Writable? = nil) {
-
+        colorProfiles: [LogLevel: ColorProfile]? = nil,
+        writers: [Writable]? = nil)
+    {
         self.name = name
         self.logLevel = logLevel
         self.printTimestamp = printTimestamp
         self.printLogLevel = printLogLevel
         
-        if let writerValue = writer {
-            self.writer = writerValue
+        if let colorProfiles = colorProfiles {
+            self.colorProfiles = colorProfiles
+        }
+        
+        if let writers = writers {
+            self.writers = writers
         } else {
-            self.writer = Writer()
+            self.writers.append(self.colorProfiles.isEmpty ? Writer() : ColorWriter())
         }
         
         if let timestampFormatterValue = timestampFormatter {
@@ -116,109 +106,96 @@ public class Logger {
         self.operationQueue.cancelAllOperations()
     }
     
-    // MARK: - API - Colorization Method(s)
+    // MARK: - Logging Methods
     
     /**
-    Creates a ColorProfile for the given logLevel that works with the XcodeColors plugin.
-    
-    :param: foregroundColor The foreground color to use when rendering output to the console.
-    :param: backgroundColor The background color to use when rendering output to the console.
-    :param: logLevel        The log level to apply the colors to.
-    */
-    public func setForegroundColor(foregroundColor: UIColor?, backgroundColor: UIColor?, forLogLevel logLevel: LogLevel) {
-        colorProfiles[logLevel] = ColorProfile(foregroundColor: foregroundColor, backgroundColor: backgroundColor)
-    }
-    
-    // MARK: - API - Logging Methods
-    
-    /**
-    Writes out the given message with the logger configuration if the debug log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message with the logger configuration if the debug log level is allowed.
+        
+        :param: message The message to write out.
     */
     public func debug(message: String) {
         logMessageIfAllowed(message, withLogLevel: .Debug)
     }
 
     /**
-    Writes out the given message closure string with the logger configuration if the debug log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message closure string with the logger configuration if the debug log level is allowed.
+        
+        :param: closure A closure returning the message to log.
     */
-    public func debug(messageClosure: () -> String) {
-        logMessageIfAllowed(messageClosure, withLogLevel: .Debug)
+    public func debug(closure: () -> String) {
+        logMessageIfAllowed(closure, withLogLevel: .Debug)
     }
     
     /**
-    Writes out the given message with the logger configuration if the info log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message with the logger configuration if the info log level is allowed.
+        
+        :param: message The message to write out.
     */
     public func info(message: String) {
         logMessageIfAllowed(message, withLogLevel: .Info)
     }
 
     /**
-    Writes out the given message closure string with the logger configuration if the info log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message closure string with the logger configuration if the info log level is allowed.
+        
+        :param: closure A closure returning the message to log.
     */
-    public func info(messageClosure: () -> String) {
-        logMessageIfAllowed(messageClosure, withLogLevel: .Info)
+    public func info(closure: () -> String) {
+        logMessageIfAllowed(closure, withLogLevel: .Info)
     }
 
     /**
-    Writes out the given message with the logger configuration if the event log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message with the logger configuration if the event log level is allowed.
+        
+        :param: message The message to write out.
     */
     public func event(message: String) {
         logMessageIfAllowed(message, withLogLevel: .Event)
     }
     
     /**
-    Writes out the given message closure string with the logger configuration if the event log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message closure string with the logger configuration if the event log level is allowed.
+        
+        :param: closure A closure returning the message to log.
     */
-    public func event(messageClosure: () -> String) {
-        logMessageIfAllowed(messageClosure, withLogLevel: .Event)
+    public func event(closure: () -> String) {
+        logMessageIfAllowed(closure, withLogLevel: .Event)
     }
     
     /**
-    Writes out the given message with the logger configuration if the warn log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message with the logger configuration if the warn log level is allowed.
+        
+        :param: message The message to write out.
     */
     public func warn(message: String) {
         logMessageIfAllowed(message, withLogLevel: .Warn)
     }
     
     /**
-    Writes out the given message closure string with the logger configuration if the warn log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message closure string with the logger configuration if the warn log level is allowed.
+        
+        :param: closure A closure returning the message to log.
     */
-    public func warn(messageClosure: () -> String) {
-        logMessageIfAllowed(messageClosure, withLogLevel: .Warn)
+    public func warn(closure: () -> String) {
+        logMessageIfAllowed(closure, withLogLevel: .Warn)
     }
 
     /**
-    Writes out the given message with the logger configuration if the error log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message with the logger configuration if the error log level is allowed.
+        
+        :param: message The message to write out.
     */
     public func error(message: String) {
         logMessageIfAllowed(message, withLogLevel: .Error)
     }
     
     /**
-    Writes out the given message closure string with the logger configuration if the error log level is allowed.
-    
-    :param: message The message to write out.
+        Writes out the given message closure string with the logger configuration if the error log level is allowed.
+        
+        :param: closure A closure returning the message to log.
     */
-    public func error(messageClosure: () -> String) {
-        logMessageIfAllowed(messageClosure, withLogLevel: .Error)
+    public func error(closure: () -> String) {
+        logMessageIfAllowed(closure, withLogLevel: .Error)
     }
     
     // MARK: - Private - Set Up Methods
@@ -273,11 +250,15 @@ public class Logger {
         }
         
         message = " ".join(logComponents)
+        let colorProfile = self.colorProfiles[logLevel]
         
-        if let colorProfile = self.colorProfiles[logLevel] {
-            message = colorProfile.applyColorFormattingToMessage(message)
+        for writer in writers {
+            if writer is Colorable && colorProfile != nil {
+                let colorWriter = writer as Colorable
+                colorWriter.writeMessage(message, colorProfile: colorProfile!)
+            } else {
+                writer.writeMessage(message)
+            }
         }
-        
-        self.writer.writeMessage(message)
     }
 }
