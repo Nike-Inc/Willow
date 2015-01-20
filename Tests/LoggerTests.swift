@@ -43,7 +43,15 @@ class TestWriter: Writer {
 
 // MARK: -
 
-class LoggerTestCase: TimberTestCase {
+class PrefixFormatter: Formatter {
+    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+        return "[Timber] \(message)"
+    }
+}
+
+// MARK: -
+
+class LoggerTestCase: XCTestCase {
     
     var message = "Test Message"
     let defaultTimeout = 0.1
@@ -412,16 +420,16 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
 
 class LoggerMultiFormatterTestCase: LoggerTestCase {
     
-    func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
+    func testThatItLogsOutputAsExpectedWithMultipleFormatters() {
         
         // Given
-        let defaultFormatter = DefaultFormatter()
+        let prefixFormatter = PrefixFormatter()
         let formatters: [Logger.LogLevel: [Formatter]] = [
-            .Debug: [defaultFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)],
-            .Info: [defaultFormatter, ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)],
-            .Event: [defaultFormatter, ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)],
-            .Warn: [defaultFormatter, ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)],
-            .Error: [defaultFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
+            .Debug: [prefixFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)],
+            .Info: [prefixFormatter, ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)],
+            .Event: [prefixFormatter, ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)],
+            .Warn: [prefixFormatter, ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)],
+            .Error: [prefixFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
         ]
         
         let (log, writer) = logger(formatters: formatters, expectedNumberOfWrites: 5)
@@ -438,26 +446,26 @@ class LoggerMultiFormatterTestCase: LoggerTestCase {
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
             XCTAssertEqual(5, writer.formattedMessages.count, "Formatted message count should be 5")
             
-            let message = "2015-01-19 02:20:17.754 [Info] Test Message"
+            let message = "[Timber] Test Message"
             
             if writer.formattedMessages.count == 5 {
-                var expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;2014-10-03 08:20:45.000 [Debug] Test Message\(self.reset)"
+                var expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;\(message)\(self.reset)"
                 var actual = writer.formattedMessages[0]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
 
-                expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;2014-10-03 08:20:45.000 [Info] Test Message\(self.reset)"
+                expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;\(message)\(self.reset)"
                 actual = writer.formattedMessages[1]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
 
-                expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;2014-10-03 08:20:45.000 [Event] Test Message\(self.reset)"
+                expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;\(message)\(self.reset)"
                 actual = writer.formattedMessages[2]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
 
-                expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;2014-10-03 08:20:45.000 [Warn] Test Message\(self.reset)"
+                expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;\(message)\(self.reset)"
                 actual = writer.formattedMessages[3]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
 
-                expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;2014-10-03 08:20:45.000 [Error] Test Message\(self.reset)"
+                expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;\(message)\(self.reset)"
                 actual = writer.formattedMessages[4]
                 XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
             }

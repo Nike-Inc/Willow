@@ -11,7 +11,7 @@ import XCTest
 
 import Timber
 
-class DefaultFormatterTestCase: TimberTestCase {
+class DefaultFormatterTestCase: XCTestCase {
     
     func testThatItFormatsMessagesAsExpected() {
         
@@ -25,8 +25,9 @@ class DefaultFormatterTestCase: TimberTestCase {
         
         // Then
         for (index, logLevel) in enumerate(logLevels) {
-            let expectedMessage = "2014-10-03 08:20:45.000 [\(logLevel)] \(message)"
-            XCTAssertEqual(actualMessages[index], expectedMessage, "Actual formatted message should equal the expected message")
+            let actualMessage = actualMessages[index] as NSString
+            let expectedSuffix = " [\(logLevel)] \(message)"
+            XCTAssertTrue(actualMessage.containsString(expectedSuffix), "Actual message should contain expected suffix")
         }
     }
 }
