@@ -6,10 +6,14 @@
 //  Copyright (c) 2014 Nike. All rights reserved.
 //
 
-import UIKit
 import XCTest
-
 import Timber
+
+#if os(iOS)
+import UIKit
+#elseif os(OSX)
+import Cocoa
+#endif
 
 class TestWriter: Writer {
     
@@ -58,11 +62,11 @@ class LoggerTestCase: XCTestCase {
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
     
-    let purpleColor = UIColor(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
-    let blueColor = UIColor(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
-    let greenColor = UIColor(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
-    let orangeColor = UIColor(red: 233.0 / 255.0, green: 165.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
-    let redColor = UIColor(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
+    let purpleColor = Color(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
+    let blueColor = Color(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
+    let greenColor = Color(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
+    let orangeColor = Color(red: 233.0 / 255.0, green: 165.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
+    let redColor = Color(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
     
     func logger(
         logLevel: Logger.LogLevel = .Debug,

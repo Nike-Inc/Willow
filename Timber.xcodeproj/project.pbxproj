@@ -14,10 +14,24 @@
 		4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
 		4CA75D441A6C493800275DC5 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4CC837781A6E347700B31851 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
+		4CC837791A6E347A00B31851 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
+		4CF89C961A6E2F60001BFDE1 /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */; };
+		4CF89CA41A6E2F9A001BFDE1 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4CF89CA51A6E2FA2001BFDE1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* Formatter.swift */; };
+		4CF89CA61A6E2FA2001BFDE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
+		4CF89CA71A6E2FA2001BFDE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
 		4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Timber.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4CF89C971A6E2F60001BFDE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4CFE82901A6C484A0002868E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4CF89C8A1A6E2F60001BFDE1;
+			remoteInfo = "Timber OSX";
+		};
 		4CFE82A61A6C484A0002868E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4CFE82901A6C484A0002868E /* Project object */;
@@ -36,11 +50,28 @@
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA75D421A6C493800275DC5 /* Timber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timber.h; sourceTree = "<group>"; };
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
+		4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Timber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CF89C951A6E2F60001BFDE1 /* TimberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CFE82991A6C484A0002868E /* Timber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Timber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CFE82A41A6C484A0002868E /* TimberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4CF89C871A6E2F60001BFDE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4CF89C921A6E2F60001BFDE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CF89C961A6E2F60001BFDE1 /* Timber.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CFE82951A6C484A0002868E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -112,6 +143,8 @@
 			children = (
 				4CFE82991A6C484A0002868E /* Timber.framework */,
 				4CFE82A41A6C484A0002868E /* TimberTests.xctest */,
+				4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */,
+				4CF89C951A6E2F60001BFDE1 /* TimberTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,6 +161,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		4CF89C881A6E2F60001BFDE1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CF89CA41A6E2F9A001BFDE1 /* Timber.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CFE82961A6C484A0002868E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -139,9 +180,45 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4CFE82981A6C484A0002868E /* Timber */ = {
+		4CF89C8A1A6E2F60001BFDE1 /* Timber OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber" */;
+			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX" */;
+			buildPhases = (
+				4CF89C861A6E2F60001BFDE1 /* Sources */,
+				4CF89C871A6E2F60001BFDE1 /* Frameworks */,
+				4CF89C881A6E2F60001BFDE1 /* Headers */,
+				4CF89C891A6E2F60001BFDE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Timber OSX";
+			productName = "Timber OSX";
+			productReference = 4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		4CF89C941A6E2F60001BFDE1 /* Timber OSX Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX Tests" */;
+			buildPhases = (
+				4CF89C911A6E2F60001BFDE1 /* Sources */,
+				4CF89C921A6E2F60001BFDE1 /* Frameworks */,
+				4CF89C931A6E2F60001BFDE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4CF89C981A6E2F60001BFDE1 /* PBXTargetDependency */,
+			);
+			name = "Timber OSX Tests";
+			productName = "Timber OSXTests";
+			productReference = 4CF89C951A6E2F60001BFDE1 /* TimberTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4CFE82981A6C484A0002868E /* Timber iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS" */;
 			buildPhases = (
 				4CFE82941A6C484A0002868E /* Sources */,
 				4CFE82951A6C484A0002868E /* Frameworks */,
@@ -152,14 +229,14 @@
 			);
 			dependencies = (
 			);
-			name = Timber;
+			name = "Timber iOS";
 			productName = Timber;
 			productReference = 4CFE82991A6C484A0002868E /* Timber.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4CFE82A31A6C484A0002868E /* TimberTests */ = {
+		4CFE82A31A6C484A0002868E /* Timber iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "TimberTests" */;
+			buildConfigurationList = 4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS Tests" */;
 			buildPhases = (
 				4CFE82A01A6C484A0002868E /* Sources */,
 				4CFE82A11A6C484A0002868E /* Frameworks */,
@@ -170,7 +247,7 @@
 			dependencies = (
 				4CFE82A71A6C484A0002868E /* PBXTargetDependency */,
 			);
-			name = TimberTests;
+			name = "Timber iOS Tests";
 			productName = TimberTests;
 			productReference = 4CFE82A41A6C484A0002868E /* TimberTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -184,6 +261,12 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Nike;
 				TargetAttributes = {
+					4CF89C8A1A6E2F60001BFDE1 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					4CF89C941A6E2F60001BFDE1 = {
+						CreatedOnToolsVersion = 6.2;
+					};
 					4CFE82981A6C484A0002868E = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -204,13 +287,29 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4CFE82981A6C484A0002868E /* Timber */,
-				4CFE82A31A6C484A0002868E /* TimberTests */,
+				4CFE82981A6C484A0002868E /* Timber iOS */,
+				4CFE82A31A6C484A0002868E /* Timber iOS Tests */,
+				4CF89C8A1A6E2F60001BFDE1 /* Timber OSX */,
+				4CF89C941A6E2F60001BFDE1 /* Timber OSX Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4CF89C891A6E2F60001BFDE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4CF89C931A6E2F60001BFDE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CFE82971A6C484A0002868E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -228,6 +327,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4CF89C861A6E2F60001BFDE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CF89CA71A6E2FA2001BFDE1 /* Writer.swift in Sources */,
+				4CF89CA51A6E2FA2001BFDE1 /* Formatter.swift in Sources */,
+				4CF89CA61A6E2FA2001BFDE1 /* Logger.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4CF89C911A6E2F60001BFDE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CC837781A6E347700B31851 /* FormatterTests.swift in Sources */,
+				4CC837791A6E347A00B31851 /* LoggerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CFE82941A6C484A0002868E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -250,14 +368,101 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4CF89C981A6E2F60001BFDE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4CF89C8A1A6E2F60001BFDE1 /* Timber OSX */;
+			targetProxy = 4CF89C971A6E2F60001BFDE1 /* PBXContainerItemProxy */;
+		};
 		4CFE82A71A6C484A0002868E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CFE82981A6C484A0002868E /* Timber */;
+			target = 4CFE82981A6C484A0002868E /* Timber iOS */;
 			targetProxy = 4CFE82A61A6C484A0002868E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4CF89C9E1A6E2F60001BFDE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Source/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = Timber;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4CF89C9F1A6E2F60001BFDE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Source/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = Timber;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4CF89CA01A6E2F60001BFDE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = TimberTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4CF89CA11A6E2F60001BFDE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = TimberTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		4CFE82AD1A6C484B0002868E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -354,7 +559,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Timber;
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -372,7 +577,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Timber;
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 			};
@@ -391,7 +596,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TimberTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
@@ -405,7 +610,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TimberTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
@@ -413,6 +618,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CF89C9E1A6E2F60001BFDE1 /* Debug */,
+				4CF89C9F1A6E2F60001BFDE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CF89CA01A6E2F60001BFDE1 /* Debug */,
+				4CF89CA11A6E2F60001BFDE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4CFE82931A6C484A0002868E /* Build configuration list for PBXProject "Timber" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -422,7 +645,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber" */ = {
+		4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CFE82B01A6C484B0002868E /* Debug */,
@@ -431,7 +654,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "TimberTests" */ = {
+		4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CFE82B31A6C484B0002868E /* Debug */,

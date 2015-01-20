@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CFE82981A6C484A0002868E"
                BuildableName = "Timber.framework"
-               BlueprintName = "Timber"
+               BlueprintName = "Timber iOS"
                ReferencedContainer = "container:Timber.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,7 +30,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CFE82A31A6C484A0002868E"
                BuildableName = "TimberTests.xctest"
-               BlueprintName = "TimberTests"
+               BlueprintName = "Timber iOS Tests"
                ReferencedContainer = "container:Timber.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -48,7 +48,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CFE82A31A6C484A0002868E"
                BuildableName = "TimberTests.xctest"
-               BlueprintName = "TimberTests"
+               BlueprintName = "Timber iOS Tests"
                ReferencedContainer = "container:Timber.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CFE82981A6C484A0002868E"
             BuildableName = "Timber.framework"
-            BlueprintName = "Timber"
+            BlueprintName = "Timber iOS"
             ReferencedContainer = "container:Timber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -77,7 +77,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CFE82981A6C484A0002868E"
             BuildableName = "Timber.framework"
-            BlueprintName = "Timber"
+            BlueprintName = "Timber iOS"
             ReferencedContainer = "container:Timber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -95,7 +95,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CFE82981A6C484A0002868E"
             BuildableName = "Timber.framework"
-            BlueprintName = "Timber"
+            BlueprintName = "Timber iOS"
             ReferencedContainer = "container:Timber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

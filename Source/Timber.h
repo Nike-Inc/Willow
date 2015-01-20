@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Nike. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 FOUNDATION_EXPORT double TimberVersionNumber;
 FOUNDATION_EXPORT const unsigned char TimberVersionString[];

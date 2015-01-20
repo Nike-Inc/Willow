@@ -6,7 +6,15 @@
 //  Copyright (c) 2014 Nike. All rights reserved.
 //
 
+import Foundation
+
+#if os(iOS)
 import UIKit
+public typealias Color = UIColor
+#elseif os(OSX)
+import Cocoa
+public typealias Color = NSColor
+#endif
 
 /**
     The Formatter protocol defines a single method for formatting a message after it has been constructed. This is very
@@ -80,7 +88,7 @@ public class ColorFormatter: Formatter {
         
         :returns: A fully constructed ColorFormatter from the given UIColor objects.
     */
-    public init(foregroundColor: UIColor?, backgroundColor: UIColor?) {
+    public init(foregroundColor: Color?, backgroundColor: Color?) {
         assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
         
         let foregroundTextString = ColorFormatter.textStringForColor(foregroundColor)
@@ -110,7 +118,7 @@ public class ColorFormatter: Formatter {
     
     // MARK: - Private - Helper Methods
     
-    private class func textStringForColor(color: UIColor?) -> String {
+    private class func textStringForColor(color: Color?) -> String {
         var textString = ""
         
         if let colorValue = color {

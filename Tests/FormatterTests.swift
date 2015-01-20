@@ -6,10 +6,14 @@
 //  Copyright (c) 2014 Nike. All rights reserved.
 //
 
-import UIKit
 import XCTest
-
 import Timber
+
+#if os(iOS)
+import UIKit
+#elseif os(OSX)
+import Cocoa
+#endif
 
 class DefaultFormatterTestCase: XCTestCase {
     
@@ -25,9 +29,9 @@ class DefaultFormatterTestCase: XCTestCase {
         
         // Then
         for (index, logLevel) in enumerate(logLevels) {
-            let actualMessage = actualMessages[index] as NSString
+            let actualMessage = actualMessages[index]
             let expectedSuffix = " [\(logLevel)] \(message)"
-            XCTAssertTrue(actualMessage.containsString(expectedSuffix), "Actual message should contain expected suffix")
+            XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
         }
     }
 }
@@ -57,7 +61,7 @@ class ColorFormatterTestCase: XCTestCase {
     func testThatItAppliesForegroundColors() {
         
         // Given
-        let red = UIColor(red: 0.95, green: 0.0, blue: 0.0, alpha: 1.0)
+        let red = Color(red: 0.95, green: 0.0, blue: 0.0, alpha: 1.0)
         let colorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
         
         // When
@@ -71,7 +75,7 @@ class ColorFormatterTestCase: XCTestCase {
     func testThatItAppliesBackgroundColors() {
 
         // Given
-        let blue = UIColor(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
+        let blue = Color(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
         let colorFormatter = ColorFormatter(foregroundColor: nil, backgroundColor: blue)
         
         // When
@@ -85,8 +89,8 @@ class ColorFormatterTestCase: XCTestCase {
     func testThatItAppliesBothColors() {
 
         // Given
-        let purple = UIColor(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
-        let green = UIColor(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
+        let purple = Color(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
+        let green = Color(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
         let colorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: green)
         
         // When
