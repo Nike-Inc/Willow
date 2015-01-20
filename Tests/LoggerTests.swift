@@ -13,7 +13,7 @@ import Timber
 
 class TestWriter: Writer {
     
-    private let expectation: XCTestExpectation
+    let expectation: XCTestExpectation
     private let expectedNumberOfWrites: Int
     
     private(set) var actualNumberOfWrites: Int = 0
@@ -186,6 +186,70 @@ class LoggerLogLevelTestCase: LoggerTestCase {
         log.event { "" }
         log.warn { "" }
         log.error { "" }
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
+    }
+}
+
+// MARK: -
+
+class LoggerEnabledTestCase: LoggerTestCase {
+    
+    func testThatItLogsAllLogLevelsWhenEnabled() {
+        
+        // Given
+        let (log, writer) = logger(logLevel: .Debug, expectedNumberOfWrites: 10)
+        log.enabled = true
+        
+        // When
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+        
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
+    }
+    
+    func testThatNoLoggingOccursForAnyLogLevelWhenDisabled() {
+
+        // This is an interesting test because we have to wait to make sure nothing happened. This makes it
+        // very difficult to fullfill the expectation. For now, we are using a dispatch_after that fires
+        // slightly before the timeout to fullfill the expectation.
+        
+        // Given
+        let (log, writer) = logger(logLevel: .Error, expectedNumberOfWrites: 0)
+        log.enabled = false
+        
+        // When
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
+        
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // Fullfill the expectation manually before the timeout occurs
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.075 * Float(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+            writer.expectation.fulfill()
+        }
         
         // Then
         waitForExpectationsWithTimeout(self.defaultTimeout) { _ in

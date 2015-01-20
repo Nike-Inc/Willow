@@ -47,6 +47,11 @@ public class Logger {
             }
         }
     }
+
+    // MARK: - Properties
+    
+    /// Controls whether to allow log messages to be sent to the writers.
+    public var enabled = true
     
     // MARK: - Private - Properties
     
@@ -91,8 +96,10 @@ public class Logger {
         :param: message The message to write out.
     */
     public func debug(message: String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(message, logLevel: .Debug)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Debug)
+            }
         }
     }
 
@@ -102,8 +109,10 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func debug(closure: () -> String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(closure, logLevel: .Debug)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Debug)
+            }
         }
     }
     
@@ -113,8 +122,10 @@ public class Logger {
         :param: message The message to write out.
     */
     public func info(message: String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(message, logLevel: .Info)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Info)
+            }
         }
     }
 
@@ -124,8 +135,10 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func info(closure: () -> String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(closure, logLevel: .Info)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Info)
+            }
         }
     }
 
@@ -135,8 +148,10 @@ public class Logger {
         :param: message The message to write out.
     */
     public func event(message: String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(message, logLevel: .Event)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Event)
+            }
         }
     }
     
@@ -146,8 +161,10 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func event(closure: () -> String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(closure, logLevel: .Event)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Event)
+            }
         }
     }
     
@@ -157,8 +174,10 @@ public class Logger {
         :param: message The message to write out.
     */
     public func warn(message: String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(message, logLevel: .Warn)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Warn)
+            }
         }
     }
     
@@ -168,8 +187,10 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func warn(closure: () -> String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(closure, logLevel: .Warn)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Warn)
+            }
         }
     }
 
@@ -179,8 +200,10 @@ public class Logger {
         :param: message The message to write out.
     */
     public func error(message: String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(message, logLevel: .Error)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Error)
+            }
         }
     }
     
@@ -190,8 +213,10 @@ public class Logger {
         :param: closure A closure returning the message to log.
     */
     public func error(closure: () -> String) {
-        dispatch_async(self.queue) { [unowned self] in
-            self.logMessageIfAllowed(closure, logLevel: .Error)
+        if self.enabled {
+            dispatch_async(self.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Error)
+            }
         }
     }
     
