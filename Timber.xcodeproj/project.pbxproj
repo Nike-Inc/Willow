@@ -259,7 +259,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = Nike;
+				ORGANIZATIONNAME = "Christian Noon";
 				TargetAttributes = {
 					4CF89C8A1A6E2F60001BFDE1 = {
 						CreatedOnToolsVersion = 6.2;
