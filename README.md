@@ -377,4 +377,4 @@ If you are starting a new iOS project in Swift and want to take advantage of man
 
 ## License
 
-TODO
+Timber is released under the MIT license. See LICENSE for details.
