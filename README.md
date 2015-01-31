@@ -229,7 +229,7 @@ let log = Logger(logLevel: .Debug, formatters: colorFormatters)
 
 ### Multiple Formatters
 
-Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `DefaultFormatter` (prefixes the message with a timestamp and log level) in combination with the `ColorFormatter` objects from the previous example.
+Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampFormatter` (prefixes the message with a timestamp) in combination with the `ColorFormatter` objects from the previous example.
 
 ```swift
 let purple = UIColor.purpleColor()
@@ -240,14 +240,14 @@ let red = UIColor.redColor()
 let white = UIColor.whiteColor()
 let black = UIColor.blackColor()
 
-let defaultFormatter = DefaultFormatter()
+let timestampFormatter = TimestampFormatter()
 
 let formatters: [Logger.LogLevel: [Formatter]] = [
-    Logger.LogLevel.Debug: [defaultFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-    Logger.LogLevel.Info: [defaultFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-    Logger.LogLevel.Event: [defaultFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-    Logger.LogLevel.Warn: [defaultFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
-    Logger.LogLevel.Error: [defaultFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
+    Logger.LogLevel.Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
+    Logger.LogLevel.Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
+    Logger.LogLevel.Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
+    Logger.LogLevel.Warn: [timestampFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
+    Logger.LogLevel.Error: [timestampFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
 ]
 
 let log = Logger(logLevel: .Debug, formatters: formatters)
@@ -255,7 +255,7 @@ let log = Logger(logLevel: .Debug, formatters: formatters)
 
 `Willow` doesn't have any hard limits on the total number of `Formatter` objects that can be applied to a single log level. Just keep in mind that performance is key.
 
-> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Dictionary`. In the previous example, Willow would log a much different message if the `ColorFormatter` came before the `DefaultFormatter`.
+> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `ColorFormatter` came before the `TimestampFormatter`.
 
 ### Custom Writers
 
@@ -368,6 +368,10 @@ As for the naming, here's my own mental breakdown of each log level for an iOS a
 ### When should I use Willow?
 
 If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Willow would be a great choice. If you are still working in Objective-C, a pure Objective-C library such as amazing [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
+
+### Where did the name Willow come from?
+
+Willow is named after the one, the only, Willow tree.
 
 ---
 
