@@ -72,7 +72,7 @@ class TestWriter: Writer {
 
 class PrefixFormatter: Formatter {
     func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
-        return "[Timber] \(message)"
+        return "[Willow] \(message)"
     }
 }
 
@@ -473,7 +473,7 @@ class LoggerMultiFormatterTestCase: LoggerTestCase {
             XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
             XCTAssertEqual(5, writer.formattedMessages.count, "Formatted message count should be 5")
             
-            let message = "[Timber] Test Message"
+            let message = "[Willow] Test Message"
             
             if writer.formattedMessages.count == 5 {
                 var expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;\(message)\(self.reset)"

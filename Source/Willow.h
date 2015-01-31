@@ -31,5 +31,5 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXPORT double TimberVersionNumber;
-FOUNDATION_EXPORT const unsigned char TimberVersionString[];
+FOUNDATION_EXPORT double WillowVersionNumber;
+FOUNDATION_EXPORT const unsigned char WillowVersionString[];

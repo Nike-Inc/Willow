@@ -51,7 +51,7 @@ class ViewController: UIViewController {
     // MARK: - Private - Set Up Methods
     
     private func setUpInstanceProperties() {
-        self.title = "Timber Example"
+        self.title = "Willow Example"
     }
     
     private func setUpButtons() {
