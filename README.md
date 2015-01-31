@@ -1,6 +1,6 @@
-#Timber
+# Willow
 
-Timber is a powerful, yet lightweight logging library written in Swift.
+Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Features
 
@@ -23,8 +23,8 @@ Timber is a powerful, yet lightweight logging library written in Swift.
 
 ## Communication
 
-- Need help? Start here [StackOverflow](http://stackoverflow.com/questions/tagged/timber). (Tag `Timber`)
-- Need to ask a question? Ask here [StackOverflow](http://stackoverflow.com/questions/tagged/timber).
+- Need help? Start here [StackOverflow](http://stackoverflow.com/questions/tagged/willow). (Tag `Willow`)
+- Need to ask a question? Ask here [StackOverflow](http://stackoverflow.com/questions/tagged/willow).
 - Want to contribute? Please fork the repo and submit a pull request.
 - Have a feature request? Open an issue.
 - Find a bug? Open an issue.
@@ -39,10 +39,10 @@ Timber is a powerful, yet lightweight logging library written in Swift.
 [sudo] gem install cocoapods --pre
 ```
 
-Now to add the `Timber` pod to your project, create your [Podfile](http://guides.cocoapods.org/using/the-podfile.html) and add the following.
+Now to add the `Willow` pod to your project, create your [Podfile](http://guides.cocoapods.org/using/the-podfile.html) and add the following.
 
 ```
-pod 'Timber', '1.0.0'
+pod 'Willow', '1.0.0'
 ```
 
 > NOTE: You have to have the pre-release version of CocoaPods install and an iOS deployment target of 8.0+.
@@ -60,7 +60,7 @@ Then add the following to your [Cartfile](https://github.com/Carthage/Carthage/b
 
 ```
 # Require version 1.0.0 or later
-github "cnoon/Timber" >= 1.0.0
+github "cnoon/Willow" >= 1.0.0
 ```
 
 ---
@@ -70,7 +70,7 @@ github "cnoon/Timber" >= 1.0.0
 ### Creating a Logger
 
 ```swift
-import Timber
+import Willow
 let defaultLogger = Logger()
 ```
 
@@ -85,7 +85,7 @@ Here are the parameters that the `Logger` initializer takes.
 
 #### Thread Safety
 
-The `println` function does not guarantee that the `String` parameter will be fully logged to the console. If two `println` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Timber` guarantees that messages are completely finished writing before starting on the next one.
+The `println` function does not guarantee that the `String` parameter will be fully logged to the console. If two `println` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
 
 > It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple Logger instances, you should create a shared `dispatch_queue_t` between them. For more info...see the [Advanced Usage](Advanced Usage) section.
 
@@ -114,7 +114,7 @@ The syntax was optimized to make logging as lightweight as possible. Developers 
 
 ### Logging Message Closures
 
-Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky. We want to make sure logic is encapsulated and very performant. `Timber` log level closures allow you to cleanly wrap all the logic to build up the message. Once you pass the closure off to the `Logger`, it will only run that closure if the log level specified is actually enabled. This allows you to encapsulate all the logic around creating the log message, while ensure it will only run if the log message will actually be executed.
+Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky. We want to make sure logic is encapsulated and very performant. `Willow` log level closures allow you to cleanly wrap all the logic to build up the message. Once you pass the closure off to the `Logger`, it will only run that closure if the log level specified is actually enabled. This allows you to encapsulate all the logic around creating the log message, while ensure it will only run if the log message will actually be executed.
 
 Let's start with a very naive example.
 
@@ -139,7 +139,7 @@ if log.debugLogLevelAllowed() {
 }
 ```
 
-Okay, much better. Now at least we only run that logic if the debug log level is actually enabled which will not run in production builds. It's still a bit clunky though to have to have these `debugLogLevelAllowed` methods and still have to write the `log.debug()` at the end. Luckily, Swift Closures come to the rescue. `Timber` has closure messaging built in for each log level.
+Okay, much better. Now at least we only run that logic if the debug log level is actually enabled which will not run in production builds. It's still a bit clunky though to have to have these `debugLogLevelAllowed` methods and still have to write the `log.debug()` at the end. Luckily, Swift Closures come to the rescue. `Willow` has closure messaging built in for each log level.
 
 ```swift
 log.debug {
@@ -172,7 +172,7 @@ log.enabled = true
 
 ### Formatters
 
-Log message customization is something that `Timber` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want colors! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
+Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want colors! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
 
 ```swift
 public protocol Formatter {
@@ -185,7 +185,7 @@ The `Formatter` protocol has only a single API. It receives the `message` and `l
 ```swift
 class PrefixFormatter: Formatter {
     func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
-        return "[Timber] \(message)"
+        return "[Willow] \(message)"
     }
 }
 
@@ -203,7 +203,7 @@ let log = Logger(formatters: formatters)
 
 ### Color Formatters
 
-There is a special `Formatter` in `Timber` called a `ColorFormatter`. It was designed to take a foreground and backround color in the form of a `UIColor`. It then formats the message to match the coloring scheme of the [XcodeColors](https://github.com/robbiehanson/XcodeColors) plugin. This allows you to change the foreground and background colors of logging output in the Xcode console. This can make it much easier to dig through thousands of lines of logging output.
+There is a special `Formatter` in `Willow` called a `ColorFormatter`. It was designed to take a foreground and backround color in the form of a `UIColor`. It then formats the message to match the coloring scheme of the [XcodeColors](https://github.com/robbiehanson/XcodeColors) plugin. This allows you to change the foreground and background colors of logging output in the Xcode console. This can make it much easier to dig through thousands of lines of logging output.
 
 ```swift
 let purple = UIColor.purpleColor()
@@ -253,13 +253,13 @@ let formatters: [Logger.LogLevel: [Formatter]] = [
 let log = Logger(logLevel: .Debug, formatters: formatters)
 ```
 
-`Timber` doesn't have any hard limits on the total number of `Formatter` objects that can be applied to a single log level. Just keep in mind that performance is key.
+`Willow` doesn't have any hard limits on the total number of `Formatter` objects that can be applied to a single log level. Just keep in mind that performance is key.
 
-> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Dictionary`. In the previous example, Timber would log a much different message if the `ColorFormatter` came before the `DefaultFormatter`.
+> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Dictionary`. In the previous example, Willow would log a much different message if the `ColorFormatter` came before the `DefaultFormatter`.
 
 ### Custom Writers
 
-Writing log messages to various locations is an essential feature of any robust logging library. This is made possible in `Timber` through the `Writer` protocol.
+Writing log messages to various locations is an essential feature of any robust logging library. This is made possible in `Willow` through the `Writer` protocol.
 
 ```swift
 public protocol Writer {
@@ -347,7 +347,7 @@ var log = Logger(logLevel: .Debug, writers: writers, queue: queue)
 Math.log = Logger(logLevel: .Warn, queue: queue)
 ```
 
-`Timber` is a very lightweight library, but its flexibility allows it to become very powerful if you so wish.
+`Willow` is a very lightweight library, but its flexibility allows it to become very powerful if you so wish.
 
 ---
 
@@ -365,9 +365,9 @@ As for the naming, here's my own mental breakdown of each log level for an iOS a
 * `Warn` - An error occurred but it is recoverable
 * `Error` - A non-recoverable error occurred
 
-### When should I use Timber?
+### When should I use Willow?
 
-If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Timber would be a great choice. If you are still working in Objective-C, a pure Objective-C library such as amazing [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
+If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Willow would be a great choice. If you are still working in Objective-C, a pure Objective-C library such as amazing [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
 
 ---
 
@@ -377,4 +377,4 @@ If you are starting a new iOS project in Swift and want to take advantage of man
 
 ## License
 
-Timber is released under the FreeBSD license. See LICENSE for details.
+Willow is released under the FreeBSD license. See LICENSE for details.
