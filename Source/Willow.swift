@@ -287,12 +287,12 @@ public protocol Formatter {
     func formatMessage(message: String, logLevel: Logger.LogLevel) -> String
 }
 
-// MARK: - DefaultFormatter
+// MARK: - TimestampFormatter
 
 /**
-    The DefaultFormatter class applies a timestamp and log level prefix to the message.
+    The TimestampFormatter class applies a timestamp to the beginning of the message.
 */
-public class DefaultFormatter: Formatter {
+public class TimestampFormatter: Formatter {
     
     private let timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
@@ -304,7 +304,7 @@ public class DefaultFormatter: Formatter {
     public init() {}
     
     /**
-        Applies a timestamp and log level prefix to the message.
+        Applies a timestamp to the beginning of the message.
     
         :param: message  The original message to format.
         :param: logLevel The log level set for the message.
@@ -313,7 +313,7 @@ public class DefaultFormatter: Formatter {
     */
     public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
         let timestampString = self.timestampFormatter.stringFromDate(NSDate())
-        return "\(timestampString) [\(logLevel)] \(message)"
+        return "\(timestampString) \(message)"
     }
 }
 

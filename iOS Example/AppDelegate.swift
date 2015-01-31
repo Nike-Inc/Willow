@@ -70,14 +70,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let white = UIColor.whiteColor()
         let black = UIColor.blackColor()
         
-        let defaultFormatter = DefaultFormatter()
+        let timestampFormatter = TimestampFormatter()
         
         let colorFormatters: [Logger.LogLevel: [Formatter]] = [
-            .Debug: [defaultFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-            .Info: [defaultFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-            .Event: [defaultFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-            .Warn: [defaultFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
-            .Error: [defaultFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
+            .Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
+            .Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
+            .Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
+            .Warn: [timestampFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
+            .Error: [timestampFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
         ]
         
         log = Logger(logLevel: .Debug, formatters: colorFormatters)

@@ -38,12 +38,12 @@ import UIKit
 import Cocoa
 #endif
 
-class DefaultFormatterTestCase: XCTestCase {
+class TimestampFormatterTestCase: XCTestCase {
     
     func testThatItFormatsMessagesAsExpected() {
         
         // Given
-        let formatter = DefaultFormatter()
+        let formatter = TimestampFormatter()
         let message = "Test Message"
         let logLevels: [Logger.LogLevel] = [.Error, .Warn, .Event, .Info, .Debug]
         
@@ -53,7 +53,7 @@ class DefaultFormatterTestCase: XCTestCase {
         // Then
         for (index, logLevel) in enumerate(logLevels) {
             let actualMessage = actualMessages[index]
-            let expectedSuffix = " [\(logLevel)] \(message)"
+            let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
         }
     }
