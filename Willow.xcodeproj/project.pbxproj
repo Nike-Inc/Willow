@@ -8,19 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		321F2DF335043A818DBEC881 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		4C1BBA661A6C518000D39EE1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* Formatter.swift */; };
-		4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
-		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
 		4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
 		4CA75D441A6C493800275DC5 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CC837781A6E347700B31851 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4CC837791A6E347A00B31851 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
+		4CEB14071A7C5917004FB96F /* Willow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB14061A7C5917004FB96F /* Willow.swift */; };
+		4CEB14081A7C5917004FB96F /* Willow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB14061A7C5917004FB96F /* Willow.swift */; };
 		4CF89C961A6E2F60001BFDE1 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */; };
 		4CF89CA41A6E2F9A001BFDE1 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4CF89CA51A6E2FA2001BFDE1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* Formatter.swift */; };
-		4CF89CA61A6E2FA2001BFDE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
-		4CF89CA71A6E2FA2001BFDE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
 		4CFE82A51A6C484A0002868E /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Willow.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,14 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4C1BBA631A6C518000D39EE1 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
-		4C1BBA641A6C518000D39EE1 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		4C1BBA651A6C518000D39EE1 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA75D421A6C493800275DC5 /* Willow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Willow.h; sourceTree = "<group>"; };
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
+		4CEB14061A7C5917004FB96F /* Willow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Willow.swift; sourceTree = "<group>"; };
 		4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CFE82991A6C484A0002868E /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,9 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				4CA75D421A6C493800275DC5 /* Willow.h */,
-				4C1BBA631A6C518000D39EE1 /* Formatter.swift */,
-				4C1BBA641A6C518000D39EE1 /* Logger.swift */,
-				4C1BBA651A6C518000D39EE1 /* Writer.swift */,
+				4CEB14061A7C5917004FB96F /* Willow.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
 			);
 			path = Source;
@@ -331,9 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CF89CA71A6E2FA2001BFDE1 /* Writer.swift in Sources */,
-				4CF89CA51A6E2FA2001BFDE1 /* Formatter.swift in Sources */,
-				4CF89CA61A6E2FA2001BFDE1 /* Logger.swift in Sources */,
+				4CEB14081A7C5917004FB96F /* Willow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,9 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */,
-				4C1BBA661A6C518000D39EE1 /* Formatter.swift in Sources */,
-				4C1BBA671A6C518000D39EE1 /* Logger.swift in Sources */,
+				4CEB14071A7C5917004FB96F /* Willow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

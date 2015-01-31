@@ -1,5 +1,5 @@
 //
-//  Logger.swift
+//  Willow.swift
 //
 //  Copyright (c) 2015, Christian Noon
 //  All rights reserved.
@@ -31,6 +31,8 @@
 
 import Foundation
 
+// MARK: - Logger
+
 /**
     The Logger class is a fully thread-safe, asynchronous logging solution using dependency injection to allow custom
     Formatters and Writers. It also manages all the logic to determine whether to log a particular message with a given
@@ -40,11 +42,11 @@ import Foundation
     create an additional logger with a custom configuration to fit your needs.
 */
 public class Logger {
-
-    // MARK: - LogLevel Enum
+    
+    // MARK: LogLevel
     
     /**
-        The LogLevel enum defines all the possible logging levels for Timber.
+        The LogLevel enum defines all the possible logging levels for Willow.
     
         - Error: Allows Error messages to be logged.
         - Warn:  Allows Warn and Error messages to be logged.
@@ -70,20 +72,20 @@ public class Logger {
             }
         }
     }
-
-    // MARK: - Properties
+    
+    // MARK: Properties
     
     /// Controls whether to allow log messages to be sent to the writers.
     public var enabled = true
     
-    // MARK: - Private - Properties
+    // MARK: Private - Properties
     
     private let logLevel: LogLevel
     private let formatters: [LogLevel: [Formatter]]
     private let writers: [Writer]
     private let queue: dispatch_queue_t
     
-    // MARK: - Initialization Methods
+    // MARK: Initialization Methods
     
     /**
         Initializes a logger instance.
@@ -106,16 +108,16 @@ public class Logger {
         self.formatters = formatters ?? [LogLevel: [Formatter]]()
         self.writers = writers
         self.queue = queue ?? {
-            let label = NSString(format: "com.timber.logger-%08x%08x", arc4random(), arc4random())
+            let label = NSString(format: "com.willow.logger-%08x%08x", arc4random(), arc4random())
             return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
         }()
     }
     
-    // MARK: - Logging Methods
+    // MARK: Logging Methods
     
     /**
         Writes out the given message with the logger configuration if the debug log level is allowed.
-        
+    
         :param: message The message to write out.
     */
     public func debug(message: String) {
@@ -125,10 +127,10 @@ public class Logger {
             }
         }
     }
-
+    
     /**
         Writes out the given message closure string with the logger configuration if the debug log level is allowed.
-        
+    
         :param: closure A closure returning the message to log.
     */
     public func debug(closure: () -> String) {
@@ -141,7 +143,7 @@ public class Logger {
     
     /**
         Writes out the given message with the logger configuration if the info log level is allowed.
-        
+    
         :param: message The message to write out.
     */
     public func info(message: String) {
@@ -151,10 +153,10 @@ public class Logger {
             }
         }
     }
-
+    
     /**
         Writes out the given message closure string with the logger configuration if the info log level is allowed.
-        
+    
         :param: closure A closure returning the message to log.
     */
     public func info(closure: () -> String) {
@@ -164,10 +166,10 @@ public class Logger {
             }
         }
     }
-
+    
     /**
         Writes out the given message with the logger configuration if the event log level is allowed.
-        
+    
         :param: message The message to write out.
     */
     public func event(message: String) {
@@ -180,7 +182,7 @@ public class Logger {
     
     /**
         Writes out the given message closure string with the logger configuration if the event log level is allowed.
-        
+    
         :param: closure A closure returning the message to log.
     */
     public func event(closure: () -> String) {
@@ -193,7 +195,7 @@ public class Logger {
     
     /**
         Writes out the given message with the logger configuration if the warn log level is allowed.
-        
+    
         :param: message The message to write out.
     */
     public func warn(message: String) {
@@ -206,7 +208,7 @@ public class Logger {
     
     /**
         Writes out the given message closure string with the logger configuration if the warn log level is allowed.
-        
+    
         :param: closure A closure returning the message to log.
     */
     public func warn(closure: () -> String) {
@@ -216,10 +218,10 @@ public class Logger {
             }
         }
     }
-
+    
     /**
         Writes out the given message with the logger configuration if the error log level is allowed.
-        
+    
         :param: message The message to write out.
     */
     public func error(message: String) {
@@ -232,7 +234,7 @@ public class Logger {
     
     /**
         Writes out the given message closure string with the logger configuration if the error log level is allowed.
-        
+    
         :param: closure A closure returning the message to log.
     */
     public func error(closure: () -> String) {
@@ -243,7 +245,7 @@ public class Logger {
         }
     }
     
-    // MARK: - Private - Logging Helper Methods
+    // MARK: Private - Logging Helper Methods
     
     private func logMessageIfAllowed(message: String, logLevel: LogLevel) {
         if logLevelAllowed(logLevel) {
@@ -264,5 +266,165 @@ public class Logger {
     private func logMessage(var message: String, logLevel: LogLevel) {
         let formatters = self.formatters[logLevel]
         self.writers.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
+    }
+}
+
+#if os(iOS)
+import UIKit
+public typealias Color = UIColor
+#elseif os(OSX)
+import Cocoa
+public typealias Color = NSColor
+#endif
+
+// MARK: - Formatter
+
+/**
+    The Formatter protocol defines a single method for formatting a message after it has been constructed. This is very
+    flexible allowing any object that conforms to use formatting scheme it wants.
+*/
+public protocol Formatter {
+    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String
+}
+
+// MARK: - DefaultFormatter
+
+/**
+    The DefaultFormatter class applies a timestamp and log level prefix to the message.
+*/
+public class DefaultFormatter: Formatter {
+    
+    private let timestampFormatter: NSDateFormatter = {
+        var formatter = NSDateFormatter()
+        formatter.locale = NSLocale.currentLocale()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        return formatter
+    }()
+    
+    public init() {}
+    
+    /**
+        Applies a timestamp and log level prefix to the message.
+    
+        :param: message  The original message to format.
+        :param: logLevel The log level set for the message.
+    
+        :returns: A newly formatted message.
+    */
+    public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+        let timestampString = self.timestampFormatter.stringFromDate(NSDate())
+        return "\(timestampString) [\(logLevel)] \(message)"
+    }
+}
+
+// MARK: - ColorFormatter
+
+/**
+    The ColorFormatter class takes foreground and background colors and applies them to a given message. It uses the
+    XcodeColors plugin color formatting scheme.
+
+    NOTE: These should only be used with the XcodeColors plugin.
+*/
+public class ColorFormatter: Formatter {
+    
+    // MARK: Private - ColorConstants
+    
+    private struct ColorConstants {
+        static let ESCAPE = "\u{001b}["
+        static let RESET_FG = ESCAPE + "fg;"
+        static let RESET_BG = ESCAPE + "bg;"
+        static let RESET = ESCAPE + ";"
+    }
+    
+    // MARK: Private - Properties
+    
+    private let foregroundText = ""
+    private let backgroundText = ""
+    
+    // MARK: Initialization Methods
+    
+    /**
+        Returns a fully constructed ColorFormatter from the given UIColor objects.
+    
+        :param: foregroundColor The color to apply to the foreground.
+        :param: backgroundColor The color to apply to the background.
+    
+        :returns: A fully constructed ColorFormatter from the given UIColor objects.
+    */
+    public init(foregroundColor: Color?, backgroundColor: Color?) {
+        assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
+        
+        let foregroundTextString = ColorFormatter.textStringForColor(foregroundColor)
+        let backgroundTextString = ColorFormatter.textStringForColor(backgroundColor)
+        
+        if (!foregroundTextString.isEmpty) {
+            self.foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
+        }
+        
+        if (!backgroundTextString.isEmpty) {
+            self.backgroundText = "\(ColorConstants.ESCAPE)bg\(backgroundTextString);"
+        }
+    }
+    
+    // MARK: Formatter Methods
+    
+    /**
+        Applies the foreground, background and reset color formatting values to the given message.
+    
+        :param: message The message to apply the color formatting to.
+    
+        :returns: A new string with all the color formatting values added.
+    */
+    public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+        return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
+    }
+    
+    // MARK: Private - Helper Methods
+    
+    private class func textStringForColor(color: Color?) -> String {
+        var textString = ""
+        
+        if let colorValue = color {
+            var redValue: CGFloat = 0.0
+            var greenValue: CGFloat = 0.0
+            var blueValue: CGFloat = 0.0
+            
+            colorValue.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
+            
+            let maxValue: CGFloat = 255.0
+            
+            let redInt = UInt8(round(redValue * maxValue))
+            let greenInt = UInt8(round(greenValue * maxValue))
+            let blueInt = UInt8(round(blueValue * maxValue))
+            
+            textString = "\(redInt),\(greenInt),\(blueInt)"
+        }
+        
+        return textString
+    }
+}
+
+// MARK: - Writer
+
+/**
+    The Writer protocol defines a single API for writing a message. The message can be written in any way the
+    conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
+    party service, etc.
+*/
+public protocol Writer {
+    func writeMessage(message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?)
+}
+
+// MARK: - ConsoleWriter
+
+/**
+    The ConsoleWriter class runs all formatters in the order they were created and prints the resulting message
+    to the console.
+*/
+public class ConsoleWriter: Writer {
+    
+    public func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
+        formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
+        println(message)
     }
 }
