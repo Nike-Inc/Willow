@@ -30,7 +30,7 @@
 //
 
 import UIKit
-import Timber
+import Willow
 
 class ViewController: UIViewController {
 

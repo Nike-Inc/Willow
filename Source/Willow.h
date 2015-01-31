@@ -1,5 +1,5 @@
 //
-//  Timber.h
+//  Willow.h
 //
 //  Copyright (c) 2015, Christian Noon
 //  All rights reserved.

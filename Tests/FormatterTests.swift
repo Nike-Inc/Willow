@@ -30,7 +30,7 @@
 //
 
 import XCTest
-import Timber
+import Willow
 
 #if os(iOS)
 import UIKit

@@ -11,45 +11,45 @@
 		4C8787AE1A6E3948008A313B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787A81A6E3948008A313B /* LaunchScreen.xib */; };
 		4C8787AF1A6E3948008A313B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787AA1A6E3948008A313B /* Images.xcassets */; };
 		4C8787B11A6E3948008A313B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787AC1A6E3948008A313B /* ViewController.swift */; };
-		4C8EA0C21A6C5F05001782BA /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8EA0BF1A6C5EF9001782BA /* Timber.framework */; };
-		4C8EA0C31A6C5F05001782BA /* Timber.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8EA0BF1A6C5EF9001782BA /* Timber.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4CEB14001A7C555F004FB96F /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CEB13F91A7C5556004FB96F /* Willow.framework */; };
+		4CEB14011A7C555F004FB96F /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CEB13F91A7C5556004FB96F /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4C8787A21A6E3734008A313B /* PBXContainerItemProxy */ = {
+		4CEB13F81A7C5556004FB96F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4CF89C8B1A6E2F60001BFDE1;
-			remoteInfo = "Timber OSX";
-		};
-		4C8787A41A6E3734008A313B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4CF89C951A6E2F60001BFDE1;
-			remoteInfo = "Timber OSX Tests";
-		};
-		4C8EA0BE1A6C5EF9001782BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+			containerPortal = 4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4CFE82991A6C484A0002868E;
-			remoteInfo = Timber;
+			remoteInfo = "Willow iOS";
 		};
-		4C8EA0C01A6C5EF9001782BA /* PBXContainerItemProxy */ = {
+		4CEB13FA1A7C5556004FB96F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+			containerPortal = 4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4CFE82A41A6C484A0002868E;
-			remoteInfo = TimberTests;
+			remoteInfo = "Willow iOS Tests";
 		};
-		4C8EA0C41A6C5F05001782BA /* PBXContainerItemProxy */ = {
+		4CEB13FC1A7C5556004FB96F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+			containerPortal = 4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF89C8B1A6E2F60001BFDE1;
+			remoteInfo = "Willow OSX";
+		};
+		4CEB13FE1A7C5556004FB96F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF89C951A6E2F60001BFDE1;
+			remoteInfo = "Willow OSX Tests";
+		};
+		4CEB14021A7C555F004FB96F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4CFE82981A6C484A0002868E;
-			remoteInfo = Timber;
+			remoteInfo = "Willow iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -60,7 +60,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4C8EA0C31A6C5F05001782BA /* Timber.framework in Embed Frameworks */,
+				4CEB14011A7C555F004FB96F /* Willow.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,7 +74,7 @@
 		4C8787AA1A6E3948008A313B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4C8787AB1A6E3948008A313B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C8787AC1A6E3948008A313B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Timber.xcodeproj; sourceTree = "<group>"; };
+		4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Willow.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C8EA0C21A6C5F05001782BA /* Timber.framework in Frameworks */,
+				4CEB14001A7C555F004FB96F /* Willow.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +94,7 @@
 			children = (
 				4C8787A61A6E3948008A313B /* iOS Example */,
 				4C2776A81A6C55F4007B1133 /* Products */,
-				4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */,
+				4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -126,13 +126,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4C8EA0BA1A6C5EF9001782BA /* Products */ = {
+		4CEB13F21A7C5556004FB96F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4C8EA0BF1A6C5EF9001782BA /* Timber.framework */,
-				4C8EA0C11A6C5EF9001782BA /* TimberTests.xctest */,
-				4C8787A31A6E3734008A313B /* Timber.framework */,
-				4C8787A51A6E3734008A313B /* TimberTests.xctest */,
+				4CEB13F91A7C5556004FB96F /* Willow.framework */,
+				4CEB13FB1A7C5556004FB96F /* WillowTests.xctest */,
+				4CEB13FD1A7C5556004FB96F /* Willow.framework */,
+				4CEB13FF1A7C5556004FB96F /* WillowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,7 +152,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				4C8EA0C51A6C5F05001782BA /* PBXTargetDependency */,
+				4CEB14031A7C555F004FB96F /* PBXTargetDependency */,
 			);
 			name = "iOS Example";
 			productName = Example;
@@ -186,8 +186,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 4C8EA0BA1A6C5EF9001782BA /* Products */;
-					ProjectRef = 4C8EA0B91A6C5EF9001782BA /* Timber.xcodeproj */;
+					ProductGroup = 4CEB13F21A7C5556004FB96F /* Products */;
+					ProjectRef = 4CEB13F11A7C5556004FB96F /* Willow.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -198,32 +198,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		4C8787A31A6E3734008A313B /* Timber.framework */ = {
+		4CEB13F91A7C5556004FB96F /* Willow.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Timber.framework;
-			remoteRef = 4C8787A21A6E3734008A313B /* PBXContainerItemProxy */;
+			path = Willow.framework;
+			remoteRef = 4CEB13F81A7C5556004FB96F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4C8787A51A6E3734008A313B /* TimberTests.xctest */ = {
+		4CEB13FB1A7C5556004FB96F /* WillowTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = TimberTests.xctest;
-			remoteRef = 4C8787A41A6E3734008A313B /* PBXContainerItemProxy */;
+			path = WillowTests.xctest;
+			remoteRef = 4CEB13FA1A7C5556004FB96F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4C8EA0BF1A6C5EF9001782BA /* Timber.framework */ = {
+		4CEB13FD1A7C5556004FB96F /* Willow.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Timber.framework;
-			remoteRef = 4C8EA0BE1A6C5EF9001782BA /* PBXContainerItemProxy */;
+			path = Willow.framework;
+			remoteRef = 4CEB13FC1A7C5556004FB96F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4C8EA0C11A6C5EF9001782BA /* TimberTests.xctest */ = {
+		4CEB13FF1A7C5556004FB96F /* WillowTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = TimberTests.xctest;
-			remoteRef = 4C8EA0C01A6C5EF9001782BA /* PBXContainerItemProxy */;
+			path = WillowTests.xctest;
+			remoteRef = 4CEB13FE1A7C5556004FB96F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -253,10 +253,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4C8EA0C51A6C5F05001782BA /* PBXTargetDependency */ = {
+		4CEB14031A7C555F004FB96F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Timber;
-			targetProxy = 4C8EA0C41A6C5F05001782BA /* PBXContainerItemProxy */;
+			name = "Willow iOS";
+			targetProxy = 4CEB14021A7C555F004FB96F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

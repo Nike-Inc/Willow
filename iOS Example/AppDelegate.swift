@@ -31,7 +31,7 @@
 
 
 import UIKit
-import Timber
+import Willow
 
 var log: Logger!
 
@@ -42,13 +42,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        // Creates a Timber logger without colors
-//        configureTimberLogger()
+        // Creates a Willow logger without colors
+//        configureWillowLogger()
         
         // If you want to use colored logging, you will need to have the XcodeColors plugin installed from Alcatraz
         // - XcodeColors: https://github.com/robbiehanson/XcodeColors
         // - Alcatraz: http://alcatraz.io/
-        configureColoredTimberLogger()
+        configureColoredWillowLogger()
         
         window.rootViewController = UINavigationController(rootViewController: ViewController())
         window.backgroundColor = UIColor.whiteColor()
@@ -57,11 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func configureTimberLogger() {
+    func configureWillowLogger() {
         log = Logger(logLevel: .Debug)
     }
     
-    func configureColoredTimberLogger() {
+    func configureColoredWillowLogger() {
         let purple = UIColor(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
         let blue = UIColor(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
         let green = UIColor(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)

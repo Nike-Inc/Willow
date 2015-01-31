@@ -13,15 +13,15 @@
 		4C1BBA681A6C518000D39EE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
 		4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
-		4CA75D441A6C493800275DC5 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4CA75D441A6C493800275DC5 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CC837781A6E347700B31851 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4CC837791A6E347A00B31851 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
-		4CF89C961A6E2F60001BFDE1 /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */; };
-		4CF89CA41A6E2F9A001BFDE1 /* Timber.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Timber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4CF89C961A6E2F60001BFDE1 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */; };
+		4CF89CA41A6E2F9A001BFDE1 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CF89CA51A6E2FA2001BFDE1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA631A6C518000D39EE1 /* Formatter.swift */; };
 		4CF89CA61A6E2FA2001BFDE1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA641A6C518000D39EE1 /* Logger.swift */; };
 		4CF89CA71A6E2FA2001BFDE1 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA651A6C518000D39EE1 /* Writer.swift */; };
-		4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Timber.framework */; };
+		4CFE82A51A6C484A0002868E /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CFE82991A6C484A0002868E /* Willow.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,12 +48,12 @@
 		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4CA75D421A6C493800275DC5 /* Timber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timber.h; sourceTree = "<group>"; };
+		4CA75D421A6C493800275DC5 /* Willow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Willow.h; sourceTree = "<group>"; };
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
-		4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Timber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CF89C951A6E2F60001BFDE1 /* TimberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CFE82991A6C484A0002868E /* Timber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Timber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CFE82A41A6C484A0002868E /* TimberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CFE82991A6C484A0002868E /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CFE82A41A6C484A0002868E /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CF89C961A6E2F60001BFDE1 /* Timber.framework in Frameworks */,
+				4CF89C961A6E2F60001BFDE1 /* Willow.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CFE82A51A6C484A0002868E /* Timber.framework in Frameworks */,
+				4CFE82A51A6C484A0002868E /* Willow.framework in Frameworks */,
 				321F2DF335043A818DBEC881 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -101,7 +101,7 @@
 		4CA75D401A6C493800275DC5 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				4CA75D421A6C493800275DC5 /* Timber.h */,
+				4CA75D421A6C493800275DC5 /* Willow.h */,
 				4C1BBA631A6C518000D39EE1 /* Formatter.swift */,
 				4C1BBA641A6C518000D39EE1 /* Logger.swift */,
 				4C1BBA651A6C518000D39EE1 /* Writer.swift */,
@@ -141,10 +141,10 @@
 		4CFE829A1A6C484A0002868E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4CFE82991A6C484A0002868E /* Timber.framework */,
-				4CFE82A41A6C484A0002868E /* TimberTests.xctest */,
-				4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */,
-				4CF89C951A6E2F60001BFDE1 /* TimberTests.xctest */,
+				4CFE82991A6C484A0002868E /* Willow.framework */,
+				4CFE82A41A6C484A0002868E /* WillowTests.xctest */,
+				4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */,
+				4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,7 +165,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CF89CA41A6E2F9A001BFDE1 /* Timber.h in Headers */,
+				4CF89CA41A6E2F9A001BFDE1 /* Willow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,16 +173,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CA75D441A6C493800275DC5 /* Timber.h in Headers */,
+				4CA75D441A6C493800275DC5 /* Willow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4CF89C8A1A6E2F60001BFDE1 /* Timber OSX */ = {
+		4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX" */;
+			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX" */;
 			buildPhases = (
 				4CF89C861A6E2F60001BFDE1 /* Sources */,
 				4CF89C871A6E2F60001BFDE1 /* Frameworks */,
@@ -193,14 +193,14 @@
 			);
 			dependencies = (
 			);
-			name = "Timber OSX";
+			name = "Willow OSX";
 			productName = "Timber OSX";
-			productReference = 4CF89C8B1A6E2F60001BFDE1 /* Timber.framework */;
+			productReference = 4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4CF89C941A6E2F60001BFDE1 /* Timber OSX Tests */ = {
+		4CF89C941A6E2F60001BFDE1 /* Willow OSX Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX Tests" */;
+			buildConfigurationList = 4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX Tests" */;
 			buildPhases = (
 				4CF89C911A6E2F60001BFDE1 /* Sources */,
 				4CF89C921A6E2F60001BFDE1 /* Frameworks */,
@@ -211,14 +211,14 @@
 			dependencies = (
 				4CF89C981A6E2F60001BFDE1 /* PBXTargetDependency */,
 			);
-			name = "Timber OSX Tests";
+			name = "Willow OSX Tests";
 			productName = "Timber OSXTests";
-			productReference = 4CF89C951A6E2F60001BFDE1 /* TimberTests.xctest */;
+			productReference = 4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		4CFE82981A6C484A0002868E /* Timber iOS */ = {
+		4CFE82981A6C484A0002868E /* Willow iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS" */;
+			buildConfigurationList = 4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Willow iOS" */;
 			buildPhases = (
 				4CFE82941A6C484A0002868E /* Sources */,
 				4CFE82951A6C484A0002868E /* Frameworks */,
@@ -229,14 +229,14 @@
 			);
 			dependencies = (
 			);
-			name = "Timber iOS";
+			name = "Willow iOS";
 			productName = Timber;
-			productReference = 4CFE82991A6C484A0002868E /* Timber.framework */;
+			productReference = 4CFE82991A6C484A0002868E /* Willow.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4CFE82A31A6C484A0002868E /* Timber iOS Tests */ = {
+		4CFE82A31A6C484A0002868E /* Willow iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS Tests" */;
+			buildConfigurationList = 4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "Willow iOS Tests" */;
 			buildPhases = (
 				4CFE82A01A6C484A0002868E /* Sources */,
 				4CFE82A11A6C484A0002868E /* Frameworks */,
@@ -247,9 +247,9 @@
 			dependencies = (
 				4CFE82A71A6C484A0002868E /* PBXTargetDependency */,
 			);
-			name = "Timber iOS Tests";
+			name = "Willow iOS Tests";
 			productName = TimberTests;
-			productReference = 4CFE82A41A6C484A0002868E /* TimberTests.xctest */;
+			productReference = 4CFE82A41A6C484A0002868E /* WillowTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -275,7 +275,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4CFE82931A6C484A0002868E /* Build configuration list for PBXProject "Timber" */;
+			buildConfigurationList = 4CFE82931A6C484A0002868E /* Build configuration list for PBXProject "Willow" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -287,10 +287,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4CFE82981A6C484A0002868E /* Timber iOS */,
-				4CFE82A31A6C484A0002868E /* Timber iOS Tests */,
-				4CF89C8A1A6E2F60001BFDE1 /* Timber OSX */,
-				4CF89C941A6E2F60001BFDE1 /* Timber OSX Tests */,
+				4CFE82981A6C484A0002868E /* Willow iOS */,
+				4CFE82A31A6C484A0002868E /* Willow iOS Tests */,
+				4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */,
+				4CF89C941A6E2F60001BFDE1 /* Willow OSX Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -370,12 +370,12 @@
 /* Begin PBXTargetDependency section */
 		4CF89C981A6E2F60001BFDE1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CF89C8A1A6E2F60001BFDE1 /* Timber OSX */;
+			target = 4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */;
 			targetProxy = 4CF89C971A6E2F60001BFDE1 /* PBXContainerItemProxy */;
 		};
 		4CFE82A71A6C484A0002868E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CFE82981A6C484A0002868E /* Timber iOS */;
+			target = 4CFE82981A6C484A0002868E /* Willow iOS */;
 			targetProxy = 4CFE82A61A6C484A0002868E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -398,7 +398,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = Timber;
+				PRODUCT_NAME = Willow;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -419,7 +419,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = Timber;
+				PRODUCT_NAME = Willow;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -440,7 +440,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = TimberTests;
+				PRODUCT_NAME = WillowTests;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -458,7 +458,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = TimberTests;
+				PRODUCT_NAME = WillowTests;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -559,7 +559,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = Timber;
+				PRODUCT_NAME = Willow;
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -577,7 +577,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = Timber;
+				PRODUCT_NAME = Willow;
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 			};
@@ -596,7 +596,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = TimberTests;
+				PRODUCT_NAME = WillowTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
@@ -610,7 +610,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = TimberTests;
+				PRODUCT_NAME = WillowTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
@@ -618,7 +618,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX" */ = {
+		4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CF89C9E1A6E2F60001BFDE1 /* Debug */,
@@ -627,7 +627,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Timber OSX Tests" */ = {
+		4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CF89CA01A6E2F60001BFDE1 /* Debug */,
@@ -636,7 +636,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CFE82931A6C484A0002868E /* Build configuration list for PBXProject "Timber" */ = {
+		4CFE82931A6C484A0002868E /* Build configuration list for PBXProject "Willow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CFE82AD1A6C484B0002868E /* Debug */,
@@ -645,7 +645,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS" */ = {
+		4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Willow iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CFE82B01A6C484B0002868E /* Debug */,
@@ -654,7 +654,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "Timber iOS Tests" */ = {
+		4CFE82B21A6C484B0002868E /* Build configuration list for PBXNativeTarget "Willow iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CFE82B31A6C484B0002868E /* Debug */,
