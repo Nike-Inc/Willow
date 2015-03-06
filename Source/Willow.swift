@@ -392,7 +392,6 @@ public class TimestampFormatter: Formatter {
     
     private let timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
-        formatter.locale = NSLocale.currentLocale()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         return formatter
     }()
