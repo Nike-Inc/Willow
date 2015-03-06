@@ -153,11 +153,11 @@ public class LoggerConfiguration {
         asynchronous: Bool = false,
         queue: dispatch_queue_t? = nil) -> LoggerConfiguration
     {
-        let purple = UIColor(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
-        let blue = UIColor(red: 0.176, green: 0.569, blue: 1.0, alpha: 1.0)
-        let green = UIColor(red: 0.533, green: 0.812, blue: 0.031, alpha: 1.0)
-        let orange = UIColor(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
-        let red = UIColor(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
+        let purple = Color(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
+        let blue = Color(red: 0.176, green: 0.569, blue: 1.0, alpha: 1.0)
+        let green = Color(red: 0.533, green: 0.812, blue: 0.031, alpha: 1.0)
+        let orange = Color(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
+        let red = Color(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
         
         let timestampFormatter = TimestampFormatter()
         
