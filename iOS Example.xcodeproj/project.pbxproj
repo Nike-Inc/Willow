@@ -68,7 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4C2776A71A6C55F4007B1133 /* iOS iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C2776A71A6C55F4007B1133 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C8787A71A6E3948008A313B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C8787A91A6E3948008A313B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4C8787AA1A6E3948008A313B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -101,7 +101,7 @@
 		4C2776A81A6C55F4007B1133 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4C2776A71A6C55F4007B1133 /* iOS iOS Example.app */,
+				4C2776A71A6C55F4007B1133 /* iOS Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,7 +156,7 @@
 			);
 			name = "iOS Example";
 			productName = Example;
-			productReference = 4C2776A71A6C55F4007B1133 /* iOS iOS Example.app */;
+			productReference = 4C2776A71A6C55F4007B1133 /* iOS Example.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -166,7 +166,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Christian Noon";
+				ORGANIZATIONNAME = Nike;
 				TargetAttributes = {
 					4C2776A61A6C55F4007B1133 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -360,7 +360,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "iOS iOS Example";
+				PRODUCT_NAME = "iOS Example";
 			};
 			name = Debug;
 		};
@@ -371,7 +371,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "iOS iOS Example";
+				PRODUCT_NAME = "iOS Example";
 			};
 			name = Release;
 		};
