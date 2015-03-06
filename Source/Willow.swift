@@ -396,6 +396,11 @@ public class TimestampFormatter: Formatter {
         return formatter
     }()
     
+    /**
+        Initializes a timestamp formatter instance.
+    
+        :returns: A new timestamp formatter instance.
+    */
     public init() {}
     
     /**
@@ -479,12 +484,12 @@ public class ColorFormatter: Formatter {
     private class func textStringForColor(color: Color?) -> String {
         var textString = ""
         
-        if let colorValue = color {
+        if let color = color {
             var redValue: CGFloat = 0.0
             var greenValue: CGFloat = 0.0
             var blueValue: CGFloat = 0.0
             
-            colorValue.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
+            color.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
             
             let maxValue: CGFloat = 255.0
             
