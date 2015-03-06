@@ -42,7 +42,7 @@ import Foundation
     - Info:  Allows Info, Event, Warn and Error messages to be logged.
     - Debug: Allows Debug, Info, Event, Warn and Error messages to be logged.
 */
-public enum LogLevel: UInt, Printable {
+public enum LogLevel : UInt, Printable {
     case Error = 0, Warn, Event, Info, Debug
     
     public var description: String {
@@ -388,7 +388,7 @@ public protocol Formatter {
 /**
     The TimestampFormatter class applies a timestamp to the beginning of the message.
 */
-public class TimestampFormatter: Formatter {
+public class TimestampFormatter : Formatter {
     
     private let timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
@@ -425,7 +425,7 @@ public class TimestampFormatter: Formatter {
 
     NOTE: These should only be used with the XcodeColors plugin.
 */
-public class ColorFormatter: Formatter {
+public class ColorFormatter : Formatter {
     
     // MARK: Private - ColorConstants
     
@@ -521,7 +521,7 @@ public protocol Writer {
     The ConsoleWriter class runs all formatters in the order they were created and prints the resulting message
     to the console.
 */
-public class ConsoleWriter: Writer {
+public class ConsoleWriter : Writer {
     
     public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }

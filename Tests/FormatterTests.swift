@@ -38,7 +38,7 @@ import UIKit
 import Cocoa
 #endif
 
-class TimestampFormatterTestCase: XCTestCase {
+class TimestampFormatterTestCase : XCTestCase {
     
     func testThatItFormatsMessagesAsExpected() {
         
@@ -55,21 +55,18 @@ class TimestampFormatterTestCase: XCTestCase {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
+            XCTAssertEqual(countElements(actualMessage), 36, "Actual message 40 characters")
         }
     }
 }
 
 // MARK: -
 
-class ColorFormatterTestCase: XCTestCase {
-    
-    // MARK: - Private Properties
+class ColorFormatterTestCase : XCTestCase {
     
     var message = ""
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
-    
-    // MARK: - Setup / Teardown
     
     override func setUp() {
         self.message = "Test Message"
@@ -78,8 +75,6 @@ class ColorFormatterTestCase: XCTestCase {
     override func tearDown() {
         self.message = ""
     }
-    
-    // MARK: - Tests
     
     func testThatItAppliesForegroundColors() {
         
