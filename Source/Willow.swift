@@ -1,7 +1,7 @@
 //
 //  Willow.swift
 //
-//  Copyright (c) 2015, Christian Noon
+//  Copyright (c) 2015, Nike
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -103,7 +103,7 @@ public class LoggerConfiguration {
         self.writers = writers
         self.asynchronous = asynchronous
         self.queue = queue ?? {
-            let label = NSString(format: "com.willow.logger-%08x%08x", arc4random(), arc4random())
+            let label = NSString(format: "com.nike.willow-%08x%08x", arc4random(), arc4random())
             return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
         }()
     }
