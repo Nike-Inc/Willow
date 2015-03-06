@@ -45,7 +45,7 @@ class TimestampFormatterTestCase: XCTestCase {
         // Given
         let formatter = TimestampFormatter()
         let message = "Test Message"
-        let logLevels: [Logger.LogLevel] = [.Error, .Warn, .Event, .Info, .Debug]
+        let logLevels: [LogLevel] = [.Error, .Warn, .Event, .Info, .Debug]
         
         // When
         var actualMessages = logLevels.map { formatter.formatMessage(message, logLevel: $0) }

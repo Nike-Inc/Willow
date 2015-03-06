@@ -52,7 +52,7 @@ class TestWriter: Writer {
         self.expectedNumberOfWrites = expectedNumberOfWrites
     }
     
-    func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
+    func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         if let formatters = formatters {
             formatters.map { message = $0.formatMessage(message, logLevel: logLevel) }
             self.formattedMessages.append(message)
@@ -71,7 +71,7 @@ class TestWriter: Writer {
 // MARK: -
 
 class PrefixFormatter: Formatter {
-    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+    func formatMessage(message: String, logLevel: LogLevel) -> String {
         return "[Willow] \(message)"
     }
 }
@@ -92,13 +92,15 @@ class LoggerTestCase: XCTestCase {
     let redColor = Color(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
     
     func logger(
-        logLevel: Logger.LogLevel = .Debug,
-        formatters: [Logger.LogLevel: [Formatter]]? = nil,
+        logLevel: LogLevel = .Debug,
+        formatters: [LogLevel: [Formatter]]? = nil,
         expectedNumberOfWrites: Int = 1) -> (Logger, TestWriter)
     {
         let expectation = expectationWithDescription("Test writer should receive expected number of writes")
         let writer = TestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
-        let logger = Logger(logLevel: logLevel, formatters: formatters, writers: [writer])
+        
+        let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer], asynchronous: true)
+        let logger = Logger(configuration: configuration)
         
         return (logger, writer)
     }
@@ -300,7 +302,7 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+        let colorFormatters: [LogLevel: [Formatter]] = [
             .Debug: [ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)]
         ]
         
@@ -329,7 +331,7 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToInfoLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+        let colorFormatters: [LogLevel: [Formatter]] = [
             .Info: [ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)]
         ]
         
@@ -358,7 +360,7 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToEventLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+        let colorFormatters: [LogLevel: [Formatter]] = [
             .Event: [ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)]
         ]
         
@@ -387,8 +389,8 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToWarnLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
-            Logger.LogLevel.Warn: [ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)]
+        let colorFormatters: [LogLevel: [Formatter]] = [
+            LogLevel.Warn: [ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)]
         ]
         
         let (log, writer) = logger(formatters: colorFormatters, expectedNumberOfWrites: 5)
@@ -416,7 +418,7 @@ class LoggerColorFormatterTestCase: LoggerTestCase {
     func testThatItAppliesCorrectColorFormatterToErrorLogLevel() {
         
         // Given
-        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
+        let colorFormatters: [LogLevel: [Formatter]] = [
             .Error: [ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
         ]
         
@@ -451,7 +453,7 @@ class LoggerMultiFormatterTestCase: LoggerTestCase {
         
         // Given
         let prefixFormatter = PrefixFormatter()
-        let formatters: [Logger.LogLevel: [Formatter]] = [
+        let formatters: [LogLevel: [Formatter]] = [
             .Debug: [prefixFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)],
             .Info: [prefixFormatter, ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)],
             .Event: [prefixFormatter, ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)],
