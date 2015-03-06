@@ -29,7 +29,6 @@
 //  either expressed or implied, of the FreeBSD Project.
 //
 
-
 import UIKit
 import Willow
 
@@ -58,28 +57,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func configureWillowLogger() {
-        log = Logger(logLevel: .Debug)
+        log = Logger()
     }
     
     func configureColoredWillowLogger() {
-        let purple = UIColor(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
-        let blue = UIColor(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
-        let green = UIColor(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
-        let orange = UIColor(red: 233.0 / 255.0, green: 165.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
-        let red = UIColor(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
-        let white = UIColor.whiteColor()
-        let black = UIColor.blackColor()
-        
-        let timestampFormatter = TimestampFormatter()
-        
-        let colorFormatters: [Logger.LogLevel: [Formatter]] = [
-            .Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-            .Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-            .Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-            .Warn: [timestampFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
-            .Error: [timestampFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
-        ]
-        
-        log = Logger(logLevel: .Debug, formatters: colorFormatters)
+        log = Logger(configuration: LoggerConfiguration.coloredTimestampConfiguration())
     }
 }

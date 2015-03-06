@@ -31,6 +31,148 @@
 
 import Foundation
 
+// MARK: - LogLevel
+
+/**
+    The LogLevel enum defines all the possible logging levels for Willow.
+
+    - Error: Allows Error messages to be logged.
+    - Warn:  Allows Warn and Error messages to be logged.
+    - Event: Allows Event, Warn and Error messages to be logged.
+    - Info:  Allows Info, Event, Warn and Error messages to be logged.
+    - Debug: Allows Debug, Info, Event, Warn and Error messages to be logged.
+*/
+public enum LogLevel: UInt, Printable {
+    case Error = 0, Warn, Event, Info, Debug
+    
+    public var description: String {
+        switch self {
+        case .Error:
+            return "Error"
+        case .Warn:
+            return "Warn"
+        case .Event:
+            return "Event"
+        case .Info:
+            return "Info"
+        case .Debug:
+            return "Debug"
+        }
+    }
+}
+
+// MARK: - LoggerConfiguration
+
+/**
+    The LoggerConfiguration is a container class for storing all the configuration information to be applied to
+    a Logger instance.
+*/
+public class LoggerConfiguration {
+    
+    // MARK: Private - Properties
+    
+    private let logLevel: LogLevel
+    private let formatters: [LogLevel: [Formatter]]
+    private let writers: [Writer]
+    private let asynchronous: Bool
+    private let queue: dispatch_queue_t
+    
+    // MARK: Initialization Methods
+    
+    /**
+        Initializes a logger configuration instance.
+    
+        :param: logLevel     The logging level used to determine which messages are written. `.Debug` by default.
+        :param: formatters   The dictionary of formatters to apply to each associated log level. `nil` by default.
+        :param: writers      The writers to use when messages are written. `[ConsoleWriter()]` by default.
+        :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
+        :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
+                             logger instances. `nil` by default.
+    
+        :returns: A fully initialized logger configuration instance.
+    */
+    public init(
+        logLevel: LogLevel = .Debug,
+        formatters: [LogLevel: [Formatter]]? = nil,
+        writers: [Writer] = [ConsoleWriter()],
+        asynchronous: Bool = false,
+        queue: dispatch_queue_t? = nil)
+    {
+        self.logLevel = logLevel
+        self.formatters = formatters ?? [LogLevel: [Formatter]]()
+        self.writers = writers
+        self.asynchronous = asynchronous
+        self.queue = queue ?? {
+            let label = NSString(format: "com.willow.logger-%08x%08x", arc4random(), arc4random())
+            return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
+        }()
+    }
+    
+    // MARK: Customized Configurations
+    
+    /**
+        Creates a logger configuration instance with a timestamp formatter applied to each log level.
+    
+        :param: logLevel     The logging level used to determine which messages are written. `.Debug` by default.
+        :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
+        :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
+                             logger instances. `nil` by default.
+    
+        :returns: A fully initialized logger configuration instance.
+    */
+    public class func timestampConfiguration(
+        logLevel: LogLevel = .Debug,
+        asynchronous: Bool = false,
+        queue: dispatch_queue_t? = nil) -> LoggerConfiguration
+    {
+        let timestampFormatter = [TimestampFormatter()]
+        
+        let formatters: [LogLevel: [Formatter]] = [
+            .Debug: timestampFormatter,
+            .Info: timestampFormatter,
+            .Event: timestampFormatter,
+            .Warn: timestampFormatter,
+            .Error: timestampFormatter,
+        ]
+        
+        return LoggerConfiguration(logLevel: logLevel, formatters: formatters, asynchronous: asynchronous, queue: queue)
+    }
+    
+    /**
+        Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
+    
+        :param: logLevel     The logging level used to determine which messages are written. `.Debug` by default.
+        :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
+        :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
+                             logger instances. `nil` by default.
+    
+        :returns: A fully initialized logger configuration instance.
+    */
+    public class func coloredTimestampConfiguration(
+        logLevel: LogLevel = .Debug,
+        asynchronous: Bool = false,
+        queue: dispatch_queue_t? = nil) -> LoggerConfiguration
+    {
+        let purple = UIColor(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
+        let blue = UIColor(red: 0.176, green: 0.569, blue: 1.0, alpha: 1.0)
+        let green = UIColor(red: 0.533, green: 0.812, blue: 0.031, alpha: 1.0)
+        let orange = UIColor(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
+        let red = UIColor(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
+        
+        let timestampFormatter = TimestampFormatter()
+        
+        let formatters: [LogLevel: [Formatter]] = [
+            .Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
+            .Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
+            .Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
+            .Warn: [timestampFormatter, ColorFormatter(foregroundColor: orange, backgroundColor: nil)],
+            .Error: [timestampFormatter, ColorFormatter(foregroundColor: red, backgroundColor: nil)]
+        ]
+        
+        return LoggerConfiguration(logLevel: logLevel, formatters: formatters, asynchronous: asynchronous, queue: queue)
+    }
+}
+
 // MARK: - Logger
 
 /**
@@ -43,36 +185,6 @@ import Foundation
 */
 public class Logger {
     
-    // MARK: LogLevel
-    
-    /**
-        The LogLevel enum defines all the possible logging levels for Willow.
-    
-        - Error: Allows Error messages to be logged.
-        - Warn:  Allows Warn and Error messages to be logged.
-        - Event: Allows Event, Warn and Error messages to be logged.
-        - Info:  Allows Info, Event, Warn and Error messages to be logged.
-        - Debug: Allows Debug, Info, Event, Warn and Error messages to be logged.
-    */
-    public enum LogLevel: UInt, Printable {
-        case Error = 0, Warn, Event, Info, Debug
-        
-        public var description: String {
-            switch self {
-            case .Error:
-                return "Error"
-            case .Warn:
-                return "Warn"
-            case .Event:
-                return "Event"
-            case .Info:
-                return "Info"
-            case .Debug:
-                return "Debug"
-            }
-        }
-    }
-    
     // MARK: Properties
     
     /// Controls whether to allow log messages to be sent to the writers.
@@ -80,37 +192,21 @@ public class Logger {
     
     // MARK: Private - Properties
     
-    private let logLevel: LogLevel
-    private let formatters: [LogLevel: [Formatter]]
-    private let writers: [Writer]
-    private let queue: dispatch_queue_t
+    private let configuration: LoggerConfiguration
+    private let dispatch_method: (dispatch_queue_t!, dispatch_block_t!) -> Void
     
     // MARK: Initialization Methods
     
     /**
         Initializes a logger instance.
     
-        :param: logLevel   The logging level used to determine which messages are written. `.Info` by default.
-        :param: formatters The dictionary of formatters to apply to each associated log level. `nil` by default.
-        :param: writers    The writers to use when messages are written. `[ConsoleWriter()]` by default.
-        :param: queue      A custom queue to swap out for the default one. This allows sharing queues between multiple
-                           logger instances. `nil` by default.
+        :param: configuration The configuration to use when determining how to log messages.
     
         :returns: A fully initialized logger instance.
     */
-    public init(
-        logLevel: LogLevel = .Info,
-        formatters: [LogLevel: [Formatter]]? = nil,
-        writers: [Writer] = [ConsoleWriter()],
-        queue: dispatch_queue_t? = nil)
-    {
-        self.logLevel = logLevel
-        self.formatters = formatters ?? [LogLevel: [Formatter]]()
-        self.writers = writers
-        self.queue = queue ?? {
-            let label = NSString(format: "com.willow.logger-%08x%08x", arc4random(), arc4random())
-            return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
-        }()
+    public init(configuration: LoggerConfiguration? = nil) {
+        self.configuration = configuration ?? LoggerConfiguration()
+        self.dispatch_method = self.configuration.asynchronous ? dispatch_async : dispatch_sync
     }
     
     // MARK: Logging Methods
@@ -122,7 +218,7 @@ public class Logger {
     */
     public func debug(message: String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Debug)
             }
         }
@@ -135,7 +231,7 @@ public class Logger {
     */
     public func debug(closure: () -> String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Debug)
             }
         }
@@ -148,7 +244,7 @@ public class Logger {
     */
     public func info(message: String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Info)
             }
         }
@@ -161,7 +257,7 @@ public class Logger {
     */
     public func info(closure: () -> String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Info)
             }
         }
@@ -174,7 +270,7 @@ public class Logger {
     */
     public func event(message: String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Event)
             }
         }
@@ -187,7 +283,7 @@ public class Logger {
     */
     public func event(closure: () -> String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Event)
             }
         }
@@ -200,7 +296,7 @@ public class Logger {
     */
     public func warn(message: String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Warn)
             }
         }
@@ -213,7 +309,7 @@ public class Logger {
     */
     public func warn(closure: () -> String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Warn)
             }
         }
@@ -226,7 +322,7 @@ public class Logger {
     */
     public func error(message: String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Error)
             }
         }
@@ -239,7 +335,7 @@ public class Logger {
     */
     public func error(closure: () -> String) {
         if self.enabled {
-            dispatch_async(self.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Error)
             }
         }
@@ -260,12 +356,12 @@ public class Logger {
     }
     
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
-        return logLevel.rawValue <= self.logLevel.rawValue
+        return logLevel.rawValue <= self.configuration.logLevel.rawValue
     }
     
     private func logMessage(var message: String, logLevel: LogLevel) {
-        let formatters = self.formatters[logLevel]
-        self.writers.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
+        let formatters = self.configuration.formatters[logLevel]
+        self.configuration.writers.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
     }
 }
 
@@ -284,7 +380,7 @@ public typealias Color = NSColor
     flexible allowing any object that conforms to use formatting scheme it wants.
 */
 public protocol Formatter {
-    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String
+    func formatMessage(message: String, logLevel: LogLevel) -> String
 }
 
 // MARK: - TimestampFormatter
@@ -311,7 +407,7 @@ public class TimestampFormatter: Formatter {
     
         :returns: A newly formatted message.
     */
-    public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+    public func formatMessage(message: String, logLevel: LogLevel) -> String {
         let timestampString = self.timestampFormatter.stringFromDate(NSDate())
         return "\(timestampString) \(message)"
     }
@@ -375,7 +471,7 @@ public class ColorFormatter: Formatter {
     
         :returns: A new string with all the color formatting values added.
     */
-    public func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+    public func formatMessage(message: String, logLevel: LogLevel) -> String {
         return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
     }
     
@@ -412,7 +508,7 @@ public class ColorFormatter: Formatter {
     party service, etc.
 */
 public protocol Writer {
-    func writeMessage(message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?)
+    func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?)
 }
 
 // MARK: - ConsoleWriter
@@ -423,7 +519,7 @@ public protocol Writer {
 */
 public class ConsoleWriter: Writer {
     
-    public func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
+    public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
         println(message)
     }
