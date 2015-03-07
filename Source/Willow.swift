@@ -69,13 +69,22 @@ public enum LogLevel : UInt, Printable {
 */
 public class LoggerConfiguration {
     
-    // MARK: Private - Properties
+    // MARK: Properties
     
-    private let logLevel: LogLevel
-    private let formatters: [LogLevel: [Formatter]]
-    private let writers: [Writer]
-    private let asynchronous: Bool
-    private let queue: dispatch_queue_t
+    /// The logging level used to determine which messages are written.
+    public let logLevel: LogLevel
+    
+    /// The dictionary of formatters to apply to each associated log level.
+    public let formatters: [LogLevel: [Formatter]]
+    
+    /// The writers to use when messages are written.
+    public let writers: [Writer]
+    
+    /// Whether to write messages asynchronously to the internal queue.
+    public let asynchronous: Bool
+    
+    /// A custom queue to swap out for the default one. This allows sharing queues between multiple logger instances.
+    public let queue: dispatch_queue_t
     
     // MARK: Initialization Methods
     
@@ -190,9 +199,11 @@ public class Logger {
     /// Controls whether to allow log messages to be sent to the writers.
     public var enabled = true
     
+    /// The configuration to use when determining how to log messages.
+    public let configuration: LoggerConfiguration
+    
     // MARK: Private - Properties
     
-    private let configuration: LoggerConfiguration
     private let dispatch_method: (dispatch_queue_t!, dispatch_block_t!) -> Void
     
     // MARK: Initialization Methods
