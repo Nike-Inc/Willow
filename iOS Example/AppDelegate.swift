@@ -37,7 +37,7 @@ var log: Logger!
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    lazy var window = UIWindow(frame: UIScreen.mainScreen().bounds)
+    var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -49,9 +49,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // - Alcatraz: http://alcatraz.io/
         configureColoredWillowLogger()
         
-        window.rootViewController = UINavigationController(rootViewController: ViewController())
-        window.backgroundColor = UIColor.whiteColor()
-        window.makeKeyAndVisible()
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        self.window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        self.window?.backgroundColor = UIColor.whiteColor()
+        self.window?.makeKeyAndVisible()
         
         return true
     }

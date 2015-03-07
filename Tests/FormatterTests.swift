@@ -55,7 +55,7 @@ class TimestampFormatterTestCase : XCTestCase {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
-            XCTAssertEqual(countElements(actualMessage), 36, "Actual message 40 characters")
+            XCTAssertEqual(count(actualMessage), 36, "Actual message 40 characters")
         }
     }
 }

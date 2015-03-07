@@ -204,7 +204,7 @@ public class Logger {
     
     // MARK: Private - Properties
     
-    private let dispatch_method: (dispatch_queue_t!, dispatch_block_t!) -> Void
+    private let dispatch_method: (dispatch_queue_t, dispatch_block_t) -> Void
     
     // MARK: Initialization Methods
     
@@ -449,8 +449,8 @@ public class ColorFormatter : Formatter {
     
     // MARK: Private - Properties
     
-    private let foregroundText = ""
-    private let backgroundText = ""
+    private let foregroundText: String
+    private let backgroundText: String
     
     // MARK: Initialization Methods
     
@@ -470,10 +470,14 @@ public class ColorFormatter : Formatter {
         
         if (!foregroundTextString.isEmpty) {
             self.foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
+        } else {
+            self.foregroundText = ""
         }
         
         if (!backgroundTextString.isEmpty) {
             self.backgroundText = "\(ColorConstants.ESCAPE)bg\(backgroundTextString);"
+        } else {
+            self.backgroundText = ""
         }
     }
     

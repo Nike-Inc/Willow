@@ -62,7 +62,7 @@ class ViewController: UIViewController {
         ]
         
         for (name: String, selector: Selector) in buttonProperties {
-            let button = UIButton.buttonWithType(UIButtonType.System) as UIButton
+            let button = UIButton.buttonWithType(UIButtonType.System) as! UIButton
             button.setTitle(name, forState: UIControlState.Normal)
             button.addTarget(self, action: selector, forControlEvents: .TouchUpInside)
             
