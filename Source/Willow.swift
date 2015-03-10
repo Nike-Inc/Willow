@@ -211,12 +211,13 @@ public class Logger {
     /**
         Initializes a logger instance.
     
-        :param: configuration The configuration to use when determining how to log messages.
+        :param: configuration The configuration to use when determining how to log messages. Creates a default 
+                              `LoggerConfiguration()` by default.
     
         :returns: A fully initialized logger instance.
     */
-    public init(configuration: LoggerConfiguration? = nil) {
-        self.configuration = configuration ?? LoggerConfiguration()
+    public init(configuration: LoggerConfiguration = LoggerConfiguration()) {
+        self.configuration = configuration
         self.dispatch_method = self.configuration.asynchronous ? dispatch_async : dispatch_sync
     }
     
