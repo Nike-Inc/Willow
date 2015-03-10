@@ -185,9 +185,9 @@ public class LoggerConfiguration {
 // MARK: - Logger
 
 /**
-    The Logger class is a fully thread-safe, asynchronous logging solution using dependency injection to allow custom
-    Formatters and Writers. It also manages all the logic to determine whether to log a particular message with a given
-    log level.
+    The Logger class is a fully thread-safe, synchronous or asynchronous logging solution using dependency injection 
+    to allow custom Formatters and Writers. It also manages all the logic to determine whether to log a particular 
+    message with a given log level.
 
     Loggers can only be configured during initialization. If you need to change a logger at runtime, it is advised to
     create an additional logger with a custom configuration to fit your needs.
