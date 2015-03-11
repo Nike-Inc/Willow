@@ -395,6 +395,10 @@ Willow is named after the one, the only, Willow tree.
 
 - [Christian Noon](https://github.com/cnoon) ([@Christian_Noon](https://twitter.com/Christian_Noon))
 
+## Contributors
+
+- [Eric Appel](https://github.com/ericappel) ([@EricAppel](https://twitter.com/EricAppel))
+
 ## License
 
 Willow is released under the FreeBSD license. See LICENSE for details.
