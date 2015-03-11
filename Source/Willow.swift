@@ -230,7 +230,9 @@ public class Logger {
     */
     public func debug(message: String) {
         if self.enabled {
-            logMessageIfAllowed(message, logLevel: .Debug)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Debug)
+            }
         }
     }
     
@@ -241,7 +243,9 @@ public class Logger {
     */
     public func debug(closure: () -> String) {
         if self.enabled {
-            logMessageIfAllowed(closure, logLevel: .Debug)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Debug)
+            }
         }
     }
     
@@ -252,7 +256,9 @@ public class Logger {
     */
     public func info(message: String) {
         if self.enabled {
-            logMessageIfAllowed(message, logLevel: .Info)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Info)
+            }
         }
     }
     
@@ -263,7 +269,9 @@ public class Logger {
     */
     public func info(closure: () -> String) {
         if self.enabled {
-            logMessageIfAllowed(closure, logLevel: .Info)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Info)
+            }
         }
     }
     
@@ -274,7 +282,9 @@ public class Logger {
     */
     public func event(message: String) {
         if self.enabled {
-            logMessageIfAllowed(message, logLevel: .Event)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Event)
+            }
         }
     }
     
@@ -285,7 +295,9 @@ public class Logger {
     */
     public func event(closure: () -> String) {
         if self.enabled {
-            logMessageIfAllowed(closure, logLevel: .Event)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Event)
+            }
         }
     }
     
@@ -296,7 +308,9 @@ public class Logger {
     */
     public func warn(message: String) {
         if self.enabled {
-            logMessageIfAllowed(message, logLevel: .Warn)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Warn)
+            }
         }
     }
     
@@ -307,7 +321,9 @@ public class Logger {
     */
     public func warn(closure: () -> String) {
         if self.enabled {
-            logMessageIfAllowed(closure, logLevel: .Warn)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Warn)
+            }
         }
     }
     
@@ -318,7 +334,9 @@ public class Logger {
     */
     public func error(message: String) {
         if self.enabled {
-            logMessageIfAllowed(message, logLevel: .Error)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(message, logLevel: .Error)
+            }
         }
     }
     
@@ -329,25 +347,23 @@ public class Logger {
     */
     public func error(closure: () -> String) {
         if self.enabled {
-            logMessageIfAllowed(closure, logLevel: .Error)
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Error)
+            }
         }
     }
     
     // MARK: Private - Logging Helper Methods
     
     private func logMessageIfAllowed(message: String, logLevel: LogLevel) {
-        self.dispatch_method(self.configuration.queue) { [unowned self] in
-            if self.logLevelAllowed(logLevel) {
-                self.logMessage(message, logLevel: logLevel)
-            }
+        if logLevelAllowed(logLevel) {
+            logMessage(message, logLevel: logLevel)
         }
     }
     
     private func logMessageIfAllowed(closure: () -> String, logLevel: LogLevel) {
-        self.dispatch_method(self.configuration.queue) { [unowned self] in
-            if self.logLevelAllowed(logLevel) {
-                self.logMessage(closure(), logLevel: logLevel)
-            }
+        if logLevelAllowed(logLevel) {
+            logMessage(closure(), logLevel: logLevel)
         }
     }
     
