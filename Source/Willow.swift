@@ -59,7 +59,7 @@ public enum LogLevel: UInt, Printable {
     }
 }
 
-// MARK: - LoggerConfiguration
+// MARK: -
 
 /**
     The LoggerConfiguration is a container class for storing all the configuration information to be applied to
@@ -180,7 +180,7 @@ public class LoggerConfiguration {
     }
 }
 
-// MARK: - Logger
+// MARK: -
 
 /**
     The Logger class is a fully thread-safe, synchronous or asynchronous logging solution using dependency injection 
@@ -393,7 +393,7 @@ public protocol Formatter {
     func formatMessage(message: String, logLevel: LogLevel) -> String
 }
 
-// MARK: - TimestampFormatter
+// MARK: -
 
 /**
     The TimestampFormatter class applies a timestamp to the beginning of the message.
@@ -427,7 +427,7 @@ public class TimestampFormatter: Formatter {
     }
 }
 
-// MARK: - ColorFormatter
+// MARK: -
 
 /**
     The ColorFormatter class takes foreground and background colors and applies them to a given message. It uses the
@@ -529,7 +529,7 @@ public protocol Writer {
     func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?)
 }
 
-// MARK: - ConsoleWriter
+// MARK: -
 
 /**
     The ConsoleWriter class runs all formatters in the order they were created and prints the resulting message
