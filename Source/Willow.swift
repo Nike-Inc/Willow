@@ -29,8 +29,6 @@
 //  either expressed or implied, of the FreeBSD Project.
 //
 
-import Foundation
-
 // MARK: - LogLevel
 
 /**

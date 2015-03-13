@@ -29,8 +29,8 @@
 //  either expressed or implied, of the FreeBSD Project.
 //
 
-import XCTest
 import Willow
+import XCTest
 
 #if os(iOS)
 import UIKit
