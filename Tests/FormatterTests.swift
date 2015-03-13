@@ -38,7 +38,7 @@ import UIKit
 import Cocoa
 #endif
 
-class TimestampFormatterTestCase : XCTestCase {
+class TimestampFormatterTestCase: XCTestCase {
     
     func testThatItFormatsMessagesAsExpected() {
         
@@ -62,7 +62,7 @@ class TimestampFormatterTestCase : XCTestCase {
 
 // MARK: -
 
-class ColorFormatterTestCase : XCTestCase {
+class ColorFormatterTestCase: XCTestCase {
     
     var message = ""
     let escape = "\u{001b}["

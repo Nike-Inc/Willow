@@ -40,7 +40,7 @@ import Cocoa
 
 // MARK: Helper Test Classes
 
-class SynchronousTestWriter : Writer {
+class SynchronousTestWriter: Writer {
     
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
@@ -60,7 +60,7 @@ class SynchronousTestWriter : Writer {
 
 // MARK: -
 
-class AsynchronousTestWriter : SynchronousTestWriter {
+class AsynchronousTestWriter: SynchronousTestWriter {
     
     let expectation: XCTestExpectation
     private let expectedNumberOfWrites: Int
@@ -81,7 +81,7 @@ class AsynchronousTestWriter : SynchronousTestWriter {
 
 // MARK: -
 
-class PrefixFormatter : Formatter {
+class PrefixFormatter: Formatter {
     func formatMessage(message: String, logLevel: LogLevel) -> String {
         return "[Willow] \(message)"
     }
@@ -89,7 +89,7 @@ class PrefixFormatter : Formatter {
 
 // MARK: - Base Test Cases
 
-class SynchronousLoggerTestCase : XCTestCase {
+class SynchronousLoggerTestCase: XCTestCase {
     
     var message = "Test Message"
     let defaultTimeout = 0.1
@@ -117,7 +117,7 @@ class SynchronousLoggerTestCase : XCTestCase {
 
 // MARK: -
 
-class AsynchronousLoggerTestCase : SynchronousLoggerTestCase {
+class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     func logger(
         logLevel: LogLevel = .Debug,
         formatters: [LogLevel: [Formatter]]? = nil,
@@ -135,7 +135,7 @@ class AsynchronousLoggerTestCase : SynchronousLoggerTestCase {
 
 // MARK: - Tests
 
-class SynchronousLoggerLogLevelTestCase : SynchronousLoggerTestCase {
+class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
     
     func testThatItLogsAsExpectedWithDebugLogLevel() {
         
@@ -250,7 +250,7 @@ class SynchronousLoggerLogLevelTestCase : SynchronousLoggerTestCase {
 
 // MARK: -
 
-class AsynchronousLoggerLogLevelTestCase : AsynchronousLoggerTestCase {
+class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     
     func testThatItLogsAsExpectedWithDebugLogLevel() {
         
@@ -375,7 +375,7 @@ class AsynchronousLoggerLogLevelTestCase : AsynchronousLoggerTestCase {
 
 // MARK: -
 
-class SynchronousLoggerEnabledTestCase : SynchronousLoggerTestCase {
+class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
     
     func testThatItLogsAllLogLevelsWhenEnabled() {
         
@@ -430,7 +430,7 @@ class SynchronousLoggerEnabledTestCase : SynchronousLoggerTestCase {
 
 // MARK: -
 
-class SynchronousLoggerColorFormatterTestCase : SynchronousLoggerTestCase {
+class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
     
     func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
         
@@ -570,7 +570,7 @@ class SynchronousLoggerColorFormatterTestCase : SynchronousLoggerTestCase {
 
 // MARK: -
 
-class SynchronousLoggerMultiFormatterTestCase : SynchronousLoggerTestCase {
+class SynchronousLoggerMultiFormatterTestCase: SynchronousLoggerTestCase {
     
     func testThatItLogsOutputAsExpectedWithMultipleFormatters() {
         
