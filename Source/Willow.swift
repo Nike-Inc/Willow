@@ -224,9 +224,9 @@ public class Logger {
     /**
         Writes out the given message with the logger configuration if the debug log level is allowed.
     
-        :param: message The message string autoclosure to write out.
+        :param: message The message to write out.
     */
-    public func debug(message: @autoclosure () -> String) {
+    public func debug(message: String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Debug)
@@ -250,9 +250,9 @@ public class Logger {
     /**
         Writes out the given message with the logger configuration if the info log level is allowed.
     
-        :param: message The message string autoclosure to write out.
+        :param: message The message to write out.
     */
-    public func info(message: @autoclosure () -> String) {
+    public func info(message: String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Info)
@@ -276,9 +276,9 @@ public class Logger {
     /**
         Writes out the given message with the logger configuration if the event log level is allowed.
     
-        :param: message The message string autoclosure to write out.
+        :param: message The message to write out.
     */
-    public func event(message: @autoclosure () -> String) {
+    public func event(message: String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Event)
@@ -302,9 +302,9 @@ public class Logger {
     /**
         Writes out the given message with the logger configuration if the warn log level is allowed.
     
-        :param: message The message string autoclosure to write out.
+        :param: message The message to write out.
     */
-    public func warn(message: @autoclosure () -> String) {
+    public func warn(message: String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Warn)
@@ -328,9 +328,9 @@ public class Logger {
     /**
         Writes out the given message with the logger configuration if the error log level is allowed.
     
-        :param: message The message string autoclosure to write out.
+        :param: message The message to write out.
     */
-    public func error(message: @autoclosure () -> String) {
+    public func error(message: String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(message, logLevel: .Error)
@@ -352,6 +352,12 @@ public class Logger {
     }
     
     // MARK: Private - Logging Helper Methods
+    
+    private func logMessageIfAllowed(message: String, logLevel: LogLevel) {
+        if logLevelAllowed(logLevel) {
+            logMessage(message, logLevel: logLevel)
+        }
+    }
     
     private func logMessageIfAllowed(closure: () -> String, logLevel: LogLevel) {
         if logLevelAllowed(logLevel) {
