@@ -95,7 +95,6 @@
 		4CA75D401A6C493800275DC5 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				4CA75D421A6C493800275DC5 /* Willow.h */,
 				4CEB14061A7C5917004FB96F /* Willow.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
 			);
@@ -106,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				4CA75D411A6C493800275DC5 /* Info.plist */,
+				4CA75D421A6C493800275DC5 /* Willow.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
