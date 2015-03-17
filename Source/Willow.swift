@@ -503,7 +503,15 @@ public class ColorFormatter: Formatter {
             var greenValue: CGFloat = 0.0
             var blueValue: CGFloat = 0.0
             
-            color.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
+            // Since the colorspace on OSX is not guaranteed to be `deviceRGBColorSpace`, the color must be converted
+            // to guarantee that the `getRed(_:green:blue:alpha:)` call will succeed.
+            #if os(OSX)
+                if let rgbColor = color.colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace()) {
+                    rgbColor.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
+                }
+            #elseif os(iOS)
+                color.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
+            #endif
             
             let maxValue: CGFloat = 255.0
             
