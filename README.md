@@ -5,7 +5,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Features
 
 - Multiple Log Levels
-- Simple Logging Functions and Closures
+- Simple Logging Functions using Closures
 - Configurable Synchronous or Asynchronous Execution
 - Thread-Safe Logging Output (No Log Mangling)
 - Custom Formatters through Dependency Injection
@@ -20,7 +20,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.1
+- Xcode 6.2
 
 ## Communication
 
@@ -32,36 +32,46 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Installation
 
+> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks.**
+> It is highly recommended to target only iOS 8+ when using Willow. Targeting iOS 7 and below is problematic and not supported by dependency management systems such as CocoaPods and Carthage.
+> For Swift 1.2 using the Xcode 6.3 Beta, use the swift_1.2 branch.
+
 ### CocoaPods
 
-[CocoaPods](http://cocoapods.org/) has new released support for Swift in the latest beta release. First, make sure you have the latest beta version installed.
+[CocoaPods](http://cocoapods.org/) is a dependency manager for Cocoa projects.
 
-```
-[sudo] gem install cocoapods --pre
+CocoaPods 0.36 adds supports for Swift and embedded frameworks. You can install it with the following command:
+
+```bash
+[sudo] gem install cocoapods
 ```
 
 Now to add the `Willow` pod to your project, create your [Podfile](http://guides.cocoapods.org/using/the-podfile.html) and add the following.
 
-```
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
 pod 'Willow', '1.0.0'
 ```
 
-> NOTE: You have to have the pre-release version of CocoaPods install and an iOS deployment target of 8.0+.
-
 ### Carthage
 
-First, you need to make sure you have [Carthage](https://github.com/Carthage/Carthage) installed.
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
 
-```
+You can install Carthage with Homebrew using the following command:
+
+```bash
 brew update
 brew install carthage
 ```
 
-Then add the following to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
+To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
 # Require version 1.0.0 or later
-github "cnoon/Willow" >= 1.0.0
+github "nike/Willow" >= 1.0.0
 ```
 
 ---
@@ -100,44 +110,56 @@ The `println` function does not guarantee that the `String` parameter will be fu
 
 > It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `dispatch_queue_t` that is shared between both configurations. For more info...see the [Advanced Usage](Advanced Usage) section.
 
-### Logging Messages
+### Logging Messages with Closures
+
+The logging syntax of Willow was optimized to make logging as lightweight and easy to remember as possible. Developers should be able to focus on the task at hand and not remembering how to write a log message.
+
+#### Single Line Closures
 
 ```swift
 let log = Logger()
 
-log.debug("Debug Message")
+log.debug { "Debug Message" }
 // Debug Message
-log.info("Info Message")
+log.info { "Info Message" }
 // Info Message
-log.event("Event Message")
+log.event { "Event Message" }
 // Event Message
-log.warn("Warn Message")
+log.warn { "Warn Message" }
 // Warn Message
-log.error("Error Message")
+log.error { "Error Message" }
 // Error Message
 ```
 
-The syntax was optimized to make logging as lightweight as possible. Developers should be able to focus on the task at hand and not remembering how to write a log message.
+The single line closure does not require a `return` declaration since it is implied in Swift. This makes it very easy to declare a closure. There are some VERY important performance considerations which is why Willow only accepts closures for all the Logger convenience methods. See the [Closure Performance](Closure Performance) section for more information.
 
-> By default, only the `String` message will be logged. See the [Formatters](Formatters) section for more information about customizing log message formats.
+> By default, only the `String` returned by the closure will be logged. See the [Formatters](Formatters) section for more information about customizing log message formats.
 
-### Logging Message Closures
+#### Multi-Line Closures
 
-Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky. We want to make sure logic is encapsulated and very performant. `Willow` log level closures allow you to cleanly wrap all the logic to build up the message. Once you pass the closure off to the `Logger`, it will only run that closure if the log level specified is actually enabled. This allows you to encapsulate all the logic around creating the log message, while ensure it will only run if the log message will actually be executed.
+Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky. We want to make sure logic is encapsulated and very performant. `Willow` log level closures allow you to cleanly wrap all the logic to build up the message.
 
 ```swift
 log.debug {
-  // First let's run a giant for loop to collect some info
-  // Now let's scan through the results to get some aggregate values
-  // Now I need to format the data
-  return "Computed Data Value: \(dataValue)"
+    // First let's run a giant for loop to collect some info
+    // Now let's scan through the results to get some aggregate values
+    // Now I need to format the data
+    return "Computed Data Value: \(dataValue)"
 }
 
 log.info {
-  let countriesString = join(",", countriesArray)
-  return "Countries: \(countriesString)"
+    let countriesString = join(",", countriesArray)
+    return "Countries: \(countriesString)"
 }
 ```
+
+> Unlike the Single Line Closures, the Multi-Line Closures require a `return` declaration.
+
+#### Closure Performance
+
+Willow works exclusively with logging closures to ensure the maximum performance in all situations. Closures defer the execution of all the logic inside the closure until absolutely necessary, including the string evaluation itself. In cases where the Logger instance is disabled, log execution time was reduced by 97% over the traditional log message methods taking a `String` parameter. Additionally, the overhead for creating a closure was measured at 1% over the traditional method making it negligible. In summary, closures allow Willow to be extremely performant in all situations.
+
+> Unfortunately, it is not possible to utilize `@autoclosure` in this scenario. Swift 1.1 allows `@autoclosure` declaration, but Swift 1.2 does not, due to the way Willow supports Synchronous and Asynchronous logging. The Swift 1.2 `@autoclosure` declaration implies a `@noescape` which conflicts with the internal dispatch queue. Because of this, it was decided to avoid the `@autoclosure` declaration entirely since it would only be supported while on Swift 1.1.
 
 ### Disabling a Logger
 
