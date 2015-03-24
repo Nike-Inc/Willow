@@ -130,7 +130,8 @@ public class LoggerConfiguration {
     public class func timestampConfiguration(
         logLevel: LogLevel = .Debug,
         asynchronous: Bool = false,
-        queue: dispatch_queue_t? = nil) -> LoggerConfiguration
+        queue: dispatch_queue_t? = nil)
+        -> LoggerConfiguration
     {
         let timestampFormatter = [TimestampFormatter()]
         
@@ -158,7 +159,8 @@ public class LoggerConfiguration {
     public class func coloredTimestampConfiguration(
         logLevel: LogLevel = .Debug,
         asynchronous: Bool = false,
-        queue: dispatch_queue_t? = nil) -> LoggerConfiguration
+        queue: dispatch_queue_t? = nil)
+        -> LoggerConfiguration
     {
         let purple = Color(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
         let blue = Color(red: 0.176, green: 0.569, blue: 1.0, alpha: 1.0)
@@ -222,24 +224,11 @@ public class Logger {
     // MARK: Logging Methods
     
     /**
-        Writes out the given message with the logger configuration if the debug log level is allowed.
-    
-        :param: message The message to write out.
-    */
-    public func debug(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Debug)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message closure string with the logger configuration if the debug log level is allowed.
+        Logs the given closure string with the logger configuration if the `Debug` log level is allowed.
     
         :param: closure A closure returning the message to log.
     */
-    public func debug(closure: () -> String) {
+    public func debug(closure: Void -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Debug)
@@ -248,24 +237,11 @@ public class Logger {
     }
     
     /**
-        Writes out the given message with the logger configuration if the info log level is allowed.
-    
-        :param: message The message to write out.
-    */
-    public func info(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Info)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message closure string with the logger configuration if the info log level is allowed.
+        Logs the given closure string with the logger configuration if the `Info` log level is allowed.
     
         :param: closure A closure returning the message to log.
     */
-    public func info(closure: () -> String) {
+    public func info(closure: Void -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Info)
@@ -274,24 +250,11 @@ public class Logger {
     }
     
     /**
-        Writes out the given message with the logger configuration if the event log level is allowed.
-    
-        :param: message The message to write out.
-    */
-    public func event(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Event)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message closure string with the logger configuration if the event log level is allowed.
+        Logs the given closure string with the logger configuration if the `Event` log level is allowed.
     
         :param: closure A closure returning the message to log.
     */
-    public func event(closure: () -> String) {
+    public func event(closure: Void -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Event)
@@ -300,24 +263,11 @@ public class Logger {
     }
     
     /**
-        Writes out the given message with the logger configuration if the warn log level is allowed.
-    
-        :param: message The message to write out.
-    */
-    public func warn(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Warn)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message closure string with the logger configuration if the warn log level is allowed.
+        Logs the given closure string with the logger configuration if the `Warn` log level is allowed.
     
         :param: closure A closure returning the message to log.
     */
-    public func warn(closure: () -> String) {
+    public func warn(closure: Void -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Warn)
@@ -326,24 +276,11 @@ public class Logger {
     }
     
     /**
-        Writes out the given message with the logger configuration if the error log level is allowed.
-    
-        :param: message The message to write out.
-    */
-    public func error(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Error)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message closure string with the logger configuration if the error log level is allowed.
+        Logs the given closure string with the logger configuration if the `Error` log level is allowed.
     
         :param: closure A closure returning the message to log.
     */
-    public func error(closure: () -> String) {
+    public func error(closure: Void -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Error)

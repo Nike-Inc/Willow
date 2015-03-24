@@ -57,7 +57,6 @@ class ViewController: UIViewController {
     private func setUpButtons() {
         let buttonProperties: [(name: String, selector: Selector)] = [
             ("Log Messages", "logMessagesButtonTapped"),
-            ("Log Closure Messages", "logClosureMessagesButtonTapped"),
             ("Log Messages on Multiple Threads", "multipleThreadsButtonTapped")
         ]
         
@@ -77,19 +76,11 @@ class ViewController: UIViewController {
     // MARK: - Private - UIButton Callback Methods
     
     @objc private func logMessagesButtonTapped() {
-        log.debug("Debug Message")
-        log.info("Info Message")
-        log.event("Event Message")
-        log.warn("Warn Message")
-        log.error("Error Message")
-    }
-    
-    @objc private func logClosureMessagesButtonTapped() {
-        log.debug { "Debug Closure Message" }
-        log.info { "Info Closure Message" }
-        log.event { "Event Closure Message" }
-        log.warn { "Warn Closure Message" }
-        log.error { "Error Closure Message" }
+        log.debug { "Debug Message" }
+        log.info { "Info Message" }
+        log.event { "Event Message" }
+        log.warn { "Warn Message" }
+        log.error { "Error Message" }
     }
     
     @objc private func multipleThreadsButtonTapped() {
@@ -97,13 +88,13 @@ class ViewController: UIViewController {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
             for index in 1...iterations {
-                log.event("Running iteration \(index) of \(iterations) on thread \(NSThread.currentThread())")
+                log.event { "Running iteration \(index) of \(iterations) on thread \(NSThread.currentThread())" }
             }
         }
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             for index in 1...iterations {
-                log.info("Running iteration \(index) of \(iterations) on thread \(NSThread.currentThread())")
+                log.info { "Running iteration \(index) of \(iterations) on thread \(NSThread.currentThread())" }
             }
         }
         
