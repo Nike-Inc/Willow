@@ -20,7 +20,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.2
+- Xcode 6.3
 
 ## Communication
 
