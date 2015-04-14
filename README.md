@@ -32,8 +32,9 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Installation
 
-> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks.**
-> It is highly recommended to target only iOS 8+ when using Willow. Targeting iOS 7 as a deployment target is problematic and not supported by dependency management systems such as CocoaPods and Carthage.
+Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks.
+
+> Swift is not supported for deployment targets below iOS 7, so Willow can only be used with iOS 7+ deployment targets. With that said, we strongly encourage users to only use Willow in iOS 8+ deployment targets. Targeting iOS 7 is problematic and not supported by dependency management systems such as CocoaPods and Carthage.
 
 ### CocoaPods
 
