@@ -32,10 +32,10 @@
 import Foundation
 
 /**
-    The LoggerConfiguration is a container class for storing all the configuration information to be applied to
+    The LoggerConfiguration is a container struct for storing all the configuration information to be applied to
     a Logger instance.
 */
-public class LoggerConfiguration {
+public struct LoggerConfiguration {
     
     // MARK: Properties
     
@@ -97,7 +97,7 @@ public class LoggerConfiguration {
     
         :returns: A fully initialized logger configuration instance.
     */
-    public class func timestampConfiguration(
+    public static func timestampConfiguration(
         logLevel: LogLevel = .All,
         asynchronous: Bool = false,
         queue: dispatch_queue_t? = nil)
@@ -126,7 +126,7 @@ public class LoggerConfiguration {
     
         :returns: A fully initialized logger configuration instance.
     */
-    public class func coloredTimestampConfiguration(
+    public static func coloredTimestampConfiguration(
         logLevel: LogLevel = .All,
         asynchronous: Bool = false,
         queue: dispatch_queue_t? = nil)
