@@ -36,42 +36,23 @@ import XCTest
 
 extension LogLevel {
     
-    static var Verbose: LogLevel { return self(0b0000001) }
-    static var Summary: LogLevel { return self(0b0001000) }
+    // Off     = 0b00000000_00000000_00000000_00000000
+    // Verbose = 0b00000000_00000000_00000000_00000100 // new
+    // Debug   = 0b00000000_00000000_00000000_00010000
+    // Info    = 0b00000000_00000000_00000010_00000000
+    // Summary = 0b00000000_00000000_00001000_00000000 // new
+    // Event   = 0b00000000_00000000_01000000_00000000
+    // Warn    = 0b00000000_00001000_00000000_00000000
+    // Error   = 0b00000001_00000000_00000000_00000000
+    // All     = 0b11111111_11111111_11111111_11111111
     
-    static func overrideDefaults() {
-        
-        // Off     = 0b0000000
-        // Verbose = 0b0000001
-        // Debug   = 0b0000010
-        // Info    = 0b0000100
-        // Summary = 0b0001000
-        // Event   = 0b0010000
-        // Warn    = 0b0100000
-        // Error   = 0b1000000
-        // All     = 0b1111111
-        
-        LogLevel.debugOverride = 0b0000010
-        LogLevel.infoOverride  = 0b0000100
-        LogLevel.eventOverride = 0b0010000
-        LogLevel.warnOverride  = 0b0100000
-        LogLevel.errorOverride = 0b1000000
-        LogLevel.allOverride   = 0b1111111
-    }
-    
-    static func restoreDefaults() {
-        LogLevel.debugOverride = nil
-        LogLevel.infoOverride  = nil
-        LogLevel.eventOverride = nil
-        LogLevel.warnOverride  = nil
-        LogLevel.errorOverride = nil
-        LogLevel.allOverride   = nil
-    }
+    private static var Verbose: LogLevel { return self(0b00000000_00000000_00000000_00000100) }
+    private static var Summary: LogLevel { return self(0b00000000_00000000_00001000_00000000) }
 }
 
 extension Logger {
     
-    public func verbose(closure: () -> String) {
+    private func verbose(closure: () -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Verbose)
@@ -79,7 +60,7 @@ extension Logger {
         }
     }
     
-    public func summary(closure: () -> String) {
+    private func summary(closure: () -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Summary)
@@ -104,27 +85,6 @@ class TestWriter: Writer {
 // MARK: - Test Cases
 
 class CustomLogLevelTestCase: XCTestCase {
-    
-    // MARK: Set Up and Tear Down
-    
-    override func setUp() {
-        LogLevel.overrideDefaults()
-    }
-    
-    override func tearDown() {
-        LogLevel.restoreDefaults()
-    }
-
-    // MARK: Private - Helper Methods
-    
-    func logger(logLevel: LogLevel = .All, formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, TestWriter) {
-        let writer = TestWriter()
-        
-        let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer])
-        let logger = Logger(configuration: configuration)
-        
-        return (logger, writer)
-    }
     
     // MARK: Tests
     
@@ -188,5 +148,16 @@ class CustomLogLevelTestCase: XCTestCase {
         
         // Then
         XCTAssertEqual(4, writer.actualNumberOfWrites, "Actual number of writes should be 4")
+    }
+    
+    // MARK: Private - Helper Methods
+    
+    func logger(logLevel: LogLevel = .All, formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, TestWriter) {
+        let writer = TestWriter()
+        
+        let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer])
+        let logger = Logger(configuration: configuration)
+        
+        return (logger, writer)
     }
 }

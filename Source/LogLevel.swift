@@ -1,5 +1,5 @@
 //
-//  Willow.swift
+//  LogLevel.swift
 //
 //  Copyright (c) 2015, Nike
 //  All rights reserved.
@@ -32,9 +32,9 @@
 import Foundation
 
 /**
-    The `LogLevel` struct defines all the default logging levels for Willow. The default log levels can also be
-    overridden using the static override properties. Customized log levels can support up to 32 different unique
-    values.
+    The `LogLevel` struct defines all the default log levels for Willow. Each default log level has a defined bitmask
+    that is guaranteed to have at least four empty bits above and below the next default log level. This allows for
+    custom log levels to be inter-mixed with the default log levels very easily.
 */
 public struct LogLevel: RawOptionSetType {
     
@@ -51,84 +51,34 @@ public struct LogLevel: RawOptionSetType {
     /// Returns the zero value bitmask of a LogLevel and satisfies the `BitwiseOperationsType` protocol.
     public static var allZeros: LogLevel { return self(0) }
     
-    //========================= Default Log Level Values =========================
+    private static let offBitmask  : RawValue = 0b00000000_00000000_00000000_00000000
+    private static let debugBitmask: RawValue = 0b00000000_00000000_00000000_00010000 // (1 << 4)
+    private static let infoBitmask : RawValue = 0b00000000_00000000_00000010_00000000 // (1 << 9)
+    private static let eventBitmask: RawValue = 0b00000000_00000000_01000000_00000000 // (1 << 14)
+    private static let warnBitmask : RawValue = 0b00000000_00001000_00000000_00000000 // (1 << 19)
+    private static let errorBitmask: RawValue = 0b00000001_00000000_00000000_00000000 // (1 << 24)
+    private static let allBitmask  : RawValue = 0b11111111_11111111_11111111_11111111
     
-    private static let offDefault   = LogLevel(0b00000)
-    private static let debugDefault = LogLevel(0b00001)
-    private static let infoDefault  = LogLevel(0b00010)
-    private static let eventDefault = LogLevel(0b00100)
-    private static let warnDefault  = LogLevel(0b01000)
-    private static let errorDefault = LogLevel(0b10000)
-    private static let allDefault   = LogLevel(0b11111)
+    /// Creates a new default `.Off` instance with a bitmask where all bits are equal to 0.
+    public static var Off: LogLevel { return self(self.offBitmask) }
     
-    //======================== Custom Log Level Overrides ========================
+    /// Creates a new default `.Debug` instance with a bitmask of `1 << 4`.
+    public static var Debug: LogLevel { return self(self.debugBitmask) }
     
-    /// The raw value used to override the default `.Off` value. `nil` by default.
-    public static var offOverride: RawValue?
+    /// Creates a new default `.Info` instance with a bitmask of `1 << 9`.
+    public static var Info: LogLevel { return self(self.infoBitmask) }
     
-    /// The raw value used to override the default `.Debug` value. `nil` by default.
-    public static var debugOverride: RawValue?
+    /// Creates a new default `.Event` instance with a bitmask of `1 << 14`.
+    public static var Event: LogLevel { return self(self.eventBitmask) }
     
-    /// The raw value used to override the default `.Info` value. `nil` by default.
-    public static var infoOverride: RawValue?
+    /// Creates a new default `.Warn` instance with a bitmask of `1 << 19`.
+    public static var Warn: LogLevel { return self(self.warnBitmask) }
     
-    /// The raw value used to override the default `.Event` value. `nil` by default.
-    public static var eventOverride: RawValue?
+    /// Creates a new default `.Error` instance with a bitmask of `1 << 24`.
+    public static var Error: LogLevel { return self(self.errorBitmask) }
     
-    /// The raw value used to override the default `.Warn` value. `nil` by default.
-    public static var warnOverride: RawValue?
-    
-    /// The raw value used to override the default `.Error` value. `nil` by default.
-    public static var errorOverride: RawValue?
-    
-    /// The raw value used to override the default `.All` value. `nil` by default.
-    public static var allOverride: RawValue?
-    
-    //============================ Default Log Levels ============================
-    
-    /// Creates a new default `.Off` instance unless overridden.
-    public static var Off: LogLevel {
-        return (self.offOverride != nil) ? self(self.offOverride!) : self.offDefault
-    }
-    
-    /// Creates a new default `.Debug` instance unless overridden.
-    public static var Debug: LogLevel {
-        return (self.debugOverride != nil) ? self(self.debugOverride!) : self.debugDefault
-    }
-    
-    /// Creates a new default `.Info` instance unless overridden.
-    public static var Info: LogLevel {
-        return (self.infoOverride != nil) ? self(self.infoOverride!) : self.infoDefault
-    }
-    
-    /// Creates a new default `.Event` instance unless overridden.
-    public static var Event: LogLevel {
-        return (self.eventOverride != nil) ? self(self.eventOverride!) : self.eventDefault
-    }
-    
-    /// Creates a new default `.Warn` instance unless overridden.
-    public static var Warn: LogLevel {
-        return (self.warnOverride != nil) ? self(self.warnOverride!) : self.warnDefault
-    }
-    
-    /// Creates a new default `.Error` instance unless overridden.
-    public static var Error: LogLevel {
-        return (self.errorOverride != nil) ? self(self.errorOverride!) : self.errorDefault
-    }
-    
-    /// Creates a new default `.All` instance unless overridden.
-    public static var All: LogLevel {
-        return (self.allOverride != nil) ? self(self.allOverride!) : self.allDefault
-    }
-    
-    /// Creates a new `LogLevel` instance containing the `.Info`, `.Event`, `.Warn` and `.Error` log levels.
-    public static var InfoAndAbove:  LogLevel { return .Debug ^ .All }
-    
-    /// Creates a new `LogLevel` instance containing the `.Event`, `.Warn` and `.Error` log levels.
-    public static var EventAndAbove: LogLevel { return .Event | .Warn ^ .Error }
-    
-    /// Creates a new `LogLevel` instance containing the `.Warn` and `.Error` log levels.
-    public static var WarnAndAbove:  LogLevel { return .Warn | .Error }
+    /// Creates a new default `.All` instance with a bitmask where all bits equal are equal to 1.
+    public static var All: LogLevel { return self(self.allBitmask) }
     
     // MARK: Initialization Methods
     
