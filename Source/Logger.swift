@@ -70,20 +70,6 @@ public class Logger {
     // MARK: - Log Methods
     
     /**
-        Writes out the given message with the logger configuration if the debug log level is allowed.
-        
-        :param: message The message to write out.
-    */
-    @availability(*, deprecated=0.2.0, message="Use the debug(closure:) method instead to optimize performance.")
-    public func debug(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Debug)
-            }
-        }
-    }
-    
-    /**
         Writes out the given message closure string with the logger configuration if the debug log level is allowed.
         
         :param: closure A closure returning the message to log.
@@ -92,20 +78,6 @@ public class Logger {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Debug)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message with the logger configuration if the info log level is allowed.
-        
-        :param: message The message to write out.
-    */
-    @availability(*, deprecated=0.2.0, message="Use the info(closure:) method instead to optimize performance.")
-    public func info(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Info)
             }
         }
     }
@@ -124,20 +96,6 @@ public class Logger {
     }
     
     /**
-        Writes out the given message with the logger configuration if the event log level is allowed.
-        
-        :param: message The message to write out.
-    */
-    @availability(*, deprecated=0.2.0, message="Use the event(closure:) method instead to optimize performance.")
-    public func event(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Event)
-            }
-        }
-    }
-    
-    /**
         Writes out the given message closure string with the logger configuration if the event log level is allowed.
         
         :param: closure A closure returning the message to log.
@@ -151,20 +109,6 @@ public class Logger {
     }
     
     /**
-        Writes out the given message with the logger configuration if the warn log level is allowed.
-        
-        :param: message The message to write out.
-    */
-    @availability(*, deprecated=0.2.0, message="Use the warn(closure:) method instead to optimize performance.")
-    public func warn(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Warn)
-            }
-        }
-    }
-    
-    /**
         Writes out the given message closure string with the logger configuration if the warn log level is allowed.
         
         :param: closure A closure returning the message to log.
@@ -173,20 +117,6 @@ public class Logger {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
                 self.logMessageIfAllowed(closure, logLevel: .Warn)
-            }
-        }
-    }
-    
-    /**
-        Writes out the given message with the logger configuration if the error log level is allowed.
-        
-        :param: message The message to write out.
-    */
-    @availability(*, deprecated=0.2.0, message="Use the error(closure:) method instead to optimize performance.")
-    public func error(message: String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(message, logLevel: .Error)
             }
         }
     }
@@ -219,12 +149,6 @@ public class Logger {
     }
     
     // MARK: - Private - Helper Methods
-    
-    private func logMessageIfAllowed(message: String, logLevel: LogLevel) {
-        if logLevelAllowed(logLevel) {
-            logMessage(message, logLevel: logLevel)
-        }
-    }
     
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
         return logLevel & self.configuration.logLevel ? true : false
