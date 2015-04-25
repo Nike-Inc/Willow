@@ -137,6 +137,22 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
 
 class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
     
+    func testThatItLogsAsExpectedWithOffLogLevel() {
+        
+        // Given
+        let (log, writer) = logger(logLevel: .Off)
+        
+        // When
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // Then
+        XCTAssertEqual(0, writer.actualNumberOfWrites, "Actual number of writes should be 0")
+    }
+    
     func testThatItLogsAsExpectedWithDebugLogLevel() {
         
         // Given
@@ -216,12 +232,70 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         // Then
         XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
     }
+    
+    func testThatItLogsAsExpectedWithAllLogLevel() {
+        
+        // Given
+        let (log, writer) = logger(logLevel: .All)
+        
+        // When
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // Then
+        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
+    }
+
+    func testThatItLogsAsExpectedWithOrdLogLevels() {
+        
+        // Given
+        let (log, writer) = logger(logLevel: .Debug | .Event | .Error)
+        
+        // When
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // Then
+        XCTAssertEqual(3, writer.actualNumberOfWrites, "Actual number of writes should be 3")
+    }
 }
 
 // MARK: -
 
 class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     
+    func testThatItLogsAsExpectedWithOffLogLevel() {
+        
+        // Given
+        let (log, writer) = logger(logLevel: .Off, expectedNumberOfWrites: 0)
+        
+        // When
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // This is an interesting test because we have to wait to make sure nothing happened. This makes it
+        // very difficult to fullfill the expectation. For now, we are using a dispatch_after that fires
+        // slightly before the timeout to fullfill the expectation.
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.075 * Float(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+            writer.expectation.fulfill()
+        }
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
+    }
+
     func testThatItLogsAsExpectedWithDebugLogLevel() {
         
         // Given
@@ -298,6 +372,24 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         
         // Given
         let (log, writer) = logger(logLevel: .Error, expectedNumberOfWrites: 1)
+        
+        // When
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
+        
+        // Then
+        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
+            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
+        }
+    }
+
+    func testThatItLogsAsExpectedWithOrdLogLevels() {
+        
+        // Given
+        let (log, writer) = logger(logLevel: .Event | .Warn | .Error, expectedNumberOfWrites: 3)
         
         // When
         log.debug { "" }
