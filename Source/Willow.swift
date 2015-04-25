@@ -29,37 +29,7 @@
 //  either expressed or implied, of the FreeBSD Project.
 //
 
-// MARK: - LogLevel
-
-/**
-    The LogLevel enum defines all the possible logging levels for Willow.
-
-    - Error: Allows Error messages to be logged.
-    - Warn:  Allows Warn and Error messages to be logged.
-    - Event: Allows Event, Warn and Error messages to be logged.
-    - Info:  Allows Info, Event, Warn and Error messages to be logged.
-    - Debug: Allows Debug, Info, Event, Warn and Error messages to be logged.
-*/
-public enum LogLevel: UInt, Printable {
-    case Error = 0, Warn, Event, Info, Debug
-    
-    public var description: String {
-        switch self {
-        case .Error:
-            return "Error"
-        case .Warn:
-            return "Warn"
-        case .Event:
-            return "Event"
-        case .Info:
-            return "Info"
-        case .Debug:
-            return "Debug"
-        }
-    }
-}
-
-// MARK: -
+import Foundation
 
 /**
     The LoggerConfiguration is a container class for storing all the configuration information to be applied to
@@ -69,7 +39,7 @@ public class LoggerConfiguration {
     
     // MARK: Properties
     
-    /// The logging level used to determine which messages are written.
+    /// The log level used to determine which messages are written.
     public let logLevel: LogLevel
     
     /// The dictionary of formatters to apply to each associated log level.
@@ -89,7 +59,7 @@ public class LoggerConfiguration {
     /**
         Initializes a logger configuration instance.
     
-        :param: logLevel     The logging level used to determine which messages are written. `.Debug` by default.
+        :param: logLevel     The log level used to determine which messages are written. `.All` by default.
         :param: formatters   The dictionary of formatters to apply to each associated log level. `nil` by default.
         :param: writers      The writers to use when messages are written. `[ConsoleWriter()]` by default.
         :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
@@ -99,7 +69,7 @@ public class LoggerConfiguration {
         :returns: A fully initialized logger configuration instance.
     */
     public init(
-        logLevel: LogLevel = .Debug,
+        logLevel: LogLevel = .All,
         formatters: [LogLevel: [Formatter]]? = nil,
         writers: [Writer] = [ConsoleWriter()],
         asynchronous: Bool = false,
@@ -120,7 +90,7 @@ public class LoggerConfiguration {
     /**
         Creates a logger configuration instance with a timestamp formatter applied to each log level.
     
-        :param: logLevel     The logging level used to determine which messages are written. `.Debug` by default.
+        :param: logLevel     The log level used to determine which messages are written. `.All` by default.
         :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
         :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
                              logger instances. `nil` by default.
@@ -128,7 +98,7 @@ public class LoggerConfiguration {
         :returns: A fully initialized logger configuration instance.
     */
     public class func timestampConfiguration(
-        logLevel: LogLevel = .Debug,
+        logLevel: LogLevel = .All,
         asynchronous: Bool = false,
         queue: dispatch_queue_t? = nil)
         -> LoggerConfiguration
@@ -149,7 +119,7 @@ public class LoggerConfiguration {
     /**
         Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
     
-        :param: logLevel     The logging level used to determine which messages are written. `.Debug` by default.
+        :param: logLevel     The log level used to determine which messages are written. `.All` by default.
         :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
         :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
                              logger instances. `nil` by default.
@@ -157,7 +127,7 @@ public class LoggerConfiguration {
         :returns: A fully initialized logger configuration instance.
     */
     public class func coloredTimestampConfiguration(
-        logLevel: LogLevel = .Debug,
+        logLevel: LogLevel = .All,
         asynchronous: Bool = false,
         queue: dispatch_queue_t? = nil)
         -> LoggerConfiguration
@@ -202,9 +172,8 @@ public class Logger {
     /// The configuration to use when determining how to log messages.
     public let configuration: LoggerConfiguration
     
-    // MARK: Private - Properties
-    
-    private let dispatch_method: (dispatch_queue_t, dispatch_block_t) -> Void
+    /// The dispatch method used when executing a log operation on the internal dispatch queue.
+    public let dispatch_method: (dispatch_queue_t, dispatch_block_t) -> Void
     
     // MARK: Initialization Methods
     
@@ -221,7 +190,7 @@ public class Logger {
         self.dispatch_method = self.configuration.asynchronous ? dispatch_async : dispatch_sync
     }
     
-    // MARK: Logging Methods
+    // MARK: Log Methods
     
     /**
         Writes out the given message with the logger configuration if the debug log level is allowed.
@@ -358,7 +327,21 @@ public class Logger {
         }
     }
     
-    // MARK: Private - Logging Helper Methods
+    // MARK: Log Level Allowed Methods
+    
+    /**
+        Executes the closure and logs the resulting message if the log level is allowed.
+    
+        :param: closure  The closure returning the message to log.
+        :param: logLevel The log level associated with the closure.
+    */
+    public func logMessageIfAllowed(closure: () -> String, logLevel: LogLevel) {
+        if logLevelAllowed(logLevel) {
+            logMessage(closure(), logLevel: logLevel)
+        }
+    }
+    
+    // MARK: Private - Helper Methods
     
     private func logMessageIfAllowed(message: String, logLevel: LogLevel) {
         if logLevelAllowed(logLevel) {
@@ -366,14 +349,8 @@ public class Logger {
         }
     }
     
-    private func logMessageIfAllowed(closure: () -> String, logLevel: LogLevel) {
-        if logLevelAllowed(logLevel) {
-            logMessage(closure(), logLevel: logLevel)
-        }
-    }
-    
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
-        return logLevel.rawValue <= self.configuration.logLevel.rawValue
+        return logLevel & self.configuration.logLevel ? true : false
     }
     
     private func logMessage(var message: String, logLevel: LogLevel) {

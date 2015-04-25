@@ -103,7 +103,7 @@ class SynchronousLoggerTestCase: XCTestCase {
     let redColor = Color(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
     
     func logger(
-        logLevel: LogLevel = .Debug,
+        logLevel: LogLevel = .All,
         formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, SynchronousTestWriter)
     {
         let writer = SynchronousTestWriter()
@@ -150,7 +150,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
         
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
+        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
     }
     
     func testThatItLogsAsExpectedWithInfoLogLevel() {
@@ -166,7 +166,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
         
         // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 4, "Actual number of writes should be 4")
+        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
     }
     
     func testThatItLogsAsExpectedWithEventLogLevel() {
@@ -182,7 +182,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
         
         // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 3, "Actual number of writes should be 3")
+        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
     }
     
     func testThatItLogsAsExpectedWithWarnLogLevel() {
@@ -198,7 +198,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
         
         // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 2, "Actual number of writes should be 2")
+        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
     }
     
     func testThatItLogsAsExpectedWithErrorLogLevel() {
@@ -214,7 +214,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
         
         // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
+        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
     }
 }
 
@@ -225,7 +225,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithDebugLogLevel() {
         
         // Given
-        let (log, writer) = logger(logLevel: .Debug, expectedNumberOfWrites: 5)
+        let (log, writer) = logger(logLevel: .Debug, expectedNumberOfWrites: 1)
         
         // When
         log.debug { "" }
@@ -243,7 +243,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithInfoLogLevel() {
         
         // Given
-        let (log, writer) = logger(logLevel: .Info, expectedNumberOfWrites: 4)
+        let (log, writer) = logger(logLevel: .Info, expectedNumberOfWrites: 1)
         
         // When
         log.debug { "" }
@@ -261,7 +261,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithEventLogLevel() {
         
         // Given
-        let (log, writer) = logger(logLevel: .Event, expectedNumberOfWrites: 3)
+        let (log, writer) = logger(logLevel: .Event, expectedNumberOfWrites: 1)
         
         // When
         log.debug { "" }
@@ -279,7 +279,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithWarnLogLevel() {
         
         // Given
-        let (log, writer) = logger(logLevel: .Warn, expectedNumberOfWrites: 2)
+        let (log, writer) = logger(logLevel: .Warn, expectedNumberOfWrites: 1)
         
         // When
         log.debug { "" }
@@ -320,7 +320,7 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
     func testThatItLogsAllLogLevelsWhenEnabled() {
         
         // Given
-        let (log, writer) = logger(logLevel: .Debug)
+        let (log, writer) = logger(logLevel: .All)
         log.enabled = true
         
         // When
@@ -335,13 +335,9 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
     }
     
     func testThatNoLoggingOccursForAnyLogLevelWhenDisabled() {
-
-        // This is an interesting test because we have to wait to make sure nothing happened. This makes it
-        // very difficult to fullfill the expectation. For now, we are using a dispatch_after that fires
-        // slightly before the timeout to fullfill the expectation.
         
         // Given
-        let (log, writer) = logger(logLevel: .Debug)
+        let (log, writer) = logger(logLevel: .All)
         log.enabled = false
         
         // When
