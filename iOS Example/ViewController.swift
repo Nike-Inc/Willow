@@ -56,7 +56,12 @@ class ViewController: UIViewController {
     
     private func setUpButtons() {
         let buttonProperties: [(name: String, selector: Selector)] = [
-            ("Log Messages", "logMessagesButtonTapped"),
+            ("Log Debug Message", "logDebugMessageButtonTapped"),
+            ("Log Info Message", "logInfoMessageButtonTapped"),
+            ("Log Event Message", "logEventMessageButtonTapped"),
+            ("Log Warn Message", "logWarnMessageButtonTapped"),
+            ("Log Error Message", "logErrorMessageButtonTapped"),
+            ("Log All Messages", "logAllMessagesButtonTapped"),
             ("Log Messages on Multiple Threads", "multipleThreadsButtonTapped")
         ]
         
@@ -75,7 +80,27 @@ class ViewController: UIViewController {
     
     // MARK: - Private - UIButton Callback Methods
     
-    @objc private func logMessagesButtonTapped() {
+    @objc private func logDebugMessageButtonTapped() {
+        log.debug { "Debug Message" }
+    }
+    
+    @objc private func logInfoMessageButtonTapped() {
+        log.info { "Info Message" }
+    }
+    
+    @objc private func logEventMessageButtonTapped() {
+        log.event { "Event Message" }
+    }
+    
+    @objc private func logWarnMessageButtonTapped() {
+        log.warn { "Warn Message" }
+    }
+    
+    @objc private func logErrorMessageButtonTapped() {
+        log.error { "Error Message" }
+    }
+    
+    @objc private func logAllMessagesButtonTapped() {
         log.debug { "Debug Message" }
         log.info { "Info Message" }
         log.event { "Event Message" }
