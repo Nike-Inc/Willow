@@ -103,7 +103,7 @@ public struct LoggerConfiguration {
         queue: dispatch_queue_t? = nil)
         -> LoggerConfiguration
     {
-        let timestampFormatter = [TimestampFormatter()]
+        let timestampFormatter: [Formatter] = [TimestampFormatter()]
         
         let formatters: [LogLevel: [Formatter]] = [
             .Debug: timestampFormatter,
