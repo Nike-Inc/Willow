@@ -4,7 +4,8 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Features
 
-- Multiple Log Levels
+- Default Log Levels
+- Custom Log Levels
 - Simple Logging Functions using Closures
 - Configurable Synchronous or Asynchronous Execution
 - Thread-Safe Logging Output (No Log Mangling)
@@ -16,6 +17,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - Shared Queues Between Multiple Loggers
 - Comprehensive Unit Test Coverage
 - Complete Documentation
+- Multiple Playgrounds
 
 ## Requirements
 
@@ -49,11 +51,14 @@ CocoaPods 0.36 adds supports for Swift and embedded frameworks. You can install 
 Now to add the `Willow` pod to your project, create your [Podfile](http://guides.cocoapods.org/using/the-podfile.html) and add the following.
 
 ```ruby
-source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Willow', '1.0.0'
+# Spec sources
+source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
+pod 'Surge', '~> 0.3.0'
 ```
 
 ### Carthage
@@ -70,8 +75,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-# Require version 1.0.0 or later
-github "nike/Willow" >= 1.0.0
+git "ssh://git@stash.nikedev.com/bmd/surge.git" ~> 0.3.0
 ```
 
 ---
@@ -91,7 +95,7 @@ The `Logger` initializer takes a single parameter which is a `LoggerConfiguratio
 
 The `LoggerConfiguration` class is a container class to store all the configuration information to be applied to a particular `Logger`. Here are all the configurable parameters and their respective descriptions.
 
-* `logLevel: LogLevel = .Info` - The logging level used to determine which messages are written.
+* `logLevel: LogLevel = .Info | .Event | .Warn | .Error` - The log level used to determine which messages are written. Each `LogLevel` conforms to the `BitwiseOperationsType`, so use bit operations if you wish to set a custom `LogLevel`. `.All` by default.
 * `formatters: [LogLevel: [Formatter]]? = nil` - The dictionary of formatters to apply to each associated log level.
 * `writers: [Writer] = [ConsoleWriter()]` - The writers to use when messages need to be written to a specific destination such as the console or to a file.
 * `asynchronous: Bool = false` - Whether to write messages asynchronously on the given queue.
@@ -330,6 +334,45 @@ let log = Logger(configuration: configuration)
 
 ## Advanced Usage
 
+### Creating Custom Log Levels
+
+Depending upon the situation, the need to support additional log levels may arise. Willow can easily support additional log levels through the art of [bitmasking](http://en.wikipedia.org/wiki/Mask_(computing)). Since the internal `RawValue` of a `LogLevel` is a `UInt`, Willow can support up to 32 log levels simultaneously for a single `Logger`. Additionally, the default bitmasks have been spread out so that there are always at least 4 empty bits between the next default `LogLevel`. That means that Willow allows for up to 27 custom log levels. That should be more than enough to handle even the most complex of logging solutions.
+
+Creating custom log levels is very simple. Here's a quick example of how to do so. First, you must create a `LogLevel` extension and add your custom values.
+
+```swift
+extension LogLevel {
+    // Off      = 0b00000000_00000000_00000000_00000000
+    // Verbose  = 0b00000000_00000000_00000000_00000100 // custom
+    // Debug    = 0b00000000_00000000_00000000_00010000
+    
+    private static var Verbose: LogLevel { return self(0b00000000_00000000_00000000_00000100) }
+}
+```
+
+Now that we have a custom log level called `Verbose`, we need to extend the `Logger` class to be able to easily call it.
+
+```swift
+extension Logger {    
+    private func verbose(closure: () -> String) {
+        if self.enabled {
+            self.dispatch_method(self.configuration.queue) { [unowned self] in
+                self.logMessageIfAllowed(closure, logLevel: .Verbose)
+            }
+        }
+    }
+}
+```
+
+Finally, using the new log level is a simple as...
+
+```swift
+let log = Logger()
+log.verbose { "My first verbose log message!" }
+```
+
+> If you wish to experiment, then please try out the CustomLogLevels playground in the Willow workspace.
+
 ### Shared Loggers between Frameworks
 
 Defining a single `Logger` and sharing that instance several frameworks could be very advantageous. Especially with the addition of Frameworks in iOS 8. Now that we're going to be creating more frameworks inside our own apps to be shared between apps, extensions and third party libraries, wouldn't it be nice if we could share `Logger` instances?
@@ -384,6 +427,7 @@ let mathConfiguration = LoggerConfiguration(
 )
 Math.log = Logger(configuration: mathConfiguration)
 ```
+> The MultipleLoggers playground in the Willow workspace contains a more in-depth example of how to create multiple loggers with a shared queue.
 
 `Willow` is a very lightweight library, but its flexibility allows it to become very powerful if you so wish.
 
@@ -391,9 +435,9 @@ Math.log = Logger(configuration: mathConfiguration)
 
 ## FAQ
 
-### Why only 5 log levels? And why are they so named?
+### Why 5 default log levels? And why are they so named?
 
-Simple...simplicity and elegance. Contextually it gets difficult to understand which log level you need if you have too many. Additionally, by not supporting log level customization, it allows concrete APIs to be optimized for simplicity. If you feel you need more log levels, I would counter that you really need another `Logger`.
+Simple...simplicity and elegance. Contextually it gets difficult to understand which log level you need if you have too many. However, that doesn't mean that this is always the perfect solution for everyone or every use case. This is why there are 5 default log levels, with support for easily adding additional ones.
 
 As for the naming, here's my own mental breakdown of each log level for an iOS app (obviously it depends on your use case).
 
