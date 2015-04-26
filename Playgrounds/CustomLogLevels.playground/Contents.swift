@@ -64,7 +64,7 @@ extension Logger {
     
     private func verbose(closure: () -> String) {
         if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) {
                 self.logMessageIfAllowed(closure, logLevel: .Verbose)
             }
         }
@@ -72,7 +72,7 @@ extension Logger {
     
     private func summary(closure: () -> String) {
         if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) {
                 self.logMessageIfAllowed(closure, logLevel: .Summary)
             }
         }
@@ -80,7 +80,7 @@ extension Logger {
     
     private func critical(closure: () -> String) {
         if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
+            self.dispatch_method(self.configuration.queue) {
                 self.logMessageIfAllowed(closure, logLevel: .Critical)
             }
         }
