@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Willow'
-  s.version = '0.2.0'
+  s.version = '0.3.0'
   s.summary = 'A powerful, yet lightweight logging library written in Swift.'
   s.homepage = 'http://stash.nikedev.com/projects/BMD/repos/willow/browse'
   s.license = { :type => 'FreeBSD', :file => 'LICENSE' }
