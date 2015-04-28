@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C2606E01AB285B8006037DF /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2606DF1AB285B8006037DF /* Willow.framework */; };
-		4C2606E11AB285B8006037DF /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2606DF1AB285B8006037DF /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; };
+		4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C8787AD1A6E3948008A313B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787A71A6E3948008A313B /* AppDelegate.swift */; };
 		4C8787AE1A6E3948008A313B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787A81A6E3948008A313B /* LaunchScreen.xib */; };
 		4C8787AF1A6E3948008A313B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787AA1A6E3948008A313B /* Images.xcassets */; };
@@ -22,7 +22,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4C2606E11AB285B8006037DF /* Willow.framework in Embed Frameworks */,
+				4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -30,7 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4C2606DF1AB285B8006037DF /* Willow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Willow.framework; path = "../Debug-iphonesimulator/Willow.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C1AD17C1AF04E6600D92E29 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2776A71A6C55F4007B1133 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C8787A71A6E3948008A313B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C8787A91A6E3948008A313B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C2606E01AB285B8006037DF /* Willow.framework in Frameworks */,
+				4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,7 +54,7 @@
 		4C0182271AB286680020D3C4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4C2606DF1AB285B8006037DF /* Willow.framework */,
+				4C1AD17C1AF04E6600D92E29 /* Willow.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
