@@ -17,7 +17,6 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - Shared Queues Between Multiple Loggers
 - Comprehensive Unit Test Coverage
 - Complete Documentation
-- Multiple Playgrounds
 
 ## Requirements
 
@@ -371,8 +370,6 @@ let log = Logger()
 log.verbose { "My first verbose log message!" }
 ```
 
-> If you wish to experiment, then please try out the CustomLogLevels playground in the Willow workspace.
-
 ### Shared Loggers between Frameworks
 
 Defining a single `Logger` and sharing that instance several frameworks could be very advantageous. Especially with the addition of Frameworks in iOS 8. Now that we're going to be creating more frameworks inside our own apps to be shared between apps, extensions and third party libraries, wouldn't it be nice if we could share `Logger` instances?
@@ -427,7 +424,6 @@ let mathConfiguration = LoggerConfiguration(
 )
 Math.log = Logger(configuration: mathConfiguration)
 ```
-> The MultipleLoggers playground in the Willow workspace contains a more in-depth example of how to create multiple loggers with a shared queue.
 
 `Willow` is a very lightweight library, but its flexibility allows it to become very powerful if you so wish.
 
