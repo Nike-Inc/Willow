@@ -53,19 +53,11 @@ extension LogLevel {
 extension Logger {
     
     private func verbose(closure: () -> String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(closure, logLevel: .Verbose)
-            }
-        }
+        logMessage(closure, withLogLevel: .Verbose)
     }
     
     private func summary(closure: () -> String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(closure, logLevel: .Summary)
-            }
-        }
+        logMessage(closure, withLogLevel: .Summary)
     }
 }
 
