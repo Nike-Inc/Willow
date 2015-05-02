@@ -7,10 +7,4 @@
    <FileRef
       location = "group:iOS Example.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Playgrounds/CustomLogLevels.playground">
-   </FileRef>
-   <FileRef
-      location = "group:Playgrounds/MultipleLoggers.playground">
-   </FileRef>
 </Workspace>
