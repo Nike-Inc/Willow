@@ -50,6 +50,7 @@ public protocol Writer {
 */
 public class ConsoleWriter: Writer {
     
+    public init() {}
     public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
         println(message)
