@@ -335,17 +335,13 @@ let log = Logger(configuration: configuration)
 
 ### Creating Custom Log Levels
 
-Depending upon the situation, the need to support additional log levels may arise. Willow can easily support additional log levels through the art of [bitmasking](http://en.wikipedia.org/wiki/Mask_(computing)). Since the internal `RawValue` of a `LogLevel` is a `UInt`, Willow can support up to 32 log levels simultaneously for a single `Logger`. Additionally, the default bitmasks have been spread out so that there are always at least 4 empty bits between the next default `LogLevel`. That means that Willow allows for up to 27 custom log levels. That should be more than enough to handle even the most complex of logging solutions.
+Depending upon the situation, the need to support additional log levels may arise. Willow can easily support additional log levels through the art of [bitmasking](http://en.wikipedia.org/wiki/Mask_(computing)). Since the internal `RawValue` of a `LogLevel` is a `UInt`, Willow can support up to 32 log levels simultaneously for a single `Logger`. Since there are 7 default log levels, Willow can support up to 27 custom log levels for a single logger. That should be more than enough to handle even the most complex of logging solutions.
 
 Creating custom log levels is very simple. Here's a quick example of how to do so. First, you must create a `LogLevel` extension and add your custom values.
 
 ```swift
 extension LogLevel {
-    // Off      = 0b00000000_00000000_00000000_00000000
-    // Verbose  = 0b00000000_00000000_00000000_00000100 // custom
-    // Debug    = 0b00000000_00000000_00000000_00010000
-
-    private static var Verbose: LogLevel { return self(0b00000000_00000000_00000000_00000100) }
+    private static let Verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
 }
 ```
 
@@ -369,6 +365,8 @@ Finally, using the new log level is a simple as...
 let log = Logger()
 log.verbose { "My first verbose log message!" }
 ```
+
+> The `All` log level contains a bitmask where all bits are set to 1. This means that the `All` log level will contain all custom log levels automatically.
 
 ### Shared Loggers between Frameworks
 
