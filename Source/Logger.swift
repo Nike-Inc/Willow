@@ -57,10 +57,10 @@ public class Logger {
     /**
         Initializes a logger instance.
 
-        :param: configuration The configuration to use when determining how to log messages. Creates a default
-                              `LoggerConfiguration()` by default.
+        - parameter configuration: The configuration to use when determining how to log messages. Creates a default
+                                   `LoggerConfiguration()` by default.
 
-        :returns: A fully initialized logger instance.
+        - returns: A fully initialized logger instance.
     */
     public init(configuration: LoggerConfiguration = LoggerConfiguration()) {
         self.configuration = configuration
@@ -72,7 +72,7 @@ public class Logger {
     /**
         Writes out the given message closure string with the logger configuration if the debug log level is allowed.
 
-        :param: closure A closure returning the message to log.
+        - parameter closure: A closure returning the message to log.
     */
     public func debug(closure: () -> String) {
         logMessage(closure, withLogLevel: .Debug)
@@ -81,7 +81,7 @@ public class Logger {
     /**
         Writes out the given message closure string with the logger configuration if the info log level is allowed.
 
-        :param: closure A closure returning the message to log.
+        - parameter closure: A closure returning the message to log.
     */
     public func info(closure: () -> String) {
         logMessage(closure, withLogLevel: .Info)
@@ -90,7 +90,7 @@ public class Logger {
     /**
         Writes out the given message closure string with the logger configuration if the event log level is allowed.
 
-        :param: closure A closure returning the message to log.
+        - parameter closure: A closure returning the message to log.
     */
     public func event(closure: () -> String) {
         logMessage(closure, withLogLevel: .Event)
@@ -99,7 +99,7 @@ public class Logger {
     /**
         Writes out the given message closure string with the logger configuration if the warn log level is allowed.
 
-        :param: closure A closure returning the message to log.
+        - parameter closure: A closure returning the message to log.
     */
     public func warn(closure: () -> String) {
         logMessage(closure, withLogLevel: .Warn)
@@ -108,7 +108,7 @@ public class Logger {
     /**
         Writes out the given message closure string with the logger configuration if the error log level is allowed.
 
-        :param: closure A closure returning the message to log.
+        - parameter closure: A closure returning the message to log.
     */
     public func error(closure: () -> String) {
         logMessage(closure, withLogLevel: .Error)
@@ -117,8 +117,8 @@ public class Logger {
     /**
         Writes out the given message closure string with the logger configuration if the log level is allowed.
 
-        :param: closure      A closure returning the message to log.
-        :param: withLogLevel The log level associated with the closure.
+        - parameter closure:      A closure returning the message to log.
+        - parameter withLogLevel: The log level associated with the closure.
     */
     public func logMessage(closure: () -> String, withLogLevel logLevel: LogLevel) {
         if self.enabled {
@@ -139,10 +139,10 @@ public class Logger {
     }
 
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
-        return logLevel & self.configuration.logLevel ? true : false
+        return self.configuration.logLevel.contains(logLevel)
     }
 
-    private func logMessage(var message: String, logLevel: LogLevel) {
+    private func logMessage(message: String, logLevel: LogLevel) {
         let formatters = self.configuration.formatters[logLevel]
         self.configuration.writers.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
     }

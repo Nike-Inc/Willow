@@ -65,17 +65,17 @@ public class TimestampFormatter: Formatter {
     /**
         Initializes a timestamp formatter instance.
 
-        :returns: A new timestamp formatter instance.
+        - returns: A new timestamp formatter instance.
     */
     public init() {}
 
     /**
         Applies a timestamp to the beginning of the message.
 
-        :param: message  The original message to format.
-        :param: logLevel The log level set for the message.
+        - parameter message:  The original message to format.
+        - parameter logLevel: The log level set for the message.
 
-        :returns: A newly formatted message.
+        - returns: A newly formatted message.
     */
     public func formatMessage(message: String, logLevel: LogLevel) -> String {
         let timestampString = self.timestampFormatter.stringFromDate(NSDate())
@@ -112,10 +112,10 @@ public class ColorFormatter: Formatter {
     /**
         Returns a fully constructed ColorFormatter from the given Color objects.
 
-        :param: foregroundColor The color to apply to the foreground.
-        :param: backgroundColor The color to apply to the background.
+        - parameter foregroundColor: The color to apply to the foreground.
+        - parameter backgroundColor: The color to apply to the background.
 
-        :returns: A fully constructed ColorFormatter from the given Color objects.
+        - returns: A fully constructed ColorFormatter from the given Color objects.
     */
     public init(foregroundColor: Color?, backgroundColor: Color?) {
         assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
@@ -141,9 +141,9 @@ public class ColorFormatter: Formatter {
     /**
         Applies the foreground, background and reset color formatting values to the given message.
 
-        :param: message The message to apply the color formatting to.
+        - parameter message: The message to apply the color formatting to.
 
-        :returns: A new string with all the color formatting values added.
+        - returns: A new string with all the color formatting values added.
     */
     public func formatMessage(message: String, logLevel: LogLevel) -> String {
         return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"

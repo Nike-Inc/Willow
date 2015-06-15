@@ -65,8 +65,8 @@ class ViewController: UIViewController {
             ("Log Messages on Multiple Threads", "multipleThreadsButtonTapped")
         ]
 
-        for (name: String, selector: Selector) in buttonProperties {
-            let button = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        for (name, selector) in buttonProperties {
+            let button = UIButton(type: .System)
             button.setTitle(name, forState: UIControlState.Normal)
             button.addTarget(self, action: selector, forControlEvents: .TouchUpInside)
 

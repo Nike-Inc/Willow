@@ -70,7 +70,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
         self.expectedNumberOfWrites = expectedNumberOfWrites
     }
 
-    override func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+    override func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         super.writeMessage(message, logLevel: logLevel, formatters: formatters)
 
         if self.actualNumberOfWrites == self.expectedNumberOfWrites {
@@ -103,7 +103,7 @@ class SynchronousLoggerTestCase: XCTestCase {
     let redColor = Color(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
 
     func logger(
-        logLevel: LogLevel = .All,
+        logLevel logLevel: LogLevel = .All,
         formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, SynchronousTestWriter)
     {
         let writer = SynchronousTestWriter()
@@ -119,7 +119,7 @@ class SynchronousLoggerTestCase: XCTestCase {
 
 class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     func logger(
-        logLevel: LogLevel = .Debug,
+        logLevel logLevel: LogLevel = .Debug,
         formatters: [LogLevel: [Formatter]]? = nil,
         expectedNumberOfWrites: Int = 1) -> (Logger, AsynchronousTestWriter)
     {
@@ -140,7 +140,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithOffLogLevel() {
 
         // Given
-        let (log, writer) = logger(logLevel: .Off)
+        let (log, writer) = logger(logLevel: LogLevel.Off)
 
         // When
         log.debug { "" }
@@ -252,7 +252,8 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithOrdLogLevels() {
 
         // Given
-        let (log, writer) = logger(logLevel: .Debug | .Event | .Error)
+        let logLevel: LogLevel = [LogLevel.Debug, LogLevel.Event, LogLevel.Error]
+        let (log, writer) = logger(logLevel: logLevel)
 
         // When
         log.debug { "" }
@@ -389,7 +390,8 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithOrdLogLevels() {
 
         // Given
-        let (log, writer) = logger(logLevel: .Event | .Warn | .Error, expectedNumberOfWrites: 3)
+        let logLevel: LogLevel = [LogLevel.Event, LogLevel.Warn, LogLevel.Error]
+        let (log, writer) = logger(logLevel: logLevel, expectedNumberOfWrites: 3)
 
         // When
         log.debug { "" }

@@ -51,11 +51,11 @@ class TimestampFormatterTestCase: XCTestCase {
         var actualMessages = logLevels.map { formatter.formatMessage(message, logLevel: $0) }
 
         // Then
-        for (index, logLevel) in enumerate(logLevels) {
+        for (index, _) in logLevels.enumerate() {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
-            XCTAssertEqual(count(actualMessage), 36, "Actual message 40 characters")
+            XCTAssertEqual(actualMessage.characters.count, 36, "Actual message 36 characters")
         }
     }
 }

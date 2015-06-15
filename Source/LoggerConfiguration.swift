@@ -59,14 +59,14 @@ public struct LoggerConfiguration {
     /**
         Initializes a logger configuration instance.
 
-        :param: logLevel     The log level used to determine which messages are written. `.All` by default.
-        :param: formatters   The dictionary of formatters to apply to each associated log level. `nil` by default.
-        :param: writers      The writers to use when messages are written. `[ConsoleWriter()]` by default.
-        :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
-        :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
-                             logger instances. `nil` by default.
+        - parameter logLevel:     The log level used to determine which messages are written. `.All` by default.
+        - parameter formatters:   The dictionary of formatters to apply to each associated log level. `nil` by default.
+        - parameter writers:      The writers to use when messages are written. `[ConsoleWriter()]` by default.
+        - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
+        - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
+                                  multiple logger instances. `nil` by default.
 
-        :returns: A fully initialized logger configuration instance.
+        - returns: A fully initialized logger configuration instance.
     */
     public init(
         logLevel: LogLevel = .All,
@@ -90,12 +90,12 @@ public struct LoggerConfiguration {
     /**
         Creates a logger configuration instance with a timestamp formatter applied to each log level.
 
-        :param: logLevel     The log level used to determine which messages are written. `.All` by default.
-        :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
-        :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
-                             logger instances. `nil` by default.
+        - parameter logLevel:     The log level used to determine which messages are written. `.All` by default.
+        - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
+        - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
+                                  multiple logger instances. `nil` by default.
 
-        :returns: A fully initialized logger configuration instance.
+        - returns: A fully initialized logger configuration instance.
     */
     public static func timestampConfiguration(
         logLevel: LogLevel = .All,
@@ -119,12 +119,12 @@ public struct LoggerConfiguration {
     /**
         Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
 
-        :param: logLevel     The log level used to determine which messages are written. `.All` by default.
-        :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
-        :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
-                             logger instances. `nil` by default.
+        - parameter logLevel:     The log level used to determine which messages are written. `.All` by default.
+        - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
+        - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
+                                  multiple logger instances. `nil` by default.
 
-        :returns: A fully initialized logger configuration instance.
+        - returns: A fully initialized logger configuration instance.
     */
     public static func coloredTimestampConfiguration(
         logLevel: LogLevel = .All,

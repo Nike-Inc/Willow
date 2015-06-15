@@ -35,19 +35,8 @@ import XCTest
 // MARK: Custom Log Levels Using Extensions
 
 extension LogLevel {
-
-    // Off     = 0b00000000_00000000_00000000_00000000
-    // Verbose = 0b00000000_00000000_00000000_00000100 // new
-    // Debug   = 0b00000000_00000000_00000000_00010000
-    // Info    = 0b00000000_00000000_00000010_00000000
-    // Summary = 0b00000000_00000000_00001000_00000000 // new
-    // Event   = 0b00000000_00000000_01000000_00000000
-    // Warn    = 0b00000000_00001000_00000000_00000000
-    // Error   = 0b00000001_00000000_00000000_00000000
-    // All     = 0b11111111_11111111_11111111_11111111
-
-    private static var Verbose: LogLevel { return self(0b00000000_00000000_00000000_00000100) }
-    private static var Summary: LogLevel { return self(0b00000000_00000000_00001000_00000000) }
+    static let Verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
+    static let Summary = LogLevel(rawValue: 0b00000000_00000000_00000010_00000000)
 }
 
 extension Logger {
@@ -68,7 +57,7 @@ class TestWriter: Writer {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
 
-    func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+    func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         self.message = message
         ++self.actualNumberOfWrites
     }
@@ -114,7 +103,8 @@ class CustomLogLevelTestCase: XCTestCase {
     func testThatItLogsAsExpectedWithOrdLogLevels() {
 
         // Given
-        let (log, writer) = logger(logLevel: .Verbose | .Info | .Summary | .Warn)
+        let logLevel: LogLevel = [LogLevel.Verbose, LogLevel.Info, LogLevel.Summary, LogLevel.Warn]
+        let (log, writer) = logger(logLevel: logLevel)
 
         // When / Then
         log.verbose { "verbose message" }
@@ -144,7 +134,7 @@ class CustomLogLevelTestCase: XCTestCase {
 
     // MARK: Private - Helper Methods
 
-    func logger(logLevel: LogLevel = .All, formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, TestWriter) {
+    func logger(logLevel logLevel: LogLevel = .All, formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, TestWriter) {
         let writer = TestWriter()
 
         let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer])

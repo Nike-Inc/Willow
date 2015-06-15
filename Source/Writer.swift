@@ -53,22 +53,22 @@ public class ConsoleWriter: Writer {
     /**
         Initializes a console writer instance.
 
-        :returns: A new console writer instance.
+        - returns: A new console writer instance.
     */
     public init() {}
 
     /**
-        Writes the message to the console using the global `println` function.
+        Writes the message to the console using the global `print` function.
 
         Each formatter is run over the message in the order they are provided before writing the message to
         the console.
 
-        :param: message    The original message to write to the console.
-        :param: logLevel   The log level associated with the message.
-        :param: formatters The formatter objects to run over the message before writing to the console.
+        - parameter message:    The original message to write to the console.
+        - parameter logLevel:   The log level associated with the message.
+        - parameter formatters: The formatter objects to run over the message before writing to the console.
     */
     public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
-        println(message)
+        print(message)
     }
 }
