@@ -4,6 +4,13 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 0.3.1
+
+### Release Notes
+
+* **ADDED** public docstrings to all `ConsoleWriter` methods.
+* **FIXED** issue where the `ConsoleWriter` could not be directly initialized due to missing public initializer.
+
 ## 0.3.0
 
 ### Upgrade Notes
