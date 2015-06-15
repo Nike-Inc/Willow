@@ -36,36 +36,36 @@ import Foundation
     a Logger instance.
 */
 public struct LoggerConfiguration {
-    
+
     // MARK: Properties
-    
+
     /// The log level used to determine which messages are written.
     public let logLevel: LogLevel
-    
+
     /// The dictionary of formatters to apply to each associated log level.
     public let formatters: [LogLevel: [Formatter]]
-    
+
     /// The writers to use when messages are written.
     public let writers: [Writer]
-    
+
     /// Whether to write messages asynchronously to the internal queue.
     public let asynchronous: Bool
-    
+
     /// A custom queue to swap out for the default one. This allows sharing queues between multiple logger instances.
     public let queue: dispatch_queue_t
-    
+
     // MARK: Initialization Methods
-    
+
     /**
         Initializes a logger configuration instance.
-        
+
         :param: logLevel     The log level used to determine which messages are written. `.All` by default.
         :param: formatters   The dictionary of formatters to apply to each associated log level. `nil` by default.
         :param: writers      The writers to use when messages are written. `[ConsoleWriter()]` by default.
         :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
         :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
                              logger instances. `nil` by default.
-        
+
         :returns: A fully initialized logger configuration instance.
     */
     public init(
@@ -84,17 +84,17 @@ public struct LoggerConfiguration {
             return dispatch_queue_create(label, DISPATCH_QUEUE_SERIAL)
         }()
     }
-    
+
     // MARK: Customized Configurations
-    
+
     /**
         Creates a logger configuration instance with a timestamp formatter applied to each log level.
-        
+
         :param: logLevel     The log level used to determine which messages are written. `.All` by default.
         :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
         :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
                              logger instances. `nil` by default.
-        
+
         :returns: A fully initialized logger configuration instance.
     */
     public static func timestampConfiguration(
@@ -104,7 +104,7 @@ public struct LoggerConfiguration {
         -> LoggerConfiguration
     {
         let timestampFormatter: [Formatter] = [TimestampFormatter()]
-        
+
         let formatters: [LogLevel: [Formatter]] = [
             .Debug: timestampFormatter,
             .Info: timestampFormatter,
@@ -112,18 +112,18 @@ public struct LoggerConfiguration {
             .Warn: timestampFormatter,
             .Error: timestampFormatter,
         ]
-        
+
         return LoggerConfiguration(logLevel: logLevel, formatters: formatters, asynchronous: asynchronous, queue: queue)
     }
-    
+
     /**
         Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
-        
+
         :param: logLevel     The log level used to determine which messages are written. `.All` by default.
         :param: asynchronous Whether to write messages asynchronously on the given queue. `false` by default.
         :param: queue        A custom queue to swap out for the default one. This allows sharing queues between multiple
                              logger instances. `nil` by default.
-        
+
         :returns: A fully initialized logger configuration instance.
     */
     public static func coloredTimestampConfiguration(
@@ -137,9 +137,9 @@ public struct LoggerConfiguration {
         let green = Color(red: 0.533, green: 0.812, blue: 0.031, alpha: 1.0)
         let orange = Color(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
         let red = Color(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
-        
+
         let timestampFormatter = TimestampFormatter()
-        
+
         let formatters: [LogLevel: [Formatter]] = [
             .Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
             .Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
@@ -147,7 +147,7 @@ public struct LoggerConfiguration {
             .Warn: [timestampFormatter, ColorFormatter(foregroundColor: orange, backgroundColor: nil)],
             .Error: [timestampFormatter, ColorFormatter(foregroundColor: red, backgroundColor: nil)]
         ]
-        
+
         return LoggerConfiguration(logLevel: logLevel, formatters: formatters, asynchronous: asynchronous, queue: queue)
     }
 }

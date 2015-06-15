@@ -344,7 +344,7 @@ extension LogLevel {
     // Off      = 0b00000000_00000000_00000000_00000000
     // Verbose  = 0b00000000_00000000_00000000_00000100 // custom
     // Debug    = 0b00000000_00000000_00000000_00010000
-    
+
     private static var Verbose: LogLevel { return self(0b00000000_00000000_00000000_00000100) }
 }
 ```
@@ -352,7 +352,7 @@ extension LogLevel {
 Now that we have a custom log level called `Verbose`, we need to extend the `Logger` class to be able to easily call it.
 
 ```swift
-extension Logger {    
+extension Logger {
     private func verbose(closure: () -> String) {
         if self.enabled {
             self.dispatch_method(self.configuration.queue) { [unowned self] in
@@ -416,10 +416,10 @@ var log = Logger(configuration: configuration)
 
 // Replace the Math.log with a new instance with all the same configuration values except a shared queue
 let mathConfiguration = LoggerConfiguration(
-    logLevel: Math.log.configuration.logLevel, 
-    formatters: Math.log.configuration.formatters, 
-    writers: Math.log.configuration.writers, 
-    asynchronous: Math.log.configuration.asynchronous, 
+    logLevel: Math.log.configuration.logLevel,
+    formatters: Math.log.configuration.formatters,
+    writers: Math.log.configuration.writers,
+    asynchronous: Math.log.configuration.asynchronous,
     queue: queue
 )
 Math.log = Logger(configuration: mathConfiguration)
