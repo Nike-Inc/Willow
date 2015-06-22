@@ -57,7 +57,7 @@ use_frameworks!
 source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'Surge', :git => 'ssh://git@stash.nikedev.com/bmd/surge.git', :branch => 'swift-2.0'
+pod 'Willow', :git => 'ssh://git@stash.nikedev.com/bmd/willow.git', :branch => 'swift-2.0'
 ```
 
 ### Carthage
@@ -74,7 +74,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-git "ssh://git@stash.nikedev.com/bmd/surge.git" "swift-2.0"
+git "ssh://git@stash.nikedev.com/bmd/willow.git" "swift-2.0"
 ```
 
 ---
