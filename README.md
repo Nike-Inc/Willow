@@ -33,10 +33,6 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Installation
 
-Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks.
-
-> Willow no longer supports iOS 7 for a couple of reasons. First off, the main dependency management systems (CocoaPods and Carthage) only support frameworks in Swift. Since iOS 7 does not support frameworks, iOS 7 apps written in Swift need to manually import the Swift files into the app target which causes namespacing issues. Additionally, without namespacing, the unit tests are no longer namespaced and would need to be duplicated to support iOS 7. Because of these reasons, we have dropped iOS 7 support entirely in the Swift 2.0 branch.
-
 ### CocoaPods
 
 [CocoaPods](http://cocoapods.org/) is a dependency manager for Cocoa projects.
@@ -57,7 +53,7 @@ use_frameworks!
 source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'Willow', '~> 0.3.0'
+pod 'Willow', '~> 0.4.0'
 ```
 
 ### Carthage
@@ -74,7 +70,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 0.3.0
+git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 0.4.0
 ```
 
 ---
@@ -94,7 +90,7 @@ The `Logger` initializer takes a single parameter which is a `LoggerConfiguratio
 
 The `LoggerConfiguration` class is a container class to store all the configuration information to be applied to a particular `Logger`. Here are all the configurable parameters and their respective descriptions.
 
-* `logLevel: LogLevel = .Info | .Event | .Warn | .Error` - The log level used to determine which messages are written. Each `LogLevel` conforms to the `BitwiseOperationsType`, so use bit operations if you wish to set a custom `LogLevel`. `.All` by default.
+* `logLevel: LogLevel = .All` - The log level used to determine which messages are written. `.All` by default.
 * `formatters: [LogLevel: [Formatter]]? = nil` - The dictionary of formatters to apply to each associated log level.
 * `writers: [Writer] = [ConsoleWriter()]` - The writers to use when messages need to be written to a specific destination such as the console or to a file.
 * `asynchronous: Bool = false` - Whether to write messages asynchronously on the given queue.
@@ -151,7 +147,7 @@ log.debug {
 }
 
 log.info {
-    let countriesString = join(",", countriesArray)
+    let countriesString = ",".join(countriesArray)
     return "Countries: \(countriesString)"
 }
 ```
@@ -454,9 +450,6 @@ Willow is named after the one, the only, Willow tree.
 ## Creator
 
 - [Christian Noon](https://github.com/cnoon) ([@Christian_Noon](https://twitter.com/Christian_Noon))
-
-## Contributors
-
 - [Eric Appel](https://github.com/ericappel) ([@EricAppel](https://twitter.com/EricAppel))
 
 ## License

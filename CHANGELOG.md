@@ -4,6 +4,19 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 0.4.0
+
+### Upgrade Notes
+
+Willow has been migrated to Swift 2.0. Please make sure to update your project to build with Xcode 7.0 before migrating.
+
+### Release Notes
+
+* **UPDATED** Minimum version of Xcode supported to Xcode 7.0 and Swift 2.0.
+* **UPDATED** `LogLevel` type now conforms to `OptionSetType` instead of `RawOptionSetType`.
+* **UPDATED** The custom log level section of the README.
+* **UPDATED** The minimum supported iOS version to 8.0.
+
 ## 0.3.1
 
 ### Release Notes
