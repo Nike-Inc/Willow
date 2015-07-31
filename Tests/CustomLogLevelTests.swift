@@ -17,7 +17,6 @@ extension LogLevel {
 }
 
 extension Logger {
-
     private func verbose(closure: () -> String) {
         logMessage(closure, withLogLevel: .Verbose)
     }
@@ -30,7 +29,6 @@ extension Logger {
 // MARK: - Helper Test Classes
 
 class TestWriter: Writer {
-
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
 
@@ -47,7 +45,6 @@ class CustomLogLevelTestCase: XCTestCase {
     // MARK: Tests
 
     func testThatItLogsAsExpectedWithAllLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .All)
 
@@ -74,11 +71,10 @@ class CustomLogLevelTestCase: XCTestCase {
         XCTAssertEqual("error message", writer.message ?? "", "Expected message should match actual writer message")
 
         // Then
-        XCTAssertEqual(7, writer.actualNumberOfWrites, "Actual number of writes should be 7")
+        XCTAssertEqual(writer.actualNumberOfWrites, 7, "Actual number of writes should be 7")
     }
 
     func testThatItLogsAsExpectedWithOrdLogLevels() {
-
         // Given
         let logLevel: LogLevel = [LogLevel.Verbose, LogLevel.Info, LogLevel.Summary, LogLevel.Warn]
         let (log, writer) = logger(logLevel: logLevel)
@@ -106,15 +102,15 @@ class CustomLogLevelTestCase: XCTestCase {
         XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
 
         // Then
-        XCTAssertEqual(4, writer.actualNumberOfWrites, "Actual number of writes should be 4")
+        XCTAssertEqual(writer.actualNumberOfWrites, 4, "Actual number of writes should be 4")
     }
 
     // MARK: Private - Helper Methods
 
-    func logger(logLevel logLevel: LogLevel = .All, formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, TestWriter) {
+    func logger(logLevel logLevel: LogLevel) -> (Logger, TestWriter) {
         let writer = TestWriter()
 
-        let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer])
+        let configuration = LoggerConfiguration(writers: [logLevel: [writer]])
         let logger = Logger(configuration: configuration)
 
         return (logger, writer)

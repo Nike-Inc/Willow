@@ -16,9 +16,7 @@ import Cocoa
 #endif
 
 class TimestampFormatterTestCase: XCTestCase {
-
     func testThatItFormatsMessagesAsExpected() {
-
         // Given
         let formatter = TimestampFormatter()
         let message = "Test Message"
@@ -40,7 +38,6 @@ class TimestampFormatterTestCase: XCTestCase {
 // MARK: -
 
 class ColorFormatterTestCase: XCTestCase {
-
     var message = ""
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
@@ -54,7 +51,6 @@ class ColorFormatterTestCase: XCTestCase {
     }
 
     func testThatItAppliesForegroundColors() {
-
         // Given
         let red = Color(red: 0.95, green: 0.0, blue: 0.0, alpha: 1.0)
         let colorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
@@ -63,12 +59,11 @@ class ColorFormatterTestCase: XCTestCase {
         let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: .Debug)
 
         // Then
-        let expected = "\(self.escape)fg242,0,0;Test Message\(self.reset)"
-        XCTAssertEqual(expected, coloredMessage, "Applying the foreground color formatting failed")
+        let expectedMessage = "\(self.escape)fg242,0,0;Test Message\(self.reset)"
+        XCTAssertEqual(coloredMessage, expectedMessage, "Applying the foreground color formatting failed")
     }
 
     func testThatItAppliesBackgroundColors() {
-
         // Given
         let blue = Color(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
         let colorFormatter = ColorFormatter(foregroundColor: nil, backgroundColor: blue)
@@ -77,12 +72,11 @@ class ColorFormatterTestCase: XCTestCase {
         let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: .Debug)
 
         // Then
-        let expected = "\(self.escape)bg45,145,255;Test Message\(self.reset)"
-        XCTAssertEqual(expected, coloredMessage, "Applying the background color formatting failed")
+        let expectedMessage = "\(self.escape)bg45,145,255;Test Message\(self.reset)"
+        XCTAssertEqual(coloredMessage, expectedMessage, "Applying the background color formatting failed")
     }
 
     func testThatItAppliesBothColors() {
-
         // Given
         let purple = Color(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
         let green = Color(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
@@ -92,7 +86,7 @@ class ColorFormatterTestCase: XCTestCase {
         let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: .Debug)
 
         // Then
-        let expected = "\(self.escape)fg153,63,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
-        XCTAssertEqual(expected, coloredMessage, "Applying color formatting for both colors failed")
+        let expectedMessage = "\(self.escape)fg153,63,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
+        XCTAssertEqual(coloredMessage, expectedMessage, "Applying color formatting for both colors failed")
     }
 }

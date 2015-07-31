@@ -32,7 +32,6 @@ public protocol Formatter {
     The TimestampFormatter class applies a timestamp to the beginning of the message.
 */
 public class TimestampFormatter: Formatter {
-
     private let timestampFormatter: NSDateFormatter = {
         var formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
@@ -55,7 +54,7 @@ public class TimestampFormatter: Formatter {
         - returns: A newly formatted message.
     */
     public func formatMessage(message: String, logLevel: LogLevel) -> String {
-        let timestampString = self.timestampFormatter.stringFromDate(NSDate())
+        let timestampString = timestampFormatter.stringFromDate(NSDate())
         return "\(timestampString) \(message)"
     }
 }
@@ -95,8 +94,6 @@ public class ColorFormatter: Formatter {
         - returns: A fully constructed ColorFormatter from the given Color objects.
     */
     public init(foregroundColor: Color?, backgroundColor: Color?) {
-        assert(foregroundColor != nil || backgroundColor != nil, "The foreground and background colors cannot both be nil")
-
         let foregroundTextString = ColorFormatter.textStringForColor(foregroundColor)
         let backgroundTextString = ColorFormatter.textStringForColor(backgroundColor)
 
@@ -123,7 +120,7 @@ public class ColorFormatter: Formatter {
         - returns: A new string with all the color formatting values added.
     */
     public func formatMessage(message: String, logLevel: LogLevel) -> String {
-        return "\(self.foregroundText)\(self.backgroundText)\(message)\(ColorConstants.RESET)"
+        return "\(foregroundText)\(backgroundText)\(message)\(ColorConstants.RESET)"
     }
 
     // MARK: Private - Helper Methods

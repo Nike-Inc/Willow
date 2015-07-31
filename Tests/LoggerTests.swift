@@ -18,7 +18,6 @@ import Cocoa
 // MARK: Helper Test Classes
 
 class SynchronousTestWriter: Writer {
-
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
     private(set) var formattedMessages = [String]()
@@ -38,7 +37,6 @@ class SynchronousTestWriter: Writer {
 // MARK: -
 
 class AsynchronousTestWriter: SynchronousTestWriter {
-
     let expectation: XCTestExpectation
     private let expectedNumberOfWrites: Int
 
@@ -67,9 +65,8 @@ class PrefixFormatter: Formatter {
 // MARK: - Base Test Cases
 
 class SynchronousLoggerTestCase: XCTestCase {
-
     var message = "Test Message"
-    let defaultTimeout = 0.1
+    let timeout = 0.1
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
 
@@ -113,9 +110,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
 // MARK: - Tests
 
 class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
-
     func testThatItLogsAsExpectedWithOffLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: LogLevel.Off)
 
@@ -127,11 +122,10 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(0, writer.actualNumberOfWrites, "Actual number of writes should be 0")
+        XCTAssertEqual(writer.actualNumberOfWrites, 0, "Actual number of writes should be 0")
     }
 
     func testThatItLogsAsExpectedWithDebugLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Debug)
 
@@ -143,11 +137,10 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
     }
 
     func testThatItLogsAsExpectedWithInfoLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Info)
 
@@ -159,11 +152,10 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
     }
 
     func testThatItLogsAsExpectedWithEventLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Event)
 
@@ -175,11 +167,10 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
     }
 
     func testThatItLogsAsExpectedWithWarnLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Warn)
 
@@ -191,11 +182,10 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
     }
 
     func testThatItLogsAsExpectedWithErrorLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Error)
 
@@ -207,11 +197,10 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(1, writer.actualNumberOfWrites, "Actual number of writes should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
     }
 
     func testThatItLogsAsExpectedWithAllLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .All)
 
@@ -223,7 +212,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
     }
 
     func testThatItLogsAsExpectedWithOrdLogLevels() {
@@ -240,16 +229,14 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         log.error { "" }
 
         // Then
-        XCTAssertEqual(3, writer.actualNumberOfWrites, "Actual number of writes should be 3")
+        XCTAssertEqual(writer.actualNumberOfWrites, 3, "Actual number of writes should be 3")
     }
 }
 
 // MARK: -
 
 class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
-
     func testThatItLogsAsExpectedWithOffLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Off, expectedNumberOfWrites: 0)
 
@@ -268,14 +255,13 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
             writer.expectation.fulfill()
         }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
     func testThatItLogsAsExpectedWithDebugLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Debug, expectedNumberOfWrites: 1)
 
@@ -286,14 +272,13 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
     func testThatItLogsAsExpectedWithInfoLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Info, expectedNumberOfWrites: 1)
 
@@ -304,14 +289,13 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
     func testThatItLogsAsExpectedWithEventLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Event, expectedNumberOfWrites: 1)
 
@@ -322,14 +306,13 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
     func testThatItLogsAsExpectedWithWarnLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Warn, expectedNumberOfWrites: 1)
 
@@ -340,14 +323,13 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
     func testThatItLogsAsExpectedWithErrorLogLevel() {
-
         // Given
         let (log, writer) = logger(logLevel: .Error, expectedNumberOfWrites: 1)
 
@@ -358,10 +340,10 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
     func testThatItLogsAsExpectedWithOrdLogLevels() {
@@ -377,19 +359,17 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
         // Then
-        waitForExpectationsWithTimeout(self.defaultTimeout) { _ in
-            XCTAssertEqual(writer.expectedNumberOfWrites, writer.actualNumberOfWrites, "Expected should match actual number of writes")
-        }
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 }
 
 // MARK: -
 
 class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
-
     func testThatItLogsAllLogLevelsWhenEnabled() {
-
         // Given
         let (log, writer) = logger(logLevel: .All)
         log.enabled = true
@@ -406,7 +386,6 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
     }
 
     func testThatNoLoggingOccursForAnyLogLevelWhenDisabled() {
-
         // Given
         let (log, writer) = logger(logLevel: .All)
         log.enabled = false
@@ -426,12 +405,10 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
 // MARK: -
 
 class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
-
     func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
-
         // Given
         let colorFormatters: [LogLevel: [Formatter]] = [
-            .Debug: [ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)]
+            .Debug: [ColorFormatter(foregroundColor: purpleColor, backgroundColor: blueColor)]
         ]
 
         let (log, writer) = logger(formatters: colorFormatters)
@@ -444,21 +421,20 @@ class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
         log.error { self.message }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
-        XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
 
         if writer.formattedMessages.count == 1 {
-            let expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;Test Message\(self.reset)"
             let actual = writer.formattedMessages[0]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            let expected = "\(escape)fg153,63,255;\(escape)bg45,145,255;Test Message\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
     }
 
     func testThatItAppliesCorrectColorFormatterToInfoLogLevel() {
-
         // Given
         let colorFormatters: [LogLevel: [Formatter]] = [
-            .Info: [ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)]
+            .Info: [ColorFormatter(foregroundColor: greenColor, backgroundColor: orangeColor)]
         ]
 
         let (log, writer) = logger(formatters: colorFormatters)
@@ -471,18 +447,17 @@ class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
         log.error { self.message }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
-        XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
 
         if writer.formattedMessages.count == 1 {
-            let expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;Test Message\(self.reset)"
             let actual = writer.formattedMessages[0]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            let expected = "\(escape)fg136,207,8;\(escape)bg233,165,47;Test Message\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
     }
 
     func testThatItAppliesCorrectColorFormatterToEventLogLevel() {
-
         // Given
         let colorFormatters: [LogLevel: [Formatter]] = [
             .Event: [ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)]
@@ -498,21 +473,20 @@ class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
         log.error { self.message }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
-        XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
 
         if writer.formattedMessages.count == 1 {
-            let expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;Test Message\(self.reset)"
             let actual = writer.formattedMessages[0]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            let expected = "\(escape)fg230,20,20;\(escape)bg153,63,255;Test Message\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
     }
 
     func testThatItAppliesCorrectColorFormatterToWarnLogLevel() {
-
         // Given
         let colorFormatters: [LogLevel: [Formatter]] = [
-            LogLevel.Warn: [ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)]
+            LogLevel.Warn: [ColorFormatter(foregroundColor: blueColor, backgroundColor: greenColor)]
         ]
 
         let (log, writer) = logger(formatters: colorFormatters)
@@ -525,21 +499,20 @@ class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
         log.error { self.message }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
-        XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
 
         if writer.formattedMessages.count == 1 {
-            let expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
             let actual = writer.formattedMessages[0]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            let expected = "\(escape)fg45,145,255;\(escape)bg136,207,8;Test Message\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
     }
 
     func testThatItAppliesCorrectColorFormatterToErrorLogLevel() {
-
         // Given
         let colorFormatters: [LogLevel: [Formatter]] = [
-            .Error: [ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
+            .Error: [ColorFormatter(foregroundColor: purpleColor, backgroundColor: redColor)]
         ]
 
         let (log, writer) = logger(formatters: colorFormatters)
@@ -552,13 +525,13 @@ class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
         log.error { self.message }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
-        XCTAssertEqual(1, writer.formattedMessages.count, "Color message count should be 1")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
 
         if writer.formattedMessages.count == 1 {
-            let expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;Test Message\(self.reset)"
             let actual = writer.formattedMessages[0]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            let expected = "\(escape)fg153,63,255;\(escape)bg230,20,20;Test Message\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
     }
 }
@@ -566,9 +539,7 @@ class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
 // MARK: -
 
 class SynchronousLoggerMultiFormatterTestCase: SynchronousLoggerTestCase {
-
     func testThatItLogsOutputAsExpectedWithMultipleFormatters() {
-
         // Given
         let prefixFormatter = PrefixFormatter()
         let formatters: [LogLevel: [Formatter]] = [
@@ -589,31 +560,31 @@ class SynchronousLoggerMultiFormatterTestCase: SynchronousLoggerTestCase {
         log.error { self.message }
 
         // Then
-        XCTAssertEqual(5, writer.actualNumberOfWrites, "Actual number of writes should be 5")
-        XCTAssertEqual(5, writer.formattedMessages.count, "Formatted message count should be 5")
+        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
+        XCTAssertEqual(writer.formattedMessages.count, 5, "Formatted message count should be 5")
 
         let message = "[Willow] Test Message"
 
         if writer.formattedMessages.count == 5 {
-            var expected = "\(self.escape)fg153,63,255;\(self.escape)bg45,145,255;\(message)\(self.reset)"
             var actual = writer.formattedMessages[0]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            var expected = "\(escape)fg153,63,255;\(escape)bg45,145,255;\(message)\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
 
-            expected = "\(self.escape)fg136,207,8;\(self.escape)bg233,165,47;\(message)\(self.reset)"
             actual = writer.formattedMessages[1]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            expected = "\(escape)fg136,207,8;\(escape)bg233,165,47;\(message)\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
 
-            expected = "\(self.escape)fg230,20,20;\(self.escape)bg153,63,255;\(message)\(self.reset)"
             actual = writer.formattedMessages[2]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            expected = "\(escape)fg230,20,20;\(escape)bg153,63,255;\(message)\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
 
-            expected = "\(self.escape)fg45,145,255;\(self.escape)bg136,207,8;\(message)\(self.reset)"
             actual = writer.formattedMessages[3]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            expected = "\(escape)fg45,145,255;\(escape)bg136,207,8;\(message)\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
 
-            expected = "\(self.escape)fg153,63,255;\(self.escape)bg230,20,20;\(message)\(self.reset)"
             actual = writer.formattedMessages[4]
-            XCTAssertEqual(expected, actual, "Failed to apply correct color formatting to message")
+            expected = "\(escape)fg153,63,255;\(escape)bg230,20,20;\(message)\(reset)"
+            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
     }
 }
