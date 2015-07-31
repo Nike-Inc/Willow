@@ -9,9 +9,9 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - Simple Logging Functions using Closures
 - Configurable Synchronous or Asynchronous Execution
 - Thread-Safe Logging Output (No Log Mangling)
-- Custom Formatters through Dependency Injection
-- Customizable Color Formatting for Console Output per Log Level
-- Custom Writers through Dependency Injection
+- Custom Formatters through Dependency Injection per Log Level
+- Customizable Color Formatting for Console Output
+- Custom Writers through Dependency Injection per Log Level
 - Supports Multiple Simultaneous Writers
 - Shared Loggers Between Frameworks
 - Shared Queues Between Multiple Loggers
@@ -25,11 +25,12 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Communication
 
-- Need help? Start here [StackOverflow](http://stackoverflow.com/questions/tagged/willow). (Tag `Willow`)
-- Need to ask a question? Ask here [StackOverflow](http://stackoverflow.com/questions/tagged/willow).
-- Want to contribute? Please fork the repo and submit a pull request.
-- Have a feature request? Open an issue.
-- Find a bug? Open an issue.
+- Need help? Open a [Question](https://jira.nike.com/browse/bmd). (Component => `Willow`)
+- Have a feature request? Open a [Feature Request](https://jira.nike.com/browse/bmd). (Component => `Willow`)
+- Find a bug? Open a [Bug](https://jira.nike.com/browse/bmd). (Component => `Willow`)
+- Want to contribute? Fork the repo and submit a pull request.
+
+> These tickets go directly to the developers of Willow who are very adament about providing top notch support for this library. Please don't hesitate to open tickets for any type of issue. If we don't know about it, we can't fix it, support it or build it.
 
 ## Installation
 
@@ -53,7 +54,7 @@ use_frameworks!
 source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'Willow', '~> 0.4.0'
+pod 'Willow', '~> 1.0.0'
 ```
 
 ### Carthage
@@ -70,7 +71,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 0.4.0
+git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 1.0.0
 ```
 
 ---
@@ -90,9 +91,8 @@ The `Logger` initializer takes a single parameter which is a `LoggerConfiguratio
 
 The `LoggerConfiguration` class is a container class to store all the configuration information to be applied to a particular `Logger`. Here are all the configurable parameters and their respective descriptions.
 
-* `logLevel: LogLevel = .All` - The log level used to determine which messages are written. `.All` by default.
-* `formatters: [LogLevel: [Formatter]]? = nil` - The dictionary of formatters to apply to each associated log level.
-* `writers: [Writer] = [ConsoleWriter()]` - The writers to use when messages need to be written to a specific destination such as the console or to a file.
+* `formatters: [LogLevel: [Formatter]] = [:]` - The dictionary of formatters to apply to each associated log level.
+* `writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
 * `asynchronous: Bool = false` - Whether to write messages asynchronously on the given queue.
 * `queue: dispatch_queue_t? = nil` - A custom dispatch queue to handle thread-safety to avoid log mangling. If you do not provide one, the Logger instance will create it's own internally.
 
@@ -158,7 +158,7 @@ log.info {
 
 Willow works exclusively with logging closures to ensure the maximum performance in all situations. Closures defer the execution of all the logic inside the closure until absolutely necessary, including the string evaluation itself. In cases where the Logger instance is disabled, log execution time was reduced by 97% over the traditional log message methods taking a `String` parameter. Additionally, the overhead for creating a closure was measured at 1% over the traditional method making it negligible. In summary, closures allow Willow to be extremely performant in all situations.
 
-> Unfortunately, it is not possible to utilize `@autoclosure` in this scenario. Swift 1.1 allows `@autoclosure` declaration, but Swift 1.2 does not, due to the way Willow supports Synchronous and Asynchronous logging. The Swift 1.2 `@autoclosure` declaration implies a `@noescape` which conflicts with the internal dispatch queue. Because of this, it was decided to avoid the `@autoclosure` declaration entirely since it would only be supported while on Swift 1.1.
+> Unfortunately, it is not possible to utilize `@autoclosure` in this scenario. Swift 1.1 allows `@autoclosure` declaration, but Swift 1.2+ does not, due to the way Willow supports Synchronous and Asynchronous logging. The Swift 1.2 `@autoclosure` declaration implies a `@noescape` which conflicts with the internal dispatch queue.
 
 ### Disabling a Logger
 
@@ -317,13 +317,27 @@ public class FileWriter: Writer {
     }
 }
 
-let writers: [Writer] = [FileWriter(), ConsoleWriter()]
+let writers: [LogLevel: Writer] = [.All: [FileWriter(), ConsoleWriter()]]
 
 let configuration = LoggerConfiguration(writers: writers)
 let log = Logger(configuration: configuration)
 ```
 
 > `Writer` objects can also be selective about which formatters they want to run for a particular log level. All the examples run all the formatters, but you can be selective if you want to be.
+
+#### Per LogLevel Writers
+
+It is also possible to specify different combinations of `Writer` objects for each `LogLevel`. Let's say we want to log `.Warn` and `.Error` messages to the console, and we want to log all messages to a file writer.
+
+```swift
+let writers: [LogLevel: Writer] = [
+	.All: [FileWriter()],
+	[.Warn, .Error]: [ConsoleWriter()]
+]
+
+let configuration = LoggerConfiguration(writers: writers)
+let log = Logger(configuration: configuration)
+```
 
 ---
 
@@ -345,12 +359,8 @@ Now that we have a custom log level called `Verbose`, we need to extend the `Log
 
 ```swift
 extension Logger {
-    private func verbose(closure: () -> String) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [unowned self] in
-                self.logMessageIfAllowed(closure, logLevel: .Verbose)
-            }
-        }
+    public func verbose(message: () -> String) {
+    	logMessage(message, withLogLevel: .Verbose)
     }
 }
 ```
@@ -372,13 +382,13 @@ Let's walk through a quick example of a `Math` framework sharing a `Logger` with
 
 ```swift
 //=========== Inside Math.swift ===========
-public var log = Logger(configuration: LoggerConfiguration(logLevel: .Warn)) // We're going to replace this
+public var log = Logger(configuration: LoggerConfiguration(writers: [.Warn, .Error]: [ConsoleWriter()])) // We're going to replace this
 
 //=========== Calculator.swift ===========
 import Math
 
-let writers = [FileWriter(), ConsoleWriter()]
-var log = Logger(configuration: LoggerConfiguration(logLevel: .Debug, writers: writers))
+let writers = [.All: [FileWriter(), ConsoleWriter()]]
+var log = Logger(configuration: LoggerConfiguration(writers: writers))
 
 // Replace the Math.log with the Calculator.log to share the same Logger instance
 Math.log = log
@@ -392,25 +402,21 @@ The previous example showed how to share `Logger` instances between multiple fra
 
 ```swift
 //=========== Inside Math.swift ===========
-public var log = Logger(configuration: LoggerConfiguration(logLevel: .Warn)) // We're going to replace this
+public var log = Logger(configuration: LoggerConfiguration(writers: [.Warn, .Error]: [ConsoleWriter()])) // We're going to replace this
 
 //=========== Calculator.swift ===========
 import Math
 
 // Create a single queue to share
-let queue = {
-    let label = NSString(string: "com.math.logger")
-    return dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL)
-}()
+let queue = dispatch_queue_create("com.math.logger", DISPATCH_QUEUE_SERIAL)
 
 // Create the Calculator.log with multiple writers and a .Debug log level
-let writers = [FileWriter(), ConsoleWriter()]
-let configuration = LoggerConfiguration(logLevel: .Debug, writers: writers, queue: queue)
+let writers = [.All: [FileWriter(), ConsoleWriter()]]
+let configuration = LoggerConfiguration(writers: writers, queue: queue)
 var log = Logger(configuration: configuration)
 
 // Replace the Math.log with a new instance with all the same configuration values except a shared queue
 let mathConfiguration = LoggerConfiguration(
-    logLevel: Math.log.configuration.logLevel,
     formatters: Math.log.configuration.formatters,
     writers: Math.log.configuration.writers,
     asynchronous: Math.log.configuration.asynchronous,
@@ -451,7 +457,3 @@ Willow is named after the one, the only, Willow tree.
 
 - [Christian Noon](https://github.com/cnoon) ([@Christian_Noon](https://twitter.com/Christian_Noon))
 - [Eric Appel](https://github.com/ericappel) ([@EricAppel](https://twitter.com/EricAppel))
-
-## License
-
-Willow is released under the FreeBSD license. See LICENSE for details.
