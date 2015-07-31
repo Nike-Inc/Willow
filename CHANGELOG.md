@@ -4,6 +4,19 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 1.0.0
+
+### Upgrade Notes
+
+Willow no longer supports the concept of a global `LogLevel`. Custom `Formatter` and `Writer` objects now require you to specify a single `LogLevel` or combined `LogLevel` such as `.All` to define which log levels are allowed. This greatly increases the flexibility of the `Writer` protocol, and also aligns the `Formatter` and `Writer` protocols to have the exact setup behavior.
+
+### Release Notes
+
+* **UPDATED** Logger configuration to allow specify the allowed `LogLevel` for a given set of writers.
+* **UPDATED** Test logic to use all latest formatting practices.
+
+---
+
 ## 0.4.0
 
 ### Upgrade Notes
