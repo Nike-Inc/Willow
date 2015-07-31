@@ -47,61 +47,61 @@ public class Logger {
     // MARK: - Log Methods
 
     /**
-        Writes out the given message closure string with the logger configuration if the debug log level is allowed.
+        Writes out the given message using the logger configuration if the debug log level has an attached writer.
 
-        - parameter closure: A closure returning the message to log.
+        - parameter message: A closure returning the message to log.
     */
-    public func debug(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Debug)
+    public func debug(message: () -> String) {
+        logMessage(message, withLogLevel: .Debug)
     }
 
     /**
-        Writes out the given message closure string with the logger configuration if the info log level is allowed.
+        Writes out the given message using the logger configuration if the info log level has an attached writer.
 
-        - parameter closure: A closure returning the message to log.
+        - parameter message: A closure returning the message to log.
     */
-    public func info(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Info)
+    public func info(message: () -> String) {
+        logMessage(message, withLogLevel: .Info)
     }
 
     /**
-        Writes out the given message closure string with the logger configuration if the event log level is allowed.
+        Writes out the given message using the logger configuration if the event log level has an attached writer.
 
-        - parameter closure: A closure returning the message to log.
+        - parameter message: A closure returning the message to log.
     */
-    public func event(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Event)
+    public func event(message: () -> String) {
+        logMessage(message, withLogLevel: .Event)
     }
 
     /**
-        Writes out the given message closure string with the logger configuration if the warn log level is allowed.
+        Writes out the given message using the logger configuration if the warn log level has an attached writer.
 
-        - parameter closure: A closure returning the message to log.
+        - parameter message: A closure returning the message to log.
     */
-    public func warn(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Warn)
+    public func warn(message: () -> String) {
+        logMessage(message, withLogLevel: .Warn)
     }
 
     /**
-        Writes out the given message closure string with the logger configuration if the error log level is allowed.
+        Writes out the given message using the logger configuration if the error log level has an attached writer.
 
-        - parameter closure: A closure returning the message to log.
+        - parameter message: A closure returning the message to log.
     */
-    public func error(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Error)
+    public func error(message: () -> String) {
+        logMessage(message, withLogLevel: .Error)
     }
 
     /**
         Writes out the given message closure string with the logger configuration if the log level is allowed.
 
-        - parameter closure:      A closure returning the message to log.
-        - parameter withLogLevel: The log level associated with the closure.
+        - parameter message:      A closure returning the message to log.
+        - parameter withLogLevel: The log level associated with the message closure.
     */
-    public func logMessage(closure: () -> String, withLogLevel logLevel: LogLevel) {
-        if self.enabled {
-            self.dispatch_method(self.configuration.queue) { [weak self] in
+    public func logMessage(message: () -> String, withLogLevel logLevel: LogLevel) {
+        if enabled {
+            dispatch_method(self.configuration.queue) { [weak self] in
                 if let strongSelf = self {
-                    strongSelf.logMessageIfAllowed(closure, logLevel: logLevel)
+                    strongSelf.logMessageIfAllowed(message, logLevel: logLevel)
                 }
             }
         }
@@ -109,18 +109,18 @@ public class Logger {
 
     // MARK: - Private - Helper Methods
 
-    private func logMessageIfAllowed(closure: () -> String, logLevel: LogLevel) {
+    private func logMessageIfAllowed(message: () -> String, logLevel: LogLevel) {
         if logLevelAllowed(logLevel) {
-            logMessage(closure(), logLevel: logLevel)
+            logMessage(message(), logLevel: logLevel)
         }
     }
 
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
-        return self.configuration.logLevel.contains(logLevel)
+        return configuration.writers.keys.contains(logLevel)
     }
 
     private func logMessage(message: String, logLevel: LogLevel) {
         let formatters = self.configuration.formatters[logLevel]
-        self.configuration.writers.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
+        configuration.writers[logLevel]?.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
     }
 }

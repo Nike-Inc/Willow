@@ -17,12 +17,12 @@ extension LogLevel {
 }
 
 extension Logger {
-    private func verbose(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Verbose)
+    private func verbose(message: () -> String) {
+        logMessage(message, withLogLevel: .Verbose)
     }
 
-    private func summary(closure: () -> String) {
-        logMessage(closure, withLogLevel: .Summary)
+    private func summary(message: () -> String) {
+        logMessage(message, withLogLevel: .Summary)
     }
 }
 

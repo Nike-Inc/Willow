@@ -78,14 +78,21 @@ class SynchronousLoggerTestCase: XCTestCase {
 
     func logger(
         logLevel logLevel: LogLevel = .All,
-        formatters: [LogLevel: [Formatter]]? = nil) -> (Logger, SynchronousTestWriter)
+        formatters: [LogLevel: [Formatter]] = [:]) -> (Logger, SynchronousTestWriter)
     {
         let writer = SynchronousTestWriter()
 
-        let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer])
+        let configuration = LoggerConfiguration(formatters: formatters, writers: [logLevel: [writer]])
         let logger = Logger(configuration: configuration)
 
         return (logger, writer)
+    }
+
+    func logger(writers writers: [LogLevel: [Writer]] = [:]) -> (Logger) {
+        let configuration = LoggerConfiguration(writers: writers)
+        let logger = Logger(configuration: configuration)
+
+        return logger
     }
 }
 
@@ -94,13 +101,13 @@ class SynchronousLoggerTestCase: XCTestCase {
 class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     func logger(
         logLevel logLevel: LogLevel = .Debug,
-        formatters: [LogLevel: [Formatter]]? = nil,
+        formatters: [LogLevel: [Formatter]] = [:],
         expectedNumberOfWrites: Int = 1) -> (Logger, AsynchronousTestWriter)
     {
         let expectation = expectationWithDescription("Test writer should receive expected number of writes")
         let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
 
-        let configuration = LoggerConfiguration(logLevel: logLevel, formatters: formatters, writers: [writer], asynchronous: true)
+        let configuration = LoggerConfiguration(formatters: formatters, writers: [logLevel: [writer]], asynchronous: true)
         let logger = Logger(configuration: configuration)
 
         return (logger, writer)
@@ -215,8 +222,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
     }
 
-    func testThatItLogsAsExpectedWithOrdLogLevels() {
-
+    func testThatItLogsAsExpectedWithMultipleLogLevels() {
         // Given
         let logLevel: LogLevel = [LogLevel.Debug, LogLevel.Event, LogLevel.Error]
         let (log, writer) = logger(logLevel: logLevel)
@@ -346,8 +352,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
     }
 
-    func testThatItLogsAsExpectedWithOrdLogLevels() {
-
+    func testThatItLogsAsExpectedWithMultipleLogLevels() {
         // Given
         let logLevel: LogLevel = [LogLevel.Event, LogLevel.Warn, LogLevel.Error]
         let (log, writer) = logger(logLevel: logLevel, expectedNumberOfWrites: 3)
@@ -586,5 +591,36 @@ class SynchronousLoggerMultiFormatterTestCase: SynchronousLoggerTestCase {
             expected = "\(escape)fg153,63,255;\(escape)bg230,20,20;\(message)\(reset)"
             XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
         }
+    }
+}
+
+// MARK: -
+
+class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
+    func testThatItLogsOutputAsExpectedWithMultipleWriters() {
+        // Given
+        let writer1 = SynchronousTestWriter()
+        let writer2 = SynchronousTestWriter()
+        let writer3 = SynchronousTestWriter()
+
+        let writers: [LogLevel: [Writer]] = [
+            .All: [writer1],
+            .Debug: [writer2],
+            [.Debug, .Event, .Error]: [writer3]
+        ]
+
+        let log = logger(writers: writers)
+
+        // When
+        log.debug { self.message }
+        log.info { self.message }
+        log.event { self.message }
+        log.warn { self.message }
+        log.error { self.message }
+
+        // Then
+        XCTAssertEqual(writer1.actualNumberOfWrites, 5, "writer 1 actual number of writes should be 5")
+        XCTAssertEqual(writer2.actualNumberOfWrites, 1, "writer 2 actual number of writes should be 1")
+        XCTAssertEqual(writer3.actualNumberOfWrites, 3, "writer 3 actual number of writes should be 3")
     }
 }

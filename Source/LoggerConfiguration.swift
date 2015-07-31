@@ -16,14 +16,11 @@ public struct LoggerConfiguration {
 
     // MARK: Properties
 
-    /// The log level used to determine which messages are written.
-    public let logLevel: LogLevel
-
     /// The dictionary of formatters to apply to each associated log level.
     public let formatters: [LogLevel: [Formatter]]
 
-    /// The writers to use when messages are written.
-    public let writers: [Writer]
+    /// The dictionary of writers to use when messages are written for each associated log level.
+    public let writers: [LogLevel: [Writer]]
 
     /// Whether to write messages asynchronously to the internal queue.
     public let asynchronous: Bool
@@ -36,9 +33,9 @@ public struct LoggerConfiguration {
     /**
         Initializes a logger configuration instance.
 
-        - parameter logLevel:     The log level used to determine which messages are written. `.All` by default.
-        - parameter formatters:   The dictionary of formatters to apply to each associated log level. `nil` by default.
-        - parameter writers:      The writers to use when messages are written. `[ConsoleWriter()]` by default.
+        - parameter formatters:   The dictionary of formatters to apply to the associated log level. `[:]` by default.
+        - parameter writers:      The dictionary of writers to write to for the associated log level. 
+                                  `[.All: [ConsoleWriter()]` by default.
         - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
         - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
                                   multiple logger instances. `nil` by default.
@@ -46,16 +43,37 @@ public struct LoggerConfiguration {
         - returns: A fully initialized logger configuration instance.
     */
     public init(
-        logLevel: LogLevel = .All,
-        formatters: [LogLevel: [Formatter]]? = nil,
-        writers: [Writer] = [ConsoleWriter()],
+        formatters: [LogLevel: [Formatter]] = [:],
+        writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]],
         asynchronous: Bool = false,
         queue: dispatch_queue_t? = nil)
     {
-        self.logLevel = logLevel
-        self.formatters = formatters ?? [LogLevel: [Formatter]]()
-        self.writers = writers
+        func restructureDictionaryValuesPerBitBasedLogLevel<T>(values: [LogLevel: [T]]) -> [LogLevel: [T]] {
+            var specifiedValues: [LogLevel: [T]] = [:]
+
+            for bitShift in UInt(0)...UInt(32) {
+                let bitValue = 1 << bitShift
+                var valuesForBit: [T] = []
+
+                for key in values.keys {
+                    if key.rawValue & bitValue > 0 {
+                        valuesForBit += values[key]!
+                    }
+                }
+
+                if !valuesForBit.isEmpty {
+                    specifiedValues[LogLevel(rawValue: bitValue)] = valuesForBit
+                }
+            }
+
+            return specifiedValues
+        }
+
+        self.formatters = restructureDictionaryValuesPerBitBasedLogLevel(formatters)
+        self.writers = restructureDictionaryValuesPerBitBasedLogLevel(writers)
+
         self.asynchronous = asynchronous
+
         self.queue = queue ?? {
             let label = String(format: "com.nike.willow-%08x%08x", arc4random(), arc4random())
             return dispatch_queue_create(label, DISPATCH_QUEUE_SERIAL)
@@ -67,7 +85,7 @@ public struct LoggerConfiguration {
     /**
         Creates a logger configuration instance with a timestamp formatter applied to each log level.
 
-        - parameter logLevel:     The log level used to determine which messages are written. `.All` by default.
+        - parameter logLevel:     The log level to apply to the default `ConsoleWriter`. `.All` by default.
         - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
         - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
                                   multiple logger instances. `nil` by default.
@@ -80,23 +98,16 @@ public struct LoggerConfiguration {
         queue: dispatch_queue_t? = nil)
         -> LoggerConfiguration
     {
-        let timestampFormatter: [Formatter] = [TimestampFormatter()]
+        let formatters: [LogLevel: [Formatter]] = [.All: [TimestampFormatter()]]
+        let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
 
-        let formatters: [LogLevel: [Formatter]] = [
-            .Debug: timestampFormatter,
-            .Info: timestampFormatter,
-            .Event: timestampFormatter,
-            .Warn: timestampFormatter,
-            .Error: timestampFormatter,
-        ]
-
-        return LoggerConfiguration(logLevel: logLevel, formatters: formatters, asynchronous: asynchronous, queue: queue)
+        return LoggerConfiguration(formatters: formatters, writers: writers, asynchronous: asynchronous, queue: queue)
     }
 
     /**
         Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
 
-        - parameter logLevel:     The log level used to determine which messages are written. `.All` by default.
+        - parameter logLevel:     The log level to apply to the default `ConsoleWriter`. `.All` by default.
         - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
         - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
                                   multiple logger instances. `nil` by default.
@@ -125,6 +136,8 @@ public struct LoggerConfiguration {
             .Error: [timestampFormatter, ColorFormatter(foregroundColor: red, backgroundColor: nil)]
         ]
 
-        return LoggerConfiguration(logLevel: logLevel, formatters: formatters, asynchronous: asynchronous, queue: queue)
+        let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
+
+        return LoggerConfiguration(formatters: formatters, writers: writers, asynchronous: asynchronous, queue: queue)
     }
 }
