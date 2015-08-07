@@ -12,6 +12,12 @@
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
 		4C83FB2D1AEC1959003FEA49 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
 		4C83FB2E1AEC1959003FEA49 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
+		4CA33F341B7556FC0047C307 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* Formatter.swift */; };
+		4CA33F351B7556FC0047C307 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F611AEC4654005E6475 /* Logger.swift */; };
+		4CA33F361B7556FC0047C307 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
+		4CA33F371B7556FC0047C307 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
+		4CA33F381B7556FC0047C307 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* Writer.swift */; };
+		4CA33F391B7556FF0047C307 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CA75D441A6C493800275DC5 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CA86F5F1AEC464A005E6475 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
 		4CA86F601AEC464A005E6475 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
@@ -51,6 +57,7 @@
 		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogLevel.swift; sourceTree = "<group>"; };
+		4CA33F2C1B7556D60047C307 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CA75D411A6C493800275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA75D421A6C493800275DC5 /* Willow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Willow.h; sourceTree = "<group>"; };
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -66,6 +73,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4CA33F281B7556D60047C307 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CF89C871A6E2F60001BFDE1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -157,6 +171,7 @@
 				4CFE82A41A6C484A0002868E /* WillowTests.xctest */,
 				4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */,
 				4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */,
+				4CA33F2C1B7556D60047C307 /* Willow.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -173,6 +188,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		4CA33F291B7556D60047C307 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CA33F391B7556FF0047C307 /* Willow.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CF89C881A6E2F60001BFDE1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -192,6 +215,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		4CA33F2B1B7556D60047C307 /* Willow watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CA33F311B7556D60047C307 /* Build configuration list for PBXNativeTarget "Willow watchOS" */;
+			buildPhases = (
+				4CA33F271B7556D60047C307 /* Sources */,
+				4CA33F281B7556D60047C307 /* Frameworks */,
+				4CA33F291B7556D60047C307 /* Headers */,
+				4CA33F2A1B7556D60047C307 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Willow watchOS";
+			productName = Willow;
+			productReference = 4CA33F2C1B7556D60047C307 /* Willow.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX" */;
@@ -274,6 +315,9 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Nike;
 				TargetAttributes = {
+					4CA33F2B1B7556D60047C307 = {
+						CreatedOnToolsVersion = 7.0;
+					};
 					4CF89C8A1A6E2F60001BFDE1 = {
 						CreatedOnToolsVersion = 6.2;
 					};
@@ -304,11 +348,19 @@
 				4CFE82A31A6C484A0002868E /* Willow iOS Tests */,
 				4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */,
 				4CF89C941A6E2F60001BFDE1 /* Willow OSX Tests */,
+				4CA33F2B1B7556D60047C307 /* Willow watchOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4CA33F2A1B7556D60047C307 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CF89C891A6E2F60001BFDE1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -340,6 +392,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4CA33F271B7556D60047C307 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CA33F361B7556FC0047C307 /* LoggerConfiguration.swift in Sources */,
+				4CA33F381B7556FC0047C307 /* Writer.swift in Sources */,
+				4CA33F341B7556FC0047C307 /* Formatter.swift in Sources */,
+				4CA33F351B7556FC0047C307 /* Logger.swift in Sources */,
+				4CA33F371B7556FC0047C307 /* LogLevel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4CF89C861A6E2F60001BFDE1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -400,6 +464,49 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4CA33F321B7556D60047C307 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Source/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nike.Willow;
+				PRODUCT_NAME = Willow;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		4CA33F331B7556D60047C307 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Source/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nike.Willow;
+				PRODUCT_NAME = Willow;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 		4CF89C9E1A6E2F60001BFDE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -652,6 +759,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4CA33F311B7556D60047C307 /* Build configuration list for PBXNativeTarget "Willow watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CA33F321B7556D60047C307 /* Debug */,
+				4CA33F331B7556D60047C307 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if os(iOS)
+#if os(iOS) || os(watchOS)
 import UIKit
 public typealias Color = UIColor
 #elseif os(OSX)
