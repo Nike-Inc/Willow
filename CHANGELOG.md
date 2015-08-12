@@ -4,6 +4,12 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 1.0.1
+
+### Release Notes
+
+* **FIXED** Issue where bit shifting and hash values were causing crashes on 32 bit devices.
+
 ## 1.0.0
 
 ### Upgrade Notes
