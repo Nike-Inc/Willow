@@ -69,7 +69,7 @@ public struct LogLevel: OptionSetType {
 extension LogLevel: Equatable, Hashable {
 
     /// Returns the hash value using the raw bitmask value of the `LogLevel`.
-    public var hashValue: Int { return Int(self.rawValue) }
+    public var hashValue: Int { return rawValue.hashValue }
 }
 
 // MARK: - CustomStringConvertible

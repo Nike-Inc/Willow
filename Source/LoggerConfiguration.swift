@@ -51,7 +51,7 @@ public struct LoggerConfiguration {
         func restructureDictionaryValuesPerBitBasedLogLevel<T>(values: [LogLevel: [T]]) -> [LogLevel: [T]] {
             var specifiedValues: [LogLevel: [T]] = [:]
 
-            for bitShift in UInt(0)...UInt(32) {
+            for bitShift in UInt(0)..<UInt(32) {
                 let bitValue = 1 << bitShift
                 var valuesForBit: [T] = []
 
