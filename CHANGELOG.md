@@ -4,6 +4,14 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 1.0.2
+
+### Release Notes
+
+#### Updated
+
+* Several places where `map` was incorrectly being used instead of `forEach`.
+
 ## 1.0.1
 
 ### Release Notes
