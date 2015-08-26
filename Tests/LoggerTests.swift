@@ -24,7 +24,7 @@ class SynchronousTestWriter: Writer {
 
     func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         if let formatters = formatters {
-            formatters.map { message = $0.formatMessage(message, logLevel: logLevel) }
+            formatters.forEach { message = $0.formatMessage(message, logLevel: logLevel) }
             self.formattedMessages.append(message)
         }
 

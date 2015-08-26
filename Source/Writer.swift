@@ -45,7 +45,7 @@ public class ConsoleWriter: Writer {
         - parameter formatters: The formatter objects to run over the message before writing to the console.
     */
     public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
-        formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
+        formatters?.forEach { message = $0.formatMessage(message, logLevel: logLevel) }
         print(message)
     }
 }

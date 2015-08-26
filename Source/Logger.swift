@@ -121,6 +121,6 @@ public class Logger {
 
     private func logMessage(message: String, logLevel: LogLevel) {
         let formatters = self.configuration.formatters[logLevel]
-        configuration.writers[logLevel]?.map { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
+        configuration.writers[logLevel]?.forEach { $0.writeMessage(message, logLevel: logLevel, formatters: formatters) }
     }
 }
