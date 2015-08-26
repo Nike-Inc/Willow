@@ -8,7 +8,9 @@ The changelog for Willow includes information about the each release including a
 
 ### Release Notes
 
-* **FIXED** Issue where bit shifting and hash values were causing crashes on 32 bit devices.
+#### Fixed
+
+* Issue where bit shifting and hash values were causing crashes on 32 bit devices.
 
 ## 1.0.0
 
@@ -18,8 +20,10 @@ Willow no longer supports the concept of a global `LogLevel`. Custom `Formatter`
 
 ### Release Notes
 
-* **UPDATED** Logger configuration to allow specify the allowed `LogLevel` for a given set of writers.
-* **UPDATED** Test logic to use all latest formatting practices.
+#### Updated
+
+* Logger configuration to allow specify the allowed `LogLevel` for a given set of writers.
+* Test logic to use all latest formatting practices.
 
 ---
 
@@ -31,17 +35,24 @@ Willow has been migrated to Swift 2.0. Please make sure to update your project t
 
 ### Release Notes
 
-* **UPDATED** Minimum version of Xcode supported to Xcode 7.0 and Swift 2.0.
-* **UPDATED** `LogLevel` type now conforms to `OptionSetType` instead of `RawOptionSetType`.
-* **UPDATED** The custom log level section of the README.
-* **UPDATED** The minimum supported iOS version to 8.0.
+#### Updated
+
+* Minimum version of Xcode supported to Xcode 7.0 and Swift 2.0.
+* `LogLevel` type now conforms to `OptionSetType` instead of `RawOptionSetType`.
+* The custom log level section of the README.
+* The minimum supported iOS version to 8.0.
 
 ## 0.3.1
 
 ### Release Notes
 
-* **ADDED** public docstrings to all `ConsoleWriter` methods.
-* **FIXED** issue where the `ConsoleWriter` could not be directly initialized due to missing public initializer.
+#### Added
+
+* Public docstrings to all `ConsoleWriter` methods.
+
+#### Fixed
+
+* Issue where the `ConsoleWriter` could not be directly initialized due to missing public initializer.
 
 ## 0.3.0
 
@@ -58,12 +69,23 @@ let allExceptDebug = .Debug ^ .All
 
 ### Release Notes
 
-* **CHANGED** the `LogLevel` enum to a struct that now supports custom log level creation through bitmasking.
-* **ADDED** new unit tests around log level customization.
-* **CHANGED** the source code structure by splitting out the Willow.swift file into smaller, more focused files.
-* **REMOVED** `Logger` log message methods (they were deprecated in the 0.2.0 release).
-* **FIXED** issue where the `LoggerConfiguration.timestampConfiguration()` method was not bridging an internal array properly at runtime.
-* **FIXED** issue where `unowned self` could crash during `Logger` deinitialization the internal queue was still active.
+#### Added
+
+* New unit tests around log level customization.
+
+#### Updated
+
+* The `LogLevel` enum to a struct that now supports custom log level creation through bitmasking.
+* The source code structure by splitting out the Willow.swift file into smaller, more focused files.
+
+#### Removed
+
+* `Logger` log message methods (they were deprecated in the 0.2.0 release).
+
+#### Fixed
+
+* Issue where the `LoggerConfiguration.timestampConfiguration()` method was not bridging an internal array properly at runtime.
+* Issue where `unowned self` could crash during `Logger` deinitialization the internal queue was still active.
 
 ## 0.2.0
 
@@ -73,9 +95,14 @@ This release is only compatible with Swift 1.2. You will need to update your pro
 
 ### Release Notes
 
-* **UPDATED** all source code and tests for Swift 1.2.
-* **UPDATED** Xcode project OS X deployment target to 10.9.
-* **DEPRECATED** `Logger` log message methods for performance reasons.
+#### Updated
+
+* All source code and tests for Swift 1.2.
+* Xcode project OS X deployment target to 10.9.
+
+#### Deprecated
+
+* `Logger` log message methods for performance reasons.
 
 ## 0.1.0
 
