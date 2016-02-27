@@ -30,7 +30,7 @@ class SynchronousTestWriter: Writer {
 
         self.message = message
 
-        ++self.actualNumberOfWrites
+        actualNumberOfWrites += 1
     }
 }
 

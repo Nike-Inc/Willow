@@ -34,7 +34,7 @@ class TestWriter: Writer {
 
     func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         self.message = message
-        ++self.actualNumberOfWrites
+        actualNumberOfWrites += 1
     }
 }
 
