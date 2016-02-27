@@ -107,10 +107,9 @@ public class Logger {
 
     // MARK: - Private - Helper Methods
 
-    private func logMessageIfAllowed(message: () -> String, logLevel: LogLevel) {
-        if logLevelAllowed(logLevel) {
-            logMessage(message(), logLevel: logLevel)
-        }
+    private func logMessageIfAllowed(message: Void -> String, logLevel: LogLevel) {
+        guard logLevelAllowed(logLevel) else { return }
+        logMessage(message(), logLevel: logLevel)
     }
 
     private func logLevelAllowed(logLevel: LogLevel) -> Bool {
