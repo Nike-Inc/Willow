@@ -48,8 +48,8 @@ class AsynchronousTestWriter: SynchronousTestWriter {
     override func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
         super.writeMessage(message, logLevel: logLevel, formatters: formatters)
 
-        if self.actualNumberOfWrites == self.expectedNumberOfWrites {
-            self.expectation.fulfill()
+        if actualNumberOfWrites == expectedNumberOfWrites {
+            expectation.fulfill()
         }
     }
 }

@@ -97,16 +97,16 @@ public class ColorFormatter: Formatter {
         let foregroundTextString = ColorFormatter.textStringForColor(foregroundColor)
         let backgroundTextString = ColorFormatter.textStringForColor(backgroundColor)
 
-        if (!foregroundTextString.isEmpty) {
-            self.foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
+        if !foregroundTextString.isEmpty {
+            foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
         } else {
-            self.foregroundText = ""
+            foregroundText = ""
         }
 
-        if (!backgroundTextString.isEmpty) {
-            self.backgroundText = "\(ColorConstants.ESCAPE)bg\(backgroundTextString);"
+        if !backgroundTextString.isEmpty {
+            backgroundText = "\(ColorConstants.ESCAPE)bg\(backgroundTextString);"
         } else {
-            self.backgroundText = ""
+            backgroundText = ""
         }
     }
 
