@@ -136,10 +136,10 @@ public class ColorFormatter: Formatter {
             // Since the colorspace on OSX is not guaranteed to be `deviceRGBColorSpace`, the color must be converted
             // to guarantee that the `getRed(_:green:blue:alpha:)` call will succeed.
             #if os(OSX)
-            if let rgbColor = color.colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace()) {
-                rgbColor.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
-            }
-            #elseif os(iOS)
+                if let rgbColor = color.colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace()) {
+                    rgbColor.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
+                }
+            #else
                 color.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
             #endif
 
