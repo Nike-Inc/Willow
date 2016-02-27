@@ -26,9 +26,6 @@ public class Logger {
     /// The configuration to use when determining how to log messages.
     public let configuration: LoggerConfiguration
 
-    /// The dispatch method used when executing a log operation on the internal dispatch queue.
-    public let dispatch_method: (dispatch_queue_t, dispatch_block_t) -> Void
-
     // MARK: - Initialization Methods
 
     /**
@@ -41,7 +38,6 @@ public class Logger {
     */
     public init(configuration: LoggerConfiguration = LoggerConfiguration()) {
         self.configuration = configuration
-        self.dispatch_method = self.configuration.asynchronous ? dispatch_async : dispatch_sync
     }
 
     // MARK: - Log Methods
@@ -97,13 +93,15 @@ public class Logger {
         - parameter message:      A closure returning the message to log.
         - parameter withLogLevel: The log level associated with the message closure.
     */
-    public func logMessage(message: () -> String, withLogLevel logLevel: LogLevel) {
-        if enabled {
-            dispatch_method(self.configuration.queue) { [weak self] in
-                if let strongSelf = self {
-                    strongSelf.logMessageIfAllowed(message, logLevel: logLevel)
-                }
-            }
+    public func logMessage(message: Void -> String, withLogLevel logLevel: LogLevel) {
+        guard enabled else { return }
+
+        switch configuration.executionMethod {
+        case .Synchronous(let lock):
+            lock.lock() ; defer { lock.unlock() }
+            logMessageIfAllowed(message, logLevel: logLevel)
+        case .Asynchronous(let queue):
+            dispatch_async(queue) { self.logMessageIfAllowed(message, logLevel: logLevel) }
         }
     }
 

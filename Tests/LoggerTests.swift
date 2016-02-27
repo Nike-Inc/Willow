@@ -106,8 +106,14 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     {
         let expectation = expectationWithDescription("Test writer should receive expected number of writes")
         let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
+        let queue = dispatch_queue_create("async-logger-test-queue", DISPATCH_QUEUE_SERIAL)
 
-        let configuration = LoggerConfiguration(formatters: formatters, writers: [logLevel: [writer]], asynchronous: true)
+        let configuration = LoggerConfiguration(
+            formatters: formatters,
+            writers: [logLevel: [writer]],
+            executionMethod: .Asynchronous(queue: queue)
+        )
+
         let logger = Logger(configuration: configuration)
 
         return (logger, writer)

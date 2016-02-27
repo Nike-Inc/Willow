@@ -13,6 +13,21 @@ import Foundation
     a Logger instance.
 */
 public struct LoggerConfiguration {
+    /**
+        Defines the two types of execution methods used when logging a message.
+
+        Logging operations can be expensive operations when there are hundreds of messages being generated or when
+        it is computationally expensive to compute the message to log. Ideally, one would use the synchronous method
+        in development, and the asynchronous method in production. This allows for easier debugging in the development
+        environment, and better performance in production.
+
+        - Synchronous:  Logs messages synchronously once the recursive lock is available in serial order.
+        - Asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
+    */
+    public enum ExecutionMethod {
+        case Synchronous(lock: NSRecursiveLock)
+        case Asynchronous(queue: dispatch_queue_t)
+    }
 
     // MARK: Properties
 
@@ -22,31 +37,25 @@ public struct LoggerConfiguration {
     /// The dictionary of writers to use when messages are written for each associated log level.
     public let writers: [LogLevel: [Writer]]
 
-    /// Whether to write messages asynchronously to the internal queue.
-    public let asynchronous: Bool
-
-    /// A custom queue to swap out for the default one. This allows sharing queues between multiple logger instances.
-    public let queue: dispatch_queue_t
+    /// The execution method used when logging a message.
+    public let executionMethod: ExecutionMethod
 
     // MARK: Initialization Methods
 
     /**
         Initializes a logger configuration instance.
 
-        - parameter formatters:   The dictionary of formatters to apply to the associated log level. `[:]` by default.
-        - parameter writers:      The dictionary of writers to write to for the associated log level. 
-                                  `[.All: [ConsoleWriter()]` by default.
-        - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
-        - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
-                                  multiple logger instances. `nil` by default.
+        - parameter formatters:      The dictionary of formatters to apply to the associated log level. `[:]` by default.
+        - parameter writers:         The dictionary of writers to write to for the associated log level.
+                                     `[.All: [ConsoleWriter()]` by default.
+        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
 
         - returns: A fully initialized logger configuration instance.
     */
     public init(
         formatters: [LogLevel: [Formatter]] = [:],
         writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]],
-        asynchronous: Bool = false,
-        queue: dispatch_queue_t? = nil)
+        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
     {
         func restructureDictionaryValuesPerBitBasedLogLevel<T>(values: [LogLevel: [T]]) -> [LogLevel: [T]] {
             var specifiedValues: [LogLevel: [T]] = [:]
@@ -71,13 +80,7 @@ public struct LoggerConfiguration {
 
         self.formatters = restructureDictionaryValuesPerBitBasedLogLevel(formatters)
         self.writers = restructureDictionaryValuesPerBitBasedLogLevel(writers)
-
-        self.asynchronous = asynchronous
-
-        self.queue = queue ?? {
-            let label = String(format: "com.nike.willow-%08x%08x", arc4random(), arc4random())
-            return dispatch_queue_create(label, DISPATCH_QUEUE_SERIAL)
-        }()
+        self.executionMethod = executionMethod
     }
 
     // MARK: Customized Configurations
@@ -85,39 +88,35 @@ public struct LoggerConfiguration {
     /**
         Creates a logger configuration instance with a timestamp formatter applied to each log level.
 
-        - parameter logLevel:     The log level to apply to the default `ConsoleWriter`. `.All` by default.
-        - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
-        - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
-                                  multiple logger instances. `nil` by default.
+        - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
+        - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
+        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
 
         - returns: A fully initialized logger configuration instance.
     */
     public static func timestampConfiguration(
         logLevel: LogLevel = .All,
-        asynchronous: Bool = false,
-        queue: dispatch_queue_t? = nil)
+        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
         -> LoggerConfiguration
     {
         let formatters: [LogLevel: [Formatter]] = [.All: [TimestampFormatter()]]
         let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
 
-        return LoggerConfiguration(formatters: formatters, writers: writers, asynchronous: asynchronous, queue: queue)
+        return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
     }
 
     /**
         Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
 
-        - parameter logLevel:     The log level to apply to the default `ConsoleWriter`. `.All` by default.
-        - parameter asynchronous: Whether to write messages asynchronously on the given queue. `false` by default.
-        - parameter queue:        A custom queue to swap out for the default one. This allows sharing queues between
-                                  multiple logger instances. `nil` by default.
+        - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
+        - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
+        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
 
         - returns: A fully initialized logger configuration instance.
     */
     public static func coloredTimestampConfiguration(
         logLevel: LogLevel = .All,
-        asynchronous: Bool = false,
-        queue: dispatch_queue_t? = nil)
+        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
         -> LoggerConfiguration
     {
         let purple = Color(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
@@ -138,6 +137,6 @@ public struct LoggerConfiguration {
 
         let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
 
-        return LoggerConfiguration(formatters: formatters, writers: writers, asynchronous: asynchronous, queue: queue)
+        return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
     }
 }
