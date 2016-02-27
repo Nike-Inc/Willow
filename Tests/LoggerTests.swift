@@ -22,13 +22,15 @@ class SynchronousTestWriter: Writer {
     private(set) var message: String?
     private(set) var formattedMessages = [String]()
 
-    func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+    func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+        var mutableMessage = message
+
         if let formatters = formatters {
-            formatters.forEach { message = $0.formatMessage(message, logLevel: logLevel) }
-            self.formattedMessages.append(message)
+            formatters.forEach { mutableMessage = $0.formatMessage(mutableMessage, logLevel: logLevel) }
+            formattedMessages.append(mutableMessage)
         }
 
-        self.message = message
+        self.message = mutableMessage
 
         actualNumberOfWrites += 1
     }

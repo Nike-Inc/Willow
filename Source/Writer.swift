@@ -44,8 +44,10 @@ public class ConsoleWriter: Writer {
         - parameter logLevel:   The log level associated with the message.
         - parameter formatters: The formatter objects to run over the message before writing to the console.
     */
-    public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
-        formatters?.forEach { message = $0.formatMessage(message, logLevel: logLevel) }
-        print(message)
+    public func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+        var mutableMessage = message
+        formatters?.forEach { mutableMessage = $0.formatMessage(mutableMessage, logLevel: logLevel) }
+
+        print(mutableMessage)
     }
 }
