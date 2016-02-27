@@ -6,7 +6,7 @@
 //  Copyright © 2015 Nike. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 FOUNDATION_EXPORT double WillowVersionNumber;
 FOUNDATION_EXPORT const unsigned char WillowVersionString[];
