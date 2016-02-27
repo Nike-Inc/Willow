@@ -9,7 +9,7 @@
 import Willow
 import XCTest
 
-#if os(iOS)
+#if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
 #elseif os(OSX)
 import Cocoa
