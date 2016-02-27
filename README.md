@@ -20,8 +20,8 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Requirements
 
-- iOS 8.0+ / Mac OS X 10.9+
-- Xcode 7.0
+- iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 7.2
 
 ## Communication
 
@@ -36,13 +36,13 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ### CocoaPods
 
-[CocoaPods](http://cocoapods.org/) is a dependency manager for Cocoa projects.
-
-CocoaPods 0.36 adds supports for Swift and embedded frameworks. You can install it with the following command:
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
 
 ```bash
 [sudo] gem install cocoapods
 ```
+
+> CocoaPods 0.39.0+ is required.
 
 Now to add the `Willow` pod to your project, create your [Podfile](http://guides.cocoapods.org/using/the-podfile.html) and add the following.
 
@@ -54,12 +54,12 @@ use_frameworks!
 source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'Willow', '~> 1.0.0'
+pod 'Willow', '~> 1.0'
 ```
 
 ### Carthage
 
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
 You can install Carthage with Homebrew using the following command:
 
@@ -71,8 +71,10 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 1.0.0
+git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 1.0
 ```
+
+Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
 
 ---
 
