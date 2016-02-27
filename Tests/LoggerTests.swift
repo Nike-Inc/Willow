@@ -237,6 +237,40 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 3, "Actual number of writes should be 3")
     }
+
+    func testThatItCanLogMessageInsideAnotherLogStatement() {
+        // Given
+        let (log, writer) = logger(logLevel: .All)
+
+        // When
+        log.debug {
+            log.debug { "" }
+            return ""
+        }
+
+        log.info {
+            log.info { "" }
+            return ""
+        }
+
+        log.event {
+            log.event { "" }
+            return ""
+        }
+
+        log.warn {
+            log.warn { "" }
+            return ""
+        }
+
+        log.error {
+            log.error { "" }
+            return ""
+        }
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, 10, "Actual number of writes should be 10")
+    }
 }
 
 // MARK: -
@@ -368,6 +402,42 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
+    }
+
+    func testThatItCanLogMessageInsideAnotherLogStatement() {
+        // Given
+        let (log, writer) = logger(logLevel: .All, expectedNumberOfWrites: 10)
+
+        // When
+        log.debug {
+            log.debug { "" }
+            return ""
+        }
+
+        log.info {
+            log.info { "" }
+            return ""
+        }
+
+        log.event {
+            log.event { "" }
+            return ""
+        }
+
+        log.warn {
+            log.warn { "" }
+            return ""
+        }
+
+        log.error {
+            log.error { "" }
+            return ""
+        }
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites)
     }
 }
 
