@@ -64,10 +64,8 @@ public struct LoggerConfiguration {
                 let bitValue = 1 << bitShift
                 var valuesForBit: [T] = []
 
-                for key in values.keys {
-                    if key.rawValue & bitValue > 0 {
-                        valuesForBit += values[key]!
-                    }
+                for key in values.keys where key.rawValue & bitValue > 0 {
+                    valuesForBit += values[key]!
                 }
 
                 if !valuesForBit.isEmpty {
