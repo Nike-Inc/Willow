@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4C88351D1C82506600F70419"
-               BuildableName = "Willow tvOS.framework"
+               BuildableName = "Willow.framework"
                BlueprintName = "Willow tvOS"
                ReferencedContainer = "container:Willow.xcodeproj">
             </BuildableReference>
@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4C8835261C82506600F70419"
-               BuildableName = "Willow tvOS Tests.xctest"
+               BuildableName = "WillowTests.xctest"
                BlueprintName = "Willow tvOS Tests"
                ReferencedContainer = "container:Willow.xcodeproj">
             </BuildableReference>
@@ -47,7 +47,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4C8835261C82506600F70419"
-               BuildableName = "Willow tvOS Tests.xctest"
+               BuildableName = "WillowTests.xctest"
                BlueprintName = "Willow tvOS Tests"
                ReferencedContainer = "container:Willow.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C88351D1C82506600F70419"
-            BuildableName = "Willow tvOS.framework"
+            BuildableName = "Willow.framework"
             BlueprintName = "Willow tvOS"
             ReferencedContainer = "container:Willow.xcodeproj">
          </BuildableReference>
@@ -79,7 +79,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C88351D1C82506600F70419"
-            BuildableName = "Willow tvOS.framework"
+            BuildableName = "Willow.framework"
             BlueprintName = "Willow tvOS"
             ReferencedContainer = "container:Willow.xcodeproj">
          </BuildableReference>
@@ -97,7 +97,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C88351D1C82506600F70419"
-            BuildableName = "Willow tvOS.framework"
+            BuildableName = "Willow.framework"
             BlueprintName = "Willow tvOS"
             ReferencedContainer = "container:Willow.xcodeproj">
          </BuildableReference>
