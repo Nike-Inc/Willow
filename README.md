@@ -25,7 +25,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Migration Guides
 
-- [Willow 2.0 Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.swift)
+- [Willow 2.0 Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.md)
 
 ## Communication
 

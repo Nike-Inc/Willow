@@ -8,7 +8,7 @@ The changelog for Willow includes information about the each release including a
 
 ### Upgrade Notes
 
-The Willow 2.0 release contains non-backwards compatible changes that are called out in detail in the [Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.swift).
+The Willow 2.0 release contains non-backwards compatible changes that are called out in detail in the [Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.md).
 
 ### Release Notes
 
