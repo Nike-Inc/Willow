@@ -14,14 +14,18 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - Custom Writers through Dependency Injection per Log Level
 - Supports Multiple Simultaneous Writers
 - Shared Loggers Between Frameworks
-- Shared Queues Between Multiple Loggers
+- Shared Locks or Queues Between Multiple Loggers
 - Comprehensive Unit Test Coverage
 - Complete Documentation
 
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 7.2
+- Xcode 7.2+
+
+## Migration Guides
+
+- [Willow 2.0 Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.swift)
 
 ## Communication
 
@@ -54,7 +58,7 @@ use_frameworks!
 source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'Willow', '~> 1.0'
+pod 'Willow', '~> 2.0'
 ```
 
 ### Carthage
@@ -71,7 +75,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 1.0
+git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 2.0
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
@@ -95,8 +99,7 @@ The `LoggerConfiguration` class is a container class to store all the configurat
 
 * `formatters: [LogLevel: [Formatter]] = [:]` - The dictionary of formatters to apply to each associated log level.
 * `writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
-* `asynchronous: Bool = false` - Whether to write messages asynchronously on the given queue.
-* `queue: dispatch_queue_t? = nil` - A custom dispatch queue to handle thread-safety to avoid log mangling. If you do not provide one, the Logger instance will create it's own internally.
+* `executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
 
 `LoggerConfiguration` and `Logger` objects can only be customized during initialization. If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs. It is perfectly acceptable to have many different `Logger` instances running simutaneously.
 
@@ -109,7 +112,7 @@ There are two class methods that return custom `LoggerConfiguration` instances u
 
 The `println` function does not guarantee that the `String` parameter will be fully logged to the console. If two `println` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
 
-> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `dispatch_queue_t` that is shared between both configurations. For more info...see the [Advanced Usage](Advanced Usage) section.
+> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `dispatch_queue_t` that is shared between both configurations. For more info...see the [Advanced Usage](Advanced Usage) section.
 
 ### Logging Messages with Closures
 
@@ -182,7 +185,8 @@ log.enabled = true
 Logging can greatly affect the runtime performance of your application or library. Willow makes it very easy to log messages synchronously or asynchronously. You can define this behavior when creating the `LoggerConfiguration` for your `Logger` instance.
 
 ```swift
-let configuration = LoggerConfiguration(asynchronous: true) // false by default
+let queue = dispatch_queue_create("serial.queue", DISPATCH_QUEUE_SERIAL)
+let configuration = LoggerConfiguration(executionMethod: .Asynchronous(queue: queue))
 let log = Logger(configuration: configuration)
 ```
 
@@ -300,9 +304,10 @@ Again, this is an extremely lightweight design to allow for ultimate flexibility
 
 ```swift
 public class ConsoleWriter: Writer {
-    public func writeMessage(var message: String, logLevel: LogLevel, formatters: [Formatter]?) {
-        formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
-        println(message)
+    public func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+    	var mutableMessage = message
+        formatters?.map { mutableMessage = $0.formatMessage(mutableMessage, logLevel: logLevel) }
+        println(mutableMessage)
     }
 }
 ```
@@ -314,8 +319,9 @@ So what about logging to both a file and the console at the same time? No proble
 ```swift
 public class FileWriter: Writer {
     public func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
-      formatters?.map { message = $0.formatMessage(message, logLevel: logLevel) }
-      // Write the formatted message to a file (I'll leave this to you!)
+	    var mutableMessage = message
+        formatters?.map { mutableMessage = $0.formatMessage(mutableMessage, logLevel: logLevel) }
+        // Write the formatted message to a file (I'll leave this to you!)
     }
 }
 
@@ -400,7 +406,7 @@ It's very simple to swap out a pre-existing `Logger` with a new one.
 
 ### Multiple Loggers, One Queue
 
-The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `dispatch_queue_t` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
+The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `NSRecursiveLock` or `dispatch_queue_t` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
 
 ```swift
 //=========== Inside Math.swift ===========
@@ -410,20 +416,24 @@ public var log = Logger(configuration: LoggerConfiguration(writers: [.Warn, .Err
 import Math
 
 // Create a single queue to share
-let queue = dispatch_queue_create("com.math.logger", DISPATCH_QUEUE_SERIAL)
+let sharedQueue = dispatch_queue_create("com.math.logger", DISPATCH_QUEUE_SERIAL)
 
 // Create the Calculator.log with multiple writers and a .Debug log level
 let writers = [.All: [FileWriter(), ConsoleWriter()]]
-let configuration = LoggerConfiguration(writers: writers, queue: queue)
+let configuration = LoggerConfiguration(
+    writers: writers, 
+    executionMethod: .Asynchronous(queue: sharedQueue)
+)
+
 var log = Logger(configuration: configuration)
 
 // Replace the Math.log with a new instance with all the same configuration values except a shared queue
 let mathConfiguration = LoggerConfiguration(
     formatters: Math.log.configuration.formatters,
     writers: Math.log.configuration.writers,
-    asynchronous: Math.log.configuration.asynchronous,
-    queue: queue
+    executionMethod: .Asynchronous(queue: sharedQueue)
 )
+
 Math.log = Logger(configuration: mathConfiguration)
 ```
 
