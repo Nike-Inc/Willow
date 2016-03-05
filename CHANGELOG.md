@@ -4,6 +4,28 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 2.0.0
+
+### Upgrade Notes
+
+The Willow 2.0 release contains non-backwards compatible changes that are called out in detail in the [Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.swift).
+
+### Release Notes
+
+#### Added
+
+* Tests for logging inside a log statement for sync and async loggers.
+* `ExecutionMethod` enumeration to replace `asynchronous` flag and `queue` in `LoggerConfiguration`.
+* New `tvOS` framework and test target.
+* Migration guide for transitioning from Willow 1.x to 2.0.
+
+#### Updated
+
+* All logic to use latest Swift 2.x conventions and capabilities.
+* All logic to prepare for Swift 2.2 release.
+
+---
+
 ## 1.0.2
 
 ### Release Notes
