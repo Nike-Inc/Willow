@@ -33,13 +33,13 @@ class ViewController: UIViewController {
 
     private func setUpButtons() {
         let buttonProperties: [(name: String, selector: Selector)] = [
-            ("Log Debug Message", "logDebugMessageButtonTapped"),
-            ("Log Info Message", "logInfoMessageButtonTapped"),
-            ("Log Event Message", "logEventMessageButtonTapped"),
-            ("Log Warn Message", "logWarnMessageButtonTapped"),
-            ("Log Error Message", "logErrorMessageButtonTapped"),
-            ("Log All Messages", "logAllMessagesButtonTapped"),
-            ("Log Messages on Multiple Threads", "multipleThreadsButtonTapped")
+            ("Log Debug Message", #selector(ViewController.logDebugMessageButtonTapped)),
+            ("Log Info Message", #selector(ViewController.logInfoMessageButtonTapped)),
+            ("Log Event Message", #selector(ViewController.logEventMessageButtonTapped)),
+            ("Log Warn Message", #selector(ViewController.logWarnMessageButtonTapped)),
+            ("Log Error Message", #selector(ViewController.logErrorMessageButtonTapped)),
+            ("Log All Messages", #selector(ViewController.logAllMessagesButtonTapped)),
+            ("Log Messages on Multiple Threads", #selector(ViewController.multipleThreadsButtonTapped))
         ]
 
         for (name, selector) in buttonProperties {
