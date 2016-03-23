@@ -4,6 +4,15 @@ The changelog for Willow includes information about the each release including a
 
 ---
 
+## 2.1.0
+
+### Release Notes
+
+#### Updated
+
+* All logic to use Swift 2.2 APIs.
+* The required Xcode version to 7.3.
+
 ## 2.0.0
 
 ### Upgrade Notes
