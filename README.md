@@ -4,37 +4,31 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Features
 
-- Default Log Levels
-- Custom Log Levels
-- Simple Logging Functions using Closures
-- Configurable Synchronous or Asynchronous Execution
-- Thread-Safe Logging Output (No Log Mangling)
-- Custom Formatters through Dependency Injection per Log Level
-- Customizable Color Formatting for Console Output
-- Custom Writers through Dependency Injection per Log Level
-- Supports Multiple Simultaneous Writers
-- Shared Loggers Between Frameworks
-- Shared Locks or Queues Between Multiple Loggers
-- Comprehensive Unit Test Coverage
-- Complete Documentation
+- [X] Default Log Levels
+- [X] Custom Log Levels
+- [X] Simple Logging Functions using Closures
+- [X] Configurable Synchronous or Asynchronous Execution
+- [X] Thread-Safe Logging Output (No Log Mangling)
+- [X] Custom Formatters through Dependency Injection per Log Level
+- [X] Customizable Color Formatting for Console Output
+- [X] Custom Writers through Dependency Injection per Log Level
+- [X] Supports Multiple Simultaneous Writers
+- [X] Shared Loggers Between Frameworks
+- [X] Shared Locks or Queues Between Multiple Loggers
+- [X] Comprehensive Unit Test Coverage
+- [X] Complete Documentation
 
 ## Requirements
 
-- iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
+- iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 7.3+
-
-## Migration Guides
-
-- [Willow 2.0 Migration Guide](http://stash.nikedev.com/projects/BMD/repos/willow/browse/Documentation/Willow%202.0%20Migration%20Guide.md)
 
 ## Communication
 
-- Need help? Open a [Question](https://jira.nike.com/browse/bmd). (Component => `Willow`)
-- Have a feature request? Open a [Feature Request](https://jira.nike.com/browse/bmd). (Component => `Willow`)
-- Find a bug? Open a [Bug](https://jira.nike.com/browse/bmd). (Component => `Willow`)
+- Need help? Open an issue.
+- Have a feature request? Open an issue.
+- Find a bug? Open an issue.
 - Want to contribute? Fork the repo and submit a pull request.
-
-> These tickets go directly to the developers of Willow who are very adament about providing top notch support for this library. Please don't hesitate to open tickets for any type of issue. If we don't know about it, we can't fix it, support it or build it.
 
 ## Installation
 
@@ -48,24 +42,27 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 > CocoaPods 0.39.0+ is required.
 
-Now to add the `Willow` pod to your project, create your [Podfile](http://guides.cocoapods.org/using/the-podfile.html) and add the following.
+To integrate Willow into your project, specify it in your [Podfile](http://guides.cocoapods.org/using/the-podfile.html):
 
 ```ruby
-platform :ios, '8.0'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
 use_frameworks!
 
-# Spec sources
-source 'ssh://git@stash.nikedev.com/ncps/nike-private-spec.git'
-source 'https://github.com/CocoaPods/Specs.git'
+pod 'Willow', '~> 1.0'
+```
 
-pod 'Willow', '~> 2.0'
+Then, run the following command:
+
+```bash
+$ pod install
 ```
 
 ### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
-You can install Carthage with Homebrew using the following command:
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
 
 ```bash
 brew update
@@ -75,7 +72,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-git "ssh://git@stash.nikedev.com/bmd/willow.git" ~> 2.0
+github "Nike/Willow" ~> 1.0
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
@@ -469,3 +466,7 @@ Willow is named after the one, the only, Willow tree.
 
 - [Christian Noon](https://github.com/cnoon) ([@Christian_Noon](https://twitter.com/Christian_Noon))
 - [Eric Appel](https://github.com/ericappel) ([@EricAppel](https://twitter.com/EricAppel))
+
+## License
+
+Willow is released under the MIT license. See LICENSE for details.
