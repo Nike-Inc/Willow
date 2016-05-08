@@ -9,11 +9,47 @@
 /* Begin PBXBuildFile section */
 		4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; };
 		4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4C2B3A251CDEB717004F1A18 /* Database.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; };
+		4C2B3A261CDEB717004F1A18 /* Database.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4C2B3A291CDEB717004F1A18 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A241CDEB6F9004F1A18 /* Network.framework */; };
+		4C2B3A2A1CDEB717004F1A18 /* Network.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A241CDEB6F9004F1A18 /* Network.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4C2B3A3C1CDEC0D6004F1A18 /* WillowConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B3A3B1CDEC0D6004F1A18 /* WillowConfiguration.swift */; };
 		4C8787AD1A6E3948008A313B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787A71A6E3948008A313B /* AppDelegate.swift */; };
 		4C8787AE1A6E3948008A313B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787A81A6E3948008A313B /* LaunchScreen.xib */; };
 		4C8787AF1A6E3948008A313B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787AA1A6E3948008A313B /* Images.xcassets */; };
 		4C8787B11A6E3948008A313B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787AC1A6E3948008A313B /* ViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4C2B3A201CDEB6F9004F1A18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C2DC4191CDEB4F4009CA3C5;
+			remoteInfo = Database;
+		};
+		4C2B3A231CDEB6F9004F1A18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C2DC3E41CDEB279009CA3C5;
+			remoteInfo = Network;
+		};
+		4C2B3A271CDEB717004F1A18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C2DC4181CDEB4F4009CA3C5;
+			remoteInfo = Database;
+		};
+		4C2B3A2B1CDEB717004F1A18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C2DC3E31CDEB279009CA3C5;
+			remoteInfo = Network;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		4C2606E21AB285B8006037DF /* Embed Frameworks */ = {
@@ -23,6 +59,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */,
+				4C2B3A261CDEB717004F1A18 /* Database.framework in Embed Frameworks */,
+				4C2B3A2A1CDEB717004F1A18 /* Network.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -32,6 +70,9 @@
 /* Begin PBXFileReference section */
 		4C1AD17C1AF04E6600D92E29 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2776A71A6C55F4007B1133 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Database.xcodeproj; path = Frameworks/Database.xcodeproj; sourceTree = "<group>"; };
+		4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Network.xcodeproj; path = Frameworks/Network.xcodeproj; sourceTree = "<group>"; };
+		4C2B3A3B1CDEC0D6004F1A18 /* WillowConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WillowConfiguration.swift; sourceTree = "<group>"; };
 		4C8787A71A6E3948008A313B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C8787A91A6E3948008A313B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4C8787AA1A6E3948008A313B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -45,6 +86,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */,
+				4C2B3A251CDEB717004F1A18 /* Database.framework in Frameworks */,
+				4C2B3A291CDEB717004F1A18 /* Network.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +108,8 @@
 				4C8787A61A6E3948008A313B /* Source */,
 				4C0182271AB286680020D3C4 /* Frameworks */,
 				4C2776A81A6C55F4007B1133 /* Products */,
+				4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */,
+				4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,11 +121,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4C2B3A181CDEB6F9004F1A18 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4C2B3A211CDEB6F9004F1A18 /* Database.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4C2B3A1C1CDEB6F9004F1A18 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4C2B3A241CDEB6F9004F1A18 /* Network.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4C8787A61A6E3948008A313B /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				4C8787A71A6E3948008A313B /* AppDelegate.swift */,
 				4C8787AC1A6E3948008A313B /* ViewController.swift */,
+				4C2B3A3B1CDEC0D6004F1A18 /* WillowConfiguration.swift */,
 				4C8787B21A6E3956008A313B /* Supporting Files */,
 			);
 			name = Source;
@@ -112,6 +174,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				4C2B3A281CDEB717004F1A18 /* PBXTargetDependency */,
+				4C2B3A2C1CDEB717004F1A18 /* PBXTargetDependency */,
 			);
 			name = "iOS Example";
 			productName = Example;
@@ -144,12 +208,39 @@
 			mainGroup = 4C27769E1A6C55F4007B1133;
 			productRefGroup = 4C2776A81A6C55F4007B1133 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4C2B3A181CDEB6F9004F1A18 /* Products */;
+					ProjectRef = 4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */;
+				},
+				{
+					ProductGroup = 4C2B3A1C1CDEB6F9004F1A18 /* Products */;
+					ProjectRef = 4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4C2776A61A6C55F4007B1133 /* iOS Example */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4C2B3A211CDEB6F9004F1A18 /* Database.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Database.framework;
+			remoteRef = 4C2B3A201CDEB6F9004F1A18 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2B3A241CDEB6F9004F1A18 /* Network.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Network.framework;
+			remoteRef = 4C2B3A231CDEB6F9004F1A18 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4C2776A51A6C55F4007B1133 /* Resources */ = {
@@ -169,11 +260,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C8787AD1A6E3948008A313B /* AppDelegate.swift in Sources */,
+				4C2B3A3C1CDEC0D6004F1A18 /* WillowConfiguration.swift in Sources */,
 				4C8787B11A6E3948008A313B /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4C2B3A281CDEB717004F1A18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Database;
+			targetProxy = 4C2B3A271CDEB717004F1A18 /* PBXContainerItemProxy */;
+		};
+		4C2B3A2C1CDEB717004F1A18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Network;
+			targetProxy = 4C2B3A2B1CDEB717004F1A18 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4C8787A81A6E3948008A313B /* LaunchScreen.xib */ = {
@@ -273,6 +378,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -285,6 +391,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

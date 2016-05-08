@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4C2DC3E81CDEB279009CA3C5 /* Network.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C2DC3E71CDEB279009CA3C5 /* Network.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4C2DC4081CDEB30E009CA3C5 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2DC3FB1CDEB2FB009CA3C5 /* Willow.framework */; };
+		4C2DC40C1CDEB32F009CA3C5 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2DC40B1CDEB32F009CA3C5 /* Logger.swift */; };
+		4C2DC40E1CDEB3F2009CA3C5 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2DC40D1CDEB3F2009CA3C5 /* Request.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4C2DC3FA1CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CFE82991A6C484A0002868E;
+			remoteInfo = "Willow iOS";
+		};
+		4C2DC3FC1CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CFE82A41A6C484A0002868E;
+			remoteInfo = "Willow iOS Tests";
+		};
+		4C2DC3FE1CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF89C8B1A6E2F60001BFDE1;
+			remoteInfo = "Willow OSX";
+		};
+		4C2DC4001CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF89C951A6E2F60001BFDE1;
+			remoteInfo = "Willow OSX Tests";
+		};
+		4C2DC4021CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C88351E1C82506600F70419;
+			remoteInfo = "Willow tvOS";
+		};
+		4C2DC4041CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C8835271C82506600F70419;
+			remoteInfo = "Willow tvOS Tests";
+		};
+		4C2DC4061CDEB2FB009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CA33F2C1B7556D60047C307;
+			remoteInfo = "Willow watchOS";
+		};
+		4C2DC4091CDEB315009CA3C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4CFE82981A6C484A0002868E;
+			remoteInfo = "Willow iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4C2DC3E41CDEB279009CA3C5 /* Network.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Network.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C2DC3E71CDEB279009CA3C5 /* Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		4C2DC3E91CDEB279009CA3C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Willow.xcodeproj; path = ../../Willow.xcodeproj; sourceTree = "<group>"; };
+		4C2DC40B1CDEB32F009CA3C5 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		4C2DC40D1CDEB3F2009CA3C5 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4C2DC3E01CDEB279009CA3C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C2DC4081CDEB30E009CA3C5 /* Willow.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4C2DC3DA1CDEB279009CA3C5 = {
+			isa = PBXGroup;
+			children = (
+				4C2DC3E61CDEB279009CA3C5 /* Source */,
+				4C2DC3E51CDEB279009CA3C5 /* Products */,
+				4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		4C2DC3E51CDEB279009CA3C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4C2DC3E41CDEB279009CA3C5 /* Network.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4C2DC3E61CDEB279009CA3C5 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				4C2DC40B1CDEB32F009CA3C5 /* Logger.swift */,
+				4C2DC40D1CDEB3F2009CA3C5 /* Request.swift */,
+				4C2DC3EF1CDEB2DA009CA3C5 /* Supporting Files */,
+			);
+			name = Source;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		4C2DC3EF1CDEB2DA009CA3C5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4C2DC3E71CDEB279009CA3C5 /* Network.h */,
+				4C2DC3E91CDEB279009CA3C5 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4C2DC3F11CDEB2FB009CA3C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4C2DC3FB1CDEB2FB009CA3C5 /* Willow.framework */,
+				4C2DC3FD1CDEB2FB009CA3C5 /* WillowTests.xctest */,
+				4C2DC3FF1CDEB2FB009CA3C5 /* Willow.framework */,
+				4C2DC4011CDEB2FB009CA3C5 /* WillowTests.xctest */,
+				4C2DC4031CDEB2FB009CA3C5 /* Willow.framework */,
+				4C2DC4051CDEB2FB009CA3C5 /* WillowTests.xctest */,
+				4C2DC4071CDEB2FB009CA3C5 /* Willow.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4C2DC3E11CDEB279009CA3C5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C2DC3E81CDEB279009CA3C5 /* Network.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4C2DC3E31CDEB279009CA3C5 /* Network */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C2DC3EC1CDEB279009CA3C5 /* Build configuration list for PBXNativeTarget "Network" */;
+			buildPhases = (
+				4C2DC3DF1CDEB279009CA3C5 /* Sources */,
+				4C2DC3E01CDEB279009CA3C5 /* Frameworks */,
+				4C2DC3E11CDEB279009CA3C5 /* Headers */,
+				4C2DC3E21CDEB279009CA3C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4C2DC40A1CDEB315009CA3C5 /* PBXTargetDependency */,
+			);
+			name = Network;
+			productName = Network;
+			productReference = 4C2DC3E41CDEB279009CA3C5 /* Network.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4C2DC3DB1CDEB279009CA3C5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Nike;
+				TargetAttributes = {
+					4C2DC3E31CDEB279009CA3C5 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 4C2DC3DE1CDEB279009CA3C5 /* Build configuration list for PBXProject "Network" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4C2DC3DA1CDEB279009CA3C5;
+			productRefGroup = 4C2DC3E51CDEB279009CA3C5 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4C2DC3F11CDEB2FB009CA3C5 /* Products */;
+					ProjectRef = 4C2DC3F01CDEB2FB009CA3C5 /* Willow.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				4C2DC3E31CDEB279009CA3C5 /* Network */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4C2DC3FB1CDEB2FB009CA3C5 /* Willow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Willow.framework;
+			remoteRef = 4C2DC3FA1CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2DC3FD1CDEB2FB009CA3C5 /* WillowTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WillowTests.xctest;
+			remoteRef = 4C2DC3FC1CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2DC3FF1CDEB2FB009CA3C5 /* Willow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Willow.framework;
+			remoteRef = 4C2DC3FE1CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2DC4011CDEB2FB009CA3C5 /* WillowTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WillowTests.xctest;
+			remoteRef = 4C2DC4001CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2DC4031CDEB2FB009CA3C5 /* Willow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Willow.framework;
+			remoteRef = 4C2DC4021CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2DC4051CDEB2FB009CA3C5 /* WillowTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WillowTests.xctest;
+			remoteRef = 4C2DC4041CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C2DC4071CDEB2FB009CA3C5 /* Willow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Willow.framework;
+			remoteRef = 4C2DC4061CDEB2FB009CA3C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4C2DC3E21CDEB279009CA3C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4C2DC3DF1CDEB279009CA3C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C2DC40C1CDEB32F009CA3C5 /* Logger.swift in Sources */,
+				4C2DC40E1CDEB3F2009CA3C5 /* Request.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4C2DC40A1CDEB315009CA3C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Willow iOS";
+			targetProxy = 4C2DC4091CDEB315009CA3C5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4C2DC3EA1CDEB279009CA3C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		4C2DC3EB1CDEB279009CA3C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		4C2DC3ED1CDEB279009CA3C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Network/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nike.Network;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4C2DC3EE1CDEB279009CA3C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Network/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nike.Network;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4C2DC3DE1CDEB279009CA3C5 /* Build configuration list for PBXProject "Network" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C2DC3EA1CDEB279009CA3C5 /* Debug */,
+				4C2DC3EB1CDEB279009CA3C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4C2DC3EC1CDEB279009CA3C5 /* Build configuration list for PBXNativeTarget "Network" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C2DC3ED1CDEB279009CA3C5 /* Debug */,
+				4C2DC3EE1CDEB279009CA3C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4C2DC3DB1CDEB279009CA3C5 /* Project object */;
+}
