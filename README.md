@@ -2,6 +2,38 @@
 
 Willow is a powerful, yet lightweight logging library written in Swift.
 
+- [Features](#features)
+- [Requirements](#requirements)
+- [Communication](#communication)
+- [Installation](#installation)
+    - [CocoaPods](#cocoapods)
+    - [Carthage](#carthage)
+- [Usage](#usage)
+    - [Creating a Logger](#creating-a-logger)
+        - [Logger Configuration](#logger-configuration)
+        - [Thread Safety](#thread-safety)
+    - [Logging Messages with Closures](#logging-messages-with-closures)
+        - [Single Line Closures](#single-line-closures)
+        - [Multi-Line Closures](#multi-line-closures)
+        - [Closure Performance](#closure-performance)
+    - [Disabling a Logger](#disabling-a-logger)
+    - [Synchronous and Asynchronous Logging](#synchronous-and-asynchronous-logging)
+        - [Synchronous Logging](#synchronous-logging)
+        - [Asynchronous Logging](#asynchronous-logging)
+    - [Formatters](#formatters)
+        - [Color Formatters](#color-formatters)
+        - [Multiple Formatters](#multiple-formatters)
+    - [Writers](#writers)
+        - [Multiple Writers](#multiple-writers)
+        - [Per LogLevel Writers](#per-loglevel-writers)
+- [Advanced Usage](#advanced-usage)
+    - [Creating Custom Log Levels](#creating-custom-log-levels)
+    - [Shared Loggers between Frameworks](#shared-loggers-between-frameworks)
+    - [Multiple Loggers, One Queue](#multiple-loggers-one-queue)
+- [FAQ](#faq)
+- [License](#license)
+- [Creators](#creators)
+
 ## Features
 
 - [X] Default Log Levels
@@ -90,7 +122,7 @@ let defaultLogger = Logger()
 
 The `Logger` initializer takes a single parameter which is a `LoggerConfiguration`. If no configuration is provided, the Logger will internally initialize a `LoggerConfiguration` with default parameters.
 
-#### LoggerConfiguration
+#### Logger Configuration
 
 The `LoggerConfiguration` class is a container class to store all the configuration information to be applied to a particular `Logger`. Here are all the configurable parameters and their respective descriptions.
 
@@ -229,7 +261,7 @@ let log = Logger(configuration: configuration)
 
 `Formatter` objects are very powerful and can manipulate the message in any way.
 
-### Color Formatters
+#### Color Formatters
 
 There is a special `Formatter` in `Willow` called a `ColorFormatter`. It was designed to take a foreground and backround color in the form of a `UIColor` or `NSColor`. It then formats the message to match the coloring scheme of the [XcodeColors](https://github.com/robbiehanson/XcodeColors) plugin. This allows you to change the foreground and background colors of logging output in the Xcode console. This can make it much easier to dig through thousands of lines of logging output.
 
@@ -256,7 +288,7 @@ let log = Logger(configuration: configuration)
 
 > The XcodeColors plugin is available through [Alcatraz](http://alcatraz.io/) and can be installed with the click of a button.
 
-### Multiple Formatters
+#### Multiple Formatters
 
 Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampFormatter` (prefixes the message with a timestamp) in combination with the `ColorFormatter` objects from the previous example.
 
@@ -287,7 +319,7 @@ let log = Logger(configuration: configuration)
 
 > The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `ColorFormatter` was inserted before the `TimestampFormatter`.
 
-### Custom Writers
+### Writers
 
 Writing log messages to various locations is an essential feature of any robust logging library. This is made possible in `Willow` through the `Writer` protocol.
 
@@ -309,7 +341,7 @@ public class ConsoleWriter: Writer {
 }
 ```
 
-### Multiple Writers
+#### Multiple Writers
 
 So what about logging to both a file and the console at the same time? No problem. You can pass multiple `Writer` objects into the `Logger` initializer. The `Logger` will execute each `Writer` in the order it was passed in. For example, let's create a `FileWriter` and combine that with our `ConsoleWriter`.
 
@@ -462,11 +494,11 @@ Willow is named after the one, the only, Willow tree.
 
 ---
 
-## Creator
-
-- [Christian Noon](https://github.com/cnoon) ([@Christian_Noon](https://twitter.com/Christian_Noon))
-- [Eric Appel](https://github.com/ericappel) ([@EricAppel](https://twitter.com/EricAppel))
-
 ## License
 
 Willow is released under the MIT license. See LICENSE for details.
+
+## Creators
+
+- [Christian Noon](https://github.com/cnoon) ([@Christian_Noon](https://twitter.com/Christian_Noon))
+- [Eric Appel](https://github.com/ericappel) ([@EricAppel](https://twitter.com/EricAppel))
