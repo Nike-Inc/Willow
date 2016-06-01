@@ -79,6 +79,7 @@
 /* Begin PBXFileReference section */
 		4C0CE38C1CFF3FB600D57B03 /* WriterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriterTests.swift; sourceTree = "<group>"; };
 		4C0CE3911CFF5FFC00D57B03 /* LoggerConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerConfigurationTests.swift; sourceTree = "<group>"; };
+		4C0CE3981CFF941900D57B03 /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogLevel.swift; sourceTree = "<group>"; };
@@ -172,8 +173,9 @@
 		4CA75D451A6C493F00275DC5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4CA75D411A6C493800275DC5 /* Info.plist */,
 				4CA75D421A6C493800275DC5 /* Willow.h */,
+				4CA75D411A6C493800275DC5 /* Info.plist */,
+				4C0CE3981CFF941900D57B03 /* Info-tvOS.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
