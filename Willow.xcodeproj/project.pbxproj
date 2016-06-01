@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		321F2DF335043A818DBEC881 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		4C0CE38D1CFF3FB600D57B03 /* WriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* WriterTests.swift */; };
+		4C0CE38E1CFF3FB600D57B03 /* WriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* WriterTests.swift */; };
+		4C0CE38F1CFF3FB600D57B03 /* WriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* WriterTests.swift */; };
 		4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */; };
 		4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
 		4C83FB2D1AEC1959003FEA49 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
@@ -71,6 +74,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C0CE38C1CFF3FB600D57B03 /* WriterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriterTests.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogLevel.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 				4CBE850B1AEA2EFA006A1205 /* CustomLogLevelTests.swift */,
 				4C1BBA691A6C518800D39EE1 /* FormatterTests.swift */,
 				4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */,
+				4C0CE38C1CFF3FB600D57B03 /* WriterTests.swift */,
 				4CFE82A91A6C484B0002868E /* Supporting Files */,
 			);
 			path = Tests;
@@ -502,6 +507,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C0CE38F1CFF3FB600D57B03 /* WriterTests.swift in Sources */,
 				4C88353D1C82530F00F70419 /* FormatterTests.swift in Sources */,
 				4C88353C1C82530F00F70419 /* CustomLogLevelTests.swift in Sources */,
 				4C88353E1C82530F00F70419 /* LoggerTests.swift in Sources */,
@@ -536,6 +542,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C0CE38E1CFF3FB600D57B03 /* WriterTests.swift in Sources */,
 				4CBE850F1AEA2F3E006A1205 /* CustomLogLevelTests.swift in Sources */,
 				4CC837781A6E347700B31851 /* FormatterTests.swift in Sources */,
 				4CC837791A6E347A00B31851 /* LoggerTests.swift in Sources */,
@@ -558,6 +565,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C0CE38D1CFF3FB600D57B03 /* WriterTests.swift in Sources */,
 				4CBE850E1AEA2F3D006A1205 /* CustomLogLevelTests.swift in Sources */,
 				4C1BBA6C1A6C518800D39EE1 /* LoggerTests.swift in Sources */,
 				4C1BBA6B1A6C518800D39EE1 /* FormatterTests.swift in Sources */,
