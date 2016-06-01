@@ -69,7 +69,6 @@ class LogLevelTestCase: XCTestCase {
         let event = LogLevel.Event
         let warn = LogLevel.Warn
         let error = LogLevel.Error
-        let all = LogLevel.All
 
         // Then
         XCTAssertEqual(off.hashValue, 0)
@@ -78,7 +77,6 @@ class LogLevelTestCase: XCTestCase {
         XCTAssertEqual(event.hashValue, 4)
         XCTAssertEqual(warn.hashValue, 8)
         XCTAssertEqual(error.hashValue, 16)
-        XCTAssertEqual(all.hashValue, 4294967295)
     }
 
     func testLogLevelDescriptions() {
