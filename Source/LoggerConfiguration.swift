@@ -113,7 +113,7 @@ public struct LoggerConfiguration {
         executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
         -> LoggerConfiguration
     {
-        let formatters: [LogLevel: [Formatter]] = [.All: [TimestampFormatter()]]
+        let formatters: [LogLevel: [Formatter]] = [logLevel: [TimestampFormatter()]]
         let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
 
         return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
