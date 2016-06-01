@@ -101,6 +101,8 @@ extension LogLevel: CustomStringConvertible {
             return "Debug"
         case LogLevel.Info:
             return "Info"
+        case LogLevel.Event:
+            return "Event"
         case LogLevel.Warn:
             return "Warn"
         case LogLevel.Error:

@@ -57,6 +57,100 @@ class TestWriter: Writer {
 
 // MARK: - Test Cases
 
+class LogLevelTestCase: XCTestCase {
+
+    // MARK: Tests
+
+    func testLogLevelHashValues() {
+        // Given, When
+        let off = LogLevel.Off
+        let debug = LogLevel.Debug
+        let info = LogLevel.Info
+        let event = LogLevel.Event
+        let warn = LogLevel.Warn
+        let error = LogLevel.Error
+        let all = LogLevel.All
+
+        // Then
+        XCTAssertEqual(off.hashValue, 0)
+        XCTAssertEqual(debug.hashValue, 1)
+        XCTAssertEqual(info.hashValue, 2)
+        XCTAssertEqual(event.hashValue, 4)
+        XCTAssertEqual(warn.hashValue, 8)
+        XCTAssertEqual(error.hashValue, 16)
+        XCTAssertEqual(all.hashValue, 4294967295)
+    }
+
+    func testLogLevelDescriptions() {
+        // Given, When
+        let off = LogLevel.Off
+        let debug = LogLevel.Debug
+        let info = LogLevel.Info
+        let event = LogLevel.Event
+        let warn = LogLevel.Warn
+        let error = LogLevel.Error
+        let all = LogLevel.All
+        let unknown = LogLevel(rawValue: 0b00000000_00000000_10000000_00000000)
+
+        // Then
+        XCTAssertEqual(off.description, "Off")
+        XCTAssertEqual(debug.description, "Debug")
+        XCTAssertEqual(info.description, "Info")
+        XCTAssertEqual(event.description, "Event")
+        XCTAssertEqual(warn.description, "Warn")
+        XCTAssertEqual(error.description, "Error")
+        XCTAssertEqual(all.description, "All")
+        XCTAssertEqual(unknown.description, "Unknown")
+    }
+
+    func testLogLevelEquatableConformance() {
+        // Given, When
+        let off = LogLevel.Off
+        let debug = LogLevel.Debug
+        let info = LogLevel.Info
+        let event = LogLevel.Event
+        let warn = LogLevel.Warn
+        let error = LogLevel.Error
+        let all = LogLevel.All
+
+        // Then
+        XCTAssertEqual(off, off)
+        XCTAssertEqual(debug, debug)
+        XCTAssertEqual(info, info)
+        XCTAssertEqual(event, event)
+        XCTAssertEqual(warn, warn)
+        XCTAssertEqual(error, error)
+        XCTAssertEqual(all, all)
+
+        XCTAssertNotEqual(off, debug)
+        XCTAssertNotEqual(off, info)
+        XCTAssertNotEqual(off, event)
+        XCTAssertNotEqual(off, warn)
+        XCTAssertNotEqual(off, error)
+        XCTAssertNotEqual(off, all)
+
+        XCTAssertNotEqual(debug, info)
+        XCTAssertNotEqual(debug, event)
+        XCTAssertNotEqual(debug, warn)
+        XCTAssertNotEqual(debug, error)
+        XCTAssertNotEqual(debug, all)
+
+        XCTAssertNotEqual(info, event)
+        XCTAssertNotEqual(info, warn)
+        XCTAssertNotEqual(info, error)
+        XCTAssertNotEqual(info, all)
+
+        XCTAssertNotEqual(event, warn)
+        XCTAssertNotEqual(event, error)
+        XCTAssertNotEqual(event, all)
+
+        XCTAssertNotEqual(warn, error)
+        XCTAssertNotEqual(warn, all)
+
+        XCTAssertNotEqual(error, all)
+    }
+}
+
 class CustomLogLevelTestCase: XCTestCase {
 
     // MARK: Tests
