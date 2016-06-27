@@ -109,7 +109,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-github "Nike/Willow" ~> 1.0
+github "Nike-Inc/Willow" ~> 1.0
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
