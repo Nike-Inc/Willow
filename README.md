@@ -77,7 +77,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 [sudo] gem install cocoapods
 ```
 
-> CocoaPods 0.39.0+ is required.
+> CocoaPods 1.0+ is required.
 
 To integrate Willow into your project, specify it in your [Podfile](http://guides.cocoapods.org/using/the-podfile.html):
 
@@ -146,7 +146,7 @@ There are two class methods that return custom `LoggerConfiguration` instances u
 
 The `println` function does not guarantee that the `String` parameter will be fully logged to the console. If two `println` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
 
-> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `dispatch_queue_t` that is shared between both configurations. For more info...see the [Advanced Usage](Advanced Usage) section.
+> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `dispatch_queue_t` that is shared between both configurations. For more info...see the [Advanced Usage](#advanced-usage) section.
 
 ### Logging Messages with Closures
 
@@ -169,9 +169,9 @@ log.error { "Error Message" }
 // Error Message
 ```
 
-The single line closure does not require a `return` declaration since it is implied in Swift. This makes it very easy to declare a closure. There are some VERY important performance considerations which is why Willow only accepts closures for all the Logger convenience methods. See the [Closure Performance](Closure Performance) section for more information.
+The single line closure does not require a `return` declaration since it is implied in Swift. This makes it very easy to declare a closure. There are some VERY important performance considerations which is why Willow only accepts closures for all the Logger convenience methods. See the [Closure Performance](#closure-performance) section for more information.
 
-> By default, only the `String` returned by the closure will be logged. See the [Formatters](Formatters) section for more information about customizing log message formats.
+> By default, only the `String` returned by the closure will be logged. See the [Formatters](#formatters) section for more information about customizing log message formats.
 
 #### Multi-Line Closures
 
