@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0](https://github.com/Nike/Willow/releases/tag/1.0.0)
+## [1.0.0](https://github.com/Nike-Inc/Willow/releases/tag/1.0.0)
 
 Released on 2016-06-27.
 
