@@ -183,7 +183,7 @@
 		4C2DC3DB1CDEB279009CA3C5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Nike;
 				TargetAttributes = {
 					4C2DC3E31CDEB279009CA3C5 = {
