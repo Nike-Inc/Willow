@@ -296,6 +296,81 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 10, "Actual number of writes should be 10")
     }
+
+    func testThatItLogsAsExpectedWithAutoclosureDebugLogLevel() {
+        // Given
+        let (log, writer) = logger(logLevel: .Debug)
+
+        // When
+        log.debug ( "" )
+        log.info ( "" )
+        log.event ( "" )
+        log.warn ( "" )
+        log.error ( "" )
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
+    }
+
+    func testThatItLogsAsExpectedWithAutoclosureInfoLogLevel() {
+        // Given
+        let (log, writer) = logger(logLevel: .Info)
+
+        // When
+        log.debug ( "" )
+        log.info ( "" )
+        log.event ( "" )
+        log.warn ( "" )
+        log.error ( "" )
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
+    }
+
+    func testThatItLogsAsExpectedWithAutoclosureEventLogLevel() {
+        // Given
+        let (log, writer) = logger(logLevel: .Event)
+
+        // When
+        log.debug ( "" )
+        log.info ( "" )
+        log.event ( "" )
+        log.warn ( "" )
+        log.error ( "" )
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
+    }
+
+    func testThatItLogsAsExpectedWithAutoclosureWarnLogLevel() {
+        // Given
+        let (log, writer) = logger(logLevel: .Warn)
+
+        // When
+        log.debug ( "" )
+        log.info ( "" )
+        log.event ( "" )
+        log.warn ( "" )
+        log.error ( "" )
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
+    }
+
+    func testThatItLogsAsExpectedWithAutoclosureErrorLogLevel() {
+        // Given
+        let (log, writer) = logger(logLevel: .Error)
+
+        // When
+        log.debug ( "" )
+        log.info ( "" )
+        log.event ( "" )
+        log.warn ( "" )
+        log.error ( "" )
+
+        // Then
+        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
+    }
 }
 
 // MARK: -

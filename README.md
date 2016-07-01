@@ -173,6 +173,14 @@ The single line closure does not require a `return` declaration since it is impl
 
 > By default, only the `String` returned by the closure will be logged. See the [Formatters](#formatters) section for more information about customizing log message formats.
 
+Willow also accepts autoclosure syntax for message closures.
+
+```swift
+let log = Logger()
+
+log.debug("Debug Message")
+```
+
 #### Multi-Line Closures
 
 Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky. We want to make sure logic is encapsulated and very performant. `Willow` log level closures allow you to cleanly wrap all the logic to build up the message.
