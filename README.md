@@ -157,29 +157,30 @@ The logging syntax of Willow was optimized to make logging as lightweight and ea
 ```swift
 let log = Logger()
 
-log.debug { "Debug Message" }
-// Debug Message
-log.info { "Info Message" }
-// Info Message
-log.event { "Event Message" }
-// Event Message
-log.warn { "Warn Message" }
-// Warn Message
-log.error { "Error Message" }
-// Error Message
+// Option 1
+log.debug("Debug Message")    // Debug Message
+log.info("Info Message")      // Info Message
+log.event("Event Message")    // Event Message
+log.warn("Warn Message")      // Warn Message
+log.error("Error Message")    // Error Message
+
+// or
+
+// Option 2
+log.debug { "Debug Message" } // Debug Message
+log.info { "Info Message" }   // Info Message
+log.event { "Event Message" } // Event Message
+log.warn { "Warn Message" }   // Warn Message
+log.error { "Error Message" } // Error Message
 ```
 
-The single line closure does not require a `return` declaration since it is implied in Swift. This makes it very easy to declare a closure. There are some VERY important performance considerations which is why Willow only accepts closures for all the Logger convenience methods. See the [Closure Performance](#closure-performance) section for more information.
+Both of these approaches are equivalent. The first set of APIs accept autoclosures and the second set accept closures.
 
-> By default, only the `String` returned by the closure will be logged. See the [Formatters](#formatters) section for more information about customizing log message formats.
+> Feel free to use whichever syntax you prefer for your project. Also, by default, only the `String` returned by the closure will be logged. See the [Formatters](#formatters) section for more information about customizing log message formats.
 
-Willow also accepts autoclosure syntax for message closures.
+The reason both sets of APIs use closures to extract the log message is performance. 
 
-```swift
-let log = Logger()
-
-log.debug("Debug Message")
-```
+> There are some VERY important performance considerations when designing a logging solution that are described in more detail in the [Closure Performance](#closure-performance) section.
 
 #### Multi-Line Closures
 
@@ -204,8 +205,6 @@ log.info {
 #### Closure Performance
 
 Willow works exclusively with logging closures to ensure the maximum performance in all situations. Closures defer the execution of all the logic inside the closure until absolutely necessary, including the string evaluation itself. In cases where the Logger instance is disabled, log execution time was reduced by 97% over the traditional log message methods taking a `String` parameter. Additionally, the overhead for creating a closure was measured at 1% over the traditional method making it negligible. In summary, closures allow Willow to be extremely performant in all situations.
-
-> Unfortunately, it is not possible to utilize `@autoclosure` in this scenario. Swift 1.1 allows `@autoclosure` declaration, but Swift 1.2+ does not, due to the way Willow supports Synchronous and Asynchronous logging. The Swift 1.2 `@autoclosure` declaration implies a `@noescape` which conflicts with the internal dispatch queue.
 
 ### Disabling a Logger
 
@@ -419,7 +418,7 @@ Finally, using the new log level is a simple as...
 
 ```swift
 let log = Logger()
-log.verbose { "My first verbose log message!" }
+log.verbose("My first verbose log message!")
 ```
 
 > The `All` log level contains a bitmask where all bits are set to 1. This means that the `All` log level will contain all custom log levels automatically.
