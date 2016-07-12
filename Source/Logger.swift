@@ -68,11 +68,29 @@ public class Logger {
     }
 
     /**
+        Writes out the given message using the logger configuration if the debug log level has an attached writer.
+
+        - parameter message: An autoclosure returning the message to log.
+    */
+    public func debug(@autoclosure(escaping) message: () -> String) {
+        logMessage(message, withLogLevel: .Debug)
+    }
+
+    /**
         Writes out the given message using the logger configuration if the info log level has an attached writer.
 
         - parameter message: A closure returning the message to log.
     */
     public func info(message: () -> String) {
+        logMessage(message, withLogLevel: .Info)
+    }
+
+    /**
+        Writes out the given message using the logger configuration if the info log level has an attached writer.
+
+        - parameter message: An autoclosure returning the message to log.
+    */
+    public func info(@autoclosure(escaping) message: () -> String) {
         logMessage(message, withLogLevel: .Info)
     }
 
@@ -86,11 +104,29 @@ public class Logger {
     }
 
     /**
+        Writes out the given message using the logger configuration if the event log level has an attached writer.
+
+        - parameter message: An autoclosure returning the message to log.
+    */
+    public func event(@autoclosure(escaping) message: () -> String) {
+        logMessage(message, withLogLevel: .Event)
+    }
+
+    /**
         Writes out the given message using the logger configuration if the warn log level has an attached writer.
 
         - parameter message: A closure returning the message to log.
     */
     public func warn(message: () -> String) {
+        logMessage(message, withLogLevel: .Warn)
+    }
+
+    /**
+        Writes out the given message using the logger configuration if the warn log level has an attached writer.
+
+        - parameter message: An autoclosure returning the message to log.
+    */
+    public func warn(@autoclosure(escaping) message: () -> String) {
         logMessage(message, withLogLevel: .Warn)
     }
 
@@ -104,12 +140,21 @@ public class Logger {
     }
 
     /**
+        Writes out the given message using the logger configuration if the error log level has an attached writer.
+
+        - parameter message: An autoclosure returning the message to log.
+    */
+    public func error(@autoclosure(escaping) message: () -> String) {
+        logMessage(message, withLogLevel: .Error)
+    }
+
+    /**
         Writes out the given message closure string with the logger configuration if the log level is allowed.
 
         - parameter message:      A closure returning the message to log.
         - parameter withLogLevel: The log level associated with the message closure.
     */
-    public func logMessage(message: Void -> String, withLogLevel logLevel: LogLevel) {
+    public func logMessage(message: () -> String, withLogLevel logLevel: LogLevel) {
         guard enabled else { return }
 
         switch configuration.executionMethod {
@@ -123,7 +168,7 @@ public class Logger {
 
     // MARK: - Private - Helper Methods
 
-    private func logMessageIfAllowed(message: Void -> String, logLevel: LogLevel) {
+    private func logMessageIfAllowed(message: () -> String, logLevel: LogLevel) {
         guard logLevelAllowed(logLevel) else { return }
         logMessage(message(), logLevel: logLevel)
     }
