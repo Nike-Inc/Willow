@@ -1,5 +1,5 @@
 //
-//  FormatterTests.swift
+//  ModifierTests.swift
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -32,18 +32,18 @@ import UIKit
 import Cocoa
 #endif
 
-class TimestampFormatterTestCase: XCTestCase {
-    func testThatItFormatsMessagesAsExpected() {
+class TimestampModifierTestCase: XCTestCase {
+    func testThatItModifiesMessagesAsExpected() {
         // Given
-        let formatter = TimestampFormatter()
+        let modifier = TimestampModifier()
         let message = "Test Message"
-        let logLevels: [LogLevel] = [.Error, .Warn, .Event, .Info, .Debug]
+        let logLevels: [LogLevel] = [.error, .warn, .event, .info, .debug]
 
         // When
-        var actualMessages = logLevels.map { formatter.formatMessage(message, logLevel: $0) }
+        var actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0) }
 
         // Then
-        for (index, _) in logLevels.enumerate() {
+        for (index, _) in logLevels.enumerated() {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
@@ -52,44 +52,51 @@ class TimestampFormatterTestCase: XCTestCase {
     }
 }
 
-// MARK: -
+// MARK:
 
-class ColorFormatterTestCase: XCTestCase {
+class ColorModifierTestCase: XCTestCase {
+
+    // MARK: Properties
+
     var message = ""
     let escape = "\u{001b}["
     let reset = "\u{001b}[;"
 
+    // MARK: Setup and Teardown
+
     override func setUp() {
-        self.message = "Test Message"
+        message = "Test Message"
     }
 
     override func tearDown() {
-        self.message = ""
+        message = ""
     }
+
+    // MARK: Tests
 
     func testThatItAppliesForegroundColors() {
         // Given
         let red = Color(red: 0.95, green: 0.0, blue: 0.0, alpha: 1.0)
-        let colorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
+        let colorModifier = ColorModifier(foregroundColor: red, backgroundColor: nil)
 
         // When
-        let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: .Debug)
+        let coloredMessage = colorModifier.modifyMessage(message, with: LogLevel.debug)
 
         // Then
-        let expectedMessage = "\(self.escape)fg242,0,0;Test Message\(self.reset)"
+        let expectedMessage = "\(escape)fg242,0,0;Test Message\(reset)"
         XCTAssertEqual(coloredMessage, expectedMessage, "Applying the foreground color formatting failed")
     }
 
     func testThatItAppliesBackgroundColors() {
         // Given
         let blue = Color(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
-        let colorFormatter = ColorFormatter(foregroundColor: nil, backgroundColor: blue)
+        let colorModifier = ColorModifier(foregroundColor: nil, backgroundColor: blue)
 
         // When
-        let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: .Debug)
+        let coloredMessage = colorModifier.modifyMessage(message, with: LogLevel.debug)
 
         // Then
-        let expectedMessage = "\(self.escape)bg45,145,255;Test Message\(self.reset)"
+        let expectedMessage = "\(escape)bg45,145,255;Test Message\(reset)"
         XCTAssertEqual(coloredMessage, expectedMessage, "Applying the background color formatting failed")
     }
 
@@ -97,13 +104,13 @@ class ColorFormatterTestCase: XCTestCase {
         // Given
         let purple = Color(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
         let green = Color(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
-        let colorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: green)
+        let colorModifier = ColorModifier(foregroundColor: purple, backgroundColor: green)
 
         // When
-        let coloredMessage = colorFormatter.formatMessage(self.message, logLevel: .Debug)
+        let coloredMessage = colorModifier.modifyMessage(message, with: LogLevel.debug)
 
         // Then
-        let expectedMessage = "\(self.escape)fg153,63,255;\(self.escape)bg136,207,8;Test Message\(self.reset)"
+        let expectedMessage = "\(escape)fg153,63,255;\(escape)bg136,207,8;Test Message\(reset)"
         XCTAssertEqual(coloredMessage, expectedMessage, "Applying color formatting for both colors failed")
     }
 }

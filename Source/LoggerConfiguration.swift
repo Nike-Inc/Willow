@@ -24,31 +24,32 @@
 
 import Foundation
 
-/**
-    The LoggerConfiguration is a container struct for storing all the configuration information to be applied to
-    a Logger instance.
-*/
+/// The LoggerConfiguration is a container struct for storing all the configuration information to be applied to
+/// a Logger instance.
 public struct LoggerConfiguration {
-    /**
-        Defines the two types of execution methods used when logging a message.
 
-        Logging operations can be expensive operations when there are hundreds of messages being generated or when
-        it is computationally expensive to compute the message to log. Ideally, one would use the synchronous method
-        in development, and the asynchronous method in production. This allows for easier debugging in the development
-        environment, and better performance in production.
+    // MARK:
+    // MARK: Helper Types
 
-        - Synchronous:  Logs messages synchronously once the recursive lock is available in serial order.
-        - Asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
-    */
+    /// Defines the two types of execution methods used when logging a message.
+    ///
+    /// Logging operations can be expensive operations when there are hundreds of messages being generated or when
+    /// it is computationally expensive to compute the message to log. Ideally, one would use the synchronous method
+    /// in development, and the asynchronous method in production. This allows for easier debugging in the development
+    /// environment, and better performance in production.
+    ///
+    /// - Synchronous:  Logs messages synchronously once the recursive lock is available in serial order.
+    /// - Asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
     public enum ExecutionMethod {
-        case Synchronous(lock: NSRecursiveLock)
-        case Asynchronous(queue: dispatch_queue_t)
+        case Synchronous(lock: RecursiveLock)
+        case Asynchronous(queue: DispatchQueue)
     }
 
+    // MARK:
     // MARK: Properties
 
-    /// The dictionary of formatters to apply to each associated log level.
-    public let formatters: [LogLevel: [Formatter]]
+    /// The dictionary of modifiers to apply to each associated log level.
+    public let modifiers: [LogLevel: [Modifier]]
 
     /// The dictionary of writers to use when messages are written for each associated log level.
     public let writers: [LogLevel: [Writer]]
@@ -56,24 +57,23 @@ public struct LoggerConfiguration {
     /// The execution method used when logging a message.
     public let executionMethod: ExecutionMethod
 
-    // MARK: Initialization Methods
+    // MARK:
+    // MARK: Initialization
 
-    /**
-        Initializes a logger configuration instance.
-
-        - parameter formatters:      The dictionary of formatters to apply to the associated log level. `[:]` by default.
-        - parameter writers:         The dictionary of writers to write to for the associated log level.
-                                     `[.All: [ConsoleWriter()]` by default.
-        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
-
-        - returns: A fully initialized logger configuration instance.
-    */
+    /// Initializes a logger configuration instance.
+    ///
+    /// - parameter modifiers:       The dictionary of modifiers to apply to the associated log level. `[:]` by default.
+    /// - parameter writers:         The dictionary of writers to write to for the associated log level.
+    ///                              `[.All: [ConsoleWriter()]` by default.
+    /// - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
+    ///
+    /// - returns: A fully initialized logger configuration instance.
     public init(
-        formatters: [LogLevel: [Formatter]] = [:],
-        writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]],
-        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
+        modifiers: [LogLevel: [Modifier]] = [:],
+        writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]],
+        executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
     {
-        func restructureDictionaryValuesPerBitBasedLogLevel<T>(values: [LogLevel: [T]]) -> [LogLevel: [T]] {
+        func restructureDictionaryValuesPerBitBasedLogLevel<T>(_ values: [LogLevel: [T]]) -> [LogLevel: [T]] {
             var specifiedValues: [LogLevel: [T]] = [:]
 
             for bitShift in UInt(0)..<UInt(32) {
@@ -92,45 +92,42 @@ public struct LoggerConfiguration {
             return specifiedValues
         }
 
-        self.formatters = restructureDictionaryValuesPerBitBasedLogLevel(formatters)
+        self.modifiers = restructureDictionaryValuesPerBitBasedLogLevel(modifiers)
         self.writers = restructureDictionaryValuesPerBitBasedLogLevel(writers)
         self.executionMethod = executionMethod
     }
 
+    // MARK:
     // MARK: Customized Configurations
 
-    /**
-        Creates a logger configuration instance with a timestamp formatter applied to each log level.
-
-        - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
-        - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
-        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
-
-        - returns: A fully initialized logger configuration instance.
-    */
+    /// Creates a logger configuration instance with a timestamp modifier applied to each log level.
+    ///
+    /// - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
+    /// - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
+    /// - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
+    ///
+    /// - returns: A fully initialized logger configuration instance.
     public static func timestampConfiguration(
-        logLevel: LogLevel = .All,
-        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
+        logLevel: LogLevel = .all,
+        executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
         -> LoggerConfiguration
     {
-        let formatters: [LogLevel: [Formatter]] = [logLevel: [TimestampFormatter()]]
+        let modifiers: [LogLevel: [Modifier]] = [logLevel: [TimestampModifier()]]
         let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
 
-        return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
+        return LoggerConfiguration(modifiers: modifiers, writers: writers, executionMethod: executionMethod)
     }
 
-    /**
-        Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
-
-        - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
-        - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
-        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
-
-        - returns: A fully initialized logger configuration instance.
-    */
+    /// Creates a logger configuration instance with a timestamp and color modifier applied to each log level.
+    ///
+    /// - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
+    /// - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
+    /// - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
+    ///
+    /// - returns: A fully initialized logger configuration instance.
     public static func coloredTimestampConfiguration(
-        logLevel: LogLevel = .All,
-        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
+        logLevel: LogLevel = .all,
+        executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
         -> LoggerConfiguration
     {
         let purple = Color(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
@@ -139,18 +136,18 @@ public struct LoggerConfiguration {
         let orange = Color(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
         let red = Color(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
 
-        let timestampFormatter = TimestampFormatter()
+        let timestampModifier = TimestampModifier()
 
-        let formatters: [LogLevel: [Formatter]] = [
-            .Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-            .Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-            .Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-            .Warn: [timestampFormatter, ColorFormatter(foregroundColor: orange, backgroundColor: nil)],
-            .Error: [timestampFormatter, ColorFormatter(foregroundColor: red, backgroundColor: nil)]
+        let modifiers: [LogLevel: [Modifier]] = [
+            .debug: [timestampModifier, ColorModifier(foregroundColor: purple, backgroundColor: nil)],
+            .info: [timestampModifier, ColorModifier(foregroundColor: blue, backgroundColor: nil)],
+            .event: [timestampModifier, ColorModifier(foregroundColor: green, backgroundColor: nil)],
+            .warn: [timestampModifier, ColorModifier(foregroundColor: orange, backgroundColor: nil)],
+            .error: [timestampModifier, ColorModifier(foregroundColor: red, backgroundColor: nil)]
         ]
 
         let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
 
-        return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
+        return LoggerConfiguration(modifiers: modifiers, writers: writers, executionMethod: executionMethod)
     }
 }

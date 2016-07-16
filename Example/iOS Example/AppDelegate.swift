@@ -28,9 +28,9 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    // MARK: - App State Methods
+    // MARK: App State
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         // If you want to use colored logging, you will need to have the XcodeColors plugin installed from Alcatraz
         // - XcodeColors: https://github.com/robbiehanson/XcodeColors
@@ -39,9 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WillowConfiguration.configure(coloredOutputEnabled: true, asynchronous: false)
 
         window = {
-            let window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            let window = UIWindow(frame: UIScreen.main().bounds)
             window.rootViewController = UINavigationController(rootViewController: ViewController())
-            window.backgroundColor = UIColor.whiteColor()
+            window.backgroundColor = UIColor.white()
             window.makeKeyAndVisible()
 
             return window

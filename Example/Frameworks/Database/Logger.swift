@@ -28,29 +28,33 @@ import Willow
 
 extension LogLevel {
     /// Custom log level for SQL log messages with a bitmask of `1 << 8`.
-    public static let SQL = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
+    public static let sql = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
 }
 
-// MARK: -
+// MARK:
 
 extension Logger {
-    func sql(message: Void -> String) {
-        logMessage(message, withLogLevel: .SQL)
+    func sql(_ message: @autoclosure(escaping) () -> String) {
+        logMessage(message, with: .sql)
+    }
+
+    func sql(_ message: () -> String) {
+        logMessage(message, with: .sql)
     }
 }
 
-// MARK: -
+// MARK:
 
 /// The single `Logger` instance used throughout Database.
 public var log: Logger! = {
-    struct PrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    struct PrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Database] => \(message)"
         }
     }
 
-    let prefixFormatter = PrefixFormatter()
-    let timestampFormatter = TimestampFormatter()
+    let prefixModifier = PrefixModifier()
+    let timestampModifier = TimestampModifier()
 
     let teal = UIColor(red: 0.238, green: 0.843, blue: 0.680, alpha: 1.0)
     let purple = UIColor(red: 0.600, green: 0.247, blue: 1.000, alpha: 1.0)
@@ -59,24 +63,24 @@ public var log: Logger! = {
     let orange = UIColor(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
     let red = UIColor(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
 
-    let sqlColorFormatter = ColorFormatter(foregroundColor: teal, backgroundColor: nil)
-    let debugColorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: nil)
-    let infoColorFormatter = ColorFormatter(foregroundColor: blue, backgroundColor: nil)
-    let eventColorFormatter = ColorFormatter(foregroundColor: green, backgroundColor: nil)
-    let warnColorFormatter = ColorFormatter(foregroundColor: orange, backgroundColor: nil)
-    let errorColorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
+    let sqlColorModifier = ColorModifier(foregroundColor: teal, backgroundColor: nil)
+    let debugColorModifier = ColorModifier(foregroundColor: purple, backgroundColor: nil)
+    let infoColorModifier = ColorModifier(foregroundColor: blue, backgroundColor: nil)
+    let eventColorModifier = ColorModifier(foregroundColor: green, backgroundColor: nil)
+    let warnColorModifier = ColorModifier(foregroundColor: orange, backgroundColor: nil)
+    let errorColorModifier = ColorModifier(foregroundColor: red, backgroundColor: nil)
 
-    let formatters: [LogLevel: [Formatter]] = [
-        .SQL: [prefixFormatter, timestampFormatter, sqlColorFormatter],
-        .Debug: [prefixFormatter, timestampFormatter, debugColorFormatter],
-        .Info: [prefixFormatter, timestampFormatter, infoColorFormatter],
-        .Event: [prefixFormatter, timestampFormatter, eventColorFormatter],
-        .Warn: [prefixFormatter, timestampFormatter, warnColorFormatter],
-        .Error: [prefixFormatter, timestampFormatter, errorColorFormatter]
+    let modifiers: [LogLevel: [Modifier]] = [
+        .sql: [prefixModifier, timestampModifier, sqlColorModifier],
+        .debug: [prefixModifier, timestampModifier, debugColorModifier],
+        .info: [prefixModifier, timestampModifier, infoColorModifier],
+        .event: [prefixModifier, timestampModifier, eventColorModifier],
+        .warn: [prefixModifier, timestampModifier, warnColorModifier],
+        .error: [prefixModifier, timestampModifier, errorColorModifier]
     ]
 
-    let queue = dispatch_queue_create("com.nike.database.logger.queue", DISPATCH_QUEUE_SERIAL)
-    let configuration = LoggerConfiguration(formatters: formatters, executionMethod: .Asynchronous(queue: queue))
+    let queue = DispatchQueue(label: "com.nike.database.logger.queue", attributes: [.serial, .qosUtility])
+    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
     return Logger(configuration: configuration)
 }()
