@@ -28,15 +28,15 @@ import Willow
 
 /// The single `Logger` instance used throughout Network.
 public var log: Logger = {
-    struct PrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    struct PrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Network] => \(message)"
         }
     }
 
-    let formatters: [LogLevel: [Formatter]] = [.All: [PrefixFormatter(), TimestampFormatter()]]
-    let queue = dispatch_queue_create("com.nike.network.logger.queue", DISPATCH_QUEUE_SERIAL)
-    let configuration = LoggerConfiguration(formatters: formatters, executionMethod: .Asynchronous(queue: queue))
+    let modifiers: [LogLevel: [Modifier]] = [.All: [PrefixModifier(), TimestampModifier()]]
+    let queue = DispatchQueue(label: "com.nike.network.logger.queue", attributes: [.serial, .qosUtility])
+    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
     return Logger(configuration: configuration)
 }()

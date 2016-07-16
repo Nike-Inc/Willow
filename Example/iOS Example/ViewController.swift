@@ -38,7 +38,7 @@ class ViewController: UIViewController {
 
     private struct Item {
         let title: String
-        let action: Void -> Void
+        let action: () -> Void
     }
 
     // MARK: Properties
@@ -64,10 +64,10 @@ class ViewController: UIViewController {
         tableView.frame = view.bounds
     }
 
-    // MARK: Private - Set Up Methods
+    // MARK: Private - Setup
 
     private func setUpInstanceProperties() {
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white()
         title = "Willow"
     }
 
@@ -159,26 +159,26 @@ class ViewController: UIViewController {
                         title: "Log App Messages In Parallel",
                         action: {
                             let range = 1...10
-                            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                            let queue = DispatchQueue.global(attributes: .qosDefault)
 
                             for _ in range {
-                                dispatch_async(queue) {
+                                queue.async {
                                     log.debug { "Logging debug message" }
                                 }
 
-                                dispatch_async(queue) {
+                                queue.async {
                                     log.info { "Logging info message" }
                                 }
 
-                                dispatch_async(queue) {
+                                queue.async {
                                     log.event { "Logging event message" }
                                 }
 
-                                dispatch_async(queue) {
+                                queue.async {
                                     log.warn { "Logging warn message" }
                                 }
 
-                                dispatch_async(queue) {
+                                queue.async {
                                     log.error { "Logging error message" }
                                 }
                             }
@@ -188,10 +188,10 @@ class ViewController: UIViewController {
                         title: "Log Messages From Multiple Frameworks",
                         action: {
                             let range = 1...4
-                            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                            let queue = DispatchQueue.global(attributes: .qosDefault)
 
                             for _ in range {
-                                dispatch_async(queue) {
+                                queue.async {
                                     log.debug { "Logging debug message" }
                                     log.info { "Logging info message" }
                                     log.event { "Logging event message" }
@@ -199,7 +199,7 @@ class ViewController: UIViewController {
                                     log.error { "Logging error message" }
                                 }
 
-                                dispatch_async(queue) {
+                                queue.async {
                                     Connection.makeSQLCall()
                                     Connection.makeDebugCall()
                                     Connection.makeInfoCall()
@@ -208,7 +208,7 @@ class ViewController: UIViewController {
                                     Connection.makeErrorCall()
                                 }
 
-                                dispatch_async(queue) {
+                                queue.async {
                                     Request.makeDebugRequest()
                                     Request.makeInfoRequest()
                                     Request.makeEventRequest()
@@ -225,20 +225,20 @@ class ViewController: UIViewController {
 
     private func setUpTableView() {
         tableView = {
-            let tableView = UITableView(frame: view.bounds, style: .Grouped)
+            let tableView = UITableView(frame: view.bounds, style: .grouped)
 
             tableView.dataSource = self
             tableView.delegate = self
 
-            tableView.separatorStyle = .SingleLine
-            tableView.editing = false
+            tableView.separatorStyle = .singleLine
+            tableView.isEditing = false
 
             tableView.allowsSelection = true
             tableView.allowsMultipleSelection = false
             tableView.allowsSelectionDuringEditing = false
             tableView.allowsMultipleSelectionDuringEditing = false
 
-            tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: ViewController.CellIdentifier)
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: ViewController.CellIdentifier)
 
             view.addSubview(tableView)
 
@@ -247,38 +247,40 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK:
+// MARK: UITableViewDataSource
 
 extension ViewController: UITableViewDataSource {
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].items.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = sections[indexPath.section].items[indexPath.row]
 
-        let cell = tableView.dequeueReusableCellWithIdentifier(ViewController.CellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.CellIdentifier, for: indexPath)
         cell.textLabel?.text = item.title
 
         return cell
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].title
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK:
+// MARK: UITableViewDelegate
 
 extension ViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = sections[indexPath.section].items[indexPath.row]
         item.action()
 
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

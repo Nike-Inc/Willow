@@ -1,5 +1,5 @@
 //
-//  Formatter.swift
+//  Modifier.swift
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -24,43 +24,35 @@
 
 import Foundation
 
-/**
-    The Formatter protocol defines a single method for formatting a message after it has been constructed. This is very
-    flexible allowing any object that conforms to use formatting scheme it wants.
-*/
-public protocol Formatter {
-    func formatMessage(message: String, logLevel: LogLevel) -> String
+/// The Modifier protocol defines a single method for modifying a message after it has been constructed. This is
+/// very flexible allowing any object that conforms to modify messages in any way it wants.
+public protocol Modifier {
+    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 
-// MARK: -
+// MARK:
 
-/**
-    The TimestampFormatter class applies a timestamp to the beginning of the message.
-*/
-public class TimestampFormatter: Formatter {
-    private let timestampFormatter: NSDateFormatter = {
-        var formatter = NSDateFormatter()
+/// The TimestampModifier class applies a timestamp to the beginning of the message.
+public class TimestampModifier: Modifier {
+    private let timestampFormatter: DateFormatter = {
+        var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         return formatter
     }()
 
-    /**
-        Initializes a timestamp formatter instance.
-
-        - returns: A new timestamp formatter instance.
-    */
+    /// Initializes a `TimestampModifier` instance.
+    ///
+    /// - returns: A new `TimestampModifier` instance.
     public init() {}
 
-    /**
-        Applies a timestamp to the beginning of the message.
-
-        - parameter message:  The original message to format.
-        - parameter logLevel: The log level set for the message.
-
-        - returns: A newly formatted message.
-    */
-    public func formatMessage(message: String, logLevel: LogLevel) -> String {
-        let timestampString = timestampFormatter.stringFromDate(NSDate())
+    /// Applies a timestamp to the beginning of the message.
+    ///
+    /// - parameter message:  The original message to format.
+    /// - parameter logLevel: The log level set for the message.
+    ///
+    /// - returns: A newly formatted message.
+    public func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        let timestampString = timestampFormatter.string(from: Date() as Date)
         return "\(timestampString) \(message)"
     }
 }

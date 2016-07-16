@@ -30,11 +30,11 @@ class ConsoleWriterTestCase: XCTestCase {
     func testThatConsoleWriterCanBeInitializedAndDeinitialized() {
         // Given
         let message = "Test Message"
-        let logLevel: LogLevel = .All
+        let logLevel: LogLevel = .all
         var writer: ConsoleWriter? = ConsoleWriter()
 
         // When, Then
-        writer?.writeMessage(message, logLevel: logLevel, formatters: [])
+        writer?.writeMessage(message, logLevel: logLevel, modifiers: [])
         writer = nil
 
         // Then
@@ -44,10 +44,10 @@ class ConsoleWriterTestCase: XCTestCase {
     func testThatConsoleWriterCanWriteMessageToConsole() {
         // Given
         let message = "Test Message"
-        let logLevel: LogLevel = .All
+        let logLevel: LogLevel = .all
         let writer = ConsoleWriter()
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel, formatters: [TimestampFormatter()])
+        writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
     }
 }

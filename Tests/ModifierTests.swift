@@ -1,5 +1,5 @@
 //
-//  FormatterTests.swift
+//  ModifierTests.swift
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -26,18 +26,18 @@ import Foundation
 import Willow
 import XCTest
 
-class TimestampFormatterTestCase: XCTestCase {
-    func testThatItFormatsMessagesAsExpected() {
+class TimestampModifierTestCase: XCTestCase {
+    func testThatItModifiesMessagesAsExpected() {
         // Given
-        let formatter = TimestampFormatter()
+        let modifier = TimestampModifier()
         let message = "Test Message"
-        let logLevels: [LogLevel] = [.Error, .Warn, .Event, .Info, .Debug]
+        let logLevels: [LogLevel] = [.error, .warn, .event, .info, .debug]
 
         // When
-        var actualMessages = logLevels.map { formatter.formatMessage(message, logLevel: $0) }
+        var actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0) }
 
         // Then
-        for (index, _) in logLevels.enumerate() {
+        for (index, _) in logLevels.enumerated() {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")

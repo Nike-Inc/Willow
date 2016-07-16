@@ -28,30 +28,34 @@ import Willow
 
 extension LogLevel {
     /// Custom log level for SQL log messages with a bitmask of `1 << 8`.
-    public static let SQL = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
+    public static let sql = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
 }
 
-// MARK: -
+// MARK:
 
 extension Logger {
-    func sql(message: Void -> String) {
-        logMessage(message, withLogLevel: .SQL)
+    func sql(_ message: @autoclosure(escaping) () -> String) {
+        logMessage(message, with: .sql)
+    }
+
+    func sql(_ message: () -> String) {
+        logMessage(message, with: .sql)
     }
 }
 
-// MARK: -
+// MARK:
 
 /// The single `Logger` instance used throughout Database.
 public var log: Logger! = {
-    struct PrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    struct PrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Database] => \(message)"
         }
     }
 
-    let formatters: [LogLevel: [Formatter]] = [.All: [PrefixFormatter(), TimestampFormatter()]]
-    let queue = dispatch_queue_create("com.nike.database.logger.queue", DISPATCH_QUEUE_SERIAL)
-    let configuration = LoggerConfiguration(formatters: formatters, executionMethod: .Asynchronous(queue: queue))
+    let modifiers: [LogLevel: [Modifier]] = [.All: [PrefixModifier(), TimestampModifier()]]
+    let queue = DispatchQueue(label: "com.nike.database.logger.queue", attributes: [.serial, .qosUtility])
+    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
     return Logger(configuration: configuration)
 }()

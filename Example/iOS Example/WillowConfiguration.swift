@@ -32,9 +32,9 @@ var log: Logger!
 
 struct WillowConfiguration {
 
-    // MARK: - Formatters
+    // MARK: Modifiers
 
-    private struct PrefixFormatter: Formatter {
+    private struct PrefixModifier: Modifier {
         let emoji: String
         let name: String
 
@@ -43,44 +43,46 @@ struct WillowConfiguration {
             self.name = name
         }
 
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return emoji + " [" + name + "] => " + message
         }
     }
 
-    private struct WarningPrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    private struct WarningPrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "🚨🚨🚨 \(message)"
         }
     }
 
-    private struct ErrorPrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    private struct ErrorPrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "💣💥💣💥 \(message)"
         }
     }
 
-    // MARK: - Configure
+    // MARK: Configure
 
     static func configure(
-        appLogLevels appLogLevels: LogLevel = [.Debug, .Info, .Event],
-        databaseLogLevels: LogLevel = [.SQL, .Debug, .Info, .Event],
-        networkLogLevels: LogLevel = [.Debug, .Info, .Event],
+        appLogLevels: LogLevel = [.debug, .info, .event],
+        databaseLogLevels: LogLevel = [.sql, .debug, .info, .event],
+        networkLogLevels: LogLevel = [.debug, .info, .event],
         asynchronous: Bool = false)
     {
-        let writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]]
+        let writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]]
         let executionMethod: LoggerConfiguration.ExecutionMethod
 
         if asynchronous {
-            executionMethod = .Synchronous(lock: NSRecursiveLock())
+            executionMethod = .Synchronous(lock: RecursiveLock())
         } else {
-            executionMethod = .Asynchronous(queue: dispatch_queue_create("com.nike.example.logger", DISPATCH_QUEUE_SERIAL))
+            executionMethod = .Asynchronous(
+                queue: DispatchQueue(label: "com.nike.example.logger", attributes: [.serial, .qosUtility])
+            )
         }
 
         log = configureLogger(
             emoji: "🌳🌳🌳",
             name: "App",
-            formatterLogLevel: [.Debug, .Info, .Event],
+            modifierLogLevel: [.debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod
         )
@@ -88,7 +90,7 @@ struct WillowConfiguration {
         Database.log = configureLogger(
             emoji: "🗃🗃🗃",
             name: "Database",
-            formatterLogLevel: [.SQL, .Debug, .Info, .Event],
+            modifierLogLevel: [.sql, .debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod
         )
@@ -96,35 +98,35 @@ struct WillowConfiguration {
         Network.log = configureLogger(
             emoji: "📡📡📡",
             name: "Network",
-            formatterLogLevel: [.Debug, .Info, .Event],
+            modifierLogLevel: [.debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod
         )
     }
 
     private static func configureLogger(
-        emoji emoji: String,
+        emoji: String,
         name: String,
-        formatterLogLevel: LogLevel,
+        modifierLogLevel: LogLevel,
         writers: [LogLevel: [Writer]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
-        let prefixFormatter = PrefixFormatter(emoji: emoji, name: name)
-        let timestampFormatter = TimestampFormatter()
+        let PrefixModifier = PrefixModifier(emoji: emoji, name: name)
+        let timestampModifier = TimestampModifier()
 
-        let formatters: [LogLevel: [Formatter]] = {
-            let formatters: [Formatter] = [prefixFormatter, timestampFormatter]
+        let modifiers: [LogLevel: [Modifier]] = {
+            let modifiers: [Modifier] = [prefixModifier, timestampModifier]
 
             return [
-                formatterLogLevel: formatters,
-                .Warn: [WarningPrefixFormatter()] + formatters,
-                .Error: [ErrorPrefixFormatter()] + formatters
+                modifierLogLevel: modifiers,
+                .warn: [WarningPrefixModifier()] + modifiers,
+                .error: [ErrorPrefixModifier()] + modifiers
             ]
         }()
 
         let configuration = LoggerConfiguration(
-            formatters: formatters,
+            modifiers: modifiers,
             writers: writers,
             executionMethod: executionMethod
         )
