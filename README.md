@@ -57,7 +57,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ## Requirements
 
-- iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
+- iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 8.0+
 - Swift 2.3
 
@@ -87,7 +87,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Willow', '~> 1.2'
+pod 'Willow', :git => 'https://github.com/Nike-Inc/Willow.git', :branch => 'swift3'
 ```
 
 Then, run the following command:
@@ -110,7 +110,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-github "Nike-Inc/Willow" ~> 1.2
+github "Nike-Inc/Willow" "swift3"
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
@@ -132,22 +132,22 @@ The `Logger` initializer takes a single parameter which is a `LoggerConfiguratio
 
 The `LoggerConfiguration` class is a container class to store all the configuration information to be applied to a particular `Logger`. Here are all the configurable parameters and their respective descriptions.
 
-* `formatters: [LogLevel: [Formatter]] = [:]` - The dictionary of formatters to apply to each associated log level.
-* `writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
-* `executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
+* `modifiers: [LogLevel: [Modifier]] = [:]` - The dictionary of modifiers to apply to each associated log level.
+* `writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
+* `executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock())` - The execution method used when writing messages.
 
 `LoggerConfiguration` and `Logger` objects can only be customized during initialization. If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs. It is perfectly acceptable to have many different `Logger` instances running simutaneously.
 
-There are two class methods that return custom `LoggerConfiguration` instances using combinations of the custom `Formatter` objects. These convenience methods make it VERY easy add timestamps as well as colored log message formatting to your `Logger` instance.
+There are two class methods that return custom `LoggerConfiguration` instances using combinations of the custom `Modifier` objects. These convenience methods make it VERY easy add timestamps as well as colored log message formatting to your `Logger` instance.
 
-* `timestampConfiguration()` - A logger configuration instance with a timestamp formatter applied to each log level.
-* `coloredTimestampConfiguration()` - A logger configuration instance with a timestamp and color formatter applied to each log level.
+* `timestampConfiguration()` - A logger configuration instance with a timestamp modifier applied to each log level.
+* `coloredTimestampConfiguration()` - A logger configuration instance with a timestamp and color modifier applied to each log level.
 
 #### Thread Safety
 
-The `println` function does not guarantee that the `String` parameter will be fully logged to the console. If two `println` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
+The `print` function does not guarantee that the `String` parameter will be fully logged to the console. If two `print` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
 
-> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `dispatch_queue_t` that is shared between both configurations. For more info...see the [Advanced Usage](#advanced-usage) section.
+> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `RecursiveLock` or `DispatchQueue` that is shared between both configurations. For more info...see the [Advanced Usage](#advanced-usage) section.
 
 ### Logging Messages with Closures
 
@@ -177,7 +177,7 @@ log.error { "Error Message" } // Error Message
 
 Both of these approaches are equivalent. The first set of APIs accept autoclosures and the second set accept closures.
 
-> Feel free to use whichever syntax you prefer for your project. Also, by default, only the `String` returned by the closure will be logged. See the [Formatters](#formatters) section for more information about customizing log message formats.
+> Feel free to use whichever syntax you prefer for your project. Also, by default, only the `String` returned by the closure will be logged. See the [Modifiers](#modifiers) section for more information about customizing log message formats.
 
 The reason both sets of APIs use closures to extract the log message is performance. 
 
@@ -227,7 +227,7 @@ log.enabled = true
 Logging can greatly affect the runtime performance of your application or library. Willow makes it very easy to log messages synchronously or asynchronously. You can define this behavior when creating the `LoggerConfiguration` for your `Logger` instance.
 
 ```swift
-let queue = dispatch_queue_create("serial.queue", DISPATCH_QUEUE_SERIAL)
+let queue = DispatchQueue(label: "serial.queue", attributes: [.serial, .qosUtility])
 let configuration = LoggerConfiguration(executionMethod: .Asynchronous(queue: queue))
 let log = Logger(configuration: configuration)
 ```
@@ -242,57 +242,58 @@ Asynchronous logging should be used for deployment builds of your application or
 
 > These are large generalizations about the typical use cases for one approach versus the other. Before making a final decision about which approach to use when, you should really break down your use case in detail.
 
-### Formatters
+### Modifiers
 
-Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
+Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Modifier` objects come in.
 
 ```swift
-public protocol Formatter {
-    func formatMessage(message: String, logLevel: LogLevel) -> String
+public protocol Modifier {
+    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 ```
 
-The `Formatter` protocol has only a single API. It receives the `message` and `logLevel` and returns a newly formatted `String`. This is about as flexible as you can get. The `Logger` allows you to pass in your own `Formatter` objects and apply them to a `LogLevel`. Let's walk through a simple example for adding a prefix to only the `Debug` and `Info` log levels.
+The `Modifier` protocol has only a single API. It receives the `message` and `logLevel` and returns a newly formatted `String`. This is about as flexible as you can get. The `Logger` allows you to pass in your own `Modifier` objects and apply them to a `LogLevel`. Let's walk through a simple example for adding a prefix to only the `debug` and `info` log levels.
 
 ```swift
-class PrefixFormatter: Formatter {
-    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+class PrefixModifier: Modifier {
+    func modifyMessage(_ message: String, with logLevel: Logger.LogLevel) -> String {
         return "[Willow] \(message)"
     }
 }
 
-let prefixFormatter = PrefixFormatter()
+let prefixModifier = PrefixModifier()
 
-let formatters: [Logger.LogLevel: [Formatter]] = [
-    .Debug: [prefixFormatter],
-    .Info: [prefixFormatter]
+let modifiers: [Logger.LogLevel: [Modifier]] = [
+    .debug: [prefixModifier],
+    .info: [prefixModifier]
 ]
 
-let configuration = LoggerConfiguration(formatters: formatters)
+let configuration = LoggerConfiguration(modifiers: modifiers)
 let log = Logger(configuration: configuration)
 ```
 
-`Formatter` objects are very powerful and can manipulate the message in any way.
+`Modifier` objects are very powerful and can manipulate the message in any way.
 
-#### Multiple Formatters
+#### Multiple Modifiers
 
-Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampFormatter` (prefixes the message with a timestamp) in combination with an `EmojiFormatter`.
+Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with an `EmojiModifier`.
 
 ```swift
-class EmojiFormatter: Formatter {
-    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+class EmojiModifier: Modifier {
+    func modify(_ message: String, with logLevel: Logger.LogLevel) -> String {
         return "🚀🚀🚀 \(message)"
     }
 }
 
-let formatters: [Logger.LogLevel: [Formatter]] = [.All: [EmojiFormatter(), TimestampFormatter()]
-let configuration = LoggerConfiguration(formatters: formatters)
+let modifiers: [Logger.LogLevel: [Modifier]] = [.all: [EmojiModifier(), TimestampModifier()]
+let configuration = LoggerConfiguration(modifiers: modifiers)
+
 let log = Logger(configuration: configuration)
 ```
 
-`Willow` doesn't have any hard limits on the total number of `Formatter` objects that can be applied to a single log level. Just keep in mind that performance is key.
+`Willow` doesn't have any hard limits on the total number of `Modifier` objects that can be applied to a single log level. Just keep in mind that performance is key.
 
-> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `TimestampFormatter` was inserted before the `EmojiFormatter`.
+> The default `ConsoleWriter` will execute the modifiers in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `TimestampModifier` was inserted before the `EmojiModifier`.
 
 ### Writers
 
@@ -300,7 +301,7 @@ Writing log messages to various locations is an essential feature of any robust 
 
 ```swift
 public protocol Writer {
-    func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?)
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?)
 }
 ```
 
@@ -308,10 +309,10 @@ Again, this is an extremely lightweight design to allow for ultimate flexibility
 
 ```swift
 public class ConsoleWriter: Writer {
-    public func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+    public func writeMessage(_ message: String, logLevel: LogLevel, formatters: [Formatter]?) {
     	var mutableMessage = message
-        formatters?.map { mutableMessage = $0.formatMessage(mutableMessage, logLevel: logLevel) }
-        println(mutableMessage)
+        modifiers?.map { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+        print(mutableMessage)
     }
 }
 ```
@@ -322,29 +323,29 @@ So what about logging to both a file and the console at the same time? No proble
 
 ```swift
 public class FileWriter: Writer {
-    public func writeMessage(var message: String, logLevel: Logger.LogLevel, formatters: [Formatter]?) {
+    public func writeMessage(_ message: String, logLevel: Logger.LogLevel, modifiers: [Modifier]?) {
 	    var mutableMessage = message
-        formatters?.map { mutableMessage = $0.formatMessage(mutableMessage, logLevel: logLevel) }
+        modifiers?.map { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
         // Write the formatted message to a file (I'll leave this to you!)
     }
 }
 
-let writers: [LogLevel: Writer] = [.All: [FileWriter(), ConsoleWriter()]]
+let writers: [LogLevel: Writer] = [.all: [FileWriter(), ConsoleWriter()]]
 
 let configuration = LoggerConfiguration(writers: writers)
 let log = Logger(configuration: configuration)
 ```
 
-> `Writer` objects can also be selective about which formatters they want to run for a particular log level. All the examples run all the formatters, but you can be selective if you want to be.
+> `Writer` objects can also be selective about which modifiers they want to run for a particular log level. All the examples run all the modifiers, but you can be selective if you want to be.
 
 #### Per LogLevel Writers
 
-It is also possible to specify different combinations of `Writer` objects for each `LogLevel`. Let's say we want to log `.Warn` and `.Error` messages to the console, and we want to log all messages to a file writer.
+It is also possible to specify different combinations of `Writer` objects for each `LogLevel`. Let's say we want to log `.warn` and `.error` messages to the console, and we want to log all messages to a file writer.
 
 ```swift
 let writers: [LogLevel: Writer] = [
-	.All: [FileWriter()],
-	[.Warn, .Error]: [ConsoleWriter()]
+	.all: [FileWriter()],
+	[.warn, .error]: [ConsoleWriter()]
 ]
 
 let configuration = LoggerConfiguration(writers: writers)
@@ -363,16 +364,20 @@ Creating custom log levels is very simple. Here's a quick example of how to do s
 
 ```swift
 extension LogLevel {
-    private static let Verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
+    private static let verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
 }
 ```
 
-Now that we have a custom log level called `Verbose`, we need to extend the `Logger` class to be able to easily call it.
+Now that we have a custom log level called `verbose`, we need to extend the `Logger` class to be able to easily call it.
 
 ```swift
 extension Logger {
-    public func verbose(message: () -> String) {
-    	logMessage(message, withLogLevel: .Verbose)
+    public func verbose(_ message: @autoclosure(escaping) () -> String) {
+    	logMessage(message, withLogLevel: .verbose)
+    }
+
+    public func verbose(_ message: () -> String) {
+    	logMessage(message, withLogLevel: .verbose)
     }
 }
 ```
@@ -384,7 +389,7 @@ let log = Logger()
 log.verbose("My first verbose log message!")
 ```
 
-> The `All` log level contains a bitmask where all bits are set to 1. This means that the `All` log level will contain all custom log levels automatically.
+> The `all` log level contains a bitmask where all bits are set to 1. This means that the `all` log level will contain all custom log levels automatically.
 
 ### Shared Loggers between Frameworks
 
@@ -394,12 +399,12 @@ Let's walk through a quick example of a `Math` framework sharing a `Logger` with
 
 ```swift
 //=========== Inside Math.swift ===========
-public var log = Logger(configuration: LoggerConfiguration(writers: [.Warn, .Error]: [ConsoleWriter()])) // We're going to replace this
+public var log = Logger(configuration: LoggerConfiguration(writers: [.warn, .error]: [ConsoleWriter()])) // We're going to replace this
 
 //=========== Calculator.swift ===========
 import Math
 
-let writers = [.All: [FileWriter(), ConsoleWriter()]]
+let writers = [.all: [FileWriter(), ConsoleWriter()]]
 var log = Logger(configuration: LoggerConfiguration(writers: writers))
 
 // Replace the Math.log with the Calculator.log to share the same Logger instance
@@ -410,20 +415,20 @@ It's very simple to swap out a pre-existing `Logger` with a new one.
 
 ### Multiple Loggers, One Queue
 
-The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `NSRecursiveLock` or `dispatch_queue_t` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
+The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `RecursiveLock` or `DispatchQueue` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
 
 ```swift
 //=========== Inside Math.swift ===========
-public var log = Logger(configuration: LoggerConfiguration(writers: [.Warn, .Error]: [ConsoleWriter()])) // We're going to replace this
+public var log = Logger(configuration: LoggerConfiguration(writers: [.warn, .error]: [ConsoleWriter()])) // We're going to replace this
 
 //=========== Calculator.swift ===========
 import Math
 
 // Create a single queue to share
-let sharedQueue = dispatch_queue_create("com.math.logger", DISPATCH_QUEUE_SERIAL)
+let sharedQueue = DispatchQueue(label: "com.math.logger", attributes: [.serial, .qosUtility])
 
 // Create the Calculator.log with multiple writers and a .Debug log level
-let writers = [.All: [FileWriter(), ConsoleWriter()]]
+let writers = [.all: [FileWriter(), ConsoleWriter()]]
 let configuration = LoggerConfiguration(
     writers: writers, 
     executionMethod: .Asynchronous(queue: sharedQueue)
@@ -433,7 +438,7 @@ var log = Logger(configuration: configuration)
 
 // Replace the Math.log with a new instance with all the same configuration values except a shared queue
 let mathConfiguration = LoggerConfiguration(
-    formatters: Math.log.configuration.formatters,
+    modifiers: Math.log.configuration.modifiers,
     writers: Math.log.configuration.writers,
     executionMethod: .Asynchronous(queue: sharedQueue)
 )
@@ -462,6 +467,10 @@ As for the naming, here's my own mental breakdown of each log level for an iOS a
 ### When should I use Willow?
 
 If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Willow would be a great choice. If you are still working in Objective-C, a pure Objective-C library such as the amazing [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
+
+### Is Willow going to support the new os_log APIs?
+
+Yes! We believe Willow and the `os_log` APIs will complement each other nicely. There's a lot of additional functionality that exists in Willow that does not exist in the `os_log` APIs and vice versa. The current plan of record is to create an `OSLogWriter` which will automatically call the approach `os_log` APIs under-the-hood. Unfortunately in Xcode 8 beta 2, there is an issue with importing the `os_log_create` API in deployment targets of iOS 9.0, OS X 10.11, etc. Until this issue is resolved (hopefully in Xcode 8 beta 3), Willow will not support the `os_log` APIs.
 
 ### Where did the name Willow come from?
 
