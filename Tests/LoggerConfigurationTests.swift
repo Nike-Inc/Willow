@@ -29,19 +29,19 @@ import XCTest
 class LoggerConfigurationTestCase: XCTestCase {
     func testThatLoggerConfigurationCanCreatedPreConfiguredTimestampConfiguration() {
         // Given
-        let logLevels: [LogLevel] = [.Debug, .Info, .Event, .Warn, .Error]
+        let logLevels: [LogLevel] = [.debug, .info, .event, .warn, .error]
 
         // Given
         let configuration = LoggerConfiguration.timestampConfiguration()
 
         // Then
-        XCTAssertEqual(configuration.formatters.count, 32)
+        XCTAssertEqual(configuration.modifiers.count, 32)
 
         for logLevel in logLevels {
-            XCTAssertEqual(configuration.formatters[logLevel]?.count, 1)
+            XCTAssertEqual(configuration.modifiers[logLevel]?.count, 1)
 
-            if let formatters = configuration.formatters[logLevel] where formatters.count == 1 {
-                XCTAssertTrue(formatters[0] is TimestampFormatter)
+            if let modifiers = configuration.modifiers[logLevel] where modifiers.count == 1 {
+                XCTAssertTrue(modifiers[0] is TimestampModifier)
             }
         }
 
@@ -58,20 +58,20 @@ class LoggerConfigurationTestCase: XCTestCase {
 
     func testThatLoggerConfigurationCanCreatedPreConfiguredColoredTimestampConfiguration() {
         // Given
-        let logLevels: [LogLevel] = [.Debug, .Info, .Event, .Warn, .Error]
+        let logLevels: [LogLevel] = [.debug, .info, .event, .warn, .error]
 
         // When
         let configuration = LoggerConfiguration.coloredTimestampConfiguration()
 
         // Then
-        XCTAssertEqual(configuration.formatters.count, 5)
+        XCTAssertEqual(configuration.modifiers.count, 5)
 
         for logLevel in logLevels {
-            XCTAssertEqual(configuration.formatters[logLevel]?.count, 2)
+            XCTAssertEqual(configuration.modifiers[logLevel]?.count, 2)
 
-            if let formatters = configuration.formatters[logLevel] where formatters.count == 2 {
-                XCTAssertTrue(formatters[0] is TimestampFormatter)
-                XCTAssertTrue(formatters[1] is ColorFormatter)
+            if let modifiers = configuration.modifiers[logLevel] where modifiers.count == 2 {
+                XCTAssertTrue(modifiers[0] is TimestampModifier)
+                XCTAssertTrue(modifiers[1] is ColorModifier)
             }
         }
 

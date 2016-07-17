@@ -1,5 +1,5 @@
 //
-//  Formatter.swift
+//  Modifier.swift
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -32,60 +32,48 @@ import Cocoa
 public typealias Color = NSColor
 #endif
 
-// MARK: - Formatter
-
-/**
-    The Formatter protocol defines a single method for formatting a message after it has been constructed. This is very
-    flexible allowing any object that conforms to use formatting scheme it wants.
-*/
-public protocol Formatter {
-    func formatMessage(message: String, logLevel: LogLevel) -> String
+/// The Modifier protocol defines a single method for modifying a message after it has been constructed. This is
+/// very flexible allowing any object that conforms to modify messages in any way it wants.
+public protocol Modifier {
+    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 
-// MARK: -
+// MARK:
 
-/**
-    The TimestampFormatter class applies a timestamp to the beginning of the message.
-*/
-public class TimestampFormatter: Formatter {
-    private let timestampFormatter: NSDateFormatter = {
-        var formatter = NSDateFormatter()
+/// The TimestampModifier class applies a timestamp to the beginning of the message.
+public class TimestampModifier: Modifier {
+    private let timestampFormatter: DateFormatter = {
+        var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         return formatter
     }()
 
-    /**
-        Initializes a timestamp formatter instance.
-
-        - returns: A new timestamp formatter instance.
-    */
+    /// Initializes a `TimestampModifier` instance.
+    ///
+    /// - returns: A new `TimestampModifier` instance.
     public init() {}
 
-    /**
-        Applies a timestamp to the beginning of the message.
-
-        - parameter message:  The original message to format.
-        - parameter logLevel: The log level set for the message.
-
-        - returns: A newly formatted message.
-    */
-    public func formatMessage(message: String, logLevel: LogLevel) -> String {
-        let timestampString = timestampFormatter.stringFromDate(NSDate())
+    /// Applies a timestamp to the beginning of the message.
+    ///
+    /// - parameter message:  The original message to format.
+    /// - parameter logLevel: The log level set for the message.
+    ///
+    /// - returns: A newly formatted message.
+    public func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        let timestampString = timestampFormatter.string(from: Date() as Date)
         return "\(timestampString) \(message)"
     }
 }
 
-// MARK: -
+// MARK:
 
-/**
-    The ColorFormatter class takes foreground and background colors and applies them to a given message. It uses the
-    XcodeColors plugin color formatting scheme.
+/// The ColorModifier class takes foreground and background colors and applies them to a given message. It uses the
+/// XcodeColors plugin color formatting scheme.
+///
+/// NOTE: These should only be used with the XcodeColors plugin.
+public class ColorModifier: Modifier {
 
-    NOTE: These should only be used with the XcodeColors plugin.
-*/
-public class ColorFormatter: Formatter {
-
-    // MARK: Private - ColorConstants
+    // MARK: Helper Types
 
     private struct ColorConstants {
         static let ESCAPE = "\u{001b}["
@@ -94,24 +82,22 @@ public class ColorFormatter: Formatter {
         static let RESET = ESCAPE + ";"
     }
 
-    // MARK: Private - Properties
+    // MARK: Properties
 
     private let foregroundText: String
     private let backgroundText: String
 
-    // MARK: Initialization Methods
+    // MARK: Initialization
 
-    /**
-        Returns a fully constructed ColorFormatter from the given Color objects.
-
-        - parameter foregroundColor: The color to apply to the foreground.
-        - parameter backgroundColor: The color to apply to the background.
-
-        - returns: A fully constructed ColorFormatter from the given Color objects.
-    */
+    /// Returns a fully constructed `ColorModifier` from the specified `Color` objects.
+    ///
+    /// - parameter foregroundColor: The color to apply to the foreground.
+    /// - parameter backgroundColor: The color to apply to the background.
+    ///
+    /// - returns: A new `ColorModifier` instance.
     public init(foregroundColor: Color?, backgroundColor: Color?) {
-        let foregroundTextString = ColorFormatter.textStringForColor(foregroundColor)
-        let backgroundTextString = ColorFormatter.textStringForColor(backgroundColor)
+        let foregroundTextString = ColorModifier.textString(from: foregroundColor)
+        let backgroundTextString = ColorModifier.textString(from: backgroundColor)
 
         if !foregroundTextString.isEmpty {
             foregroundText = "\(ColorConstants.ESCAPE)fg\(foregroundTextString);"
@@ -126,22 +112,20 @@ public class ColorFormatter: Formatter {
         }
     }
 
-    // MARK: Formatter Methods
+    // MARK: Modifier
 
-    /**
-        Applies the foreground, background and reset color formatting values to the given message.
-
-        - parameter message: The message to apply the color formatting to.
-
-        - returns: A new string with all the color formatting values added.
-    */
-    public func formatMessage(message: String, logLevel: LogLevel) -> String {
+    /// Applies the foreground, background and reset color modifier values to the given message.
+    ///
+    /// - parameter message: The message to apply the color modification to.
+    ///
+    /// - returns: A new string with all the color modifier values added.
+    public func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         return "\(foregroundText)\(backgroundText)\(message)\(ColorConstants.RESET)"
     }
 
     // MARK: Private - Helper Methods
 
-    private class func textStringForColor(color: Color?) -> String {
+    private class func textString(from color: Color?) -> String {
         var textString = ""
 
         if let color = color {
@@ -152,7 +136,7 @@ public class ColorFormatter: Formatter {
             // Since the colorspace on OSX is not guaranteed to be `deviceRGBColorSpace`, the color must be converted
             // to guarantee that the `getRed(_:green:blue:alpha:)` call will succeed.
             #if os(OSX)
-                if let rgbColor = color.colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace()) {
+                if let rgbColor = color.usingColorSpace(NSColorSpace.deviceRGB()) {
                     rgbColor.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
                 }
             #else

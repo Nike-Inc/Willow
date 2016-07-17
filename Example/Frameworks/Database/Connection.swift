@@ -26,26 +26,26 @@ import Foundation
 
 public class Connection {
     public static func makeSQLCall() {
-        log.sql { "Making call that logs sql message" }
+        log.sql("Making call that logs sql message")
     }
 
     public static func makeDebugCall() {
-        log.debug { "Making call that logs debug message" }
+        log.debug("Making call that logs debug message")
     }
 
     public static func makeInfoCall() {
-        log.info { "Making call that logs info message" }
+        log.info("Making call that logs info message")
     }
 
     public static func makeEventCall() {
-        log.event { "Making call that logs event message" }
+        log.event("Making call that logs event message")
     }
 
     public static func makeWarnCall() {
-        log.warn { "Making call that logs warn message" }
+        log.warn("Making call that logs warn message")
     }
 
     public static func makeErrorCall() {
-        log.error { "Making call that logs error message" }
+        log.error("Making call that logs error message")
     }
 }

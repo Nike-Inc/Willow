@@ -29,33 +29,43 @@ import XCTest
 // MARK: Custom Log Levels Using Extensions
 
 extension LogLevel {
-    static let Verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
-    static let Summary = LogLevel(rawValue: 0b00000000_00000000_00000010_00000000)
+    static let verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
+    static let summary = LogLevel(rawValue: 0b00000000_00000000_00000010_00000000)
 }
 
 extension Logger {
+    private func verbose(message: @autoclosure(escaping) () -> String) {
+        logMessage(message, with: LogLevel.verbose)
+    }
+
     private func verbose(message: () -> String) {
-        logMessage(message, withLogLevel: .Verbose)
+        logMessage(message, with: LogLevel.verbose)
+    }
+
+    private func summary(message: @autoclosure(escaping) () -> String) {
+        logMessage(message, with: LogLevel.summary)
     }
 
     private func summary(message: () -> String) {
-        logMessage(message, withLogLevel: .Summary)
+        logMessage(message, with: LogLevel.summary)
     }
 }
 
-// MARK: - Helper Test Classes
+// MARK:
+// MARK: Helper Test Classes
 
 class TestWriter: Writer {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
 
-    func writeMessage(message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?) {
         self.message = message
         actualNumberOfWrites += 1
     }
 }
 
-// MARK: - Test Cases
+// MARK:
+// MARK: Test Cases
 
 class LogLevelTestCase: XCTestCase {
 
@@ -63,12 +73,12 @@ class LogLevelTestCase: XCTestCase {
 
     func testLogLevelHashValues() {
         // Given, When
-        let off = LogLevel.Off
-        let debug = LogLevel.Debug
-        let info = LogLevel.Info
-        let event = LogLevel.Event
-        let warn = LogLevel.Warn
-        let error = LogLevel.Error
+        let off = LogLevel.off
+        let debug = LogLevel.debug
+        let info = LogLevel.info
+        let event = LogLevel.event
+        let warn = LogLevel.warn
+        let error = LogLevel.error
 
         // Then
         XCTAssertEqual(off.hashValue, 0)
@@ -81,13 +91,13 @@ class LogLevelTestCase: XCTestCase {
 
     func testLogLevelDescriptions() {
         // Given, When
-        let off = LogLevel.Off
-        let debug = LogLevel.Debug
-        let info = LogLevel.Info
-        let event = LogLevel.Event
-        let warn = LogLevel.Warn
-        let error = LogLevel.Error
-        let all = LogLevel.All
+        let off = LogLevel.off
+        let debug = LogLevel.debug
+        let info = LogLevel.info
+        let event = LogLevel.event
+        let warn = LogLevel.warn
+        let error = LogLevel.error
+        let all = LogLevel.all
         let unknown = LogLevel(rawValue: 0b00000000_00000000_10000000_00000000)
 
         // Then
@@ -103,13 +113,13 @@ class LogLevelTestCase: XCTestCase {
 
     func testLogLevelEquatableConformance() {
         // Given, When
-        let off = LogLevel.Off
-        let debug = LogLevel.Debug
-        let info = LogLevel.Info
-        let event = LogLevel.Event
-        let warn = LogLevel.Warn
-        let error = LogLevel.Error
-        let all = LogLevel.All
+        let off = LogLevel.off
+        let debug = LogLevel.debug
+        let info = LogLevel.info
+        let event = LogLevel.event
+        let warn = LogLevel.warn
+        let error = LogLevel.error
+        let all = LogLevel.all
 
         // Then
         XCTAssertEqual(off, off)
@@ -149,13 +159,15 @@ class LogLevelTestCase: XCTestCase {
     }
 }
 
+// MARK:
+
 class CustomLogLevelTestCase: XCTestCase {
 
     // MARK: Tests
 
     func testThatItLogsAsExpectedWithAllLogLevel() {
         // Given
-        let (log, writer) = logger(logLevel: .All)
+        let (log, writer) = logger(logLevel: .all)
 
         // When / Then
         log.verbose { "verbose message" }
@@ -185,7 +197,7 @@ class CustomLogLevelTestCase: XCTestCase {
 
     func testThatItLogsAsExpectedWithOrdLogLevels() {
         // Given
-        let logLevel: LogLevel = [LogLevel.Verbose, LogLevel.Info, LogLevel.Summary, LogLevel.Warn]
+        let logLevel: LogLevel = [LogLevel.verbose, LogLevel.info, LogLevel.summary, LogLevel.warn]
         let (log, writer) = logger(logLevel: logLevel)
 
         // When / Then
@@ -216,7 +228,7 @@ class CustomLogLevelTestCase: XCTestCase {
 
     // MARK: Private - Helper Methods
 
-    func logger(logLevel logLevel: LogLevel) -> (Logger, TestWriter) {
+    func logger(logLevel: LogLevel) -> (Logger, TestWriter) {
         let writer = TestWriter()
 
         let configuration = LoggerConfiguration(writers: [logLevel: [writer]])

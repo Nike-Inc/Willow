@@ -32,64 +32,66 @@ var log: Logger!
 
 struct WillowConfiguration {
 
-    // MARK: - Formatters
+    // MARK: Modifiers
 
-    private struct PrefixFormatter: Formatter {
+    private struct PrefixModifier: Modifier {
         let prefix: String
 
         init(prefix: String) {
             self.prefix = prefix
         }
 
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[\(prefix)] => \(message)"
         }
     }
 
-    private struct WarningPrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    private struct WarningPrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "🚨🚨🚨 \(message)"
         }
     }
 
-    private struct ErrorPrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    private struct ErrorPrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "💣💥💣💥 \(message)"
         }
     }
 
-    // MARK: - Configure
+    // MARK: Configure
 
     static func configure(
-        appLogLevels appLogLevels: LogLevel = [.Debug, .Info, .Event],
-        databaseLogLevels: LogLevel = [.SQL, .Debug, .Info, .Event],
-        networkLogLevels: LogLevel = [.Debug, .Info, .Event],
+        appLogLevels: LogLevel = [.debug, .info, .event],
+        databaseLogLevels: LogLevel = [.sql, .debug, .info, .event],
+        networkLogLevels: LogLevel = [.debug, .info, .event],
         coloredOutputEnabled: Bool = true,
         asynchronous: Bool = false)
     {
-        let writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]]
+        let writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]]
         let executionMethod: LoggerConfiguration.ExecutionMethod
 
         if asynchronous {
-            executionMethod = .Synchronous(lock: NSRecursiveLock())
+            executionMethod = .Synchronous(lock: RecursiveLock())
         } else {
-            executionMethod = .Asynchronous(queue: dispatch_queue_create("com.nike.example.logger", DISPATCH_QUEUE_SERIAL))
+            executionMethod = .Asynchronous(
+                queue: DispatchQueue(label: "com.nike.example.logger", attributes: [.serial, .qosUtility])
+            )
         }
 
         log = configureLogger(
-            foregroundColor: Color.whiteColor(),
+            foregroundColor: Color.white(),
             backgroundColor: coloredOutputEnabled ? Color(red: 0.0, green: 0.7, blue: 1.0, alpha: 1.0) : nil,
             prefix: "App",
-            formatterLogLevel: [.Debug, .Info, .Event],
+            modifierLogLevel: [.debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod
         )
 
         Database.log = configureLogger(
-            foregroundColor: Color.whiteColor(),
+            foregroundColor: Color.white(),
             backgroundColor: Color(red: 1.0, green: 0.518, blue: 0.043, alpha: 1.0),
             prefix: "Database",
-            formatterLogLevel: [.SQL, .Debug, .Info, .Event],
+            modifierLogLevel: [.sql, .debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod
         )
@@ -98,41 +100,41 @@ struct WillowConfiguration {
             foregroundColor: coloredOutputEnabled ? Color(white: 0.2, alpha: 1.0) : nil,
             backgroundColor: Color(red: 0.797, green: 0.984, blue: 0.0, alpha: 1.0),
             prefix: "Network",
-            formatterLogLevel: [.Debug, .Info, .Event],
+            modifierLogLevel: [.debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod
         )
     }
 
     private static func configureLogger(
-        foregroundColor foregroundColor: UIColor? = nil,
+        foregroundColor: UIColor? = nil,
         backgroundColor: UIColor? = nil,
         prefix: String,
-        formatterLogLevel: LogLevel,
+        modifierLogLevel: LogLevel,
         writers: [LogLevel: [Writer]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
-        let prefixFormatter = PrefixFormatter(prefix: prefix)
-        let timestampFormatter = TimestampFormatter()
-        let colorFormatter = ColorFormatter(foregroundColor: foregroundColor, backgroundColor: backgroundColor)
+        let prefixModifier = PrefixModifier(prefix: prefix)
+        let timestampModifier = TimestampModifier()
+        let colorModifier = ColorModifier(foregroundColor: foregroundColor, backgroundColor: backgroundColor)
 
-        let formatters: [LogLevel: [Formatter]] = {
-            let formatters: [Formatter] = {
-                var formatters: [Formatter] = [prefixFormatter, timestampFormatter]
-                if foregroundColor != nil || backgroundColor != nil { formatters.append(colorFormatter) }
-                return formatters
+        let modifiers: [LogLevel: [Modifier]] = {
+            let modifiers: [Modifier] = {
+                var modifiers: [Modifier] = [prefixModifier, timestampModifier]
+                if foregroundColor != nil || backgroundColor != nil { modifiers.append(colorModifier) }
+                return modifiers
             }()
 
             return [
-                formatterLogLevel: formatters,
-                .Warn: [WarningPrefixFormatter()] + formatters,
-                .Error: [ErrorPrefixFormatter()] + formatters
+                modifierLogLevel: modifiers,
+                .warn: [WarningPrefixModifier()] + modifiers,
+                .error: [ErrorPrefixModifier()] + modifiers
             ]
         }()
 
         let configuration = LoggerConfiguration(
-            formatters: formatters,
+            modifiers: modifiers,
             writers: writers,
             executionMethod: executionMethod
         )

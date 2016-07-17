@@ -28,14 +28,14 @@ import Willow
 
 /// The single `Logger` instance used throughout Network.
 public var log: Logger = {
-    struct PrefixFormatter: Formatter {
-        func formatMessage(message: String, logLevel: LogLevel) -> String {
+    struct PrefixModifier: Modifier {
+        func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Network] => \(message)"
         }
     }
 
-    let prefixFormatter = PrefixFormatter()
-    let timestampFormatter = TimestampFormatter()
+    let prefixModifier = PrefixModifier()
+    let timestampModifier = TimestampModifier()
 
     let purple = UIColor(red: 0.600, green: 0.247, blue: 1.000, alpha: 1.0)
     let blue = UIColor(red: 0.176, green: 0.569, blue: 1.000, alpha: 1.0)
@@ -43,22 +43,22 @@ public var log: Logger = {
     let orange = UIColor(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
     let red = UIColor(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
 
-    let debugColorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: nil)
-    let infoColorFormatter = ColorFormatter(foregroundColor: blue, backgroundColor: nil)
-    let eventColorFormatter = ColorFormatter(foregroundColor: green, backgroundColor: nil)
-    let warnColorFormatter = ColorFormatter(foregroundColor: orange, backgroundColor: nil)
-    let errorColorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
+    let debugColorModifier = ColorModifier(foregroundColor: purple, backgroundColor: nil)
+    let infoColorModifier = ColorModifier(foregroundColor: blue, backgroundColor: nil)
+    let eventColorModifier = ColorModifier(foregroundColor: green, backgroundColor: nil)
+    let warnColorModifier = ColorModifier(foregroundColor: orange, backgroundColor: nil)
+    let errorColorModifier = ColorModifier(foregroundColor: red, backgroundColor: nil)
 
-    let formatters: [LogLevel: [Formatter]] = [
-        .Debug: [prefixFormatter, timestampFormatter, debugColorFormatter],
-        .Info: [prefixFormatter, timestampFormatter, infoColorFormatter],
-        .Event: [prefixFormatter, timestampFormatter, eventColorFormatter],
-        .Warn: [prefixFormatter, timestampFormatter, warnColorFormatter],
-        .Error: [prefixFormatter, timestampFormatter, errorColorFormatter]
+    let modifiers: [LogLevel: [Modifier]] = [
+        .debug: [prefixModifier, timestampModifier, debugColorModifier],
+        .info: [prefixModifier, timestampModifier, infoColorModifier],
+        .event: [prefixModifier, timestampModifier, eventColorModifier],
+        .warn: [prefixModifier, timestampModifier, warnColorModifier],
+        .error: [prefixModifier, timestampModifier, errorColorModifier]
     ]
 
-    let queue = dispatch_queue_create("com.nike.network.logger.queue", DISPATCH_QUEUE_SERIAL)
-    let configuration = LoggerConfiguration(formatters: formatters, executionMethod: .Asynchronous(queue: queue))
+    let queue = DispatchQueue(label: "com.nike.network.logger.queue", attributes: [.serial, .qosUtility])
+    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
     return Logger(configuration: configuration)
 }()
