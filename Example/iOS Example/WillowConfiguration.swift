@@ -34,7 +34,7 @@ struct WillowConfiguration {
 
     // MARK: Modifiers
 
-    private struct PrefixModifier: Modifier {
+    private struct PrefixModifier: LogMessageModifier {
         let emoji: String
         let name: String
 
@@ -48,13 +48,13 @@ struct WillowConfiguration {
         }
     }
 
-    private struct WarningPrefixModifier: Modifier {
+    private struct WarningPrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "🚨🚨🚨 \(message)"
         }
     }
 
-    private struct ErrorPrefixModifier: Modifier {
+    private struct ErrorPrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "💣💥💣💥 \(message)"
         }
@@ -68,7 +68,7 @@ struct WillowConfiguration {
         networkLogLevels: LogLevel = [.debug, .info, .event],
         asynchronous: Bool = false)
     {
-        let writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]]
+        let writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]]
         let executionMethod: LoggerConfiguration.ExecutionMethod
 
         if asynchronous {
@@ -108,15 +108,15 @@ struct WillowConfiguration {
         emoji: String,
         name: String,
         modifierLogLevel: LogLevel,
-        writers: [LogLevel: [Writer]],
+        writers: [LogLevel: [LogMessageWriter]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
         let PrefixModifier = PrefixModifier(emoji: emoji, name: name)
         let timestampModifier = TimestampModifier()
 
-        let modifiers: [LogLevel: [Modifier]] = {
-            let modifiers: [Modifier] = [prefixModifier, timestampModifier]
+        let modifiers: [LogLevel: [LogMessageModifier]] = {
+            let modifiers: [LogMessageModifier] = [prefixModifier, timestampModifier]
 
             return [
                 modifierLogLevel: modifiers,

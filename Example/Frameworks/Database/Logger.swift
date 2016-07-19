@@ -47,13 +47,13 @@ extension Logger {
 
 /// The single `Logger` instance used throughout Database.
 public var log: Logger! = {
-    struct PrefixModifier: Modifier {
+    struct PrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Database] => \(message)"
         }
     }
 
-    let modifiers: [LogLevel: [Modifier]] = [.All: [PrefixModifier(), TimestampModifier()]]
+    let modifiers: [LogLevel: [LogMessageModifier]] = [.All: [PrefixModifier(), TimestampModifier()]]
     let queue = DispatchQueue(label: "com.nike.database.logger.queue", attributes: [.serial, .qosUtility])
     let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
