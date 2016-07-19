@@ -25,9 +25,9 @@ Willow is a powerful, yet lightweight logging library written in Swift.
     - [Synchronous and Asynchronous Logging](#synchronous-and-asynchronous-logging)
         - [Synchronous Logging](#synchronous-logging)
         - [Asynchronous Logging](#asynchronous-logging)
-    - [Formatters](#formatters)
-        - [Color Formatters](#color-formatters)
-        - [Multiple Formatters](#multiple-formatters)
+    - [Modifiers](#modifiers)
+        - [Color Modifiers](#color-modifiers)
+        - [Multiple Modifiers](#multiple-modifiers)
     - [Writers](#writers)
         - [Multiple Writers](#multiple-writers)
         - [Per LogLevel Writers](#per-loglevel-writers)
@@ -46,8 +46,8 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - [X] Simple Logging Functions using Closures
 - [X] Configurable Synchronous or Asynchronous Execution
 - [X] Thread-Safe Logging Output (No Log Mangling)
-- [X] Custom Formatters through Dependency Injection per Log Level
-- [X] Customizable Color Formatting for Console Output
+- [X] Custom Modifiers through Dependency Injection per Log Level
+- [X] Customizable Colorized Messages in Console Output
 - [X] Custom Writers through Dependency Injection per Log Level
 - [X] Supports Multiple Simultaneous Writers
 - [X] Shared Loggers Between Frameworks
