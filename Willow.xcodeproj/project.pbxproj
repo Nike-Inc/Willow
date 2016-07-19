@@ -19,30 +19,30 @@
 		4C83FB2D1AEC1959003FEA49 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
 		4C83FB2E1AEC1959003FEA49 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
 		4C8835281C82506600F70419 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C88351E1C82506600F70419 /* Willow.framework */; };
-		4C8835361C82530300F70419 /* Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* Modifier.swift */; };
+		4C8835361C82530300F70419 /* LogMessageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* LogMessageModifier.swift */; };
 		4C8835371C82530300F70419 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F611AEC4654005E6475 /* Logger.swift */; };
 		4C8835381C82530300F70419 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
 		4C8835391C82530300F70419 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
-		4C88353A1C82530300F70419 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* Writer.swift */; };
+		4C88353A1C82530300F70419 /* LogMessageWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* LogMessageWriter.swift */; };
 		4C88353B1C82530600F70419 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C88353C1C82530F00F70419 /* LogLevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */; };
 		4C88353D1C82530F00F70419 /* ModifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* ModifierTests.swift */; };
 		4C88353E1C82530F00F70419 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */; };
-		4CA33F341B7556FC0047C307 /* Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* Modifier.swift */; };
+		4CA33F341B7556FC0047C307 /* LogMessageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* LogMessageModifier.swift */; };
 		4CA33F351B7556FC0047C307 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F611AEC4654005E6475 /* Logger.swift */; };
 		4CA33F361B7556FC0047C307 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
 		4CA33F371B7556FC0047C307 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */; };
-		4CA33F381B7556FC0047C307 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* Writer.swift */; };
+		4CA33F381B7556FC0047C307 /* LogMessageWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* LogMessageWriter.swift */; };
 		4CA33F391B7556FF0047C307 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CA75D441A6C493800275DC5 /* Willow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA75D421A6C493800275DC5 /* Willow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4CA86F5F1AEC464A005E6475 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
 		4CA86F601AEC464A005E6475 /* LoggerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */; };
 		4CA86F621AEC4654005E6475 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F611AEC4654005E6475 /* Logger.swift */; };
 		4CA86F631AEC4654005E6475 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F611AEC4654005E6475 /* Logger.swift */; };
-		4CA86F651AEC465E005E6475 /* Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* Modifier.swift */; };
-		4CA86F661AEC465E005E6475 /* Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* Modifier.swift */; };
-		4CA86F681AEC466A005E6475 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* Writer.swift */; };
-		4CA86F691AEC466A005E6475 /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* Writer.swift */; };
+		4CA86F651AEC465E005E6475 /* LogMessageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* LogMessageModifier.swift */; };
+		4CA86F661AEC465E005E6475 /* LogMessageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F641AEC465E005E6475 /* LogMessageModifier.swift */; };
+		4CA86F681AEC466A005E6475 /* LogMessageWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* LogMessageWriter.swift */; };
+		4CA86F691AEC466A005E6475 /* LogMessageWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA86F671AEC466A005E6475 /* LogMessageWriter.swift */; };
 		4CBE850E1AEA2F3D006A1205 /* LogLevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */; };
 		4CBE850F1AEA2F3E006A1205 /* LogLevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */; };
 		4CC837781A6E347700B31851 /* ModifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1BBA691A6C518800D39EE1 /* ModifierTests.swift */; };
@@ -91,8 +91,8 @@
 		4CA75D4B1A6C498300275DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerConfiguration.swift; sourceTree = "<group>"; };
 		4CA86F611AEC4654005E6475 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		4CA86F641AEC465E005E6475 /* Modifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modifier.swift; sourceTree = "<group>"; };
-		4CA86F671AEC466A005E6475 /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
+		4CA86F641AEC465E005E6475 /* LogMessageModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageModifier.swift; sourceTree = "<group>"; };
+		4CA86F671AEC466A005E6475 /* LogMessageWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageWriter.swift; sourceTree = "<group>"; };
 		4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogLevelTests.swift; sourceTree = "<group>"; };
 		4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,8 +163,8 @@
 				4CA86F611AEC4654005E6475 /* Logger.swift */,
 				4CA86F5E1AEC464A005E6475 /* LoggerConfiguration.swift */,
 				4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */,
-				4CA86F641AEC465E005E6475 /* Modifier.swift */,
-				4CA86F671AEC466A005E6475 /* Writer.swift */,
+				4CA86F641AEC465E005E6475 /* LogMessageModifier.swift */,
+				4CA86F671AEC466A005E6475 /* LogMessageWriter.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
 			);
 			path = Source;
@@ -504,8 +504,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C8835381C82530300F70419 /* LoggerConfiguration.swift in Sources */,
-				4C88353A1C82530300F70419 /* Writer.swift in Sources */,
-				4C8835361C82530300F70419 /* Modifier.swift in Sources */,
+				4C88353A1C82530300F70419 /* LogMessageWriter.swift in Sources */,
+				4C8835361C82530300F70419 /* LogMessageModifier.swift in Sources */,
 				4C8835371C82530300F70419 /* Logger.swift in Sources */,
 				4C8835391C82530300F70419 /* LogLevel.swift in Sources */,
 			);
@@ -528,8 +528,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CA33F361B7556FC0047C307 /* LoggerConfiguration.swift in Sources */,
-				4CA33F381B7556FC0047C307 /* Writer.swift in Sources */,
-				4CA33F341B7556FC0047C307 /* Modifier.swift in Sources */,
+				4CA33F381B7556FC0047C307 /* LogMessageWriter.swift in Sources */,
+				4CA33F341B7556FC0047C307 /* LogMessageModifier.swift in Sources */,
 				4CA33F351B7556FC0047C307 /* Logger.swift in Sources */,
 				4CA33F371B7556FC0047C307 /* LogLevel.swift in Sources */,
 			);
@@ -539,9 +539,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CA86F691AEC466A005E6475 /* Writer.swift in Sources */,
+				4CA86F691AEC466A005E6475 /* LogMessageWriter.swift in Sources */,
 				4CA86F601AEC464A005E6475 /* LoggerConfiguration.swift in Sources */,
-				4CA86F661AEC465E005E6475 /* Modifier.swift in Sources */,
+				4CA86F661AEC465E005E6475 /* LogMessageModifier.swift in Sources */,
 				4C83FB2E1AEC1959003FEA49 /* LogLevel.swift in Sources */,
 				4CA86F631AEC4654005E6475 /* Logger.swift in Sources */,
 			);
@@ -563,9 +563,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CA86F681AEC466A005E6475 /* Writer.swift in Sources */,
+				4CA86F681AEC466A005E6475 /* LogMessageWriter.swift in Sources */,
 				4CA86F5F1AEC464A005E6475 /* LoggerConfiguration.swift in Sources */,
-				4CA86F651AEC465E005E6475 /* Modifier.swift in Sources */,
+				4CA86F651AEC465E005E6475 /* LogMessageModifier.swift in Sources */,
 				4C83FB2D1AEC1959003FEA49 /* LogLevel.swift in Sources */,
 				4CA86F621AEC4654005E6475 /* Logger.swift in Sources */,
 			);

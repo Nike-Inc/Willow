@@ -34,12 +34,12 @@ import Cocoa
 
 // MARK: Test Helpers
 
-class SynchronousTestWriter: Writer {
+class SynchronousTestWriter: LogMessageWriter {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
     private(set) var modifiedMessages = [String]()
 
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?) {
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
         var mutableMessage = message
 
         if let modifiers = modifiers {
@@ -64,7 +64,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
         self.expectedNumberOfWrites = expectedNumberOfWrites
     }
 
-    override func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?) {
+    override func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
         super.writeMessage(message, logLevel: logLevel, modifiers: modifiers)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
@@ -75,7 +75,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
 
 // MARK:
 
-class PrefixModifier: Modifier {
+class PrefixModifier: LogMessageModifier {
     func modifyMessage(_ message: String, with: LogLevel) -> String {
         return "[Willow] \(message)"
     }
@@ -96,7 +96,7 @@ class SynchronousLoggerTestCase: XCTestCase {
     let orangeColor = Color(red: 233.0 / 255.0, green: 165.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
     let redColor = Color(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
 
-    func logger(logLevel: LogLevel = .all, modifiers: [LogLevel: [Modifier]] = [:]) -> (Logger, SynchronousTestWriter) {
+    func logger(logLevel: LogLevel = .all, modifiers: [LogLevel: [LogMessageModifier]] = [:]) -> (Logger, SynchronousTestWriter) {
         let writer = SynchronousTestWriter()
 
         let configuration = LoggerConfiguration(modifiers: modifiers, writers: [logLevel: [writer]])
@@ -105,7 +105,7 @@ class SynchronousLoggerTestCase: XCTestCase {
         return (logger, writer)
     }
 
-    func logger(writers: [LogLevel: [Writer]] = [:]) -> (Logger) {
+    func logger(writers: [LogLevel: [LogMessageWriter]] = [:]) -> (Logger) {
         let configuration = LoggerConfiguration(writers: writers)
         let logger = Logger(configuration: configuration)
 
@@ -118,7 +118,7 @@ class SynchronousLoggerTestCase: XCTestCase {
 class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     func logger(
         logLevel: LogLevel = .debug,
-        modifiers: [LogLevel: [Modifier]] = [:],
+        modifiers: [LogLevel: [LogMessageModifier]] = [:],
         expectedNumberOfWrites: Int = 1) -> (Logger, AsynchronousTestWriter)
     {
         let expectation = self.expectation(description: "Test writer should receive expected number of writes")
@@ -581,7 +581,7 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
 class SynchronousLoggerColorModifierTestCase: SynchronousLoggerTestCase {
     func testThatItAppliesCorrectColorModifierToDebugLogLevel() {
         // Given
-        let colorModifiers: [LogLevel: [Modifier]] = [
+        let colorModifiers: [LogLevel: [LogMessageModifier]] = [
             .debug: [ColorModifier(foregroundColor: purpleColor, backgroundColor: blueColor)]
         ]
 
@@ -607,7 +607,7 @@ class SynchronousLoggerColorModifierTestCase: SynchronousLoggerTestCase {
 
     func testThatItAppliesCorrectColorModifierToInfoLogLevel() {
         // Given
-        let colorModifiers: [LogLevel: [Modifier]] = [
+        let colorModifiers: [LogLevel: [LogMessageModifier]] = [
             .info: [ColorModifier(foregroundColor: greenColor, backgroundColor: orangeColor)]
         ]
 
@@ -633,7 +633,7 @@ class SynchronousLoggerColorModifierTestCase: SynchronousLoggerTestCase {
 
     func testThatItAppliesCorrectColorModifierToEventLogLevel() {
         // Given
-        let colorModifiers: [LogLevel: [Modifier]] = [
+        let colorModifiers: [LogLevel: [LogMessageModifier]] = [
             .event: [ColorModifier(foregroundColor: redColor, backgroundColor: purpleColor)]
         ]
 
@@ -659,7 +659,7 @@ class SynchronousLoggerColorModifierTestCase: SynchronousLoggerTestCase {
 
     func testThatItAppliesCorrectColorModifierToWarnLogLevel() {
         // Given
-        let colorModifiers: [LogLevel: [Modifier]] = [
+        let colorModifiers: [LogLevel: [LogMessageModifier]] = [
             .warn: [ColorModifier(foregroundColor: blueColor, backgroundColor: greenColor)]
         ]
 
@@ -685,7 +685,7 @@ class SynchronousLoggerColorModifierTestCase: SynchronousLoggerTestCase {
 
     func testThatItAppliesCorrectColorModifierToErrorLogLevel() {
         // Given
-        let colorModifiers: [LogLevel: [Modifier]] = [
+        let colorModifiers: [LogLevel: [LogMessageModifier]] = [
             .error: [ColorModifier(foregroundColor: purpleColor, backgroundColor: redColor)]
         ]
 
@@ -716,7 +716,7 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     func testThatItLogsOutputAsExpectedWithMultipleModifiers() {
         // Given
         let prefixModifier = PrefixModifier()
-        let modifiers: [LogLevel: [Modifier]] = [
+        let modifiers: [LogLevel: [LogMessageModifier]] = [
             .debug: [prefixModifier, ColorModifier(foregroundColor: purpleColor, backgroundColor: blueColor)],
             .info: [prefixModifier, ColorModifier(foregroundColor: greenColor, backgroundColor: orangeColor)],
             .event: [prefixModifier, ColorModifier(foregroundColor: redColor, backgroundColor: purpleColor)],
@@ -772,7 +772,7 @@ class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
         let writer2 = SynchronousTestWriter()
         let writer3 = SynchronousTestWriter()
 
-        let writers: [LogLevel: [Writer]] = [
+        let writers: [LogLevel: [LogMessageWriter]] = [
             .all: [writer1],
             .debug: [writer2],
             [.debug, .event, .error]: [writer3]
