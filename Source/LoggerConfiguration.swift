@@ -49,10 +49,10 @@ public struct LoggerConfiguration {
     // MARK: Properties
 
     /// The dictionary of modifiers to apply to each associated log level.
-    public let modifiers: [LogLevel: [Modifier]]
+    public let modifiers: [LogLevel: [LogMessageModifier]]
 
     /// The dictionary of writers to use when messages are written for each associated log level.
-    public let writers: [LogLevel: [Writer]]
+    public let writers: [LogLevel: [LogMessageWriter]]
 
     /// The execution method used when logging a message.
     public let executionMethod: ExecutionMethod
@@ -69,8 +69,8 @@ public struct LoggerConfiguration {
     ///
     /// - returns: A fully initialized logger configuration instance.
     public init(
-        modifiers: [LogLevel: [Modifier]] = [:],
-        writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]],
+        modifiers: [LogLevel: [LogMessageModifier]] = [:],
+        writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]],
         executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
     {
         func restructureDictionaryValuesPerBitBasedLogLevel<T>(_ values: [LogLevel: [T]]) -> [LogLevel: [T]] {
@@ -112,8 +112,8 @@ public struct LoggerConfiguration {
         executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
         -> LoggerConfiguration
     {
-        let modifiers: [LogLevel: [Modifier]] = [logLevel: [TimestampModifier()]]
-        let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
+        let modifiers: [LogLevel: [LogMessageModifier]] = [logLevel: [TimestampModifier()]]
+        let writers: [LogLevel: [LogMessageWriter]] = [logLevel: [ConsoleWriter()]]
 
         return LoggerConfiguration(modifiers: modifiers, writers: writers, executionMethod: executionMethod)
     }
@@ -138,7 +138,7 @@ public struct LoggerConfiguration {
 
         let timestampModifier = TimestampModifier()
 
-        let modifiers: [LogLevel: [Modifier]] = [
+        let modifiers: [LogLevel: [LogMessageModifier]] = [
             .debug: [timestampModifier, ColorModifier(foregroundColor: purple, backgroundColor: nil)],
             .info: [timestampModifier, ColorModifier(foregroundColor: blue, backgroundColor: nil)],
             .event: [timestampModifier, ColorModifier(foregroundColor: green, backgroundColor: nil)],
@@ -146,7 +146,7 @@ public struct LoggerConfiguration {
             .error: [timestampModifier, ColorModifier(foregroundColor: red, backgroundColor: nil)]
         ]
 
-        let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
+        let writers: [LogLevel: [LogMessageWriter]] = [logLevel: [ConsoleWriter()]]
 
         return LoggerConfiguration(modifiers: modifiers, writers: writers, executionMethod: executionMethod)
     }

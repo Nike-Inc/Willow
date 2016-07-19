@@ -1,5 +1,5 @@
 //
-//  Modifier.swift
+//  LogMessageModifier.swift
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -32,16 +32,16 @@ import Cocoa
 public typealias Color = NSColor
 #endif
 
-/// The Modifier protocol defines a single method for modifying a message after it has been constructed. This is
-/// very flexible allowing any object that conforms to modify messages in any way it wants.
-public protocol Modifier {
+/// The LogMessageModifier protocol defines a single method for modifying a log message after it has been constructed.
+/// This is very flexible allowing any object that conforms to modify messages in any way it wants.
+public protocol LogMessageModifier {
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 
 // MARK:
 
 /// The TimestampModifier class applies a timestamp to the beginning of the message.
-public class TimestampModifier: Modifier {
+public class TimestampModifier: LogMessageModifier {
     private let timestampFormatter: DateFormatter = {
         var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
@@ -71,7 +71,7 @@ public class TimestampModifier: Modifier {
 /// XcodeColors plugin color formatting scheme.
 ///
 /// NOTE: These should only be used with the XcodeColors plugin.
-public class ColorModifier: Modifier {
+public class ColorModifier: LogMessageModifier {
 
     // MARK: Helper Types
 
