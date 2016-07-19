@@ -25,10 +25,10 @@ Willow is a powerful, yet lightweight logging library written in Swift.
     - [Synchronous and Asynchronous Logging](#synchronous-and-asynchronous-logging)
         - [Synchronous Logging](#synchronous-logging)
         - [Asynchronous Logging](#asynchronous-logging)
-    - [Modifiers](#modifiers)
+    - [Log Message Modifiers](#log-message-modifiers)
         - [Color Modifiers](#color-modifiers)
         - [Multiple Modifiers](#multiple-modifiers)
-    - [Writers](#writers)
+    - [Log Message Writers](#log-message-writers)
         - [Multiple Writers](#multiple-writers)
         - [Per LogLevel Writers](#per-loglevel-writers)
 - [Advanced Usage](#advanced-usage)
@@ -242,20 +242,20 @@ Asynchronous logging should be used for deployment builds of your application or
 
 > These are large generalizations about the typical use cases for one approach versus the other. Before making a final decision about which approach to use when, you should really break down your use case in detail.
 
-### Modifiers
+### Log Message Modifiers
 
-Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Modifier` objects come in.
+Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `LogMessageModifier` objects come in.
 
 ```swift
-public protocol Modifier {
+public protocol LogMessageModifier {
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 ```
 
-The `Modifier` protocol has only a single API. It receives the `message` and `logLevel` and returns a newly formatted `String`. This is about as flexible as you can get. The `Logger` allows you to pass in your own `Modifier` objects and apply them to a `LogLevel`. Let's walk through a simple example for adding a prefix to only the `debug` and `info` log levels.
+The `LogMessageModifier` protocol has only a single API. It receives the `message` and `logLevel` and returns a newly formatted `String`. This is about as flexible as you can get. The `Logger` allows you to pass in your own `LogMessageModifier` objects and apply them to a `LogLevel`. Let's walk through a simple example for adding a prefix to only the `debug` and `info` log levels.
 
 ```swift
-class PrefixModifier: Modifier {
+class PrefixModifier: LogMessageModifier {
     func modifyMessage(_ message: String, with logLevel: Logger.LogLevel) -> String {
         return "[Willow] \(message)"
     }
@@ -263,7 +263,7 @@ class PrefixModifier: Modifier {
 
 let prefixModifier = PrefixModifier()
 
-let modifiers: [Logger.LogLevel: [Modifier]] = [
+let modifiers: [Logger.LogLevel: [LogMessageModifier]] = [
     .debug: [prefixModifier],
     .info: [prefixModifier]
 ]
@@ -272,14 +272,15 @@ let configuration = LoggerConfiguration(modifiers: modifiers)
 let log = Logger(configuration: configuration)
 ```
 
-`Modifier` objects are very powerful and can manipulate the message in any way.
+`LogMessageModifier` objects are very powerful and can manipulate the message in any way.
 
+<<<<<<< f5249cbfa3a3e14b4d94497433e66c08086a8001
 #### Multiple Modifiers
 
-Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with an `EmojiModifier`.
+Multiple `LogMessageModifier` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with an `EmojiModifier`.
 
 ```swift
-class EmojiModifier: Modifier {
+class EmojiModifier: LogMessageModifier {
     func modify(_ message: String, with logLevel: Logger.LogLevel) -> String {
         return "🚀🚀🚀 \(message)"
     }
@@ -291,25 +292,25 @@ let configuration = LoggerConfiguration(modifiers: modifiers)
 let log = Logger(configuration: configuration)
 ```
 
-`Willow` doesn't have any hard limits on the total number of `Modifier` objects that can be applied to a single log level. Just keep in mind that performance is key.
+`Willow` doesn't have any hard limits on the total number of `LogMessageModifier` objects that can be applied to a single log level. Just keep in mind that performance is key.
 
 > The default `ConsoleWriter` will execute the modifiers in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `TimestampModifier` was inserted before the `EmojiModifier`.
 
-### Writers
+### Log Message Writers
 
-Writing log messages to various locations is an essential feature of any robust logging library. This is made possible in `Willow` through the `Writer` protocol.
+Writing log messages to various locations is an essential feature of any robust logging library. This is made possible in `Willow` through the `LogMessageWriter` protocol.
 
 ```swift
-public protocol Writer {
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?)
+public protocol LogMessageWriter {
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?)
 }
 ```
 
-Again, this is an extremely lightweight design to allow for ultimate flexibility. As long as your `Writer` classes conform, you can do anything with those log messages that you want. You could write the message to the console, append it to a file, send it to a server, etc. Here's a quick look at the implementation of the default `ConsoleWriter` created by the `Logger` if you don't specify your own.
+Again, this is an extremely lightweight design to allow for ultimate flexibility. As long as your `LogMessageWriter` classes conform, you can do anything with those log messages that you want. You could write the message to the console, append it to a file, send it to a server, etc. Here's a quick look at the implementation of the default `ConsoleWriter` created by the `Logger` if you don't specify your own.
 
 ```swift
-public class ConsoleWriter: Writer {
-    public func writeMessage(_ message: String, logLevel: LogLevel, formatters: [Formatter]?) {
+public class ConsoleWriter: LogMessageWriter {
+    public func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
     	var mutableMessage = message
         modifiers?.map { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
         print(mutableMessage)
@@ -319,31 +320,31 @@ public class ConsoleWriter: Writer {
 
 #### Multiple Writers
 
-So what about logging to both a file and the console at the same time? No problem. You can pass multiple `Writer` objects into the `Logger` initializer. The `Logger` will execute each `Writer` in the order it was passed in. For example, let's create a `FileWriter` and combine that with our `ConsoleWriter`.
+So what about logging to both a file and the console at the same time? No problem. You can pass multiple `LogMessageWriter` objects into the `Logger` initializer. The `Logger` will execute each `LogMessageWriter` in the order it was passed in. For example, let's create a `FileWriter` and combine that with our `ConsoleWriter`.
 
 ```swift
-public class FileWriter: Writer {
-    public func writeMessage(_ message: String, logLevel: Logger.LogLevel, modifiers: [Modifier]?) {
+public class FileWriter: LogMessageWriter {
+    public func writeMessage(_ message: String, logLevel: Logger.LogLevel, modifiers: [LogMessageModifier]?) {
 	    var mutableMessage = message
         modifiers?.map { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
         // Write the formatted message to a file (I'll leave this to you!)
     }
 }
 
-let writers: [LogLevel: Writer] = [.all: [FileWriter(), ConsoleWriter()]]
+let writers: [LogLevel: LogMessageWriter] = [.all: [FileWriter(), ConsoleWriter()]]
 
 let configuration = LoggerConfiguration(writers: writers)
 let log = Logger(configuration: configuration)
 ```
 
-> `Writer` objects can also be selective about which modifiers they want to run for a particular log level. All the examples run all the modifiers, but you can be selective if you want to be.
+> `LogMessageWriter` objects can also be selective about which modifiers they want to run for a particular log level. All the examples run all the modifiers, but you can be selective if you want to be.
 
 #### Per LogLevel Writers
 
-It is also possible to specify different combinations of `Writer` objects for each `LogLevel`. Let's say we want to log `.warn` and `.error` messages to the console, and we want to log all messages to a file writer.
+It is also possible to specify different combinations of `LogMessageWriter` objects for each `LogLevel`. Let's say we want to log `.warn` and `.error` messages to the console, and we want to log all messages to a file writer.
 
 ```swift
-let writers: [LogLevel: Writer] = [
+let writers: [LogLevel: LogMessageWriter] = [
 	.all: [FileWriter()],
 	[.warn, .error]: [ConsoleWriter()]
 ]
@@ -404,7 +405,7 @@ public var log = Logger(configuration: LoggerConfiguration(writers: [.warn, .err
 //=========== Calculator.swift ===========
 import Math
 
-let writers = [.all: [FileWriter(), ConsoleWriter()]]
+let writers: [LogLevel: [LogMessageWriter]] = [.all: [FileWriter(), ConsoleWriter()]]
 var log = Logger(configuration: LoggerConfiguration(writers: writers))
 
 // Replace the Math.log with the Calculator.log to share the same Logger instance
@@ -428,7 +429,7 @@ import Math
 let sharedQueue = DispatchQueue(label: "com.math.logger", attributes: [.serial, .qosUtility])
 
 // Create the Calculator.log with multiple writers and a .Debug log level
-let writers = [.all: [FileWriter(), ConsoleWriter()]]
+let writers: [LogLevel: [LogMessageWriter]] = [.all: [FileWriter(), ConsoleWriter()]]
 let configuration = LoggerConfiguration(
     writers: writers, 
     executionMethod: .Asynchronous(queue: sharedQueue)
