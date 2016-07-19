@@ -47,7 +47,7 @@ extension Logger {
 
 /// The single `Logger` instance used throughout Database.
 public var log: Logger! = {
-    struct PrefixModifier: Modifier {
+    struct PrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Database] => \(message)"
         }
@@ -70,7 +70,7 @@ public var log: Logger! = {
     let warnColorModifier = ColorModifier(foregroundColor: orange, backgroundColor: nil)
     let errorColorModifier = ColorModifier(foregroundColor: red, backgroundColor: nil)
 
-    let modifiers: [LogLevel: [Modifier]] = [
+    let modifiers: [LogLevel: [LogMessageModifier]] = [
         .sql: [prefixModifier, timestampModifier, sqlColorModifier],
         .debug: [prefixModifier, timestampModifier, debugColorModifier],
         .info: [prefixModifier, timestampModifier, infoColorModifier],

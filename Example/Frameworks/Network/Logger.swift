@@ -28,7 +28,7 @@ import Willow
 
 /// The single `Logger` instance used throughout Network.
 public var log: Logger = {
-    struct PrefixModifier: Modifier {
+    struct PrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "[Network] => \(message)"
         }
@@ -49,7 +49,7 @@ public var log: Logger = {
     let warnColorModifier = ColorModifier(foregroundColor: orange, backgroundColor: nil)
     let errorColorModifier = ColorModifier(foregroundColor: red, backgroundColor: nil)
 
-    let modifiers: [LogLevel: [Modifier]] = [
+    let modifiers: [LogLevel: [LogMessageModifier]] = [
         .debug: [prefixModifier, timestampModifier, debugColorModifier],
         .info: [prefixModifier, timestampModifier, infoColorModifier],
         .event: [prefixModifier, timestampModifier, eventColorModifier],

@@ -1,5 +1,5 @@
 //
-//  Writer.swift
+//  LogMessageWriter.swift
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -24,18 +24,18 @@
 
 import Foundation
 
-/// The Writer protocol defines a single API for writing a message. The message can be written in any way the
-/// conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
+/// The LogMessageWriter protocol defines a single API for writing a log message. The message can be written in any way
+/// the conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
 /// party service, etc.
-public protocol Writer {
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?)
+public protocol LogMessageWriter {
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?)
 }
 
 // MARK:
 
 /// The ConsoleWriter class runs all modifiers in the order they were created and prints the resulting message
 /// to the console.
-public class ConsoleWriter: Writer {
+public class ConsoleWriter: LogMessageWriter {
     /// Initializes a console writer instance.
     ///
     /// - returns: A new console writer instance.
@@ -49,7 +49,7 @@ public class ConsoleWriter: Writer {
     /// - parameter message:   The original message to write to the console.
     /// - parameter logLevel:  The log level associated with the message.
     /// - parameter modifiers: The modifier objects to run over the message before writing to the console.
-    public func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [Modifier]?) {
+    public func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
         var mutableMessage = message
         modifiers?.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
 

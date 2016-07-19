@@ -34,7 +34,7 @@ struct WillowConfiguration {
 
     // MARK: Modifiers
 
-    private struct PrefixModifier: Modifier {
+    private struct PrefixModifier: LogMessageModifier {
         let prefix: String
 
         init(prefix: String) {
@@ -46,13 +46,13 @@ struct WillowConfiguration {
         }
     }
 
-    private struct WarningPrefixModifier: Modifier {
+    private struct WarningPrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "🚨🚨🚨 \(message)"
         }
     }
 
-    private struct ErrorPrefixModifier: Modifier {
+    private struct ErrorPrefixModifier: LogMessageModifier {
         func modifyMessage(_ message: String, with: LogLevel) -> String {
             return "💣💥💣💥 \(message)"
         }
@@ -67,7 +67,7 @@ struct WillowConfiguration {
         coloredOutputEnabled: Bool = true,
         asynchronous: Bool = false)
     {
-        let writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]]
+        let writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]]
         let executionMethod: LoggerConfiguration.ExecutionMethod
 
         if asynchronous {
@@ -111,7 +111,7 @@ struct WillowConfiguration {
         backgroundColor: UIColor? = nil,
         prefix: String,
         modifierLogLevel: LogLevel,
-        writers: [LogLevel: [Writer]],
+        writers: [LogLevel: [LogMessageWriter]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
@@ -119,9 +119,9 @@ struct WillowConfiguration {
         let timestampModifier = TimestampModifier()
         let colorModifier = ColorModifier(foregroundColor: foregroundColor, backgroundColor: backgroundColor)
 
-        let modifiers: [LogLevel: [Modifier]] = {
-            let modifiers: [Modifier] = {
-                var modifiers: [Modifier] = [prefixModifier, timestampModifier]
+        let modifiers: [LogLevel: [LogMessageModifier]] = {
+            let modifiers: [LogMessageModifier] = {
+                var modifiers: [LogMessageModifier] = [prefixModifier, timestampModifier]
                 if foregroundColor != nil || backgroundColor != nil { modifiers.append(colorModifier) }
                 return modifiers
             }()
