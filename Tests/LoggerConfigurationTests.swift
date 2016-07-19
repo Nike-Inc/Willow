@@ -40,7 +40,7 @@ class LoggerConfigurationTestCase: XCTestCase {
         for logLevel in logLevels {
             XCTAssertEqual(configuration.modifiers[logLevel]?.count, 1)
 
-            if let modifiers = configuration.modifiers[logLevel] where modifiers.count == 1 {
+            if let modifiers = configuration.modifiers[logLevel], modifiers.count == 1 {
                 XCTAssertTrue(modifiers[0] is TimestampModifier)
             }
         }
@@ -50,7 +50,7 @@ class LoggerConfigurationTestCase: XCTestCase {
         for rawValue in UInt(0)..<UInt(configuration.writers.count) {
             let logLevel = LogLevel(rawValue: rawValue)
 
-            if let writers = configuration.writers[logLevel] where writers.count == 1 {
+            if let writers = configuration.writers[logLevel], writers.count == 1 {
                 XCTAssertTrue(writers[0] is ConsoleWriter)
             }
         }

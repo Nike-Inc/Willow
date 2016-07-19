@@ -113,7 +113,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
         modifiers: [LogLevel: [Modifier]] = [:],
         expectedNumberOfWrites: Int = 1) -> (Logger, AsynchronousTestWriter)
     {
-        let expectation = self.expectation(withDescription: "Test writer should receive expected number of writes")
+        let expectation = self.expectation(description: "Test writer should receive expected number of writes")
         let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
         let queue = DispatchQueue(label: "async-logger-test-queue", attributes: [.serial, .qosUtility])
 
@@ -386,7 +386,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
             writer.expectation.fulfill()
         }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -403,7 +403,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -420,7 +420,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -437,7 +437,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -454,7 +454,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -471,7 +471,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -489,7 +489,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         log.warn { "" }
         log.error { "" }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
@@ -525,7 +525,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
             return ""
         }
 
-        waitForExpectations(withTimeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites)
