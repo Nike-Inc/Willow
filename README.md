@@ -317,6 +317,22 @@ public class ConsoleWriter: LogMessageWriter {
 }
 ```
 
+#### OSLog
+
+The `OSLogWriter` class allows you to use the `os_log` APIs within the Willow system. In order to use it, all you need to do is to create the `Writer` instance and add it to the `LoggerConfiguration`.
+
+```swift
+let writer = OSLogWriter(subsystem: "com.nike.willow.example", category: "testing")
+let writers: [LogLevel: LogMessageWriter] = [.all: [writer]]
+
+let configuration = LoggerConfiguration(writers: writers)
+let log = Logger(configuration: configuration)
+
+log.debug("Hello world...coming to your from the os_log APIs!")
+```
+
+> It is important to note that this class is only available on iOS 10.0+, tvOS 10.0+ and watchOS 3.0+. It is NOT currently supported on macOS due to missing implementation in the Xcode 6 beta.
+
 #### Multiple Writers
 
 So what about logging to both a file and the console at the same time? No problem. You can pass multiple `LogMessageWriter` objects into the `Logger` initializer. The `Logger` will execute each `LogMessageWriter` in the order it was passed in. For example, let's create a `FileWriter` and combine that with our `ConsoleWriter`.
