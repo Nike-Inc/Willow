@@ -71,15 +71,15 @@ struct WillowConfiguration {
         let executionMethod: LoggerConfiguration.ExecutionMethod
 
         if asynchronous {
-            executionMethod = .Synchronous(lock: RecursiveLock())
+            executionMethod = .Synchronous(lock: NSRecursiveLock())
         } else {
             executionMethod = .Asynchronous(
-                queue: DispatchQueue(label: "com.nike.example.logger", attributes: [.serial, .qosUtility])
+                queue: DispatchQueue(label: "com.nike.example.logger", qos: .utility)
             )
         }
 
         log = configureLogger(
-            foregroundColor: Color.white(),
+            foregroundColor: Color.white,
             backgroundColor: coloredOutputEnabled ? Color(red: 0.0, green: 0.7, blue: 1.0, alpha: 1.0) : nil,
             prefix: "App",
             modifierLogLevel: [.debug, .info, .event],
@@ -88,7 +88,7 @@ struct WillowConfiguration {
         )
 
         Database.log = configureLogger(
-            foregroundColor: Color.white(),
+            foregroundColor: Color.white,
             backgroundColor: Color(red: 1.0, green: 0.518, blue: 0.043, alpha: 1.0),
             prefix: "Database",
             modifierLogLevel: [.sql, .debug, .info, .event],

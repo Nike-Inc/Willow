@@ -28,8 +28,7 @@ import Foundation
 /// a Logger instance.
 public struct LoggerConfiguration {
 
-    // MARK:
-    // MARK: Helper Types
+    // MARK: - Helper Types
 
     /// Defines the two types of execution methods used when logging a message.
     ///
@@ -41,12 +40,11 @@ public struct LoggerConfiguration {
     /// - Synchronous:  Logs messages synchronously once the recursive lock is available in serial order.
     /// - Asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
     public enum ExecutionMethod {
-        case Synchronous(lock: RecursiveLock)
+        case Synchronous(lock: NSRecursiveLock)
         case Asynchronous(queue: DispatchQueue)
     }
 
-    // MARK:
-    // MARK: Properties
+    // MARK: - Properties
 
     /// The dictionary of modifiers to apply to each associated log level.
     public let modifiers: [LogLevel: [LogMessageModifier]]
@@ -57,8 +55,7 @@ public struct LoggerConfiguration {
     /// The execution method used when logging a message.
     public let executionMethod: ExecutionMethod
 
-    // MARK:
-    // MARK: Initialization
+    // MARK: - Initialization
 
     /// Initializes a logger configuration instance.
     ///
@@ -71,7 +68,7 @@ public struct LoggerConfiguration {
     public init(
         modifiers: [LogLevel: [LogMessageModifier]] = [:],
         writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]],
-        executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
+        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
     {
         func restructureDictionaryValuesPerBitBasedLogLevel<T>(_ values: [LogLevel: [T]]) -> [LogLevel: [T]] {
             var specifiedValues: [LogLevel: [T]] = [:]
@@ -97,8 +94,7 @@ public struct LoggerConfiguration {
         self.executionMethod = executionMethod
     }
 
-    // MARK:
-    // MARK: Customized Configurations
+    // MARK: - Customized Configurations
 
     /// Creates a logger configuration instance with a timestamp modifier applied to each log level.
     ///
@@ -109,7 +105,7 @@ public struct LoggerConfiguration {
     /// - returns: A fully initialized logger configuration instance.
     public static func timestampConfiguration(
         logLevel: LogLevel = .all,
-        executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
+        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
         -> LoggerConfiguration
     {
         let modifiers: [LogLevel: [LogMessageModifier]] = [logLevel: [TimestampModifier()]]
@@ -127,7 +123,7 @@ public struct LoggerConfiguration {
     /// - returns: A fully initialized logger configuration instance.
     public static func coloredTimestampConfiguration(
         logLevel: LogLevel = .all,
-        executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock()))
+        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
         -> LoggerConfiguration
     {
         let purple = Color(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)

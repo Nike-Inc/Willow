@@ -34,25 +34,24 @@ extension LogLevel {
 }
 
 extension Logger {
-    private func verbose(message: @autoclosure(escaping) () -> String) {
+    fileprivate func verbose(message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.verbose)
     }
 
-    private func verbose(message: () -> String) {
+    fileprivate func verbose(message: @escaping () -> String) {
         logMessage(message, with: LogLevel.verbose)
     }
 
-    private func summary(message: @autoclosure(escaping) () -> String) {
+    fileprivate func summary(message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.summary)
     }
 
-    private func summary(message: () -> String) {
+    fileprivate func summary(message: @escaping () -> String) {
         logMessage(message, with: LogLevel.summary)
     }
 }
 
-// MARK:
-// MARK: Helper Test Classes
+// MARK: - Helper Test Classes
 
 class TestWriter: LogMessageWriter {
     private(set) var actualNumberOfWrites: Int = 0
@@ -64,8 +63,7 @@ class TestWriter: LogMessageWriter {
     }
 }
 
-// MARK:
-// MARK: Test Cases
+// MARK: - Test Cases
 
 class LogLevelTestCase: XCTestCase {
 
@@ -159,7 +157,7 @@ class LogLevelTestCase: XCTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class CustomLogLevelTestCase: XCTestCase {
 

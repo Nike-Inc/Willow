@@ -38,10 +38,10 @@ public protocol LogMessageModifier {
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 
-// MARK:
+// MARK: -
 
 /// The TimestampModifier class applies a timestamp to the beginning of the message.
-public class TimestampModifier: LogMessageModifier {
+open class TimestampModifier: LogMessageModifier {
     private let timestampFormatter: DateFormatter = {
         var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
@@ -59,19 +59,19 @@ public class TimestampModifier: LogMessageModifier {
     /// - parameter logLevel: The log level set for the message.
     ///
     /// - returns: A newly formatted message.
-    public func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         let timestampString = timestampFormatter.string(from: Date() as Date)
         return "\(timestampString) \(message)"
     }
 }
 
-// MARK:
+// MARK: -
 
 /// The ColorModifier class takes foreground and background colors and applies them to a given message. It uses the
 /// XcodeColors plugin color formatting scheme.
 ///
 /// NOTE: These should only be used with the XcodeColors plugin.
-public class ColorModifier: LogMessageModifier {
+open class ColorModifier: LogMessageModifier {
 
     // MARK: Helper Types
 
@@ -119,7 +119,7 @@ public class ColorModifier: LogMessageModifier {
     /// - parameter message: The message to apply the color modification to.
     ///
     /// - returns: A new string with all the color modifier values added.
-    public func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         return "\(foregroundText)\(backgroundText)\(message)\(ColorConstants.RESET)"
     }
 
@@ -136,7 +136,7 @@ public class ColorModifier: LogMessageModifier {
             // Since the colorspace on OSX is not guaranteed to be `deviceRGBColorSpace`, the color must be converted
             // to guarantee that the `getRed(_:green:blue:alpha:)` call will succeed.
             #if os(OSX)
-                if let rgbColor = color.usingColorSpace(NSColorSpace.deviceRGB()) {
+                if let rgbColor = color.usingColorSpace(NSColorSpace.deviceRGB) {
                     rgbColor.getRed(&redValue, green: &greenValue, blue: &blueValue, alpha: nil)
                 }
             #else

@@ -31,11 +31,11 @@ public protocol LogMessageWriter {
     func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?)
 }
 
-// MARK:
+// MARK: -
 
 /// The ConsoleWriter class runs all modifiers in the order they were created and prints the resulting message
 /// to the console.
-public class ConsoleWriter: LogMessageWriter {
+open class ConsoleWriter: LogMessageWriter {
     /// Initializes a console writer instance.
     ///
     /// - returns: A new console writer instance.
@@ -49,10 +49,10 @@ public class ConsoleWriter: LogMessageWriter {
     /// - parameter message:   The original message to write to the console.
     /// - parameter logLevel:  The log level associated with the message.
     /// - parameter modifiers: The modifier objects to run over the message before writing to the console.
-    public func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
-        var mutableMessage = message
-        modifiers?.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+    open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+        var message = message
+        modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }
 
-        print(mutableMessage)
+        print(message)
     }
 }

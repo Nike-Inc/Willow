@@ -34,11 +34,11 @@ extension LogLevel {
 // MARK:
 
 extension Logger {
-    func sql(_ message: @autoclosure(escaping) () -> String) {
+    func sql(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: .sql)
     }
 
-    func sql(_ message: () -> String) {
+    func sql(_ message: @escaping () -> String) {
         logMessage(message, with: .sql)
     }
 }
@@ -79,7 +79,7 @@ public var log: Logger! = {
         .error: [prefixModifier, timestampModifier, errorColorModifier]
     ]
 
-    let queue = DispatchQueue(label: "com.nike.database.logger.queue", attributes: [.serial, .qosUtility])
+    let queue = DispatchQueue(label: "com.nike.database.logger.queue", qos: .utility)
     let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
     return Logger(configuration: configuration)
