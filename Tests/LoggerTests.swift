@@ -53,11 +53,11 @@ class SynchronousTestWriter: LogMessageWriter {
     }
 }
 
-// MARK:
+// MARK: -
 
 class AsynchronousTestWriter: SynchronousTestWriter {
     let expectation: XCTestExpectation
-    private let expectedNumberOfWrites: Int
+    let expectedNumberOfWrites: Int
 
     init(expectation: XCTestExpectation, expectedNumberOfWrites: Int) {
         self.expectation = expectation
@@ -73,7 +73,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
     }
 }
 
-// MARK:
+// MARK: -
 
 class PrefixModifier: LogMessageModifier {
     func modifyMessage(_ message: String, with: LogLevel) -> String {
@@ -81,8 +81,7 @@ class PrefixModifier: LogMessageModifier {
     }
 }
 
-// MARK:
-// MARK: Base Test Cases
+// MARK: - Base Test Cases
 
 class SynchronousLoggerTestCase: XCTestCase {
     var message = "Test Message"
@@ -105,7 +104,7 @@ class SynchronousLoggerTestCase: XCTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     func logger(
@@ -115,7 +114,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     {
         let expectation = self.expectation(description: "Test writer should receive expected number of writes")
         let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
-        let queue = DispatchQueue(label: "async-logger-test-queue", attributes: [.serial, .qosUtility])
+        let queue = DispatchQueue(label: "async-logger-test-queue", qos: .utility)
 
         let configuration = LoggerConfiguration(
             modifiers: modifiers,
@@ -129,8 +128,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     }
 }
 
-// MARK:
-// MARK: Tests
+// MARK: - Tests
 
 class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithOffLogLevel() {
@@ -364,7 +362,7 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     func testThatItLogsAsExpectedWithOffLogLevel() {
@@ -382,7 +380,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         // very difficult to fullfill the expectation. For now, we are using a dispatch_after that fires
         // slightly before the timeout to fullfill the expectation.
 
-        DispatchQueue.main.after(when: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             writer.expectation.fulfill()
         }
 
@@ -532,7 +530,7 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
     func testThatItLogsAllLogLevelsWhenEnabled() {
@@ -568,7 +566,7 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     private struct SymbolModifier: LogMessageModifier {
@@ -579,7 +577,7 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
 
     func testThatItLogsOutputAsExpectedWithMultipleModifiers() {
         // Given
-        let modifiers: [LogLevel: [LogMessageModifier]] = [.All: [PrefixModifier(), SymbolModifier()]]
+        let modifiers: [LogLevel: [LogMessageModifier]] = [.all: [PrefixModifier(), SymbolModifier()]]
         let (log, writer) = logger(modifiers: modifiers)
 
         // When
@@ -598,7 +596,7 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
     func testThatItLogsOutputAsExpectedWithMultipleWriters() {

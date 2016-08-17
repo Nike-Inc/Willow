@@ -30,10 +30,10 @@ public protocol LogMessageModifier {
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
 }
 
-// MARK:
+// MARK: -
 
 /// The TimestampModifier class applies a timestamp to the beginning of the message.
-public class TimestampModifier: LogMessageModifier {
+open class TimestampModifier: LogMessageModifier {
     private let timestampFormatter: DateFormatter = {
         var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
@@ -51,7 +51,7 @@ public class TimestampModifier: LogMessageModifier {
     /// - parameter logLevel: The log level set for the message.
     ///
     /// - returns: A newly formatted message.
-    public func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         let timestampString = timestampFormatter.string(from: Date() as Date)
         return "\(timestampString) \(message)"
     }

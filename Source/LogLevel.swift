@@ -76,8 +76,7 @@ public struct LogLevel: OptionSet {
     public init(rawValue: RawValue) { self.rawValue = rawValue }
 }
 
-// MARK:
-// MARK: Hashable
+// MARK: - Hashable
 
 extension LogLevel: Equatable, Hashable {
     /// Returns the hash value using the raw bitmask value of the `LogLevel`.
@@ -111,8 +110,7 @@ extension LogLevel: CustomStringConvertible {
     }
 }
 
-// MARK:
-// MARK: Equatable
+// MARK: - Equatable
 
 /// Returns whether the `lhs` and `rhs` instances are equal.
 ///
