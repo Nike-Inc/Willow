@@ -37,10 +37,27 @@ public protocol LogMessageWriter {
 /// The ConsoleWriter class runs all modifiers in the order they were created and prints the resulting message
 /// to the console.
 open class ConsoleWriter: LogMessageWriter {
+    /// Used to define whether to use the print or NSLog functions when logging to the console.
+    ///
+    /// During development, it is recommended to use the `.print` case. When deploying to production, the `.nslog`
+    /// case should be used.
+    ///
+    /// - print: The Swift `print` function that is faster, not thread safe and doesn't write to the device console.
+    /// - nslog: The Objective-C `NSLog` function that is slower, thread safe and writes to the device console.
+    public enum Method {
+        case print, nslog
+    }
+
+    private let method: Method
+
     /// Initializes a console writer instance.
     ///
+    /// - parameter method: The method to use when logging to the console. Defaults to `.print`.
+    ///
     /// - returns: A new console writer instance.
-    public init() {}
+    public init(method: Method = .print) {
+        self.method = method
+    }
 
     /// Writes the message to the console using the global `print` function.
     ///
@@ -54,7 +71,12 @@ open class ConsoleWriter: LogMessageWriter {
         var message = message
         modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }
 
-        print(message)
+        switch method {
+        case .print:
+            print(message)
+        case .nslog:
+            NSLog("%@", message)
+        }
     }
 }
 

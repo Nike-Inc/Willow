@@ -42,11 +42,21 @@ class ConsoleWriterTestCase: XCTestCase {
         XCTAssertNil(writer)
     }
 
-    func testThatConsoleWriterCanWriteMessageToConsole() {
+    func testThatConsoleWriterCanWriteMessageToConsoleWithPrint() {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
-        let writer = ConsoleWriter()
+        let writer = ConsoleWriter(method: .print)
+
+        // When, Then
+        writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
+    }
+
+    func testThatConsoleWriterCanWriteMessageToConsoleWithNSLog() {
+        // Given
+        let message = "Test Message"
+        let logLevel: LogLevel = .all
+        let writer = ConsoleWriter(method: .nslog)
 
         // When, Then
         writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
