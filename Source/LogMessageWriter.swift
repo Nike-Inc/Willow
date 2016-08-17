@@ -23,6 +23,7 @@
 //
 
 import Foundation
+import os
 
 /// The LogMessageWriter protocol defines a single API for writing a log message. The message can be written in any way
 /// the conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
@@ -56,3 +57,50 @@ open class ConsoleWriter: LogMessageWriter {
         print(message)
     }
 }
+
+#if !os(macOS)
+
+/// The OSLogWriter class runs all modifiers in the order they were created and passes the resulting message
+/// off to an OSLog with the specified subsystem and category.
+@available(iOS 10.0, OSX 10.12.0, tvOS 10.0, watchOS 3.0, *)
+open class OSLogWriter: LogMessageWriter {
+    open let subsystem: String
+    open let category: String
+    private let log: OSLog
+
+    public init(subsystem: String, category: String) {
+        self.subsystem = subsystem
+        self.category = category
+        self.log = OSLog(subsystem: subsystem, category: category)
+    }
+
+    /// Writes the message to the `OSLog` using the `os_log` function.
+    ///
+    /// Each modifier is run over the message in the order they are provided before writing the message to
+    /// the console.
+    ///
+    /// - parameter message:   The original message to write to the console.
+    /// - parameter logLevel:  The log level associated with the message.
+    /// - parameter modifiers: The modifier objects to run over the message before writing to the console.
+    open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+        var message = message
+        modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }
+
+        let logType: OSLogType
+
+        switch logLevel {
+        case LogLevel.debug:
+            logType = .debug
+        case LogLevel.info:
+            logType = .info
+        case LogLevel.warn, LogLevel.error:
+            logType = .error
+        default:
+            logType = .default
+        }
+
+        os_log("%@", log: log, type: logType, message)
+    }
+}
+
+#endif
