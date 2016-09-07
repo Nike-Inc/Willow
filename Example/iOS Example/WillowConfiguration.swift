@@ -35,16 +35,16 @@ struct WillowConfiguration {
     // MARK: - Formatters
 
     private struct PrefixFormatter: Formatter {
-        let emoticons: String
+        let emoji: String
         let name: String
 
-        init(emoticons: String, name: String) {
-            self.emoticons = emoticons
+        init(emoji: String, name: String) {
+            self.emoji = emoji
             self.name = name
         }
 
         func formatMessage(message: String, logLevel: LogLevel) -> String {
-            return emoticons + " [" + name + "] => " + message
+            return emoji + " [" + name + "] => " + message
         }
     }
 
@@ -78,7 +78,7 @@ struct WillowConfiguration {
         }
 
         log = configureLogger(
-            emoticons: "🌳🌳🌳",
+            emoji: "🌳🌳🌳",
             name: "App",
             formatterLogLevel: [.Debug, .Info, .Event],
             writers: writers,
@@ -86,7 +86,7 @@ struct WillowConfiguration {
         )
 
         Database.log = configureLogger(
-            emoticons: "🗃🗃🗃",
+            emoji: "🗃🗃🗃",
             name: "Database",
             formatterLogLevel: [.SQL, .Debug, .Info, .Event],
             writers: writers,
@@ -94,7 +94,7 @@ struct WillowConfiguration {
         )
 
         Network.log = configureLogger(
-            emoticons: "📡📡📡",
+            emoji: "📡📡📡",
             name: "Network",
             formatterLogLevel: [.Debug, .Info, .Event],
             writers: writers,
@@ -103,14 +103,14 @@ struct WillowConfiguration {
     }
 
     private static func configureLogger(
-        emoticons emoticons: String,
+        emoji emoji: String,
         name: String,
         formatterLogLevel: LogLevel,
         writers: [LogLevel: [Writer]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
-        let prefixFormatter = PrefixFormatter(emoticons: emoticons, name: name)
+        let prefixFormatter = PrefixFormatter(emoji: emoji, name: name)
         let timestampFormatter = TimestampFormatter()
 
         let formatters: [LogLevel: [Formatter]] = {

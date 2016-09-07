@@ -244,7 +244,7 @@ Asynchronous logging should be used for deployment builds of your application or
 
 ### Formatters
 
-Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoticons! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
+Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
 
 ```swift
 public protocol Formatter {
