@@ -34,29 +34,7 @@ public var log: Logger = {
         }
     }
 
-    let prefixFormatter = PrefixFormatter()
-    let timestampFormatter = TimestampFormatter()
-
-    let purple = UIColor(red: 0.600, green: 0.247, blue: 1.000, alpha: 1.0)
-    let blue = UIColor(red: 0.176, green: 0.569, blue: 1.000, alpha: 1.0)
-    let green = UIColor(red: 0.533, green: 0.812, blue: 0.031, alpha: 1.0)
-    let orange = UIColor(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
-    let red = UIColor(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
-
-    let debugColorFormatter = ColorFormatter(foregroundColor: purple, backgroundColor: nil)
-    let infoColorFormatter = ColorFormatter(foregroundColor: blue, backgroundColor: nil)
-    let eventColorFormatter = ColorFormatter(foregroundColor: green, backgroundColor: nil)
-    let warnColorFormatter = ColorFormatter(foregroundColor: orange, backgroundColor: nil)
-    let errorColorFormatter = ColorFormatter(foregroundColor: red, backgroundColor: nil)
-
-    let formatters: [LogLevel: [Formatter]] = [
-        .Debug: [prefixFormatter, timestampFormatter, debugColorFormatter],
-        .Info: [prefixFormatter, timestampFormatter, infoColorFormatter],
-        .Event: [prefixFormatter, timestampFormatter, eventColorFormatter],
-        .Warn: [prefixFormatter, timestampFormatter, warnColorFormatter],
-        .Error: [prefixFormatter, timestampFormatter, errorColorFormatter]
-    ]
-
+    let formatters: [LogLevel: [Formatter]] = [.All: [PrefixFormatter(), TimestampFormatter()]]
     let queue = dispatch_queue_create("com.nike.network.logger.queue", DISPATCH_QUEUE_SERIAL)
     let configuration = LoggerConfiguration(formatters: formatters, executionMethod: .Asynchronous(queue: queue))
 

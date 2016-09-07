@@ -118,39 +118,4 @@ public struct LoggerConfiguration {
 
         return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
     }
-
-    /**
-        Creates a logger configuration instance with a timestamp and color formatter applied to each log level.
-
-        - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
-        - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
-        - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
-
-        - returns: A fully initialized logger configuration instance.
-    */
-    public static func coloredTimestampConfiguration(
-        logLevel: LogLevel = .All,
-        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
-        -> LoggerConfiguration
-    {
-        let purple = Color(red: 0.6, green: 0.247, blue: 1.0, alpha: 1.0)
-        let blue = Color(red: 0.176, green: 0.569, blue: 1.0, alpha: 1.0)
-        let green = Color(red: 0.533, green: 0.812, blue: 0.031, alpha: 1.0)
-        let orange = Color(red: 0.914, green: 0.647, blue: 0.184, alpha: 1.0)
-        let red = Color(red: 0.902, green: 0.078, blue: 0.078, alpha: 1.0)
-
-        let timestampFormatter = TimestampFormatter()
-
-        let formatters: [LogLevel: [Formatter]] = [
-            .Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-            .Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-            .Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-            .Warn: [timestampFormatter, ColorFormatter(foregroundColor: orange, backgroundColor: nil)],
-            .Error: [timestampFormatter, ColorFormatter(foregroundColor: red, backgroundColor: nil)]
-        ]
-
-        let writers: [LogLevel: [Writer]] = [logLevel: [ConsoleWriter()]]
-
-        return LoggerConfiguration(formatters: formatters, writers: writers, executionMethod: executionMethod)
-    }
 }

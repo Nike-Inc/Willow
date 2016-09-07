@@ -55,34 +55,4 @@ class LoggerConfigurationTestCase: XCTestCase {
             }
         }
     }
-
-    func testThatLoggerConfigurationCanCreatedPreConfiguredColoredTimestampConfiguration() {
-        // Given
-        let logLevels: [LogLevel] = [.Debug, .Info, .Event, .Warn, .Error]
-
-        // When
-        let configuration = LoggerConfiguration.coloredTimestampConfiguration()
-
-        // Then
-        XCTAssertEqual(configuration.formatters.count, 5)
-
-        for logLevel in logLevels {
-            XCTAssertEqual(configuration.formatters[logLevel]?.count, 2)
-
-            if let formatters = configuration.formatters[logLevel] where formatters.count == 2 {
-                XCTAssertTrue(formatters[0] is TimestampFormatter)
-                XCTAssertTrue(formatters[1] is ColorFormatter)
-            }
-        }
-
-        XCTAssertEqual(configuration.writers.count, 32)
-
-        for rawValue in UInt(0)..<UInt(configuration.writers.count) {
-            let logLevel = LogLevel(rawValue: rawValue)
-
-            if let writers = configuration.writers[logLevel] where writers.count == 1 {
-                XCTAssertTrue(writers[0] is ConsoleWriter)
-            }
-        }
-    }
 }
