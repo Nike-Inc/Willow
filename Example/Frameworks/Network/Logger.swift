@@ -57,7 +57,7 @@ public var log: Logger = {
         .error: [prefixModifier, timestampModifier, errorColorModifier]
     ]
 
-    let queue = DispatchQueue(label: "com.nike.network.logger.queue", attributes: [.serial, .qosUtility])
+    let queue = DispatchQueue(label: "com.nike.network.logger.queue", qos: .utility)
     let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
 
     return Logger(configuration: configuration)

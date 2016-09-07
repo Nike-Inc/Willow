@@ -52,7 +52,7 @@ class TimestampModifierTestCase: XCTestCase {
     }
 }
 
-// MARK:
+// MARK: -
 
 class ColorModifierTestCase: XCTestCase {
 

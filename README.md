@@ -58,7 +58,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Requirements
 
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 8.0 beta 3+
+- Xcode 8.0 beta 6+
 
 ## Communication
 
@@ -133,7 +133,7 @@ The `LoggerConfiguration` class is a container class to store all the configurat
 
 * `modifiers: [LogLevel: [Modifier]] = [:]` - The dictionary of modifiers to apply to each associated log level.
 * `writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
-* `executionMethod: ExecutionMethod = .Synchronous(lock: RecursiveLock())` - The execution method used when writing messages.
+* `executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
 
 `LoggerConfiguration` and `Logger` objects can only be customized during initialization. If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs. It is perfectly acceptable to have many different `Logger` instances running simutaneously.
 
@@ -146,7 +146,7 @@ There are two class methods that return custom `LoggerConfiguration` instances u
 
 The `print` function does not guarantee that the `String` parameter will be fully logged to the console. If two `print` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
 
-> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `RecursiveLock` or `DispatchQueue` that is shared between both configurations. For more info...see the [Advanced Usage](#advanced-usage) section.
+> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `DispatchQueue` that is shared between both configurations. For more info...see the [Advanced Usage](#advanced-usage) section.
 
 ### Logging Messages with Closures
 
@@ -176,7 +176,7 @@ log.error { "Error Message" } // Error Message
 
 Both of these approaches are equivalent. The first set of APIs accept autoclosures and the second set accept closures.
 
-> Feel free to use whichever syntax you prefer for your project. Also, by default, only the `String` returned by the closure will be logged. See the [Modifiers](#modifiers) section for more information about customizing log message formats.
+> Feel free to use whichever syntax you prefer for your project. Also, by default, only the `String` returned by the closure will be logged. See the [Log Message Modifiers](#log-message-modifiers) section for more information about customizing log message formats.
 
 The reason both sets of APIs use closures to extract the log message is performance. 
 
@@ -226,7 +226,7 @@ log.enabled = true
 Logging can greatly affect the runtime performance of your application or library. Willow makes it very easy to log messages synchronously or asynchronously. You can define this behavior when creating the `LoggerConfiguration` for your `Logger` instance.
 
 ```swift
-let queue = DispatchQueue(label: "serial.queue", attributes: [.serial, .qosUtility])
+let queue = DispatchQueue(label: "serial.queue", qos: .utility)
 let configuration = LoggerConfiguration(executionMethod: .Asynchronous(queue: queue))
 let log = Logger(configuration: configuration)
 ```
@@ -278,13 +278,13 @@ let log = Logger(configuration: configuration)
 There is a special `LogMessageModifier` in `Willow` called a `ColorModifier`. It was designed to take a foreground and backround color in the form of a `UIColor` or `NSColor`. It then formats the message to match the coloring scheme of the [XcodeColors](https://github.com/robbiehanson/XcodeColors) plugin. This allows you to change the foreground and background colors of logging output in the Xcode console. This can make it much easier to dig through thousands of lines of logging output.
 
 ```swift
-let purple = UIColor.purple()
-let blue = UIColor.blue()
-let green = UIColor.green()
-let orange = UIColor.orange()
-let red = UIColor.red()
-let white = UIColor.white()
-let black = UIColor.black()
+let purple = UIColor.purple
+let blue = UIColor.blue
+let green = UIColor.green
+let orange = UIColor.orange
+let red = UIColor.red
+let white = UIColor.white
+let black = UIColor.black
 
 let colorModifiers: [Logger.LogLevel: [LogMessageModifier]] = [
     LogLevel.debug: [ColorModifier(foregroundColor: purple, backgroundColor: nil)],
@@ -305,13 +305,13 @@ let log = Logger(configuration: configuration)
 Multiple `LogMessageModifier` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with the `ColorModifier` objects from the previous example.
 
 ```swift
-let purple = UIColor.purple()
-let blue = UIColor.blue()
-let green = UIColor.green()
-let orange = UIColor.orange()
-let red = UIColor.red()
-let white = UIColor.white()
-let black = UIColor.black()
+let purple = UIColor.purple
+let blue = UIColor.blue
+let green = UIColor.green
+let orange = UIColor.orange
+let red = UIColor.red
+let white = UIColor.white
+let black = UIColor.black
 
 let timestampModifier = TimestampModifier()
 
@@ -346,9 +346,9 @@ Again, this is an extremely lightweight design to allow for ultimate flexibility
 ```swift
 public class ConsoleWriter: LogMessageWriter {
     public func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
-    	var mutableMessage = message
-        modifiers?.map { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
-        print(mutableMessage)
+    	var message = message
+        modifiers?.map { message = $0.modifyMessage(message, with: logLevel) }
+        print(message)
     }
 }
 ```
@@ -360,9 +360,9 @@ So what about logging to both a file and the console at the same time? No proble
 ```swift
 public class FileWriter: LogMessageWriter {
     public func writeMessage(_ message: String, logLevel: Logger.LogLevel, modifiers: [LogMessageModifier]?) {
-	    var mutableMessage = message
-        modifiers?.map { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
-        // Write the formatted message to a file (I'll leave this to you!)
+	    var message = message
+        modifiers?.map { message = $0.modifyMessage(message, with: logLevel) }
+        // Write the formatted message to a file (We'll leave this to you!)
     }
 }
 
@@ -408,11 +408,11 @@ Now that we have a custom log level called `verbose`, we need to extend the `Log
 
 ```swift
 extension Logger {
-    public func verbose(_ message: @autoclosure(escaping) () -> String) {
+    public func verbose(_ message: @autoclosure @escaping () -> String) {
     	logMessage(message, withLogLevel: .verbose)
     }
 
-    public func verbose(_ message: () -> String) {
+    public func verbose(_ message: @escaping () -> String) {
     	logMessage(message, withLogLevel: .verbose)
     }
 }
@@ -451,7 +451,7 @@ It's very simple to swap out a pre-existing `Logger` with a new one.
 
 ### Multiple Loggers, One Queue
 
-The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `RecursiveLock` or `DispatchQueue` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
+The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `NSRecursiveLock` or `DispatchQueue` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
 
 ```swift
 //=========== Inside Math.swift ===========
@@ -461,7 +461,7 @@ public var log = Logger(configuration: LoggerConfiguration(writers: [.warn, .err
 import Math
 
 // Create a single queue to share
-let sharedQueue = DispatchQueue(label: "com.math.logger", attributes: [.serial, .qosUtility])
+let sharedQueue = DispatchQueue(label: "com.math.logger", qos: .utility)
 
 // Create the Calculator.log with multiple writers and a .Debug log level
 let writers: [LogLevel: [LogMessageWriter]] = [.all: [FileWriter(), ConsoleWriter()]]

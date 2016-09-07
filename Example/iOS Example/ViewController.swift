@@ -43,9 +43,9 @@ class ViewController: UIViewController {
 
     // MARK: Properties
 
-    private static let CellIdentifier = "CellID"
-    private var sections: [Section] = []
-    private var tableView: UITableView!
+    fileprivate static let CellIdentifier = "CellID"
+    fileprivate var sections: [Section] = []
+    fileprivate var tableView: UITableView!
 
     // MARK: View Lifecycle
 
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     // MARK: Private - Setup
 
     private func setUpInstanceProperties() {
-        view.backgroundColor = UIColor.white()
+        view.backgroundColor = UIColor.white
         title = "Willow"
     }
 
@@ -159,7 +159,7 @@ class ViewController: UIViewController {
                         title: "Log App Messages In Parallel",
                         action: {
                             let range = 1...10
-                            let queue = DispatchQueue.global(attributes: .qosDefault)
+                            let queue = DispatchQueue.global()
 
                             for _ in range {
                                 queue.async {
@@ -188,7 +188,7 @@ class ViewController: UIViewController {
                         title: "Log Messages From Multiple Frameworks",
                         action: {
                             let range = 1...4
-                            let queue = DispatchQueue.global(attributes: .qosDefault)
+                            let queue = DispatchQueue.global()
 
                             for _ in range {
                                 queue.async {
@@ -247,8 +247,7 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK:
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -273,8 +272,7 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
-// MARK:
-// MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
