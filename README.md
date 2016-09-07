@@ -132,13 +132,13 @@ The `Logger` initializer takes a single parameter which is a `LoggerConfiguratio
 
 The `LoggerConfiguration` class is a container class to store all the configuration information to be applied to a particular `Logger`. Here are all the configurable parameters and their respective descriptions.
 
-* `modifiers: [LogLevel: [Modifier]] = [:]` - The dictionary of modifiers to apply to each associated log level.
+* `modifiers: [LogLevel: [LogMessageModifier]] = [:]` - The dictionary of modifiers to apply to each associated log level.
 * `writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
 * `executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
 
 `LoggerConfiguration` and `Logger` objects can only be customized during initialization. If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs. It is perfectly acceptable to have many different `Logger` instances running simutaneously.
 
-There are two class methods that return custom `LoggerConfiguration` instances using combinations of the custom `Modifier` objects. These convenience methods make it VERY easy add timestamps as well as colored log message formatting to your `Logger` instance.
+There are two class methods that return custom `LoggerConfiguration` instances using combinations of the custom `LogMessageModifier` objects. These convenience methods make it VERY easy add timestamps as well as colored log message formatting to your `Logger` instance.
 
 * `timestampConfiguration()` - A logger configuration instance with a timestamp modifier applied to each log level.
 * `coloredTimestampConfiguration()` - A logger configuration instance with a timestamp and color modifier applied to each log level.
@@ -331,7 +331,7 @@ let log = Logger(configuration: configuration)
 log.debug("Hello world...coming to your from the os_log APIs!")
 ```
 
-> It is important to note that this class is only available on iOS 10.0+, tvOS 10.0+ and watchOS 3.0+. It is NOT currently supported on macOS due to missing implementation in the Xcode 6 beta.
+> It is important to note that this class is only available on iOS 10.0+, tvOS 10.0+ and watchOS 3.0+. It is NOT currently supported on macOS due to missing implementation in the Xcode 8 GM. It's currently failing to load the libswiftos.dylib when executing the test suite against it. If anyone running 10.12.0 could help us test this that would be great.
 
 #### Multiple Writers
 
@@ -474,19 +474,15 @@ Simple...simplicity and elegance. Contextually it gets difficult to understand w
 
 As for the naming, here's my own mental breakdown of each log level for an iOS app (obviously it depends on your use case).
 
-* `Debug` - Highly detailed information of a context
-* `Info` - Summary information of a context
-* `Event` - User driven interactions such as button taps, view transitions, selecting a cell
-* `Warn` - An error occurred but it is recoverable
-* `Error` - A non-recoverable error occurred
+* `debug` - Highly detailed information of a context
+* `info` - Summary information of a context
+* `event` - User driven interactions such as button taps, view transitions, selecting a cell
+* `warn` - An error occurred but it is recoverable
+* `error` - A non-recoverable error occurred
 
 ### When should I use Willow?
 
 If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Willow would be a great choice. If you are still working in Objective-C, a pure Objective-C library such as the amazing [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
-
-### Is Willow going to support the new os_log APIs?
-
-Yes! We believe Willow and the `os_log` APIs will complement each other nicely. There's a lot of additional functionality that exists in Willow that does not exist in the `os_log` APIs and vice versa. The current plan of record is to create an `OSLogWriter` which will automatically call the approach `os_log` APIs under-the-hood. Unfortunately in Xcode 8 beta 2, there is an issue with importing the `os_log_create` API in deployment targets of iOS 9.0, OS X 10.11, etc. Until this issue is resolved (hopefully in Xcode 8 beta 3), Willow will not support the `os_log` APIs.
 
 ### Where did the name Willow come from?
 
