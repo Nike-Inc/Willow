@@ -23,6 +23,7 @@
 //
 
 import Foundation
+import os
 import Willow
 import XCTest
 
@@ -51,3 +52,39 @@ class ConsoleWriterTestCase: XCTestCase {
         writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
     }
 }
+
+// MARK: -
+
+#if !os(macOS)
+
+@available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *)
+class OSLogWriterTestCase: XCTestCase {
+    let subsystem = "com.nike.willow.test"
+    let category = "os-log-writer"
+
+    func testThatOSLogWriterCanBeInitializedAndDeinitialized() {
+        // Given
+        let message = "Test Message"
+        let logLevel: LogLevel = .all
+        var writer: OSLogWriter? = OSLogWriter(subsystem: subsystem, category: category)
+
+        // When, Then
+        writer?.writeMessage(message, logLevel: logLevel, modifiers: [])
+        writer = nil
+
+        // Then
+        XCTAssertNil(writer)
+    }
+
+    func testThatOSLogWriterCanWriteMessageUsingOSLog() {
+        // Given
+        let message = "Test Message"
+        let logLevel: LogLevel = .all
+        let writer = OSLogWriter(subsystem: subsystem, category: category)
+
+        // When, Then
+        writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
+    }
+}
+
+#endif
