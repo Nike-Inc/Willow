@@ -35,14 +35,16 @@ struct WillowConfiguration {
     // MARK: - Formatters
 
     private struct PrefixFormatter: Formatter {
-        let prefix: String
+        let emoticons: String
+        let name: String
 
-        init(prefix: String) {
-            self.prefix = prefix
+        init(emoticons: String, name: String) {
+            self.emoticons = emoticons
+            self.name = name
         }
 
         func formatMessage(message: String, logLevel: LogLevel) -> String {
-            return "[\(prefix)] => \(message)"
+            return emoticons + " [" + name + "] => " + message
         }
     }
 
@@ -76,21 +78,24 @@ struct WillowConfiguration {
         }
 
         log = configureLogger(
-            prefix: "App",
+            emoticons: "🌳🌳🌳",
+            name: "App",
             formatterLogLevel: [.Debug, .Info, .Event],
             writers: writers,
             executionMethod: executionMethod
         )
 
         Database.log = configureLogger(
-            prefix: "Database",
+            emoticons: "🗃🗃🗃",
+            name: "Database",
             formatterLogLevel: [.SQL, .Debug, .Info, .Event],
             writers: writers,
             executionMethod: executionMethod
         )
 
         Network.log = configureLogger(
-            prefix: "Network",
+            emoticons: "📡📡📡",
+            name: "Network",
             formatterLogLevel: [.Debug, .Info, .Event],
             writers: writers,
             executionMethod: executionMethod
@@ -98,13 +103,14 @@ struct WillowConfiguration {
     }
 
     private static func configureLogger(
-        prefix prefix: String,
+        emoticons emoticons: String,
+        name: String,
         formatterLogLevel: LogLevel,
         writers: [LogLevel: [Writer]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
-        let prefixFormatter = PrefixFormatter(prefix: prefix)
+        let prefixFormatter = PrefixFormatter(emoticons: emoticons, name: name)
         let timestampFormatter = TimestampFormatter()
 
         let formatters: [LogLevel: [Formatter]] = {
