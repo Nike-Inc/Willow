@@ -58,7 +58,8 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 7.3+
+- Xcode 8.0+
+- Swift 2.3
 
 ## Communication
 
@@ -86,7 +87,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Willow', '~> 1.0'
+pod 'Willow', '~> 1.2'
 ```
 
 Then, run the following command:
@@ -109,7 +110,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-github "Nike-Inc/Willow" ~> 1.0
+github "Nike-Inc/Willow" ~> 1.2
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
@@ -243,7 +244,7 @@ Asynchronous logging should be used for deployment builds of your application or
 
 ### Formatters
 
-Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want colors! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
+Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoticons! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `Formatter` objects come in.
 
 ```swift
 public protocol Formatter {
@@ -273,63 +274,25 @@ let log = Logger(configuration: configuration)
 
 `Formatter` objects are very powerful and can manipulate the message in any way.
 
-#### Color Formatters
-
-There is a special `Formatter` in `Willow` called a `ColorFormatter`. It was designed to take a foreground and backround color in the form of a `UIColor` or `NSColor`. It then formats the message to match the coloring scheme of the [XcodeColors](https://github.com/robbiehanson/XcodeColors) plugin. This allows you to change the foreground and background colors of logging output in the Xcode console. This can make it much easier to dig through thousands of lines of logging output.
-
-```swift
-let purple = UIColor.purpleColor()
-let blue = UIColor.blueColor()
-let green = UIColor.greenColor()
-let orange = UIColor.orangeColor()
-let red = UIColor.redColor()
-let white = UIColor.whiteColor()
-let black = UIColor.blackColor()
-
-let colorFormatters: [Logger.LogLevel: [Formatter]] = [
-    LogLevel.Debug: [ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-    LogLevel.Info: [ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-    LogLevel.Event: [ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-    LogLevel.Warn: [ColorFormatter(foregroundColor: black, backgroundColor: orange)],
-    LogLevel.Error: [ColorFormatter(foregroundColor: white, backgroundColor: red)]
-]
-
-let configuration = LoggerConfiguration(formatters: colorFormatters)
-let log = Logger(configuration: configuration)
-```
-
-> The XcodeColors plugin is available through [Alcatraz](http://alcatraz.io/) and can be installed with the click of a button.
-
 #### Multiple Formatters
 
-Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampFormatter` (prefixes the message with a timestamp) in combination with the `ColorFormatter` objects from the previous example.
+Multiple `Formatter` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampFormatter` (prefixes the message with a timestamp) in combination with an `EmojiFormatter`.
 
 ```swift
-let purple = UIColor.purpleColor()
-let blue = UIColor.blueColor()
-let green = UIColor.greenColor()
-let orange = UIColor.orangeColor()
-let red = UIColor.redColor()
-let white = UIColor.whiteColor()
-let black = UIColor.blackColor()
+class EmojiFormatter: Formatter {
+    func formatMessage(message: String, logLevel: Logger.LogLevel) -> String {
+        return "🚀🚀🚀 \(message)"
+    }
+}
 
-let timestampFormatter = TimestampFormatter()
-
-let formatters: [Logger.LogLevel: [Formatter]] = [
-    LogLevel.Debug: [timestampFormatter, ColorFormatter(foregroundColor: purple, backgroundColor: nil)],
-    LogLevel.Info: [timestampFormatter, ColorFormatter(foregroundColor: blue, backgroundColor: nil)],
-    LogLevel.Event: [timestampFormatter, ColorFormatter(foregroundColor: green, backgroundColor: nil)],
-    LogLevel.Warn: [timestampFormatter, ColorFormatter(foregroundColor: black, backgroundColor: orange)],
-    LogLevel.Error: [timestampFormatter, ColorFormatter(foregroundColor: white, backgroundColor: red)]
-]
-
+let formatters: [Logger.LogLevel: [Formatter]] = [.All: [EmojiFormatter(), TimestampFormatter()]
 let configuration = LoggerConfiguration(formatters: formatters)
 let log = Logger(configuration: configuration)
 ```
 
 `Willow` doesn't have any hard limits on the total number of `Formatter` objects that can be applied to a single log level. Just keep in mind that performance is key.
 
-> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `ColorFormatter` was inserted before the `TimestampFormatter`.
+> The default `ConsoleWriter` will execute the formatters in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `TimestampFormatter` was inserted before the `EmojiFormatter`.
 
 ### Writers
 
