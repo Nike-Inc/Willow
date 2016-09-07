@@ -64,7 +64,6 @@ struct WillowConfiguration {
         appLogLevels appLogLevels: LogLevel = [.Debug, .Info, .Event],
         databaseLogLevels: LogLevel = [.SQL, .Debug, .Info, .Event],
         networkLogLevels: LogLevel = [.Debug, .Info, .Event],
-        coloredOutputEnabled: Bool = true,
         asynchronous: Bool = false)
     {
         let writers: [LogLevel: [Writer]] = [.All: [ConsoleWriter()]]
@@ -77,8 +76,6 @@ struct WillowConfiguration {
         }
 
         log = configureLogger(
-            foregroundColor: Color.whiteColor(),
-            backgroundColor: coloredOutputEnabled ? Color(red: 0.0, green: 0.7, blue: 1.0, alpha: 1.0) : nil,
             prefix: "App",
             formatterLogLevel: [.Debug, .Info, .Event],
             writers: writers,
@@ -86,8 +83,6 @@ struct WillowConfiguration {
         )
 
         Database.log = configureLogger(
-            foregroundColor: Color.whiteColor(),
-            backgroundColor: Color(red: 1.0, green: 0.518, blue: 0.043, alpha: 1.0),
             prefix: "Database",
             formatterLogLevel: [.SQL, .Debug, .Info, .Event],
             writers: writers,
@@ -95,8 +90,6 @@ struct WillowConfiguration {
         )
 
         Network.log = configureLogger(
-            foregroundColor: coloredOutputEnabled ? Color(white: 0.2, alpha: 1.0) : nil,
-            backgroundColor: Color(red: 0.797, green: 0.984, blue: 0.0, alpha: 1.0),
             prefix: "Network",
             formatterLogLevel: [.Debug, .Info, .Event],
             writers: writers,
@@ -105,9 +98,7 @@ struct WillowConfiguration {
     }
 
     private static func configureLogger(
-        foregroundColor foregroundColor: UIColor? = nil,
-        backgroundColor: UIColor? = nil,
-        prefix: String,
+        prefix prefix: String,
         formatterLogLevel: LogLevel,
         writers: [LogLevel: [Writer]],
         executionMethod: LoggerConfiguration.ExecutionMethod)
@@ -115,14 +106,9 @@ struct WillowConfiguration {
     {
         let prefixFormatter = PrefixFormatter(prefix: prefix)
         let timestampFormatter = TimestampFormatter()
-        let colorFormatter = ColorFormatter(foregroundColor: foregroundColor, backgroundColor: backgroundColor)
 
         let formatters: [LogLevel: [Formatter]] = {
-            let formatters: [Formatter] = {
-                var formatters: [Formatter] = [prefixFormatter, timestampFormatter]
-                if foregroundColor != nil || backgroundColor != nil { formatters.append(colorFormatter) }
-                return formatters
-            }()
+            let formatters: [Formatter] = [prefixFormatter, timestampFormatter]
 
             return [
                 formatterLogLevel: formatters,

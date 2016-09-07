@@ -31,12 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - App State Methods
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
-        // If you want to use colored logging, you will need to have the XcodeColors plugin installed from Alcatraz
-        // - XcodeColors: https://github.com/robbiehanson/XcodeColors
-        // - Alcatraz: http://alcatraz.io/
-
-        WillowConfiguration.configure(coloredOutputEnabled: true, asynchronous: false)
+        WillowConfiguration.configure(asynchronous: false)
 
         window = {
             let window = UIWindow(frame: UIScreen.mainScreen().bounds)

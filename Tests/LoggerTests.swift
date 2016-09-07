@@ -86,14 +86,6 @@ class PrefixFormatter: Formatter {
 class SynchronousLoggerTestCase: XCTestCase {
     var message = "Test Message"
     let timeout = 0.1
-    let escape = "\u{001b}["
-    let reset = "\u{001b}[;"
-
-    let purpleColor = Color(red: 153.0 / 255.0, green: 63.0 / 255.0, blue: 1.0, alpha: 1.0)
-    let blueColor = Color(red: 45.0 / 255.0, green: 145.0 / 255.0, blue: 1.0, alpha: 1.0)
-    let greenColor = Color(red: 136.0 / 255.0, green: 207.0 / 255.0, blue: 8.0 / 255.0, alpha: 1.0)
-    let orangeColor = Color(red: 233.0 / 255.0, green: 165.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
-    let redColor = Color(red: 230.0 / 255.0, green: 20.0 / 255.0, blue: 20.0 / 255.0, alpha: 1.0)
 
     func logger(
         logLevel logLevel: LogLevel = .All,
@@ -579,152 +571,16 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
 
 // MARK: -
 
-class SynchronousLoggerColorFormatterTestCase: SynchronousLoggerTestCase {
-    func testThatItAppliesCorrectColorFormatterToDebugLogLevel() {
-        // Given
-        let colorFormatters: [LogLevel: [Formatter]] = [
-            .Debug: [ColorFormatter(foregroundColor: purpleColor, backgroundColor: blueColor)]
-        ]
-
-        let (log, writer) = logger(formatters: colorFormatters)
-
-        // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
-        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
-
-        if writer.formattedMessages.count == 1 {
-            let actual = writer.formattedMessages[0]
-            let expected = "\(escape)fg153,63,255;\(escape)bg45,145,255;Test Message\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-        }
-    }
-
-    func testThatItAppliesCorrectColorFormatterToInfoLogLevel() {
-        // Given
-        let colorFormatters: [LogLevel: [Formatter]] = [
-            .Info: [ColorFormatter(foregroundColor: greenColor, backgroundColor: orangeColor)]
-        ]
-
-        let (log, writer) = logger(formatters: colorFormatters)
-
-        // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
-        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
-
-        if writer.formattedMessages.count == 1 {
-            let actual = writer.formattedMessages[0]
-            let expected = "\(escape)fg136,207,8;\(escape)bg233,165,47;Test Message\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-        }
-    }
-
-    func testThatItAppliesCorrectColorFormatterToEventLogLevel() {
-        // Given
-        let colorFormatters: [LogLevel: [Formatter]] = [
-            .Event: [ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)]
-        ]
-
-        let (log, writer) = logger(formatters: colorFormatters)
-
-        // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
-        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
-
-        if writer.formattedMessages.count == 1 {
-            let actual = writer.formattedMessages[0]
-            let expected = "\(escape)fg230,20,20;\(escape)bg153,63,255;Test Message\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-        }
-    }
-
-    func testThatItAppliesCorrectColorFormatterToWarnLogLevel() {
-        // Given
-        let colorFormatters: [LogLevel: [Formatter]] = [
-            LogLevel.Warn: [ColorFormatter(foregroundColor: blueColor, backgroundColor: greenColor)]
-        ]
-
-        let (log, writer) = logger(formatters: colorFormatters)
-
-        // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
-        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
-
-        if writer.formattedMessages.count == 1 {
-            let actual = writer.formattedMessages[0]
-            let expected = "\(escape)fg45,145,255;\(escape)bg136,207,8;Test Message\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-        }
-    }
-
-    func testThatItAppliesCorrectColorFormatterToErrorLogLevel() {
-        // Given
-        let colorFormatters: [LogLevel: [Formatter]] = [
-            .Error: [ColorFormatter(foregroundColor: purpleColor, backgroundColor: redColor)]
-        ]
-
-        let (log, writer) = logger(formatters: colorFormatters)
-
-        // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
-        XCTAssertEqual(writer.formattedMessages.count, 1, "Color message count should be 1")
-
-        if writer.formattedMessages.count == 1 {
-            let actual = writer.formattedMessages[0]
-            let expected = "\(escape)fg153,63,255;\(escape)bg230,20,20;Test Message\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-        }
-    }
-}
-
-// MARK: -
-
 class SynchronousLoggerMultiFormatterTestCase: SynchronousLoggerTestCase {
+    private struct SymbolFormatter: Formatter {
+        func formatMessage(message: String, logLevel: LogLevel) -> String {
+            return "+=+-+ \(message)"
+        }
+    }
+
     func testThatItLogsOutputAsExpectedWithMultipleFormatters() {
         // Given
-        let prefixFormatter = PrefixFormatter()
-        let formatters: [LogLevel: [Formatter]] = [
-            .Debug: [prefixFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.blueColor)],
-            .Info: [prefixFormatter, ColorFormatter(foregroundColor: self.greenColor, backgroundColor: self.orangeColor)],
-            .Event: [prefixFormatter, ColorFormatter(foregroundColor: self.redColor, backgroundColor: self.purpleColor)],
-            .Warn: [prefixFormatter, ColorFormatter(foregroundColor: self.blueColor, backgroundColor: self.greenColor)],
-            .Error: [prefixFormatter, ColorFormatter(foregroundColor: self.purpleColor, backgroundColor: self.redColor)]
-        ]
-
+        let formatters: [LogLevel: [Formatter]] = [.All: [PrefixFormatter(), SymbolFormatter()]]
         let (log, writer) = logger(formatters: formatters)
 
         // When
@@ -738,29 +594,8 @@ class SynchronousLoggerMultiFormatterTestCase: SynchronousLoggerTestCase {
         XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
         XCTAssertEqual(writer.formattedMessages.count, 5, "Formatted message count should be 5")
 
-        let message = "[Willow] Test Message"
-
-        if writer.formattedMessages.count == 5 {
-            var actual = writer.formattedMessages[0]
-            var expected = "\(escape)fg153,63,255;\(escape)bg45,145,255;\(message)\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-
-            actual = writer.formattedMessages[1]
-            expected = "\(escape)fg136,207,8;\(escape)bg233,165,47;\(message)\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-
-            actual = writer.formattedMessages[2]
-            expected = "\(escape)fg230,20,20;\(escape)bg153,63,255;\(message)\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-
-            actual = writer.formattedMessages[3]
-            expected = "\(escape)fg45,145,255;\(escape)bg136,207,8;\(message)\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-
-            actual = writer.formattedMessages[4]
-            expected = "\(escape)fg153,63,255;\(escape)bg230,20,20;\(message)\(reset)"
-            XCTAssertEqual(actual, expected, "Failed to apply correct color formatting to message")
-        }
+        let expected = "+=+-+ [Willow] Test Message"
+        writer.formattedMessages.forEach { XCTAssertEqual($0, expected) }
     }
 }
 
