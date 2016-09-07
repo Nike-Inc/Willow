@@ -112,7 +112,7 @@ struct WillowConfiguration {
         executionMethod: LoggerConfiguration.ExecutionMethod)
         -> Logger
     {
-        let PrefixModifier = PrefixModifier(emoji: emoji, name: name)
+        let prefixModifier = PrefixModifier(emoji: emoji, name: name)
         let timestampModifier = TimestampModifier()
 
         let modifiers: [LogLevel: [LogMessageModifier]] = {

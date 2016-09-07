@@ -570,7 +570,7 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
 
 class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     private struct SymbolModifier: LogMessageModifier {
-        func modify(_ message: String, with logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
             return "+=+-+ \(message)"
         }
     }
