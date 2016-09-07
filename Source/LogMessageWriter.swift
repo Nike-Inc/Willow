@@ -39,11 +39,12 @@ public protocol LogMessageWriter {
 open class ConsoleWriter: LogMessageWriter {
     /// Used to define whether to use the print or NSLog functions when logging to the console.
     ///
-    /// During development, it is recommended to use the `.print` case. When deploying to production, the `.nslog`
-    /// case should be used.
+    /// During development, it is recommendeded to use the `.print` case. When deploying to production, the `.nslog`
+    /// case should be used instead. The main reason for this is that the `print` method does not log to the device
+    /// console where as the `NSLog` method does.
     ///
-    /// - print: The Swift `print` function that is faster, not thread safe and doesn't write to the device console.
-    /// - nslog: The Objective-C `NSLog` function that is slower, thread safe and writes to the device console.
+    /// - print: Backed by the Swift `print` function.
+    /// - nslog: Backed by the Objective-C `NSLog` function.
     public enum Method {
         case print, nslog
     }
