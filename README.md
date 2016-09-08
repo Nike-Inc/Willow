@@ -47,7 +47,6 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - [X] Configurable Synchronous or Asynchronous Execution
 - [X] Thread-Safe Logging Output (No Log Mangling)
 - [X] Custom Modifiers through Dependency Injection per Log Level
-- [X] Customizable Colorized Messages in Console Output
 - [X] Custom Writers through Dependency Injection per Log Level
 - [X] Supports Multiple Simultaneous Writers
 - [X] Shared Loggers Between Frameworks
@@ -59,7 +58,11 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 8.0+
-- Swift 2.3
+- Swift 3.0+
+
+## Migration Guides
+
+- [Willow 2.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%202.0%20Migration%20Guide.md)
 
 ## Communication
 
@@ -84,10 +87,10 @@ To integrate Willow into your project, specify it in your [Podfile](http://guide
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '9.0'
+platform :ios, '10.0'
 use_frameworks!
 
-pod 'Willow', :git => 'https://github.com/Nike-Inc/Willow.git', :branch => 'swift3'
+pod 'Willow', '~> 2.0'
 ```
 
 Then, run the following command:
@@ -110,7 +113,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-github "Nike-Inc/Willow" "swift3"
+github "Nike-Inc/Willow" ~> 2.0
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
@@ -319,7 +322,7 @@ public class ConsoleWriter: LogMessageWriter {
 
 #### OSLog
 
-The `OSLogWriter` class allows you to use the `os_log` APIs within the Willow system. In order to use it, all you need to do is to create the `Writer` instance and add it to the `LoggerConfiguration`.
+The `OSLogWriter` class allows you to use the `os_log` APIs within the Willow system. In order to use it, all you need to do is to create the `LogMessageWriter` instance and add it to the `LoggerConfiguration`.
 
 ```swift
 let writer = OSLogWriter(subsystem: "com.nike.willow.example", category: "testing")

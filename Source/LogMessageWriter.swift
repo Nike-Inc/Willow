@@ -81,6 +81,8 @@ open class ConsoleWriter: LogMessageWriter {
     }
 }
 
+// MARK: -
+
 #if !os(macOS)
 
 /// The OSLogWriter class runs all modifiers in the order they were created and passes the resulting message
