@@ -5,7 +5,7 @@ There are a few guidelines that we need contributors to follow so that we are ab
 ## Getting Started
 
 * Review our [Code of Conduct](https://github.com/Nike-Inc/nike-inc.github.io/blob/master/CONDUCT.md)
-* Submit the [Individual Contributor License Agreement](https://www.clahub.com/agreements/Nike-Inc/nike-inc.github.io)
+* Submit the [Individual Contributor License Agreement](https://www.clahub.com/agreements/Nike-Inc/Willow)
 * Make sure you have a [GitHub account](https://github.com/signup/free)
 * Submit a ticket for your issue, assuming one does not already exist.
   * Clearly describe the issue including steps to reproduce when it is a bug.
