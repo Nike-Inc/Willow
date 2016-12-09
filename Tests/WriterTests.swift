@@ -65,8 +65,6 @@ class ConsoleWriterTestCase: XCTestCase {
 
 // MARK: -
 
-#if !os(macOS)
-
 @available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *)
 class OSLogWriterTestCase: XCTestCase {
     let subsystem = "com.nike.willow.test"
@@ -96,5 +94,3 @@ class OSLogWriterTestCase: XCTestCase {
         writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
     }
 }
-
-#endif
