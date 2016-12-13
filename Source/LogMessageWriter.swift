@@ -83,8 +83,6 @@ open class ConsoleWriter: LogMessageWriter {
 
 // MARK: -
 
-#if !os(macOS)
-
 /// The OSLogWriter class runs all modifiers in the order they were created and passes the resulting message
 /// off to an OSLog with the specified subsystem and category.
 @available(iOS 10.0, OSX 10.12.0, tvOS 10.0, watchOS 3.0, *)
@@ -127,5 +125,3 @@ open class OSLogWriter: LogMessageWriter {
         os_log("%@", log: log, type: logType, message)
     }
 }
-
-#endif
