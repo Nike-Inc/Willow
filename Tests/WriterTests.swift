@@ -70,7 +70,7 @@ class OSLogWriterTestCase: XCTestCase {
     let category = "os-log-writer"
 
     func testThatOSLogWriterCanBeInitializedAndDeinitialized() {
-        guard #available(iOS 10.0, OSX 10.12, tvOS 10.0, *) else { return }
+        guard #available(iOS 10.0, macOS 10.12, tvOS 10.0, *) else { return }
 
         // Given
         let message = "Test Message"
@@ -86,7 +86,7 @@ class OSLogWriterTestCase: XCTestCase {
     }
 
     func testThatOSLogWriterCanWriteMessageUsingOSLog() {
-        guard #available(iOS 10.0, OSX 10.12, tvOS 10.0, *) else { return }
+        guard #available(iOS 10.0, macOS 10.12, tvOS 10.0, *) else { return }
 
         // Given
         let message = "Test Message"
