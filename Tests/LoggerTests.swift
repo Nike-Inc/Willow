@@ -27,9 +27,9 @@ import Willow
 import XCTest
 
 #if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
+    import UIKit
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 #endif
 
 // MARK: Test Helpers

@@ -31,7 +31,7 @@ extension LogLevel {
     public static let sql = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
 }
 
-// MARK:
+// MARK: -
 
 extension Logger {
     func sql(_ message: @autoclosure @escaping () -> String) {
@@ -43,7 +43,7 @@ extension Logger {
     }
 }
 
-// MARK:
+// MARK: -
 
 /// The single `Logger` instance used throughout Database.
 public var log: Logger! = {

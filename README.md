@@ -127,7 +127,7 @@ The `LoggerConfiguration` class is a container class to store all the configurat
 
 * `modifiers: [LogLevel: [LogMessageModifier]] = [:]` - The dictionary of modifiers to apply to each associated log level.
 * `writers: [LogLevel: [Writer]] = [.all: [ConsoleWriter()]` - The dictionary of writers to write to for the associated log level. Writers can be used to log output to a specific destination such as the console or to a file.
-* `executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
+* `executionMethod: ExecutionMethod = .synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
 
 `LoggerConfiguration` and `Logger` objects can only be customized during initialization. If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs. It is perfectly acceptable to have many different `Logger` instances running simutaneously.
 
@@ -221,7 +221,7 @@ Logging can greatly affect the runtime performance of your application or librar
 
 ```swift
 let queue = DispatchQueue(label: "serial.queue", qos: .utility)
-let configuration = LoggerConfiguration(executionMethod: .Asynchronous(queue: queue))
+let configuration = LoggerConfiguration(executionMethod: .asynchronous(queue: queue))
 let log = Logger(configuration: configuration)
 ```
 
@@ -440,7 +440,7 @@ let sharedQueue = DispatchQueue(label: "com.math.logger", qos: .utility)
 let writers: [LogLevel: [LogMessageWriter]] = [.all: [FileWriter(), ConsoleWriter()]]
 let configuration = LoggerConfiguration(
     writers: writers, 
-    executionMethod: .Asynchronous(queue: sharedQueue)
+    executionMethod: .asynchronous(queue: sharedQueue)
 )
 
 var log = Logger(configuration: configuration)
@@ -449,7 +449,7 @@ var log = Logger(configuration: configuration)
 let mathConfiguration = LoggerConfiguration(
     modifiers: Math.log.configuration.modifiers,
     writers: Math.log.configuration.writers,
-    executionMethod: .Asynchronous(queue: sharedQueue)
+    executionMethod: .asynchronous(queue: sharedQueue)
 )
 
 Math.log = Logger(configuration: mathConfiguration)

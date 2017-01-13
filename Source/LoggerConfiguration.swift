@@ -59,12 +59,13 @@ public struct LoggerConfiguration {
 
     /// Initializes a logger configuration instance.
     ///
-    /// - parameter modifiers:       The dictionary of modifiers to apply to the associated log level. `[:]` by default.
-    /// - parameter writers:         The dictionary of writers to write to for the associated log level.
-    ///                              `[.All: [ConsoleWriter()]` by default.
+    /// - Parameters:
+    ///   - modifiers:       The dictionary of modifiers to apply to the associated log level. `[:]` by default.
+    ///   - writers:         The dictionary of writers to write to for the associated log level.
+    ///                      `[.All: [ConsoleWriter()]` by default.
     ///   - executionMethod: The execution method used when logging a message. `.synchronous` by default.
     ///
-    /// - returns: A fully initialized logger configuration instance.
+    /// - Returns: A fully initialized logger configuration instance.
     public init(
         modifiers: [LogLevel: [LogMessageModifier]] = [:],
         writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]],
@@ -98,11 +99,11 @@ public struct LoggerConfiguration {
 
     /// Creates a logger configuration instance with a timestamp modifier applied to each log level.
     ///
-    /// - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
-    /// - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
+    /// - Parameters:
+    ///   - logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
     ///   - executionMethod: The execution method used when logging a message. `.synchronous` by default.
     ///
-    /// - returns: A fully initialized logger configuration instance.
+    /// - Returns: A fully initialized logger configuration instance.
     public static func timestampConfiguration(
         logLevel: LogLevel = .all,
         executionMethod: ExecutionMethod = .synchronous(lock: NSRecursiveLock()))

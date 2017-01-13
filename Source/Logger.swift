@@ -44,10 +44,10 @@ open class Logger {
 
     /// Initializes a logger instance.
     ///
-    /// - parameter configuration: The configuration to use when determining how to log messages. Creates a default
+    /// - Parameter configuration: The configuration to use when determining how to log messages. Creates a default
     ///                            `LoggerConfiguration()` by default.
     ///
-    /// - returns: A fully initialized logger instance.
+    /// - Returns: A fully initialized logger instance.
     public init(configuration: LoggerConfiguration = LoggerConfiguration()) {
         self.configuration = configuration
     }
@@ -56,78 +56,79 @@ open class Logger {
 
     /// Writes out the given message using the logger configuration if the debug log level has an attached writer.
     ///
-    /// - parameter message: An autoclosure returning the message to log.
+    /// - Parameter message: An autoclosure returning the message to log.
     open func debug(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.debug)
     }
 
     /// Writes out the given message using the logger configuration if the debug log level has an attached writer.
     ///
-    /// - parameter message: A closure returning the message to log.
+    /// - Parameter message: A closure returning the message to log.
     open func debug(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.debug)
     }
 
     /// Writes out the given message using the logger configuration if the info log level has an attached writer.
     ///
-    /// - parameter message: An autoclosure returning the message to log.
+    /// - Parameter message: An autoclosure returning the message to log.
     open func info(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.info)
     }
 
     /// Writes out the given message using the logger configuration if the info log level has an attached writer.
     ///
-    /// - parameter message: A closure returning the message to log.
+    /// - Parameter message: A closure returning the message to log.
     open func info(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.info)
     }
 
     /// Writes out the given message using the logger configuration if the event log level has an attached writer.
     ///
-    /// - parameter message: An autoclosure returning the message to log.
+    /// - Parameter message: An autoclosure returning the message to log.
     open func event(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.event)
     }
 
     /// Writes out the given message using the logger configuration if the event log level has an attached writer.
     ///
-    /// - parameter message: A closure returning the message to log.
+    /// - Parameter message: A closure returning the message to log.
     open func event(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.event)
     }
 
     /// Writes out the given message using the logger configuration if the warn log level has an attached writer.
     ///
-    /// - parameter message: An autoclosure returning the message to log.
+    /// - Parameter message: An autoclosure returning the message to log.
     open func warn(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.warn)
     }
 
     /// Writes out the given message using the logger configuration if the warn log level has an attached writer.
     ///
-    /// - parameter message: A closure returning the message to log.
+    /// - Parameter message: A closure returning the message to log.
     open func warn(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.warn)
     }
 
     /// Writes out the given message using the logger configuration if the error log level has an attached writer.
     ///
-    /// - parameter message: An autoclosure returning the message to log.
+    /// - Parameter message: An autoclosure returning the message to log.
     open func error(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.error)
     }
 
     /// Writes out the given message using the logger configuration if the error log level has an attached writer.
     ///
-    /// - parameter message: A closure returning the message to log.
+    /// - Parameter message: A closure returning the message to log.
     open func error(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.error)
     }
 
     /// Writes out the given message closure string with the logger configuration if the log level is allowed.
     ///
-    /// - parameter message:      A closure returning the message to log.
-    /// - parameter withLogLevel: The log level associated with the message closure.
+    /// - Parameters:
+    ///   - message:      A closure returning the message to log.
+    ///   - withLogLevel: The log level associated with the message closure.
     open func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel) {
         guard enabled else { return }
 
