@@ -81,7 +81,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '10.0'
 use_frameworks!
 
-pod 'Willow', '~> 2.0'
+pod 'Willow', '~> 3.0'
 ```
 
 Then, run the following command:
@@ -104,7 +104,7 @@ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-github "Nike-Inc/Willow" ~> 2.0
+github "Nike-Inc/Willow" ~> 3.0
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.

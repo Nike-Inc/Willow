@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 `Willow` adheres to [Semantic Versioning](http://semver.org/).
 
+#### 3.x Releases
+
+- `3.0.x` Releases - [3.0.0](#300)
+
 #### 2.x Releases
 
 - `2.0.x` Releases - [2.0.0](#200)
@@ -12,6 +16,51 @@ All notable changes to this project will be documented in this file.
 - `1.2.x` Releases - [1.2.0](#120)
 - `1.1.x` Releases - [1.1.0](#110)
 - `1.0.x` Releases - [1.0.0](#100)
+
+---
+
+## [3.0.0](https://github.com/Nike-Inc/Willow/releases/tag/3.0.0)
+
+Released on 2017-01-13. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/4?closed=1).
+
+#### Added
+
+- A new `.swift-version` file for CocoaPods pointed at Swift 3.0.
+  - Added by [Christian Noon](https://github.com/cnoon).
+- A migration guide for the Willow 3.0 release.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
+- Support for `OSLogWriter` on macOS 10.12+ by removing preprocessor guards.
+  - Added by [Silvan Mosberger](https://github.com/Infinisil) in Pull Request
+  [#19](https://github.com/Nike-Inc/Willow/pull/19).
+
+#### Updated
+
+- The Travis-CI YAML file to Xcode 8.2 and the latest SDKs and destinations.
+  - Added by [Silvan Mosberger](https://github.com/Infinisil) in Pull Request
+  [#19](https://github.com/Nike-Inc/Willow/pull/19).
+- The Travis-CI YAML file by re-enabling `pod lib lint` since lint issue is resolved.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
+- The Xcode projects to Xcode 8.2 and disabled automatic signing on frameworks.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
+- Instances of `OSX` with `macOS` including the framework and target names.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
+- `ExecutionMethod` enum cases to be lowercased to match Swift API Design Guidelines.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
+
+#### Fixed
+
+- Crash in WriterTests on iOS and tvOS 9 where `os_log` APIs are not available.
+  - Fixed by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
+- Compiler warnings in the example app around private and fileprivate ACLs.
+  - Fixed by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#21](https://github.com/Nike-Inc/Willow/pull/21).
 
 ---
 
