@@ -31,19 +31,19 @@ class ViewController: UIViewController {
 
     // MARK: Helper Types
 
-    private struct Section {
+    fileprivate struct Section {
         let title: String
         let items: [Item]
     }
 
-    private struct Item {
+    fileprivate struct Item {
         let title: String
         let action: () -> Void
     }
 
     // MARK: Properties
 
-    fileprivate static let CellIdentifier = "CellID"
+    fileprivate static let cellIdentifier = "CellID"
     fileprivate var sections: [Section] = []
     fileprivate var tableView: UITableView!
 
@@ -238,7 +238,7 @@ class ViewController: UIViewController {
             tableView.allowsSelectionDuringEditing = false
             tableView.allowsMultipleSelectionDuringEditing = false
 
-            tableView.register(UITableViewCell.self, forCellReuseIdentifier: ViewController.CellIdentifier)
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: ViewController.cellIdentifier)
 
             view.addSubview(tableView)
 
@@ -261,7 +261,7 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = sections[indexPath.section].items[indexPath.row]
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.CellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.cellIdentifier, for: indexPath)
         cell.textLabel?.text = item.title
 
         return cell
