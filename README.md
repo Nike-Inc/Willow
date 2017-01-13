@@ -47,12 +47,13 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Requirements
 
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 8.0+
+- Xcode 8.2+
 - Swift 3.0+
 
 ## Migration Guides
 
 - [Willow 2.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%202.0%20Migration%20Guide.md)
+- [Willow 3.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%203.0%20Migration%20Guide.md)
 
 ## Communication
 
@@ -71,7 +72,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 [sudo] gem install cocoapods
 ```
 
-> CocoaPods 1.0+ is required.
+> CocoaPods 1.1+ is required.
 
 To integrate Willow into your project, specify it in your [Podfile](http://guides.cocoapods.org/using/the-podfile.html):
 
