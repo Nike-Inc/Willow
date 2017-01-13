@@ -28,7 +28,7 @@ import XCTest
 
 #if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
-#elseif os(OSX)
+#elseif os(macOS)
 import Cocoa
 #endif
 

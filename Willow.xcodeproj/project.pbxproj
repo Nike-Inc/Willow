@@ -317,9 +317,9 @@
 			productReference = 4CA33F2C1B7556D60047C307 /* Willow.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */ = {
+		4CF89C8A1A6E2F60001BFDE1 /* Willow macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX" */;
+			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow macOS" */;
 			buildPhases = (
 				4CF89C861A6E2F60001BFDE1 /* Sources */,
 				4CF89C871A6E2F60001BFDE1 /* Frameworks */,
@@ -330,14 +330,14 @@
 			);
 			dependencies = (
 			);
-			name = "Willow OSX";
+			name = "Willow macOS";
 			productName = "Timber OSX";
 			productReference = 4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4CF89C941A6E2F60001BFDE1 /* Willow OSX Tests */ = {
+		4CF89C941A6E2F60001BFDE1 /* Willow macOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX Tests" */;
+			buildConfigurationList = 4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow macOS Tests" */;
 			buildPhases = (
 				4CF89C911A6E2F60001BFDE1 /* Sources */,
 				4CF89C921A6E2F60001BFDE1 /* Frameworks */,
@@ -348,7 +348,7 @@
 			dependencies = (
 				4CF89C981A6E2F60001BFDE1 /* PBXTargetDependency */,
 			);
-			name = "Willow OSX Tests";
+			name = "Willow macOS Tests";
 			productName = "Timber OSXTests";
 			productReference = 4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -441,8 +441,8 @@
 			targets = (
 				4CFE82981A6C484A0002868E /* Willow iOS */,
 				4CFE82A31A6C484A0002868E /* Willow iOS Tests */,
-				4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */,
-				4CF89C941A6E2F60001BFDE1 /* Willow OSX Tests */,
+				4CF89C8A1A6E2F60001BFDE1 /* Willow macOS */,
+				4CF89C941A6E2F60001BFDE1 /* Willow macOS Tests */,
 				4C88351D1C82506600F70419 /* Willow tvOS */,
 				4C8835261C82506600F70419 /* Willow tvOS Tests */,
 				4CA33F2B1B7556D60047C307 /* Willow watchOS */,
@@ -597,7 +597,7 @@
 		};
 		4CF89C981A6E2F60001BFDE1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CF89C8A1A6E2F60001BFDE1 /* Willow OSX */;
+			target = 4CF89C8A1A6E2F60001BFDE1 /* Willow macOS */;
 			targetProxy = 4CF89C971A6E2F60001BFDE1 /* PBXContainerItemProxy */;
 		};
 		4CFE82A71A6C484A0002868E /* PBXTargetDependency */ = {
@@ -1025,7 +1025,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX" */ = {
+		4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CF89C9E1A6E2F60001BFDE1 /* Debug */,
@@ -1034,7 +1034,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow OSX Tests" */ = {
+		4CF89CA31A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow macOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CF89CA01A6E2F60001BFDE1 /* Debug */,

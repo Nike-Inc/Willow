@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CF89C8A1A6E2F60001BFDE1"
                BuildableName = "Willow.framework"
-               BlueprintName = "Willow OSX"
+               BlueprintName = "Willow macOS"
                ReferencedContainer = "container:Willow.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,7 +30,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CF89C941A6E2F60001BFDE1"
                BuildableName = "WillowTests.xctest"
-               BlueprintName = "Willow OSX Tests"
+               BlueprintName = "Willow macOS Tests"
                ReferencedContainer = "container:Willow.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -48,7 +48,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CF89C941A6E2F60001BFDE1"
                BuildableName = "WillowTests.xctest"
-               BlueprintName = "Willow OSX Tests"
+               BlueprintName = "Willow macOS Tests"
                ReferencedContainer = "container:Willow.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CF89C8A1A6E2F60001BFDE1"
             BuildableName = "Willow.framework"
-            BlueprintName = "Willow OSX"
+            BlueprintName = "Willow macOS"
             ReferencedContainer = "container:Willow.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -80,7 +80,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CF89C8A1A6E2F60001BFDE1"
             BuildableName = "Willow.framework"
-            BlueprintName = "Willow OSX"
+            BlueprintName = "Willow macOS"
             ReferencedContainer = "container:Willow.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -98,7 +98,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CF89C8A1A6E2F60001BFDE1"
             BuildableName = "Willow.framework"
-            BlueprintName = "Willow OSX"
+            BlueprintName = "Willow macOS"
             ReferencedContainer = "container:Willow.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
