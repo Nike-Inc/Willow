@@ -119,7 +119,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
         let configuration = LoggerConfiguration(
             modifiers: modifiers,
             writers: [logLevel: [writer]],
-            executionMethod: .Asynchronous(queue: queue)
+            executionMethod: .asynchronous(queue: queue)
         )
 
         let logger = Logger(configuration: configuration)

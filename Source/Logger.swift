@@ -132,10 +132,10 @@ open class Logger {
         guard enabled else { return }
 
         switch configuration.executionMethod {
-        case .Synchronous(let lock):
+        case .synchronous(let lock):
             lock.lock() ; defer { lock.unlock() }
             logMessageIfAllowed(message, with: logLevel)
-        case .Asynchronous(let queue):
+        case .asynchronous(let queue):
             queue.async { self.logMessageIfAllowed(message, with: logLevel) }
         }
     }

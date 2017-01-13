@@ -37,11 +37,11 @@ public struct LoggerConfiguration {
     /// in development, and the asynchronous method in production. This allows for easier debugging in the development
     /// environment, and better performance in production.
     ///
-    /// - Synchronous:  Logs messages synchronously once the recursive lock is available in serial order.
-    /// - Asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
+    /// - synchronous:  Logs messages synchronously once the recursive lock is available in serial order.
+    /// - asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
     public enum ExecutionMethod {
-        case Synchronous(lock: NSRecursiveLock)
-        case Asynchronous(queue: DispatchQueue)
+        case synchronous(lock: NSRecursiveLock)
+        case asynchronous(queue: DispatchQueue)
     }
 
     // MARK: - Properties
@@ -62,13 +62,13 @@ public struct LoggerConfiguration {
     /// - parameter modifiers:       The dictionary of modifiers to apply to the associated log level. `[:]` by default.
     /// - parameter writers:         The dictionary of writers to write to for the associated log level.
     ///                              `[.All: [ConsoleWriter()]` by default.
-    /// - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
+    ///   - executionMethod: The execution method used when logging a message. `.synchronous` by default.
     ///
     /// - returns: A fully initialized logger configuration instance.
     public init(
         modifiers: [LogLevel: [LogMessageModifier]] = [:],
         writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]],
-        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
+        executionMethod: ExecutionMethod = .synchronous(lock: NSRecursiveLock()))
     {
         func restructureDictionaryValuesPerBitBasedLogLevel<T>(_ values: [LogLevel: [T]]) -> [LogLevel: [T]] {
             var specifiedValues: [LogLevel: [T]] = [:]
@@ -100,12 +100,12 @@ public struct LoggerConfiguration {
     ///
     /// - parameter logLevel:        The log level to apply to the default `ConsoleWriter`. `.All` by default.
     /// - parameter asynchronous:    Whether to write messages asynchronously on the given queue. `false` by default.
-    /// - parameter executionMethod: The execution method used when logging a message. `.Synchronous` by default.
+    ///   - executionMethod: The execution method used when logging a message. `.synchronous` by default.
     ///
     /// - returns: A fully initialized logger configuration instance.
     public static func timestampConfiguration(
         logLevel: LogLevel = .all,
-        executionMethod: ExecutionMethod = .Synchronous(lock: NSRecursiveLock()))
+        executionMethod: ExecutionMethod = .synchronous(lock: NSRecursiveLock()))
         -> LoggerConfiguration
     {
         let modifiers: [LogLevel: [LogMessageModifier]] = [logLevel: [TimestampModifier()]]
