@@ -42,15 +42,16 @@ open class TimestampModifier: LogMessageModifier {
 
     /// Initializes a `TimestampModifier` instance.
     ///
-    /// - returns: A new `TimestampModifier` instance.
+    /// - Returns: A new `TimestampModifier` instance.
     public init() {}
 
     /// Applies a timestamp to the beginning of the message.
     ///
-    /// - parameter message:  The original message to format.
-    /// - parameter logLevel: The log level set for the message.
+    /// - Parameters:
+    ///   - message:  The original message to format.
+    ///   - logLevel: The log level set for the message.
     ///
-    /// - returns: A newly formatted message.
+    /// - Returns: A newly formatted message.
     open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         let timestampString = timestampFormatter.string(from: Date() as Date)
         return "\(timestampString) \(message)"

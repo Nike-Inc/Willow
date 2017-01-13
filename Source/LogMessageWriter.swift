@@ -53,9 +53,9 @@ open class ConsoleWriter: LogMessageWriter {
 
     /// Initializes a console writer instance.
     ///
-    /// - parameter method: The method to use when logging to the console. Defaults to `.print`.
+    /// - Parameter method: The method to use when logging to the console. Defaults to `.print`.
     ///
-    /// - returns: A new console writer instance.
+    /// - Returns: A new console writer instance.
     public init(method: Method = .print) {
         self.method = method
     }
@@ -65,9 +65,10 @@ open class ConsoleWriter: LogMessageWriter {
     /// Each modifier is run over the message in the order they are provided before writing the message to
     /// the console.
     ///
-    /// - parameter message:   The original message to write to the console.
-    /// - parameter logLevel:  The log level associated with the message.
-    /// - parameter modifiers: The modifier objects to run over the message before writing to the console.
+    /// - Parameters:
+    ///   - message:   The original message to write to the console.
+    ///   - logLevel:  The log level associated with the message.
+    ///   - modifiers: The modifier objects to run over the message before writing to the console.
     open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
         var message = message
         modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }
@@ -91,9 +92,15 @@ open class OSLogWriter: LogMessageWriter {
     open let category: String
     private let log: OSLog
 
+    /// Creates an `OSLogWriter` instance from the specified `subsystem` and `category`.
+    ///
+    /// - Parameters:
+    ///   - subsystem: The subsystem.
+    ///   - category:  The category.
     public init(subsystem: String, category: String) {
         self.subsystem = subsystem
         self.category = category
+
         self.log = OSLog(subsystem: subsystem, category: category)
     }
 
@@ -102,9 +109,10 @@ open class OSLogWriter: LogMessageWriter {
     /// Each modifier is run over the message in the order they are provided before writing the message to
     /// the console.
     ///
-    /// - parameter message:   The original message to write to the console.
-    /// - parameter logLevel:  The log level associated with the message.
-    /// - parameter modifiers: The modifier objects to run over the message before writing to the console.
+    /// - Parameters:
+    ///   - message:   The original message to write to the console.
+    ///   - logLevel:  The log level associated with the message.
+    ///   - modifiers: The modifier objects to run over the message before writing to the console.
     open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
         var message = message
         modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }

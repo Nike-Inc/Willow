@@ -70,9 +70,9 @@ public struct LogLevel: OptionSet {
 
     /// Creates a log level instance with the given raw value.
     ///
-    /// - parameter rawValue: The raw bitmask value for the log level.
+    /// - Parameter rawValue: The raw bitmask value for the log level.
     ///
-    /// - returns: A new log level instance.
+    /// - Returns: A new log level instance.
     public init(rawValue: RawValue) { self.rawValue = rawValue }
 }
 
@@ -83,8 +83,7 @@ extension LogLevel: Equatable, Hashable {
     public var hashValue: Int { return rawValue.hashValue }
 }
 
-// MARK:
-// MARK: CustomStringConvertible
+// MARK: - CustomStringConvertible
 
 extension LogLevel: CustomStringConvertible {
     /// Returns a `String` representation of the `LogLevel`.
@@ -114,10 +113,11 @@ extension LogLevel: CustomStringConvertible {
 
 /// Returns whether the `lhs` and `rhs` instances are equal.
 ///
-/// - parameter lhs: The left-hand side `LogLevel` instance to compare.
-/// - parameter rhs: The right-hand side `LogLevel` instance to compare.
+/// - Parameters:
+///   - lhs: The left-hand side `LogLevel` instance to compare.
+///   - rhs: The right-hand side `LogLevel` instance to compare.
 ///
-/// - returns: Whether the two instances are equal.
+/// - Returns: Whether the two instances are equal.
 public func ==(lhs: LogLevel, rhs: LogLevel) -> Bool {
     return lhs.rawValue == rhs.rawValue
 }

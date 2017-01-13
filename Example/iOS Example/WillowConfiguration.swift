@@ -32,7 +32,7 @@ var log: Logger!
 
 struct WillowConfiguration {
 
-    // MARK: Modifiers
+    // MARK: - Modifiers
 
     private struct PrefixModifier: LogMessageModifier {
         let emoji: String
@@ -60,7 +60,7 @@ struct WillowConfiguration {
         }
     }
 
-    // MARK: Configure
+    // MARK: - Configure
 
     static func configure(
         appLogLevels: LogLevel = [.debug, .info, .event],
