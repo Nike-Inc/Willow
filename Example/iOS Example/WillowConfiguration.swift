@@ -72,9 +72,9 @@ struct WillowConfiguration {
         let executionMethod: LoggerConfiguration.ExecutionMethod
 
         if asynchronous {
-            executionMethod = .Synchronous(lock: NSRecursiveLock())
+            executionMethod = .synchronous(lock: NSRecursiveLock())
         } else {
-            executionMethod = .Asynchronous(
+            executionMethod = .asynchronous(
                 queue: DispatchQueue(label: "com.nike.example.logger", qos: .utility)
             )
         }
