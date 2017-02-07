@@ -53,7 +53,7 @@ open class TimestampModifier: LogMessageModifier {
     ///
     /// - Returns: A newly formatted message.
     open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
-        let timestampString = timestampFormatter.string(from: Date() as Date)
+        let timestampString = timestampFormatter.string(from: Date())
         return "\(timestampString) \(message)"
     }
 }
