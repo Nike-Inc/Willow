@@ -57,7 +57,7 @@ class TestWriter: LogMessageWriter {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
 
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]) {
         self.message = message
         actualNumberOfWrites += 1
     }

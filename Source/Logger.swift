@@ -153,7 +153,7 @@ open class Logger {
     }
 
     private func logMessage(_ message: String, with logLevel: LogLevel) {
-        let modifiers = configuration.modifiers[logLevel]
+        let modifiers = configuration.modifiers[logLevel] ?? []
         configuration.writers[logLevel]?.forEach { $0.writeMessage(message, logLevel: logLevel, modifiers: modifiers) }
     }
 }

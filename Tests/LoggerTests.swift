@@ -39,10 +39,10 @@ class SynchronousTestWriter: LogMessageWriter {
     private(set) var message: String?
     private(set) var modifiedMessages = [String]()
 
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]) {
         var mutableMessage = message
 
-        if let modifiers = modifiers {
+        if !modifiers.isEmpty {
             modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
             modifiedMessages.append(mutableMessage)
         }
@@ -64,7 +64,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
         self.expectedNumberOfWrites = expectedNumberOfWrites
     }
 
-    override func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    override func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]) {
         super.writeMessage(message, logLevel: logLevel, modifiers: modifiers)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
