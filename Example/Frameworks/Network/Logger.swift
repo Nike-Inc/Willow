@@ -36,7 +36,7 @@ public var log: Logger = {
 
     let modifiers: [LogLevel: [LogMessageModifier]] = [.all: [PrefixModifier(), TimestampModifier()]]
     let queue = DispatchQueue(label: "com.nike.network.logger.queue", qos: .utility)
-    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .Asynchronous(queue: queue))
+    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .asynchronous(queue: queue))
 
     return Logger(configuration: configuration)
 }()
