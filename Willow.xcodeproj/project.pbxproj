@@ -267,9 +267,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4C8835331C82506600F70419 /* Build configuration list for PBXNativeTarget "Willow tvOS" */;
 			buildPhases = (
+				4C88351B1C82506600F70419 /* Headers */,
 				4C8835191C82506600F70419 /* Sources */,
 				4C88351A1C82506600F70419 /* Frameworks */,
-				4C88351B1C82506600F70419 /* Headers */,
 				4C88351C1C82506600F70419 /* Resources */,
 			);
 			buildRules = (
@@ -303,9 +303,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4CA33F311B7556D60047C307 /* Build configuration list for PBXNativeTarget "Willow watchOS" */;
 			buildPhases = (
+				4CA33F291B7556D60047C307 /* Headers */,
 				4CA33F271B7556D60047C307 /* Sources */,
 				4CA33F281B7556D60047C307 /* Frameworks */,
-				4CA33F291B7556D60047C307 /* Headers */,
 				4CA33F2A1B7556D60047C307 /* Resources */,
 			);
 			buildRules = (
@@ -321,9 +321,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4CF89CA21A6E2F60001BFDE1 /* Build configuration list for PBXNativeTarget "Willow macOS" */;
 			buildPhases = (
+				4CF89C881A6E2F60001BFDE1 /* Headers */,
 				4CF89C861A6E2F60001BFDE1 /* Sources */,
 				4CF89C871A6E2F60001BFDE1 /* Frameworks */,
-				4CF89C881A6E2F60001BFDE1 /* Headers */,
 				4CF89C891A6E2F60001BFDE1 /* Resources */,
 			);
 			buildRules = (
@@ -357,9 +357,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4CFE82AF1A6C484B0002868E /* Build configuration list for PBXNativeTarget "Willow iOS" */;
 			buildPhases = (
+				4CFE82961A6C484A0002868E /* Headers */,
 				4CFE82941A6C484A0002868E /* Sources */,
 				4CFE82951A6C484A0002868E /* Frameworks */,
-				4CFE82961A6C484A0002868E /* Headers */,
 				4CFE82971A6C484A0002868E /* Resources */,
 			);
 			buildRules = (
