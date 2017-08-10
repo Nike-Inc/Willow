@@ -11,13 +11,13 @@
 		4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C2B3A251CDEB717004F1A18 /* Database.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; };
 		4C2B3A261CDEB717004F1A18 /* Database.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4C2B3A291CDEB717004F1A18 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A241CDEB6F9004F1A18 /* Network.framework */; };
-		4C2B3A2A1CDEB717004F1A18 /* Network.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A241CDEB6F9004F1A18 /* Network.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C2B3A3C1CDEC0D6004F1A18 /* WillowConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B3A3B1CDEC0D6004F1A18 /* WillowConfiguration.swift */; };
 		4C8787AD1A6E3948008A313B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787A71A6E3948008A313B /* AppDelegate.swift */; };
 		4C8787AE1A6E3948008A313B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787A81A6E3948008A313B /* LaunchScreen.xib */; };
 		4C8787AF1A6E3948008A313B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787AA1A6E3948008A313B /* Images.xcassets */; };
 		4C8787B11A6E3948008A313B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787AC1A6E3948008A313B /* ViewController.swift */; };
+		5534CA561F3CFF66002E82F9 /* WebServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; };
+		5534CA571F3CFF66002E82F9 /* WebServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,13 +28,6 @@
 			remoteGlobalIDString = 4C2DC4191CDEB4F4009CA3C5;
 			remoteInfo = Database;
 		};
-		4C2B3A231CDEB6F9004F1A18 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4C2DC3E41CDEB279009CA3C5;
-			remoteInfo = Network;
-		};
 		4C2B3A271CDEB717004F1A18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */;
@@ -42,12 +35,26 @@
 			remoteGlobalIDString = 4C2DC4181CDEB4F4009CA3C5;
 			remoteInfo = Database;
 		};
-		4C2B3A2B1CDEB717004F1A18 /* PBXContainerItemProxy */ = {
+		5534CA521F3CFF51002E82F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */;
+			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C2DC3E41CDEB279009CA3C5;
+			remoteInfo = WebServices;
+		};
+		5534CA541F3CFF57002E82F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4C2DC3E31CDEB279009CA3C5;
-			remoteInfo = Network;
+			remoteInfo = WebServices;
+		};
+		5534CA581F3CFF66002E82F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C2DC3E31CDEB279009CA3C5;
+			remoteInfo = WebServices;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -60,7 +67,7 @@
 			files = (
 				4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */,
 				4C2B3A261CDEB717004F1A18 /* Database.framework in Embed Frameworks */,
-				4C2B3A2A1CDEB717004F1A18 /* Network.framework in Embed Frameworks */,
+				5534CA571F3CFF66002E82F9 /* WebServices.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,13 +78,15 @@
 		4C1AD17C1AF04E6600D92E29 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2776A71A6C55F4007B1133 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Database.xcodeproj; path = Frameworks/Database.xcodeproj; sourceTree = "<group>"; };
-		4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Network.xcodeproj; path = Frameworks/Network.xcodeproj; sourceTree = "<group>"; };
+		4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WebServices.xcodeproj; path = Frameworks/WebServices.xcodeproj; sourceTree = "<group>"; };
 		4C2B3A3B1CDEC0D6004F1A18 /* WillowConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WillowConfiguration.swift; sourceTree = "<group>"; };
 		4C8787A71A6E3948008A313B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C8787A91A6E3948008A313B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4C8787AA1A6E3948008A313B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4C8787AB1A6E3948008A313B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C8787AC1A6E3948008A313B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		558C70AB1F3CFE7900B2252B /* WebServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebServices.framework; path = "Frameworks/build/Debug-iphoneos/WebServices.framework"; sourceTree = "<group>"; };
+		558C70AD1F3CFEEA00B2252B /* WebServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WebServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +96,7 @@
 			files = (
 				4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */,
 				4C2B3A251CDEB717004F1A18 /* Database.framework in Frameworks */,
-				4C2B3A291CDEB717004F1A18 /* Network.framework in Frameworks */,
+				5534CA561F3CFF66002E82F9 /* WebServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +106,7 @@
 		4C0182271AB286680020D3C4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				558C70AB1F3CFE7900B2252B /* WebServices.framework */,
 				4C1AD17C1AF04E6600D92E29 /* Willow.framework */,
 			);
 			name = Frameworks;
@@ -105,11 +115,12 @@
 		4C27769E1A6C55F4007B1133 = {
 			isa = PBXGroup;
 			children = (
+				558C70AD1F3CFEEA00B2252B /* WebServices.framework */,
 				4C8787A61A6E3948008A313B /* Source */,
 				4C0182271AB286680020D3C4 /* Frameworks */,
 				4C2776A81A6C55F4007B1133 /* Products */,
 				4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */,
-				4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */,
+				4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,14 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				4C2B3A211CDEB6F9004F1A18 /* Database.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		4C2B3A1C1CDEB6F9004F1A18 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4C2B3A241CDEB6F9004F1A18 /* Network.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,6 +162,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		5534CA4F1F3CFF50002E82F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5534CA531F3CFF51002E82F9 /* WebServices.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -174,8 +185,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				5534CA551F3CFF57002E82F9 /* PBXTargetDependency */,
 				4C2B3A281CDEB717004F1A18 /* PBXTargetDependency */,
-				4C2B3A2C1CDEB717004F1A18 /* PBXTargetDependency */,
+				5534CA591F3CFF66002E82F9 /* PBXTargetDependency */,
 			);
 			name = "iOS Example";
 			productName = Example;
@@ -194,6 +206,7 @@
 				TargetAttributes = {
 					4C2776A61A6C55F4007B1133 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -215,8 +228,8 @@
 					ProjectRef = 4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */;
 				},
 				{
-					ProductGroup = 4C2B3A1C1CDEB6F9004F1A18 /* Products */;
-					ProjectRef = 4C2B3A1B1CDEB6F9004F1A18 /* Network.xcodeproj */;
+					ProductGroup = 5534CA4F1F3CFF50002E82F9 /* Products */;
+					ProjectRef = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -234,11 +247,11 @@
 			remoteRef = 4C2B3A201CDEB6F9004F1A18 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4C2B3A241CDEB6F9004F1A18 /* Network.framework */ = {
+		5534CA531F3CFF51002E82F9 /* WebServices.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Network.framework;
-			remoteRef = 4C2B3A231CDEB6F9004F1A18 /* PBXContainerItemProxy */;
+			path = WebServices.framework;
+			remoteRef = 5534CA521F3CFF51002E82F9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -274,10 +287,15 @@
 			name = Database;
 			targetProxy = 4C2B3A271CDEB717004F1A18 /* PBXContainerItemProxy */;
 		};
-		4C2B3A2C1CDEB717004F1A18 /* PBXTargetDependency */ = {
+		5534CA551F3CFF57002E82F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Network;
-			targetProxy = 4C2B3A2B1CDEB717004F1A18 /* PBXContainerItemProxy */;
+			name = WebServices;
+			targetProxy = 5534CA541F3CFF57002E82F9 /* PBXContainerItemProxy */;
+		};
+		5534CA591F3CFF66002E82F9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WebServices;
+			targetProxy = 5534CA581F3CFF66002E82F9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -401,6 +419,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nike.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "iOS Example";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Debug;
 		};
@@ -417,6 +436,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nike.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "iOS Example";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Release;
 		};

@@ -188,6 +188,7 @@
 				TargetAttributes = {
 					4C2DC4181CDEB4F4009CA3C5 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -418,6 +419,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Debug;
 		};
@@ -438,6 +440,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Release;
 		};

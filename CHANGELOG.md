@@ -19,6 +19,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.1](https://github.com/Nike-Inc/Willow/releases/tag/3.0.1)
+
+#### Updated
+
+- Fix compile error for Swift 3.2/4.0.
+- Rename Network example framework to WebServices to avoid a name collision with an iOS 11 private framework with the same name.
+- Set SWIFT_VERSION to 3.2 in all targets. All targets still build with Swift 3.1/Xcode 8.3.x.
+
 ## [3.0.0](https://github.com/Nike-Inc/Willow/releases/tag/3.0.0)
 
 Released on 2017-01-13. All issues associated with this milestone can be found using this

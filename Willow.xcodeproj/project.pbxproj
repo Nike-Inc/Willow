@@ -419,6 +419,7 @@
 					};
 					4CFE82981A6C484A0002868E = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
 					4CFE82A31A6C484A0002868E = {
@@ -626,6 +627,7 @@
 				PRODUCT_NAME = Willow;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.2;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
@@ -650,6 +652,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Release;
@@ -702,6 +705,7 @@
 				PRODUCT_NAME = Willow;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.2;
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Debug;
@@ -726,6 +730,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Release;
@@ -752,6 +757,7 @@
 				PRODUCT_NAME = Willow;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.2;
 			};
 			name = Debug;
 		};
@@ -776,6 +782,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Release;
 		};
@@ -939,6 +946,7 @@
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Debug;
 		};
@@ -961,6 +969,7 @@
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
 			};
 			name = Release;
 		};
