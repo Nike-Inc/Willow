@@ -24,7 +24,7 @@
 
 import Database
 import Foundation
-import Network
+import WebServices
 import UIKit
 import Willow
 
@@ -65,7 +65,7 @@ struct WillowConfiguration {
     static func configure(
         appLogLevels: LogLevel = [.debug, .info, .event],
         databaseLogLevels: LogLevel = [.sql, .debug, .info, .event],
-        networkLogLevels: LogLevel = [.debug, .info, .event],
+        webservicesLogLevels: LogLevel = [.debug, .info, .event],
         asynchronous: Bool = false)
     {
         let writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]]
@@ -95,9 +95,9 @@ struct WillowConfiguration {
             executionMethod: executionMethod
         )
 
-        Network.log = configureLogger(
+        WebServices.log = configureLogger(
             emoji: "📡📡📡",
-            name: "Network",
+            name: "WebServices",
             modifierLogLevel: [.debug, .info, .event],
             writers: writers,
             executionMethod: executionMethod

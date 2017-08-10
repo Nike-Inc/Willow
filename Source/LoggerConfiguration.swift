@@ -75,7 +75,7 @@ public struct LoggerConfiguration {
             var specifiedValues: [LogLevel: [T]] = [:]
 
             for bitShift in UInt(0)..<UInt(32) {
-                let bitValue = 1 << bitShift
+                let bitValue = UInt(1) << bitShift
                 var valuesForBit: [T] = []
 
                 for key in values.keys where key.rawValue & bitValue > 0 {

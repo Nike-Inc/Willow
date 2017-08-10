@@ -23,7 +23,7 @@
 //
 
 import Database
-import Network
+import WebServices
 import UIKit
 import Willow
 
@@ -128,7 +128,7 @@ class ViewController: UIViewController {
                 ]
             ),
             Section(
-                title: "Network Framework",
+                title: "WebServices Framework",
                 items: [
                     Item(
                         title: "Log Debug Message",

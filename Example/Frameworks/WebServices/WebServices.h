@@ -1,5 +1,5 @@
 //
-//  Logger.swift
+//  WebServices.h
 //
 //  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
 //
@@ -22,21 +22,7 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
-import UIKit
-import Willow
+@import Foundation;
 
-/// The single `Logger` instance used throughout Network.
-public var log: Logger = {
-    struct PrefixModifier: LogMessageModifier {
-        func modifyMessage(_ message: String, with: LogLevel) -> String {
-            return "[Network] => \(message)"
-        }
-    }
-
-    let modifiers: [LogLevel: [LogMessageModifier]] = [.all: [PrefixModifier(), TimestampModifier()]]
-    let queue = DispatchQueue(label: "com.nike.network.logger.queue", qos: .utility)
-    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .asynchronous(queue: queue))
-
-    return Logger(configuration: configuration)
-}()
+FOUNDATION_EXPORT double WebServicesVersionNumber;
+FOUNDATION_EXPORT const unsigned char WebServicesVersionString[];
