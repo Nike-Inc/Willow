@@ -1,7 +1,7 @@
 //
 //  WillowConfiguration.swift
 //
-//  Copyright (c) 2015-2016 Nike, Inc. (https://www.nike.com)
+//  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@
 
 import Database
 import Foundation
-import WebServices
 import UIKit
+import WebServices
 import Willow
 
 var log: Logger!
@@ -65,7 +65,7 @@ struct WillowConfiguration {
     static func configure(
         appLogLevels: LogLevel = [.debug, .info, .event],
         databaseLogLevels: LogLevel = [.sql, .debug, .info, .event],
-        webservicesLogLevels: LogLevel = [.debug, .info, .event],
+        webServicesLogLevels: LogLevel = [.debug, .info, .event],
         asynchronous: Bool = false)
     {
         let writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]]

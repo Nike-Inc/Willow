@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 3.x Releases
 
-- `3.0.x` Releases - [3.0.0](#300)
+- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
 
 #### 2.x Releases
 
@@ -23,9 +23,16 @@ All notable changes to this project will be documented in this file.
 
 #### Updated
 
-- Fix compile error for Swift 3.2/4.0.
-- Rename Network example framework to WebServices to avoid a name collision with an iOS 11 private framework with the same name.
-- Set SWIFT_VERSION to 3.2 in all targets. All targets still build with Swift 3.1/Xcode 8.3.x.
+- Network example framework to WebServices to avoid a name collision with an iOS 11 private framework with the same name.
+  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+- SWIFT_VERSION to 3.2 in all targets. All targets still build with Swift 3.1/Xcode 8.3.x.
+  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+- Copyright dates to 2017.
+  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+
+#### Fixed
+
+- Compile error for Swift 3.2/4.0.
 
 ## [3.0.0](https://github.com/Nike-Inc/Willow/releases/tag/3.0.0)
 
