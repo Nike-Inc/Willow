@@ -29,7 +29,7 @@ import os
 /// the conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
 /// party service, etc.
 public protocol LogMessageWriter {
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?)
+    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier])
 }
 
 // MARK: -
@@ -69,9 +69,9 @@ open class ConsoleWriter: LogMessageWriter {
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
     ///   - modifiers: The modifier objects to run over the message before writing to the console.
-    open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]) {
         var message = message
-        modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }
+        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel) }
 
         switch method {
         case .print:
@@ -113,9 +113,9 @@ open class OSLogWriter: LogMessageWriter {
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
     ///   - modifiers: The modifier objects to run over the message before writing to the console.
-    open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    open func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]) {
         var message = message
-        modifiers?.forEach { message = $0.modifyMessage(message, with: logLevel) }
+        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel) }
 
         let logType: OSLogType
 
