@@ -28,18 +28,14 @@ import Willow
 import XCTest
 
 class ConsoleWriterTestCase: XCTestCase {
-    func testThatConsoleWriterCanBeInitializedAndDeinitialized() {
+    func testThatConsoleWriterCanBeInitialized() {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
-        var writer: ConsoleWriter? = ConsoleWriter()
+        let writer = ConsoleWriter()
 
         // When, Then
-        writer?.writeMessage(message, logLevel: logLevel, modifiers: [])
-        writer = nil
-
-        // Then
-        XCTAssertNil(writer)
+        writer.writeMessage(message, logLevel: logLevel)
     }
 
     func testThatConsoleWriterCanWriteMessageToConsoleWithPrint() {
@@ -49,7 +45,7 @@ class ConsoleWriterTestCase: XCTestCase {
         let writer = ConsoleWriter(method: .print)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
+        writer.writeMessage(message, logLevel: logLevel)
     }
 
     func testThatConsoleWriterCanWriteMessageToConsoleWithNSLog() {
@@ -59,7 +55,7 @@ class ConsoleWriterTestCase: XCTestCase {
         let writer = ConsoleWriter(method: .nslog)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
+        writer.writeMessage(message, logLevel: logLevel)
     }
 }
 
@@ -69,20 +65,16 @@ class OSLogWriterTestCase: XCTestCase {
     let subsystem = "com.nike.willow.test"
     let category = "os-log-writer"
 
-    func testThatOSLogWriterCanBeInitializedAndDeinitialized() {
+    func testThatOSLogWriterCanBeInitialized() {
         guard #available(iOS 10.0, macOS 10.12, tvOS 10.0, *) else { return }
 
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
-        var writer: OSLogWriter? = OSLogWriter(subsystem: subsystem, category: category)
+        let writer = OSLogWriter(subsystem: subsystem, category: category)
 
         // When, Then
-        writer?.writeMessage(message, logLevel: logLevel, modifiers: [])
-        writer = nil
-
-        // Then
-        XCTAssertNil(writer)
+        writer.writeMessage(message, logLevel: logLevel)
     }
 
     func testThatOSLogWriterCanWriteMessageUsingOSLog() {
@@ -94,6 +86,6 @@ class OSLogWriterTestCase: XCTestCase {
         let writer = OSLogWriter(subsystem: subsystem, category: category)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel, modifiers: [TimestampModifier()])
+        writer.writeMessage(message, logLevel: logLevel)
     }
 }

@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
         -> Bool
     {
-        WillowConfiguration.configure(asynchronous: false)
+        WillowConfiguration.configure()
 
         window = {
             let window = UIWindow(frame: UIScreen.main.bounds)

@@ -34,7 +34,13 @@ public class Request {
     }
 
     public static func makeEventRequest() {
-        log.event("Making request that logs event message")
+        let request = URLRequest(url: URL(string: "http://www.apple.com")!)
+        log.event(Message.requestStarted(request: request))
+
+        DispatchQueue.main.async {
+            let fakeResponse = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: "1.0", headerFields: nil)!
+            log.event(Message.requestCompleted(request: request, response: fakeResponse))
+        }
     }
 
     public static func makeWarnRequest() {
@@ -42,6 +48,12 @@ public class Request {
     }
 
     public static func makeErrorRequest() {
-        log.error("Making request that logs error message")
+        let request = URLRequest(url: URL(string: "http://www.apple.com")!)
+        log.event(Message.requestStarted(request: request))
+
+        DispatchQueue.main.async {
+            let fakeResponse = HTTPURLResponse(url: request.url!, statusCode: 404, httpVersion: "1.0", headerFields: nil)!
+            log.error(Message.requestFailed(request: request, response: fakeResponse, error: nil))
+        }
     }
 }
