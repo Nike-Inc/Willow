@@ -27,16 +27,89 @@ import UIKit
 import Willow
 
 /// The single `Logger` instance used throughout WebServices.
-public var log: Logger = {
-    struct PrefixModifier: LogMessageModifier {
-        func modifyMessage(_ message: String, with: LogLevel) -> String {
-            return "[WebServices] => \(message)"
+/// Note that the extension for Optional<Logger> allows for the safe use of `log` without unwrapping.
+public var log: Logger?
+
+/// Message type used by the WebServices framework.
+/// With this implementation you would have an enum case for each distinct message to be written.
+/// Note that where you might have had separate (but similar) strings in the past for messages,
+/// you can now consolidate into a single message with attributes now providing unique details
+enum Message: Willow.LogMessage {
+    case requestStarted(request: URLRequest)
+    case requestCompleted(request: URLRequest, response: HTTPURLResponse)
+    case requestFailed(request: URLRequest, response: HTTPURLResponse, error: Error?)
+
+    var name: String {
+        switch self {
+        case .requestStarted:   return "Request started"
+        case .requestCompleted: return "Request completed"
+        case .requestFailed:    return "Request failed"
         }
     }
 
-    let modifiers: [LogLevel: [LogMessageModifier]] = [.all: [PrefixModifier(), TimestampModifier()]]
-    let queue = DispatchQueue(label: "com.nike.webservices.logger.queue", qos: .utility)
-    let configuration = LoggerConfiguration(modifiers: modifiers, executionMethod: .asynchronous(queue: queue))
+    var attributes: [String: Any] {
+        var keyPathAttributes: [KeyPath: Any] = [:]
+        let success: Bool
 
-    return Logger(configuration: configuration)
-}()
+        // Fill in message specific attributes
+        switch self {
+        case let .requestStarted(request):
+            keyPathAttributes[.url] = request.url
+            success = true
+
+        case let .requestCompleted(request, response):
+            keyPathAttributes[.url] = request.url
+            keyPathAttributes[.respopnseCode] = response.statusCode
+            success = true
+
+        case let .requestFailed(request, response, error):
+            keyPathAttributes[.url] = request.url
+            keyPathAttributes[.respopnseCode] = response.statusCode
+            if let error = error {
+                keyPathAttributes[.errorDescription] = message(forError: error)
+                keyPathAttributes[.errorCode] = code(forError: error)
+            }
+            success = false
+        }
+
+        // Assign attributes that should be present for all messages
+        keyPathAttributes[.frameworkName] = Framework.name
+        keyPathAttributes[.frameworkVersion] = Framework.version
+        keyPathAttributes[.result] = success ? "success" : "failure"
+
+        // Map to the expected types
+        var attributes: [String: Any] = [:]
+        keyPathAttributes.forEach { attributes[$0.key.rawValue] = $0.value }
+
+        return attributes
+    }
+
+    /// Information about this framework.
+    private enum Framework {
+        static let name = "WebServices"
+
+        static let version: String = {
+            class Version {}
+            return Bundle(for: Version.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
+        }()
+    }
+
+    /// Attribute keys this framework uses.
+    private enum KeyPath: String {
+        case url                = "url"
+        case result             = "result"
+        case respopnseCode      = "response_code"
+        case errorDescription   = "error_description"
+        case errorCode          = "error_code"
+        case frameworkName      = "framework_name"
+        case frameworkVersion   = "framework_version"
+    }
+
+    private func code(forError error: Error) -> Int {
+        return (error as NSError).code
+    }
+
+    private func message(forError error: Error) -> String {
+        return (error as NSError).localizedDescription
+    }
+}

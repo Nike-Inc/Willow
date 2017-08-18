@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Willow'
-  s.version = '3.0.1'
+  s.version = '4.0.0'
   s.license = 'MIT'
   s.summary = 'A powerful, yet lightweight logging library written in Swift.'
   s.homepage = 'https://github.com/Nike-Inc/Willow'
