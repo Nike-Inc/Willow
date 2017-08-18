@@ -34,103 +34,106 @@ struct WillowConfiguration {
 
     // MARK: - Modifiers
 
-    private struct PrefixModifier: LogMessageModifier {
-        let emoji: String
+    private struct PrefixModifier: LogModifier {
+        let prefix: String
         let name: String
 
-        init(emoji: String, name: String) {
-            self.emoji = emoji
+        init(prefix: String, name: String) {
+            self.prefix = prefix
             self.name = name
         }
 
-        func modifyMessage(_ message: String, with: LogLevel) -> String {
-            return emoji + " [" + name + "] => " + message
+        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+            switch logLevel {
+            case .warn:  return "🚨🚨🚨 [\(name)] => \(message)"
+            case .error: return "💣💥💣💥 [\(name)] => \(message)"
+            default:     return "\(prefix) [\(name)] => \(message)"
+            }
         }
     }
 
-    private struct WarningPrefixModifier: LogMessageModifier {
-        func modifyMessage(_ message: String, with: LogLevel) -> String {
-            return "🚨🚨🚨 \(message)"
-        }
-    }
+    // MARK: Writers
 
-    private struct ErrorPrefixModifier: LogMessageModifier {
-        func modifyMessage(_ message: String, with: LogLevel) -> String {
-            return "💣💥💣💥 \(message)"
+    private class ServiceWriter: LogWriter {
+        func writeMessage(_ message: String, logLevel: LogLevel) {
+            // Send the message as-is to our external logging service
+            let attributes: [String: Any] = ["LogLevel": logLevel.description]
+
+             ServiceSDK.recordBreadcrumb(message, attributes: attributes)
+        }
+
+        func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+            // Send the message as-is to our external logging service
+            var attributes = message.attributes
+            attributes["LogLevel"] = logLevel.description
+
+            ServiceSDK.recordBreadcrumb(message.name, attributes: attributes)
         }
     }
 
     // MARK: - Configure
 
-    static func configure(
-        appLogLevels: LogLevel = [.debug, .info, .event],
-        databaseLogLevels: LogLevel = [.sql, .debug, .info, .event],
-        webServicesLogLevels: LogLevel = [.debug, .info, .event],
-        asynchronous: Bool = false)
-    {
-        let writers: [LogLevel: [LogMessageWriter]] = [.all: [ConsoleWriter()]]
-        let executionMethod: LoggerConfiguration.ExecutionMethod
+    static func configure() {
+        #if DEBUG
+            // A debug build of the application would probably log at a higher level than a release version.
+            // Also, synchronous logging can be beneficial in debug mode so that log statements emit as you step through the code.
+            let appLogLevels: LogLevel = [.all]
+            let databaseLogLevels: LogLevel = [.all]
+            let webServicesLogLevels: LogLevel = [.event, .warn, .error]
+            let executionMethod: Logger.ExecutionMethod = .synchronous(lock: NSRecursiveLock())
+        #else
+            // A release build probably logs only important data, omitting verbose debug information.
+            // Also, asynchronous logging can be desirable to not hold up the current thread for each log statement.
+            // Note that the execution method encapsulates the dispatch queue allowing for all logger instances using the same
+            // execution method to share the same queue and be correctly synchronized.
+            let appLogLevels: LogLevel = [.event, .warn, .error]
+            let databaseLogLevels: LogLevel = [.event, .warn, .error]
+            let webServicesLogLevels: LogLevel = [.event, .warn, .error]
+            let executionMethod: Logger.ExecutionMethod = .asynchronous(
+                    queue: DispatchQueue(label: "com.nike.example.logger", qos: .utility)
+                )
+        #endif
 
-        if asynchronous {
-            executionMethod = .synchronous(lock: NSRecursiveLock())
-        } else {
-            executionMethod = .asynchronous(
-                queue: DispatchQueue(label: "com.nike.example.logger", qos: .utility)
-            )
-        }
-
-        log = configureLogger(
-            emoji: "🌳🌳🌳",
+        log = createLogger(
+            prefix: "🌳🌳🌳",
             name: "App",
-            modifierLogLevel: [.debug, .info, .event],
-            writers: writers,
+            logLevels: appLogLevels,
             executionMethod: executionMethod
         )
 
-        Database.log = configureLogger(
-            emoji: "🗃🗃🗃",
+        Database.log = createLogger(
+            prefix: "🗃🗃🗃",
             name: "Database",
-            modifierLogLevel: [.sql, .debug, .info, .event],
-            writers: writers,
+            logLevels: databaseLogLevels,
             executionMethod: executionMethod
         )
 
-        WebServices.log = configureLogger(
-            emoji: "📡📡📡",
+        WebServices.log = createLogger(
+            prefix: "📡📡📡",
             name: "WebServices",
-            modifierLogLevel: [.debug, .info, .event],
-            writers: writers,
+            logLevels: webServicesLogLevels,
             executionMethod: executionMethod
         )
     }
 
-    private static func configureLogger(
-        emoji: String,
+    private static func createLogger(
+        prefix: String,
         name: String,
-        modifierLogLevel: LogLevel,
-        writers: [LogLevel: [LogMessageWriter]],
-        executionMethod: LoggerConfiguration.ExecutionMethod)
+        logLevels: LogLevel,
+        executionMethod: Logger.ExecutionMethod)
         -> Logger
     {
-        let prefixModifier = PrefixModifier(emoji: emoji, name: name)
+        let prefixModifier = PrefixModifier(prefix: prefix, name: name)
         let timestampModifier = TimestampModifier()
+        let writers: [LogWriter] = [ConsoleWriter(modifiers: [prefixModifier, timestampModifier]), ServiceWriter()]
 
-        let modifiers: [LogLevel: [LogMessageModifier]] = {
-            let modifiers: [LogMessageModifier] = [prefixModifier, timestampModifier]
+        return Logger(logLevels: logLevels, writers: writers, executionMethod: executionMethod)
+    }
+}
 
-            return [
-                modifierLogLevel: modifiers,
-                .warn: [WarningPrefixModifier()] + modifiers,
-                .error: [ErrorPrefixModifier()] + modifiers
-            ]
-        }()
-
-        let configuration = LoggerConfiguration(
-            modifiers: modifiers,
-            writers: writers,
-            executionMethod: executionMethod
-        )
-
-        return Logger(configuration: configuration)
+/// Placeholder for a 3rd party logging service SDK. Serves as an example of calling an SDK with log output.
+private struct ServiceSDK {
+    static func recordBreadcrumb(_ message: String, attributes: [String: Any]) {
+        
     }
 }

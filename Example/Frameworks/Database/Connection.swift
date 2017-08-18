@@ -24,13 +24,21 @@
 
 import Foundation
 
+public struct SQLError: Error {
+    public let code: Int32
+    public var message: String
+}
+
 public class Connection {
     public static func makeSQLCall() {
-        log.sql("Making call that logs sql message")
+        let sql = "SELECT * FROM MyTable WHERE awesome = true"
+        // Make an interesting database call…
+
+        log.sql(Message.sqlQuery(sql: sql))
     }
 
     public static func makeDebugCall() {
-        log.debug("Making call that logs debug message")
+        log.debug(Message.connectionOpened)
     }
 
     public static func makeInfoCall() {
@@ -38,7 +46,7 @@ public class Connection {
     }
 
     public static func makeEventCall() {
-        log.event("Making call that logs event message")
+        log.event(Message.backupComplete)
     }
 
     public static func makeWarnCall() {
@@ -46,6 +54,13 @@ public class Connection {
     }
 
     public static func makeErrorCall() {
-        log.error("Making call that logs error message")
+        let sql = "CREATE TABLE cars(make TEXT NOT NULL, model TEXT NOT NULL)"
+
+        do {
+            // Do something that can throw
+            throw SQLError(code: 5, message: "The database file is locked")
+        } catch {
+            log.error(Message.sqlFailure(sql: sql, error: error))
+        }
     }
 }

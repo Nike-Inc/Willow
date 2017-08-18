@@ -34,18 +34,36 @@ import XCTest
 
 // MARK: Test Helpers
 
-class SynchronousTestWriter: LogMessageWriter {
+class SynchronousTestWriter: LogModifierWriter {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
     private(set) var modifiedMessages = [String]()
 
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    let modifiers: [LogModifier]
+    var lastMessage: LogMessage?
+
+    init(modifiers: [LogModifier] = []) {
+        self.modifiers = modifiers
+    }
+
+    func writeMessage(_ message: String, logLevel: LogLevel) {
         var mutableMessage = message
 
-        if let modifiers = modifiers {
-            modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
-            modifiedMessages.append(mutableMessage)
-        }
+        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+        modifiedMessages.append(mutableMessage)
+
+        self.message = mutableMessage
+
+        actualNumberOfWrites += 1
+    }
+
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        var mutableMessage = "\(message.name): \(message.attributes)"
+
+        lastMessage = message
+
+        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+        modifiedMessages.append(mutableMessage)
 
         self.message = mutableMessage
 
@@ -59,13 +77,22 @@ class AsynchronousTestWriter: SynchronousTestWriter {
     let expectation: XCTestExpectation
     let expectedNumberOfWrites: Int
 
-    init(expectation: XCTestExpectation, expectedNumberOfWrites: Int) {
+    init(expectation: XCTestExpectation, expectedNumberOfWrites: Int, modifiers: [LogModifier] = []) {
         self.expectation = expectation
         self.expectedNumberOfWrites = expectedNumberOfWrites
+        super.init(modifiers: modifiers)
     }
 
-    override func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
-        super.writeMessage(message, logLevel: logLevel, modifiers: modifiers)
+    override func writeMessage(_ message: String, logLevel: LogLevel) {
+        super.writeMessage(message, logLevel: logLevel)
+
+        if actualNumberOfWrites == expectedNumberOfWrites {
+            expectation.fulfill()
+        }
+    }
+
+    override func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        super.writeMessage(message, logLevel: logLevel)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
             expectation.fulfill()
@@ -75,7 +102,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
 
 // MARK: -
 
-class PrefixModifier: LogMessageModifier {
+class PrefixModifier: LogModifier {
     func modifyMessage(_ message: String, with: LogLevel) -> String {
         return "[Willow] \(message)"
     }
@@ -87,18 +114,15 @@ class SynchronousLoggerTestCase: XCTestCase {
     var message = "Test Message"
     let timeout = 0.1
 
-    func logger(logLevel: LogLevel = .all, modifiers: [LogLevel: [LogMessageModifier]] = [:]) -> (Logger, SynchronousTestWriter) {
-        let writer = SynchronousTestWriter()
-
-        let configuration = LoggerConfiguration(modifiers: modifiers, writers: [logLevel: [writer]])
-        let logger = Logger(configuration: configuration)
+    func logger(logLevels: LogLevel = .all, modifiers: [LogModifier] = []) -> (Logger, SynchronousTestWriter) {
+        let writer = SynchronousTestWriter(modifiers: modifiers)
+        let logger = Logger(logLevels: logLevels, writers: [writer])
 
         return (logger, writer)
     }
 
-    func logger(writers: [LogLevel: [LogMessageWriter]] = [:]) -> (Logger) {
-        let configuration = LoggerConfiguration(writers: writers)
-        let logger = Logger(configuration: configuration)
+    func logger(writers: [LogWriter] = []) -> (Logger) {
+        let logger = Logger(logLevels: [.all], writers: writers)
 
         return logger
     }
@@ -108,468 +132,23 @@ class SynchronousLoggerTestCase: XCTestCase {
 
 class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
     func logger(
-        logLevel: LogLevel = .debug,
-        modifiers: [LogLevel: [LogMessageModifier]] = [:],
+        logLevels: LogLevel = .debug,
+        modifiers: [LogModifier] = [],
         expectedNumberOfWrites: Int = 1) -> (Logger, AsynchronousTestWriter)
     {
         let expectation = self.expectation(description: "Test writer should receive expected number of writes")
-        let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites)
+        let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites, modifiers: modifiers)
         let queue = DispatchQueue(label: "async-logger-test-queue", qos: .utility)
-
-        let configuration = LoggerConfiguration(
-            modifiers: modifiers,
-            writers: [logLevel: [writer]],
-            executionMethod: .asynchronous(queue: queue)
-        )
-
-        let logger = Logger(configuration: configuration)
+        let logger = Logger(logLevels: logLevels, writers: [writer], executionMethod: .asynchronous(queue: queue))
 
         return (logger, writer)
-    }
-}
-
-// MARK: - Tests
-
-class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
-    func testThatItLogsAsExpectedWithOffLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .off)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 0, "Actual number of writes should be 0")
-    }
-
-    func testThatItLogsAsExpectedWithDebugLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .debug)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithInfoLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .info)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithEventLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .event)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithWarnLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .warn)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithErrorLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .error)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithAllLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .all)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
-    }
-
-    func testThatItLogsAsExpectedWithMultipleLogLevels() {
-        // Given
-        let logLevel: LogLevel = [.debug, .event, .error]
-        let (log, writer) = logger(logLevel: logLevel)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 3, "Actual number of writes should be 3")
-    }
-
-    func testThatItCanLogMessageInsideAnotherLogStatement() {
-        // Given
-        let (log, writer) = logger(logLevel: .all)
-
-        // When
-        log.debug {
-            log.debug { "" }
-            return ""
-        }
-
-        log.info {
-            log.info { "" }
-            return ""
-        }
-
-        log.event {
-            log.event { "" }
-            return ""
-        }
-
-        log.warn {
-            log.warn { "" }
-            return ""
-        }
-
-        log.error {
-            log.error { "" }
-            return ""
-        }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 10, "Actual number of writes should be 10")
-    }
-
-    func testThatItLogsAsExpectedWithAutoclosureDebugLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .debug)
-
-        // When
-        log.debug("")
-        log.info("")
-        log.event("")
-        log.warn("")
-        log.error("")
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithAutoclosureInfoLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .info)
-
-        // When
-        log.debug("")
-        log.info("")
-        log.event("")
-        log.warn("")
-        log.error("")
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithAutoclosureEventLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .event)
-
-        // When
-        log.debug("")
-        log.info("")
-        log.event("")
-        log.warn("")
-        log.error("")
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithAutoclosureWarnLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .warn)
-
-        // When
-        log.debug("")
-        log.info("")
-        log.event("")
-        log.warn("")
-        log.error("")
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-
-    func testThatItLogsAsExpectedWithAutoclosureErrorLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .error)
-
-        // When
-        log.debug("")
-        log.info("")
-        log.event("")
-        log.warn("")
-        log.error("")
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
-    }
-}
-
-// MARK: -
-
-class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
-    func testThatItLogsAsExpectedWithOffLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .off, expectedNumberOfWrites: 0)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // This is an interesting test because we have to wait to make sure nothing happened. This makes it
-        // very difficult to fullfill the expectation. For now, we are using a dispatch_after that fires
-        // slightly before the timeout to fullfill the expectation.
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            writer.expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItLogsAsExpectedWithDebugLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .debug, expectedNumberOfWrites: 1)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItLogsAsExpectedWithInfoLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .info, expectedNumberOfWrites: 1)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItLogsAsExpectedWithEventLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .event, expectedNumberOfWrites: 1)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItLogsAsExpectedWithWarnLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .warn, expectedNumberOfWrites: 1)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItLogsAsExpectedWithErrorLogLevel() {
-        // Given
-        let (log, writer) = logger(logLevel: .error, expectedNumberOfWrites: 1)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItLogsAsExpectedWithMultipleLogLevels() {
-        // Given
-        let logLevel: LogLevel = [.event, .warn, .error]
-        let (log, writer) = logger(logLevel: logLevel, expectedNumberOfWrites: 3)
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites, "Expected should match actual number of writes")
-    }
-
-    func testThatItCanLogMessageInsideAnotherLogStatement() {
-        // Given
-        let (log, writer) = logger(logLevel: .all, expectedNumberOfWrites: 10)
-
-        // When
-        log.debug {
-            log.debug { "" }
-            return ""
-        }
-
-        log.info {
-            log.info { "" }
-            return ""
-        }
-
-        log.event {
-            log.event { "" }
-            return ""
-        }
-
-        log.warn {
-            log.warn { "" }
-            return ""
-        }
-
-        log.error {
-            log.error { "" }
-            return ""
-        }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites)
-    }
-}
-
-// MARK: -
-
-class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
-    func testThatItLogsAllLogLevelsWhenEnabled() {
-        // Given
-        let (log, writer) = logger(logLevel: .all)
-        log.enabled = true
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be equal to 5")
-    }
-
-    func testThatNoLoggingOccursForAnyLogLevelWhenDisabled() {
-        // Given
-        let (log, writer) = logger(logLevel: .all)
-        log.enabled = false
-
-        // When
-        log.debug { "" }
-        log.info { "" }
-        log.event { "" }
-        log.warn { "" }
-        log.error { "" }
-
-        // Then
-        XCTAssertEqual(writer.actualNumberOfWrites, 0, "Actual number of writes should be equal to 0")
     }
 }
 
 // MARK: -
 
 class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
-    private struct SymbolModifier: LogMessageModifier {
+    private struct SymbolModifier: LogModifier {
         func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
             return "+=+-+ \(message)"
         }
@@ -577,7 +156,7 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
 
     func testThatItLogsOutputAsExpectedWithMultipleModifiers() {
         // Given
-        let modifiers: [LogLevel: [LogMessageModifier]] = [.all: [PrefixModifier(), SymbolModifier()]]
+        let modifiers: [LogModifier] = [PrefixModifier(), SymbolModifier()]
         let (log, writer) = logger(modifiers: modifiers)
 
         // When
@@ -604,13 +183,7 @@ class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
         let writer1 = SynchronousTestWriter()
         let writer2 = SynchronousTestWriter()
         let writer3 = SynchronousTestWriter()
-
-        let writers: [LogLevel: [LogMessageWriter]] = [
-            .all: [writer1],
-            .debug: [writer2],
-            [.debug, .event, .error]: [writer3]
-        ]
-
+        let writers = [writer1, writer2, writer3]
         let log = logger(writers: writers)
 
         // When
@@ -622,7 +195,7 @@ class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
 
         // Then
         XCTAssertEqual(writer1.actualNumberOfWrites, 5, "writer 1 actual number of writes should be 5")
-        XCTAssertEqual(writer2.actualNumberOfWrites, 1, "writer 2 actual number of writes should be 1")
-        XCTAssertEqual(writer3.actualNumberOfWrites, 3, "writer 3 actual number of writes should be 3")
+        XCTAssertEqual(writer2.actualNumberOfWrites, 5, "writer 2 actual number of writes should be 5")
+        XCTAssertEqual(writer3.actualNumberOfWrites, 5, "writer 3 actual number of writes should be 5")
     }
 }

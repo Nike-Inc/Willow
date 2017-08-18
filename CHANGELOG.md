@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 `Willow` adheres to [Semantic Versioning](http://semver.org/).
 
+#### 4.x Releases
+
+- `4.0.x` Releases - [4.0.0](#400)
+
 #### 3.x Releases
 
 - `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
@@ -19,6 +23,34 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [4.0.0](https://github.com/Nike-Inc/Willow/releases/tag/4.0.0)
+
+#### Updated
+- Project and code to Swift 4.0.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- Small optimization: since the configuration is immutable, we can test the log level before taking the lock or dispatching. Avoids evaluating the log closure if the log will not be written, will increase performance for users with noisy but ignored debug logs.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- LoggerTests by refactoring into LoggerMessageTests and LoggerMessageStringTests since there are now two separate APIs to test.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- Example frameworks to not have a default logger instance.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- Example willow configuration to match new API.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- Writers such that there are now two protocols: LogWriter and LogModifierWriter. Former is a basic writer. Latter is a writer that also accepts an array of modifiers to apply to incoming messages.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- All unit tests.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- Example frameworks to show intended usage of LogMessages.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+
+#### Added
+- Added support for structured messages and simplified Logger setup.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+
+#### Removed
+- Configuration from Willow. Callers now pass a log level, writers, and execution method to init(). Greatly simplifies setup and usage.
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+ 
 ## [3.0.1](https://github.com/Nike-Inc/Willow/releases/tag/3.0.1)
 
 #### Updated

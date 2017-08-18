@@ -53,12 +53,17 @@ extension Logger {
 
 // MARK: - Helper Test Classes
 
-class TestWriter: LogMessageWriter {
+class TestWriter: LogWriter {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
 
-    func writeMessage(_ message: String, logLevel: LogLevel, modifiers: [LogMessageModifier]?) {
+    func writeMessage(_ message: String, logLevel: LogLevel) {
         self.message = message
+        actualNumberOfWrites += 1
+    }
+
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        self.message = "\(message.name): \(message.attributes)"
         actualNumberOfWrites += 1
     }
 }
@@ -165,7 +170,7 @@ class CustomLogLevelTestCase: XCTestCase {
 
     func testThatItLogsAsExpectedWithAllLogLevel() {
         // Given
-        let (log, writer) = logger(logLevel: .all)
+        let (log, writer) = logger(logLevels: .all)
 
         // When / Then
         log.verbose { "verbose message" }
@@ -195,8 +200,8 @@ class CustomLogLevelTestCase: XCTestCase {
 
     func testThatItLogsAsExpectedWithOrdLogLevels() {
         // Given
-        let logLevel: LogLevel = [LogLevel.verbose, LogLevel.info, LogLevel.summary, LogLevel.warn]
-        let (log, writer) = logger(logLevel: logLevel)
+        let logLevels: LogLevel = [LogLevel.verbose, LogLevel.info, LogLevel.summary, LogLevel.warn]
+        let (log, writer) = logger(logLevels: logLevels)
 
         // When / Then
         log.verbose { "verbose message" }
@@ -226,11 +231,9 @@ class CustomLogLevelTestCase: XCTestCase {
 
     // MARK: Private - Helper Methods
 
-    func logger(logLevel: LogLevel) -> (Logger, TestWriter) {
+    func logger(logLevels: LogLevel) -> (Logger, TestWriter) {
         let writer = TestWriter()
-
-        let configuration = LoggerConfiguration(writers: [logLevel: [writer]])
-        let logger = Logger(configuration: configuration)
+        let logger = Logger(logLevels: logLevels, writers: [writer])
 
         return (logger, writer)
     }

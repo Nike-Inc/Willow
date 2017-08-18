@@ -1,5 +1,5 @@
 //
-//  LoggerConfigurationTests.swift
+//  LogMessage.swift
 //
 //  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
 //
@@ -23,36 +23,12 @@
 //
 
 import Foundation
-import Willow
-import XCTest
 
-class LoggerConfigurationTestCase: XCTestCase {
-    func testThatLoggerConfigurationCanCreatedPreConfiguredTimestampConfiguration() {
-        // Given
-        let logLevels: [LogLevel] = [.debug, .info, .event, .warn, .error]
+/// A LogMessage is a detailed log entry with a name and a dictionary of associated attributes.
+public protocol LogMessage {
+    /// Name of this message.
+    var name: String { get }
 
-        // Given
-        let configuration = LoggerConfiguration.timestampConfiguration()
-
-        // Then
-        XCTAssertEqual(configuration.modifiers.count, 32)
-
-        for logLevel in logLevels {
-            XCTAssertEqual(configuration.modifiers[logLevel]?.count, 1)
-
-            if let modifiers = configuration.modifiers[logLevel], modifiers.count == 1 {
-                XCTAssertTrue(modifiers[0] is TimestampModifier)
-            }
-        }
-
-        XCTAssertEqual(configuration.writers.count, 32)
-
-        for rawValue in UInt(0)..<UInt(configuration.writers.count) {
-            let logLevel = LogLevel(rawValue: rawValue)
-
-            if let writers = configuration.writers[logLevel], writers.count == 1 {
-                XCTAssertTrue(writers[0] is ConsoleWriter)
-            }
-        }
-    }
+    /// Attributes associated with this message.
+    var attributes: [String: Any] { get }
 }
