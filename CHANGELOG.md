@@ -61,10 +61,16 @@ All notable changes to this project will be documented in this file.
   - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
 - Copyright dates to 2017.
   - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+- ExecutionMethod enum casing in example.
+  - Added by [Eric Jensen](https://github.com/ejensen) in Pull Request [#22](https://github.com/Nike-Inc/Willow/pull/22).
+
 
 #### Fixed
 
 - Compile error for Swift 3.2/4.0.
+  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+- Remove redundant cast from Date to Date
+  - Added by [Eric Jensen](https://github.com/ejensen) in Pull Request [#23](https://github.com/Nike-Inc/Willow/pull/23).
 
 ## [3.0.0](https://github.com/Nike-Inc/Willow/releases/tag/3.0.0)
 
