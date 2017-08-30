@@ -25,6 +25,9 @@ All notable changes to this project will be documented in this file.
 
 ## [4.0.0](https://github.com/Nike-Inc/Willow/releases/tag/4.0.0)
 
+Released on 2017-08-30. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/5?closed=1).
+
 #### Added
 
 - Support for structured messages and simplified `Logger` setup.
