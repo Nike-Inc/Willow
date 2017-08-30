@@ -25,30 +25,37 @@ All notable changes to this project will be documented in this file.
 
 ## [4.0.0](https://github.com/Nike-Inc/Willow/releases/tag/4.0.0)
 
-#### Updated
-- Project and code to Swift 4.0.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- Small optimization: since the configuration is immutable, we can test the log level before taking the lock or dispatching. Avoids evaluating the log closure if the log will not be written, will increase performance for users with noisy but ignored debug logs.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- LoggerTests by refactoring into LoggerMessageTests and LoggerMessageStringTests since there are now two separate APIs to test.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- Example frameworks to not have a default logger instance.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- Example willow configuration to match new API.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- Writers such that there are now two protocols: LogWriter and LogModifierWriter. Former is a basic writer. Latter is a writer that also accepts an array of modifiers to apply to incoming messages.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- All unit tests.
-  [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- Example frameworks to show intended usage of LogMessages.
+#### Added
+
+- Support for structured messages and simplified `Logger` setup.
+  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request
   [#28](https://github.com/Nike-Inc/Willow/pull/28).
 
-#### Added
-- Added support for structured messages and simplified Logger setup.
+#### Updated
+
+- The Xcode project and source code to Swift 4.0.
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- The log level enabled check to run prior to acquiring the lock or async dispatch queue resulting in a small performance gain.
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- The example frameworks to not have a default logger instance.
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- The example app configuration logic to match the new APIs.
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- The `LogMessageWriter` protocol by splitting it into two new protocols: `LogWriter` and `LogModifierWriter`. The former is a basic writer. The latter is a writer that also accepts an array of modifiers to apply to incoming messages.
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- Example frameworks to show intended usage of the new `LogMessage` APIs.
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
   [#28](https://github.com/Nike-Inc/Willow/pull/28).
 
 #### Removed
-- Configuration from Willow. Callers now pass a log level, writers, and execution method to init(). Greatly simplifies setup and usage.
+
+- `LoggerConfiguration` entirely. `Logger` construction now takes a log level, writers array, and execution method which greatly simplifies setup and usage.
+  - Removed by [Dave Camp](https://github.com/atomiccat) in Pull Request
   [#28](https://github.com/Nike-Inc/Willow/pull/28).
 
 ## [3.0.2](https://github.com/Nike-Inc/Willow/releases/tag/3.0.2)
@@ -73,15 +80,26 @@ Released on 2017-08-17. All issues associated with this milestone can be found u
 #### Updated
 
 - Network example framework to WebServices to avoid a name collision with an iOS 11 private framework with the same name.
-  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#27](https://github.com/Nike-Inc/Willow/pull/27).
 - SWIFT_VERSION to 3.2 in all targets. All targets still build with Swift 3.1/Xcode 8.3.x.
-  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#27](https://github.com/Nike-Inc/Willow/pull/27).
 - Copyright dates to 2017.
-  - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request [#27](https://github.com/Nike-Inc/Willow/pull/27).
+  - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#27](https://github.com/Nike-Inc/Willow/pull/27).
+- ExecutionMethod enum casing in example.
+  - Updated by [Eric Jensen](https://github.com/ejensen) in Pull Request
+  [#22](https://github.com/Nike-Inc/Willow/pull/22).
 
 #### Fixed
 
-- Compile error for Swift 3.2/4.0.
+- Compiler error for Swift 3.2/4.0.
+  - Fixed by [Dave Camp](https://github.com/atomiccat) in Pull Request
+  [#27](https://github.com/Nike-Inc/Willow/pull/27).
+- Remove redundant cast from Date to Date
+  - Fixed by [Eric Jensen](https://github.com/ejensen) in Pull Request
+  [#23](https://github.com/Nike-Inc/Willow/pull/23).
 
 ## [3.0.0](https://github.com/Nike-Inc/Willow/releases/tag/3.0.0)
 
