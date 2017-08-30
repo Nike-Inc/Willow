@@ -111,6 +111,19 @@ github "Nike-Inc/Willow" ~> 4.0
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
 
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
+It is in early development, but Willow does support its use on supported platforms.
+
+Once you have your Swift package set up, adding Willow as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/Nike-Inc/Willow.git", majorVersion: 4)
+]
+```
+
 ---
 
 ## Usage
