@@ -67,7 +67,8 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 
 ### CocoaPods
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
+You can install it with the following command:
 
 ```bash
 [sudo] gem install cocoapods
@@ -98,8 +99,8 @@ $ pod install
 You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
 
 ```bash
-brew update
-brew install carthage
+$ brew update
+$ brew install carthage
 ```
 
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
@@ -124,31 +125,42 @@ let defaultLogger = Logger(logLevels: [.all], writers: [ConsoleWriter()])
 
 The `Logger` initializer takes three parameters to customize the behavior of the logger instance.
 
-- `logLevels: [LogLevel]` - The log message levels that should be processed. Messages that don't match the current log level are not processed.
+- `logLevels: [LogLevel]` - The log message levels that should be processed.
+Messages that don't match the current log level are not processed.
 
-- `writers: [Writer]` - The array of writers to write to. Writers can be used to log output to a specific destination such as the console, a file, or an external service.
+- `writers: [LogWriter]` - The array of writers to write to.
+Writers can be used to log output to a specific destination such as the console, a file, or an external service.
 
 - `executionMethod: ExecutionMethod = .synchronous(lock: NSRecursiveLock())` - The execution method used when writing messages.
 
-`Logger` objects can only be customized during initialization. If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs. It is perfectly acceptable to have many different `Logger` instances running simultaneously.
+`Logger` objects can only be customized during initialization.
+If you need to change a `Logger` at runtime, it is advised to create an additional logger with a custom configuration to fit your needs.
+It is perfectly acceptable to have many different `Logger` instances running simultaneously.
 
 #### Thread Safety
 
-The `print` function does not guarantee that the `String` parameter will be fully logged to the console. If two `print` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined. `Willow` guarantees that messages are completely finished writing before starting on the next one.
+The `print` function does not guarantee that the `String` parameter will be fully logged to the console.
+If two `print` calls are happening simultaneously from two different queues (threads), the messages can get mangled, or intertwined.
+`Willow` guarantees that messages are completely finished writing before starting on the next one.
 
-> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging. If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `DispatchQueue` that is shared between both configurations. For more info...see the [Advanced Usage](#advanced-usage) section.
+> It is important to note that by creating multiple `Logger` instances, you can potentially lose the guarantee of thread-safe logging.
+> If you want to use multiple `Logger` instances, you should create a `NSRecursiveLock` or `DispatchQueue` that is shared between both configurations.
+> For more info, see the [Advanced Usage](#advanced-usage) section.
 
 ### Logging Messages and String Messages
 
 Willow can log two different types: Messages and Strings. 
 
- - Messages are structured data with a name and a dictionary of attributes. Willow declares the `LogMessage` protocol which frameworks and applications can use as the basis for concrete implementations. Messages are a good choice if you want to provide context information along with the log text (e.g. routing log information to an external system like New Relic).
+ - Messages are structured data with a name and a dictionary of attributes.
+ Willow declares the `LogMessage` protocol which frameworks and applications can use as the basis for concrete implementations.
+ Messages are a good choice if you want to provide context information along with the log text (e.g. routing log information to an external system like New Relic).
 
  - Strings are just `Strings` with no additional data.
 
 ### Logging Messages with Closures
 
-The logging syntax of Willow was optimized to make logging as lightweight and easy to remember as possible. Developers should be able to focus on the task at hand and not remembering how to write a log message.
+The logging syntax of Willow was optimized to make logging as lightweight and easy to remember as possible.
+Developers should be able to focus on the task at hand and not remembering how to write a log message.
 
 #### Single Line Closures
 
@@ -172,9 +184,12 @@ log.warn { "Warn Message" }   // Warn Message
 log.error { "Error Message" } // Error Message
 ```
 
-Both of these approaches are equivalent. The first set of APIs accept autoclosures and the second set accept closures.
+Both of these approaches are equivalent.
+The first set of APIs accept autoclosures and the second set accept closures.
 
-> Feel free to use whichever syntax you prefer for your project. Also, by default, only the `String` returned by the closure will be logged. See the [Log Modifiers](#log-modifiers) section for more information about customizing log message formats.
+> Feel free to use whichever syntax you prefer for your project.
+Also, by default, only the `String` returned by the closure will be logged.
+See the [Log Modifiers](#log-modifiers) section for more information about customizing log message formats.
 
 The reason both sets of APIs use closures to extract the log message is performance.
 
@@ -182,7 +197,9 @@ The reason both sets of APIs use closures to extract the log message is performa
 
 #### Multi-Line Closures
 
-Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky. We want to make sure logic is encapsulated and very performant. `Willow` log level closures allow you to cleanly wrap all the logic to build up the message.
+Logging a message is easy, but knowing when to add the logic necessary to build a log message and tune it for performance can be a bit tricky.
+We want to make sure logic is encapsulated and very performant.
+`Willow` log level closures allow you to cleanly wrap all the logic to build up the message.
 
 ```swift
 log.debug {
@@ -202,11 +219,16 @@ log.info {
 
 #### Closure Performance
 
-Willow works exclusively with logging closures to ensure the maximum performance in all situations. Closures defer the execution of all the logic inside the closure until absolutely necessary, including the string evaluation itself. In cases where the Logger instance is disabled, log execution time was reduced by 97% over the traditional log message methods taking a `String` parameter. Additionally, the overhead for creating a closure was measured at 1% over the traditional method making it negligible. In summary, closures allow Willow to be extremely performant in all situations.
+Willow works exclusively with logging closures to ensure the maximum performance in all situations.
+Closures defer the execution of all the logic inside the closure until absolutely necessary, including the string evaluation itself.
+In cases where the Logger instance is disabled, log execution time was reduced by 97% over the traditional log message methods taking a `String` parameter.
+Additionally, the overhead for creating a closure was measured at 1% over the traditional method making it negligible.
+In summary, closures allow Willow to be extremely performant in all situations.
 
 ### Disabling a Logger
 
-The `Logger` class has an `enabled` property to allow you to completely disable logging. This can be helpful for turning off specific `Logger` objects at the app level, or more commonly to disable logging in a third-party library.
+The `Logger` class has an `enabled` property to allow you to completely disable logging.
+This can be helpful for turning off specific `Logger` objects at the app level, or more commonly to disable logging in a third-party library.
 
 ```swift
 let log = Logger()
@@ -221,7 +243,9 @@ log.enabled = true
 
 ### Synchronous and Asynchronous Logging
 
-Logging can greatly affect the runtime performance of your application or library. Willow makes it very easy to log messages synchronously or asynchronously. You can define this behavior when creating the `LoggerConfiguration` for your `Logger` instance.
+Logging can greatly affect the runtime performance of your application or library.
+Willow makes it very easy to log messages synchronously or asynchronously.
+You can define this behavior when creating the `LoggerConfiguration` for your `Logger` instance.
 
 ```swift
 let queue = DispatchQueue(label: "serial.queue", qos: .utility)
@@ -230,17 +254,24 @@ let log = Logger(logLevels: [.all], writers: [ConsoleWriter()], executionMethod:
 
 #### Synchronous Logging
 
-Synchronous logging is very helpful when you are developing your application or library. The log operation will be completed before executing the next line of code. This can be very useful when stepping through the debugger. The downside is that this can seriously affect performance if logging on the main thread.
+Synchronous logging is very helpful when you are developing your application or library.
+The log operation will be completed before executing the next line of code.
+This can be very useful when stepping through the debugger.
+The downside is that this can seriously affect performance if logging on the main thread.
 
 #### Asynchronous Logging
 
-Asynchronous logging should be used for deployment builds of your application or library. This will offload the logging operations to a separate dispatch queue that will not affect the performance of the main thread. This allows you to still capture logs in the manner that the `Logger` is configured, yet not affect the performance of the main thread operations.
+Asynchronous logging should be used for deployment builds of your application or library.
+This will offload the logging operations to a separate dispatch queue that will not affect the performance of the main thread.
+This allows you to still capture logs in the manner that the `Logger` is configured, yet not affect the performance of the main thread operations.
 
-> These are large generalizations about the typical use cases for one approach versus the other. Before making a final decision about which approach to use when, you should really break down your use case in detail.
+> These are large generalizations about the typical use cases for one approach versus the other.
+> Before making a final decision about which approach to use when, you should really break down your use case in detail.
 
 ### Log Writers
 
-Writing log messages to various locations is an essential feature of any robust logging library. This is made possible in `Willow` through the `LogWriter` protocol.
+Writing log messages to various locations is an essential feature of any robust logging library.
+This is made possible in `Willow` through the `LogWriter` protocol.
 
 ```swift
 public protocol LogWriter {
@@ -249,7 +280,10 @@ public protocol LogWriter {
 }
 ```
 
-Again, this is an extremely lightweight design to allow for ultimate flexibility. As long as your `LogWriter` classes conform, you can do anything with those log messages that you want. You could write the message to the console, append it to a file, send it to a server, etc. Here's a quick look at a simple write that writes to the console.
+Again, this is an extremely lightweight design to allow for ultimate flexibility.
+As long as your `LogWriter` classes conform, you can do anything with those log messages that you want.
+You could write the message to the console, append it to a file, send it to a server, etc.
+Here's a quick look at a simple write that writes to the console.
 
 ```swift
 open class ConsoleWriter: LogMessageWriter {
@@ -266,7 +300,10 @@ open class ConsoleWriter: LogMessageWriter {
 
 ### Log Modifiers
 
-Log message customization is something that `Willow` specializes in. Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji! There's no way to predict all the types of custom formatting teams are going to want to use. This is where `LogModifier` objects come in.
+Log message customization is something that `Willow` specializes in.
+Some devs want to add a prefix to their library output, some want different timestamp formats, some even want emoji!
+There's no way to predict all the types of custom formatting teams are going to want to use.
+This is where `LogModifier` objects come in.
 
 ```swift
 public protocol LogModifier {
@@ -274,9 +311,12 @@ public protocol LogModifier {
 }
 ```
 
-The `LogModifier` protocol has only a single API. It receives the `message` and `logLevel` and returns a newly formatted `String`. This is about as flexible as you can get.
+The `LogModifier` protocol has only a single API.
+It receives the `message` and `logLevel` and returns a newly formatted `String`.
+This is about as flexible as you can get.
 
-For writers that are intended to output strings (e.g. writing to the console, files, etc…) the `LogModifierWriter` protocol adds the concept of an array of `LogModifier` objects to `LogWriter` that will be applied to the message before it is output.
+As an added layer of convenience, writers intending to output strings (e.g. writing to the console, files, etc.) can conform to the `LogModifierWritier` protocol.
+The `LogModifierWriter` protocol adds an array of `LogModifier` objects to the `LogWriter` that can be applied to the message before it is output using the `modifyMessage(_:logLevel)` API in the extension.
 
 Let's walk through a simple example for adding a prefix to a logger for the `debug` and `info` log levels.
 
@@ -292,7 +332,7 @@ let writers = [ConsoleWriter(modifiers: prefixModifier)]
 let log = Logger(logLevels: [.debug, .info], writers: writers)
 ```
 
-To apply modifiers consistently to strings, `LogModifierWriter` objects should call `modifyMessage(message:logLevel:)` to create a new string based on the original string with all the modifiers applied in order.
+To apply modifiers consistently to strings, `LogModifierWriter` objects should call `modifyMessage(_:logLevel)` to create a new string based on the original string with all the modifiers applied in order.
 
 ```swift
 open func writeMessage(_ message: String, logLevel: LogLevel) {
@@ -303,7 +343,8 @@ open func writeMessage(_ message: String, logLevel: LogLevel) {
 
 #### Multiple Modifiers
 
-Multiple `LogModifier` objects can be stacked together onto a single log level to perform multiple actions. Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with an `EmojiModifier`.
+Multiple `LogModifier` objects can be stacked together onto a single log level to perform multiple actions.
+Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with an `EmojiModifier`.
 
 ```swift
 class EmojiModifier: LogModifier {
@@ -316,13 +357,16 @@ let writers: = [ConsoleWriter(modifiers: [EmojiModifier(), TimestampModifier()])
 let log = Logger(logLevels: [.all], writers: writers)
 ```
 
-`Willow` doesn't have any hard limits on the total number of `LogModifier` objects that can be applied to a single log level. Just keep in mind that performance is key.
+`Willow` doesn't have any hard limits on the total number of `LogModifier` objects that can be applied to a single log level.
+Just keep in mind that performance is key.
 
-> The default `ConsoleWriter` will execute the modifiers in the same order they were added into the `Array`. In the previous example, Willow would log a much different message if the `TimestampModifier` was inserted before the `EmojiModifier`.
+> The default `ConsoleWriter` will execute the modifiers in the same order they were added into the `Array`.
+In the previous example, Willow would log a much different message if the `TimestampModifier` was inserted before the `EmojiModifier`.
 
 #### OSLog
 
-The `OSLogWriter` class allows you to use the `os_log` APIs within the Willow system. In order to use it, all you need to do is to create the `LogModifier` instance and add it to the `Logger`.
+The `OSLogWriter` class allows you to use the `os_log` APIs within the Willow system.
+In order to use it, all you need to do is to create the `LogModifier` instance and add it to the `Logger`.
 
 ```swift
 let writers = [OSLogWriter(subsystem: "com.nike.willow.example", category: "testing")]
@@ -333,7 +377,10 @@ log.debug("Hello world...coming to your from the os_log APIs!")
 
 #### Multiple Writers
 
-So what about logging to both a file and the console at the same time? No problem. You can pass multiple `LogWriter` objects into the `Logger` initializer. The `Logger` will execute each `LogWriter` in the order it was passed in. For example, let's create a `FileWriter` and combine that with our `ConsoleWriter`.
+So what about logging to both a file and the console at the same time? No problem.
+You can pass multiple `LogWriter` objects into the `Logger` initializer.
+The `Logger` will execute each `LogWriter` in the order it was passed in.
+For example, let's create a `FileWriter` and combine that with our `ConsoleWriter`.
 
 ```swift
 public class FileWriter: LogWriter {
@@ -353,7 +400,8 @@ let writers: [LogMessageWriter] = [FileWriter(), ConsoleWriter()]
 let log = Logger(logLevels: [.all], writers: writers)
 ```
 
-> `LogWriter` objects can also be selective about which modifiers they want to run for a particular log level. All the examples run all the modifiers, but you can be selective if you want to be.
+> `LogWriter` objects can also be selective about which modifiers they want to run for a particular log level.
+> All the examples run all the modifiers, but you can be selective if you want to be.
 
 ---
 
@@ -361,9 +409,14 @@ let log = Logger(logLevels: [.all], writers: writers)
 
 ### Creating Custom Log Levels
 
-Depending upon the situation, the need to support additional log levels may arise. Willow can easily support additional log levels through the art of [bitmasking](http://en.wikipedia.org/wiki/Mask_(computing)). Since the internal `RawValue` of a `LogLevel` is a `UInt`, Willow can support up to 32 log levels simultaneously for a single `Logger`. Since there are 7 default log levels, Willow can support up to 27 custom log levels for a single logger. That should be more than enough to handle even the most complex of logging solutions.
+Depending upon the situation, the need to support additional log levels may arise.
+Willow can easily support additional log levels through the art of [bitmasking](http://en.wikipedia.org/wiki/Mask_(computing)).
+Since the internal `RawValue` of a `LogLevel` is a `UInt`, Willow can support up to 32 log levels simultaneously for a single `Logger`.
+Since there are 7 default log levels, Willow can support up to 27 custom log levels for a single logger.
+That should be more than enough to handle even the most complex of logging solutions.
 
-Creating custom log levels is very simple. Here's a quick example of how to do so. First, you must create a `LogLevel` extension and add your custom values.
+Creating custom log levels is very simple. Here's a quick example of how to do so.
+First, you must create a `LogLevel` extension and add your custom values.
 
 ```swift
 extension LogLevel {
@@ -371,7 +424,8 @@ extension LogLevel {
 }
 ```
 
-> It's a good idea to make the values for custom log levels `var` instead of `let`. In the event of two frameworks using the same custom log level bit mask, the application can re-assign one of the frameworks to a new value.
+> It's a good idea to make the values for custom log levels `var` instead of `let`.
+In the event of two frameworks using the same custom log level bit mask, the application can re-assign one of the frameworks to a new value.
 
 Now that we have a custom log level called `verbose`, we need to extend the `Logger` class to be able to easily call it.
 
@@ -394,11 +448,13 @@ let log = Logger(logLevels: [.all], writers: [ConsoleWriter()])
 log.verbose("My first verbose log message!")
 ```
 
-> The `all` log level contains a bitmask where all bits are set to 1. This means that the `all` log level will contain all custom log levels automatically.
+> The `all` log level contains a bitmask where all bits are set to 1.
+> This means that the `all` log level will contain all custom log levels automatically.
 
 ### Shared Loggers between Frameworks
 
-Defining a single `Logger` and sharing that instance several frameworks can be very advantageous, especially with the addition of Frameworks in iOS 8. Now that we're going to be creating more frameworks inside our own apps to be shared between apps, extensions and third party libraries, wouldn't it be nice if we could share `Logger` instances?
+Defining a single `Logger` and sharing that instance several frameworks can be very advantageous, especially with the addition of Frameworks in iOS 8.
+Now that we're going to be creating more frameworks inside our own apps to be shared between apps, extensions and third party libraries, wouldn't it be nice if we could share `Logger` instances?
 
 Let's walk through a quick example of a `Math` framework sharing a `Logger` with it's parent `Calculator` app.
 
@@ -420,7 +476,11 @@ It's very simple to swap out a pre-existing `Logger` with a new one.
 
 ### Multiple Loggers, One Queue
 
-The previous example showed how to share `Logger` instances between multiple frameworks. Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration. The one thing that you really want to share is the `NSRecursiveLock` or `DispatchQueue` that they run on. This will ensure all your logging is thread-safe. Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
+The previous example showed how to share `Logger` instances between multiple frameworks.
+Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration.
+The one thing that you really want to share is the `NSRecursiveLock` or `DispatchQueue` that they run on.
+This will ensure all your logging is thread-safe.
+Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
 
 ```swift
 //=========== Inside Math.swift ===========
@@ -448,9 +508,12 @@ Math.log = Logger(logLevels: math.log.logLevel, writers: math.log.writers, execu
 
 ### Why 5 default log levels? And why are they so named?
 
-Simple...simplicity and elegance. Contextually it gets difficult to understand which log level you need if you have too many. However, that doesn't mean that this is always the perfect solution for everyone or every use case. This is why there are 5 default log levels, with support for easily adding additional ones.
+Simple...simplicity and elegance.
+Contextually it gets difficult to understand which log level you need if you have too many.
+However, that doesn't mean that this is always the perfect solution for everyone or every use case.
+This is why there are 5 default log levels, with support for easily adding additional ones.
 
-As for the naming, here's my own mental breakdown of each log level for an iOS app (obviously it depends on your use case).
+As for the naming, here's our mental breakdown of each log level for an iOS app (obviously it depends on your use case).
 
 * `debug` - Highly detailed information of a context
 * `info` - Summary information of a context
@@ -460,7 +523,8 @@ As for the naming, here's my own mental breakdown of each log level for an iOS a
 
 ### When should I use Willow?
 
-If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Willow would be a great choice. If you are still working in Objective-C, a pure Objective-C library such as the amazing [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
+If you are starting a new iOS project in Swift and want to take advantage of many new conventions and features of the language, Willow would be a great choice.
+If you are still working in Objective-C, a pure Objective-C library such as [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) would probably be more appropriate.
 
 ### Where did the name Willow come from?
 
@@ -470,7 +534,8 @@ Willow is named after the one, the only, Willow tree.
 
 ## License
 
-Willow is released under the MIT license. See LICENSE for details.
+Willow is released under the MIT license.
+See LICENSE for details.
 
 ## Creators
 

@@ -1,6 +1,7 @@
 # How to contribute
 
-There are a few guidelines that we need contributors to follow so that we are able to process requests as efficiently as possible. If you have any questions or concerns please feel free to contact us at [opensource@nike.com](mailto:opensource@nike.com).
+There are a few guidelines that we need contributors to follow so that we are able to process requests as efficiently as possible.
+If you have any questions or concerns please feel free to contact us at [opensource@nike.com](mailto:opensource@nike.com).
 
 ## Getting Started
 
@@ -24,7 +25,8 @@ There are a few guidelines that we need contributors to follow so that we are ab
 
 * Push your changes to a topic branch in your fork of the repository.
 * Submit a pull request to the repository in the Nike-Inc organization.
-* After feedback has been given we expect responses within two weeks. After two weeks we may close the pull request if it isn't showing any activity.
+* After feedback has been given we expect responses within two weeks.
+After two weeks we may close the pull request if it isn't showing any activity.
 * Bug fixes or features that lack appropriate tests may not be considered for merge.
 * Changes that lower test coverage may not be considered for merge.
 
