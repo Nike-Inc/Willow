@@ -113,7 +113,7 @@ open class ConsoleWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
-open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
         let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
 
         switch method {
