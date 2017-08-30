@@ -93,6 +93,13 @@
 		4CA86F611AEC4654005E6475 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4CA86F641AEC465E005E6475 /* LogModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogModifier.swift; sourceTree = "<group>"; };
 		4CA86F671AEC466A005E6475 /* LogWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogWriter.swift; sourceTree = "<group>"; };
+		4CAC4FDC1F56405A0069A4E0 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		4CAC4FDE1F5640870069A4E0 /* Willow 2.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 2.0 Migration Guide.md"; path = "Documentation/Willow 2.0 Migration Guide.md"; sourceTree = SOURCE_ROOT; };
+		4CAC4FDF1F5640870069A4E0 /* Willow 3.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 3.0 Migration Guide.md"; path = "Documentation/Willow 3.0 Migration Guide.md"; sourceTree = SOURCE_ROOT; };
+		4CAC4FE01F5640870069A4E0 /* Willow 4.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 4.0 Migration Guide.md"; path = "Documentation/Willow 4.0 Migration Guide.md"; sourceTree = SOURCE_ROOT; };
+		4CAC4FE11F5640C10069A4E0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		4CAC4FE21F5640C10069A4E0 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = SOURCE_ROOT; };
+		4CAC4FE31F5640C10069A4E0 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogLevelTests.swift; sourceTree = "<group>"; };
 		4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,10 +107,7 @@
 		4CFE82A41A6C484A0002868E /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		557DA8311F3E1954005BC651 /* LoggerMessageStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerMessageStringTests.swift; sourceTree = "<group>"; };
 		557DA8351F3E1A9C005BC651 /* LoggerMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerMessageTests.swift; sourceTree = "<group>"; };
-		557DA83A1F3E1D1C005BC651 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = SOURCE_ROOT; };
-		557DA83B1F3E1D1C005BC651 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		557DA83C1F3E1D1C005BC651 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
-		557DA83D1F3E1D1C005BC651 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		557DA83E1F3E1D1C005BC651 /* Willow.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Willow.podspec; sourceTree = SOURCE_ROOT; };
 		557DA8411F3E1DE4005BC651 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55B859C21F44FC9F0012F5F4 /* LogMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMessage.swift; sourceTree = "<group>"; };
@@ -203,10 +207,33 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		4CAC4FDB1F56403C0069A4E0 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				4CAC4FE31F5640C10069A4E0 /* CHANGELOG.md */,
+				4CAC4FE21F5640C10069A4E0 /* CONTRIBUTING.md */,
+				4CAC4FE11F5640C10069A4E0 /* README.md */,
+				4CAC4FDD1F5640750069A4E0 /* Migration Guides */,
+			);
+			name = Documentation;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		4CAC4FDD1F5640750069A4E0 /* Migration Guides */ = {
+			isa = PBXGroup;
+			children = (
+				4CAC4FDE1F5640870069A4E0 /* Willow 2.0 Migration Guide.md */,
+				4CAC4FDF1F5640870069A4E0 /* Willow 3.0 Migration Guide.md */,
+				4CAC4FE01F5640870069A4E0 /* Willow 4.0 Migration Guide.md */,
+			);
+			path = "Migration Guides";
+			sourceTree = "<group>";
+		};
 		4CFE828F1A6C484A0002868E = {
 			isa = PBXGroup;
 			children = (
 				557A82CF1F47432300660DD3 /* Deployment */,
+				4CAC4FDB1F56403C0069A4E0 /* Documentation */,
 				4CA75D401A6C493800275DC5 /* Source */,
 				4CA75D461A6C495C00275DC5 /* Tests */,
 				4CFE829A1A6C484A0002868E /* Products */,
@@ -230,10 +257,8 @@
 		557A82CF1F47432300660DD3 /* Deployment */ = {
 			isa = PBXGroup;
 			children = (
-				557DA83B1F3E1D1C005BC651 /* CHANGELOG.md */,
-				557DA83A1F3E1D1C005BC651 /* CONTRIBUTING.md */,
 				557DA83C1F3E1D1C005BC651 /* LICENSE */,
-				557DA83D1F3E1D1C005BC651 /* README.md */,
+				4CAC4FDC1F56405A0069A4E0 /* Package.swift */,
 				557DA83E1F3E1D1C005BC651 /* Willow.podspec */,
 			);
 			name = Deployment;
