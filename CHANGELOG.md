@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 3.x Releases
 
-- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
+- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301) | [3.0.2](#302)
 
 #### 2.x Releases
 
@@ -19,7 +19,24 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.2](https://github.com/Nike-Inc/Willow/releases/tag/3.0.2)
+
+Released on 2017-08-30. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/7?closed=1).
+
+#### Updated
+
+- Xcode project to be compatible with Xcode 9 and Swift 3.2.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#30](https://github.com/Nike-Inc/Willow/pull/30).
+- The `.swift-version` file to `3.2` to support CocoaPods deployment.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#30](https://github.com/Nike-Inc/Willow/pull/30).
+
 ## [3.0.1](https://github.com/Nike-Inc/Willow/releases/tag/3.0.1)
+
+Released on 2017-08-17. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/6?closed=1).
 
 #### Updated
 
