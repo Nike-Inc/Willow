@@ -7,17 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; };
-		4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1AD17C1AF04E6600D92E29 /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4C2B3A251CDEB717004F1A18 /* Database.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; };
-		4C2B3A261CDEB717004F1A18 /* Database.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C2B3A3C1CDEC0D6004F1A18 /* WillowConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B3A3B1CDEC0D6004F1A18 /* WillowConfiguration.swift */; };
 		4C8787AD1A6E3948008A313B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787A71A6E3948008A313B /* AppDelegate.swift */; };
 		4C8787AE1A6E3948008A313B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787A81A6E3948008A313B /* LaunchScreen.xib */; };
 		4C8787AF1A6E3948008A313B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C8787AA1A6E3948008A313B /* Images.xcassets */; };
 		4C8787B11A6E3948008A313B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8787AC1A6E3948008A313B /* ViewController.swift */; };
-		5534CA561F3CFF66002E82F9 /* WebServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; };
-		5534CA571F3CFF66002E82F9 /* WebServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4CD142411F5731DF002D6006 /* Database.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; };
+		4CD142421F5731DF002D6006 /* Database.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4CD142451F5731DF002D6006 /* WebServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; };
+		4CD142461F5731DF002D6006 /* WebServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,25 +26,25 @@
 			remoteGlobalIDString = 4C2DC4191CDEB4F4009CA3C5;
 			remoteInfo = Database;
 		};
-		4C2B3A271CDEB717004F1A18 /* PBXContainerItemProxy */ = {
+		4CD142431F5731DF002D6006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4C2DC4181CDEB4F4009CA3C5;
 			remoteInfo = Database;
 		};
+		4CD142471F5731DF002D6006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C2DC3E31CDEB279009CA3C5;
+			remoteInfo = WebServices;
+		};
 		5534CA521F3CFF51002E82F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4C2DC3E41CDEB279009CA3C5;
-			remoteInfo = WebServices;
-		};
-		5534CA541F3CFF57002E82F9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4C2DC3E31CDEB279009CA3C5;
 			remoteInfo = WebServices;
 		};
 		5534CA581F3CFF66002E82F9 /* PBXContainerItemProxy */ = {
@@ -59,15 +57,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4C2606E21AB285B8006037DF /* Embed Frameworks */ = {
+		4CD142491F5731E0002D6006 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4C1AD17E1AF04E6600D92E29 /* Willow.framework in Embed Frameworks */,
-				4C2B3A261CDEB717004F1A18 /* Database.framework in Embed Frameworks */,
-				5534CA571F3CFF66002E82F9 /* WebServices.framework in Embed Frameworks */,
+				4CD142421F5731DF002D6006 /* Database.framework in Embed Frameworks */,
+				4CD142461F5731DF002D6006 /* WebServices.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,7 +72,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4C1AD17C1AF04E6600D92E29 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2776A71A6C55F4007B1133 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Database.xcodeproj; path = Frameworks/Database.xcodeproj; sourceTree = "<group>"; };
 		4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WebServices.xcodeproj; path = Frameworks/WebServices.xcodeproj; sourceTree = "<group>"; };
@@ -85,8 +81,6 @@
 		4C8787AA1A6E3948008A313B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4C8787AB1A6E3948008A313B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C8787AC1A6E3948008A313B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		558C70AB1F3CFE7900B2252B /* WebServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebServices.framework; path = "Frameworks/build/Debug-iphoneos/WebServices.framework"; sourceTree = "<group>"; };
-		558C70AD1F3CFEEA00B2252B /* WebServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WebServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,30 +88,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C1AD17D1AF04E6600D92E29 /* Willow.framework in Frameworks */,
-				4C2B3A251CDEB717004F1A18 /* Database.framework in Frameworks */,
-				5534CA561F3CFF66002E82F9 /* WebServices.framework in Frameworks */,
+				4CD142411F5731DF002D6006 /* Database.framework in Frameworks */,
+				4CD142451F5731DF002D6006 /* WebServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4C0182271AB286680020D3C4 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				558C70AB1F3CFE7900B2252B /* WebServices.framework */,
-				4C1AD17C1AF04E6600D92E29 /* Willow.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		4C27769E1A6C55F4007B1133 = {
 			isa = PBXGroup;
 			children = (
-				558C70AD1F3CFEEA00B2252B /* WebServices.framework */,
 				4C8787A61A6E3948008A313B /* Source */,
-				4C0182271AB286680020D3C4 /* Frameworks */,
 				4C2776A81A6C55F4007B1133 /* Products */,
 				4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */,
 				4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */,
@@ -180,14 +162,14 @@
 				4C2776A31A6C55F4007B1133 /* Sources */,
 				4C2776A41A6C55F4007B1133 /* Frameworks */,
 				4C2776A51A6C55F4007B1133 /* Resources */,
-				4C2606E21AB285B8006037DF /* Embed Frameworks */,
+				4CD142491F5731E0002D6006 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5534CA551F3CFF57002E82F9 /* PBXTargetDependency */,
-				4C2B3A281CDEB717004F1A18 /* PBXTargetDependency */,
 				5534CA591F3CFF66002E82F9 /* PBXTargetDependency */,
+				4CD142441F5731DF002D6006 /* PBXTargetDependency */,
+				4CD142481F5731DF002D6006 /* PBXTargetDependency */,
 			);
 			name = "iOS Example";
 			productName = Example;
@@ -282,15 +264,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4C2B3A281CDEB717004F1A18 /* PBXTargetDependency */ = {
+		4CD142441F5731DF002D6006 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Database;
-			targetProxy = 4C2B3A271CDEB717004F1A18 /* PBXContainerItemProxy */;
+			targetProxy = 4CD142431F5731DF002D6006 /* PBXContainerItemProxy */;
 		};
-		5534CA551F3CFF57002E82F9 /* PBXTargetDependency */ = {
+		4CD142481F5731DF002D6006 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = WebServices;
-			targetProxy = 5534CA541F3CFF57002E82F9 /* PBXContainerItemProxy */;
+			targetProxy = 4CD142471F5731DF002D6006 /* PBXContainerItemProxy */;
 		};
 		5534CA591F3CFF66002E82F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -422,7 +404,10 @@
 		4C2776C71A6C55F4007B1133 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "iOS Example/Info.plist";
@@ -430,19 +415,24 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nike.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "iOS Example";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		4C2776C81A6C55F4007B1133 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nike.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "iOS Example";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
