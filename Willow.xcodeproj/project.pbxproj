@@ -196,8 +196,8 @@
 		4CA75D461A6C495C00275DC5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				557DA8351F3E1A9C005BC651 /* LoggerMessageTests.swift */,
 				557DA8311F3E1954005BC651 /* LoggerMessageStringTests.swift */,
+				557DA8351F3E1A9C005BC651 /* LoggerMessageTests.swift */,
 				4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */,
 				4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */,
 				4C1BBA691A6C518800D39EE1 /* ModifierTests.swift */,
