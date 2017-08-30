@@ -30,6 +30,9 @@ All notable changes to this project will be documented in this file.
 - Support for structured messages and simplified `Logger` setup.
   - Added by [Dave Camp](https://github.com/atomiccat) in Pull Request
   [#28](https://github.com/Nike-Inc/Willow/pull/28).
+- New package file for Willow to support the Swift Package Manager.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#31](https://github.com/Nike-Inc/Elevate/pull/31).
 
 #### Updated
 
