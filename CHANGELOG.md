@@ -45,7 +45,9 @@ All notable changes to this project will be documented in this file.
 - The example app configuration logic to match the new APIs.
   - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
   [#28](https://github.com/Nike-Inc/Willow/pull/28).
-- The `LogMessageWriter` protocol by splitting it into two new protocols: `LogWriter` and `LogModifierWriter`. The former is a basic writer. The latter is a writer that also accepts an array of modifiers to apply to incoming messages.
+- The `LogMessageWriter` protocol by splitting it into two new protocols: `LogWriter` and `LogModifierWriter`.
+The former is a basic writer.
+The latter is a writer that also accepts an array of modifiers to apply to incoming messages.
   - Updated by [Dave Camp](https://github.com/atomiccat) in Pull Request
   [#28](https://github.com/Nike-Inc/Willow/pull/28).
 - Example frameworks to show intended usage of the new `LogMessage` APIs.
