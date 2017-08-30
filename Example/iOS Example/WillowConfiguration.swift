@@ -90,8 +90,8 @@ struct WillowConfiguration {
             let databaseLogLevels: LogLevel = [.event, .warn, .error]
             let webServicesLogLevels: LogLevel = [.event, .warn, .error]
             let executionMethod: Logger.ExecutionMethod = .asynchronous(
-                    queue: DispatchQueue(label: "com.nike.example.logger", qos: .utility)
-                )
+                queue: DispatchQueue(label: "com.nike.example.logger", qos: .utility)
+            )
         #endif
 
         log = createLogger(
@@ -134,6 +134,6 @@ struct WillowConfiguration {
 /// Placeholder for a 3rd party logging service SDK. Serves as an example of calling an SDK with log output.
 private struct ServiceSDK {
     static func recordBreadcrumb(_ message: String, attributes: [String: Any]) {
-        
+        // Implement me...
     }
 }

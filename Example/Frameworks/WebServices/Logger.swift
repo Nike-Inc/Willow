@@ -23,7 +23,6 @@
 //
 
 import Foundation
-import UIKit
 import Willow
 
 /// The single `Logger` instance used throughout WebServices.
