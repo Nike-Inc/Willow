@@ -24,4 +24,4 @@
 
 import PackageDescription
 
-let package = Package(name: "Willow", swiftLanguageVersions : [4], exclude: ["Tests"])
+let package = Package(name: "Willow", swiftLanguageVersions: [4], exclude: ["Tests"])
