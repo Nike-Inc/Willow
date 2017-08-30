@@ -176,8 +176,8 @@
 				4CA86F611AEC4654005E6475 /* Logger.swift */,
 				4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */,
 				55B859C21F44FC9F0012F5F4 /* LogMessage.swift */,
-				4CA86F671AEC466A005E6475 /* LogWriter.swift */,
 				4CA86F641AEC465E005E6475 /* LogModifier.swift */,
+				4CA86F671AEC466A005E6475 /* LogWriter.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
 			);
 			path = Source;
