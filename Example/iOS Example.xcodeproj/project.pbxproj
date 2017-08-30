@@ -16,6 +16,8 @@
 		4CD142421F5731DF002D6006 /* Database.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B3A211CDEB6F9004F1A18 /* Database.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4CD142451F5731DF002D6006 /* WebServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; };
 		4CD142461F5731DF002D6006 /* WebServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5534CA531F3CFF51002E82F9 /* WebServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4CD1425F1F573D0C002D6006 /* Willow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CD1425E1F573CF9002D6006 /* Willow.framework */; };
+		4CD142611F573D18002D6006 /* Willow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CD1425E1F573CF9002D6006 /* Willow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4CD142611F573D18002D6006 /* Willow.framework in Embed Frameworks */,
 				4CD142421F5731DF002D6006 /* Database.framework in Embed Frameworks */,
 				4CD142461F5731DF002D6006 /* WebServices.framework in Embed Frameworks */,
 			);
@@ -81,6 +84,7 @@
 		4C8787AA1A6E3948008A313B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4C8787AB1A6E3948008A313B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C8787AC1A6E3948008A313B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4CD1425E1F573CF9002D6006 /* Willow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 			files = (
 				4CD142411F5731DF002D6006 /* Database.framework in Frameworks */,
 				4CD142451F5731DF002D6006 /* WebServices.framework in Frameworks */,
+				4CD1425F1F573D0C002D6006 /* Willow.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				4C8787A61A6E3948008A313B /* Source */,
+				4CD1424D1F573C6B002D6006 /* Frameworks */,
 				4C2776A81A6C55F4007B1133 /* Products */,
 				4C2B3A171CDEB6F9004F1A18 /* Database.xcodeproj */,
 				4C2B3A1B1CDEB6F9004F1A18 /* WebServices.xcodeproj */,
@@ -137,11 +143,19 @@
 		4C8787B21A6E3956008A313B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4C8787A81A6E3948008A313B /* LaunchScreen.xib */,
 				4C8787AA1A6E3948008A313B /* Images.xcassets */,
 				4C8787AB1A6E3948008A313B /* Info.plist */,
+				4C8787A81A6E3948008A313B /* LaunchScreen.xib */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4CD1424D1F573C6B002D6006 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4CD1425E1F573CF9002D6006 /* Willow.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5534CA4F1F3CFF50002E82F9 /* Products */ = {
@@ -415,6 +429,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nike.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "iOS Example";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
