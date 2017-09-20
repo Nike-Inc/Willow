@@ -174,27 +174,27 @@ class SynchronousLoggerMessageLogLevelTestCase: SynchronousLoggerTestCase {
         let message = TestMessage()
 
         // When
-        log.debug { () -> LogMessage in
+        log.debug {
             log.debug { message }
             return message
         }
 
-        log.info { () -> LogMessage in
+        log.info {
             log.info { message }
             return message
         }
 
-        log.event { () -> LogMessage in
+        log.event {
             log.event { message }
             return message
         }
 
-        log.warn { () -> LogMessage in
+        log.warn {
             log.warn { message }
             return message
         }
 
-        log.error { () -> LogMessage in
+        log.error {
             log.error { message }
             return message
         }
@@ -428,27 +428,27 @@ class AsynchronousLoggerMessageLogLevelTestCase: AsynchronousLoggerTestCase {
         let message = TestMessage()
 
         // When
-        log.debug { () -> LogMessage in
+        log.debug {
             log.debug { TestMessage() }
             return message
         }
 
-        log.info { () -> LogMessage in
+        log.info {
             log.info { TestMessage() }
             return message
         }
 
-        log.event { () -> LogMessage in
+        log.event {
             log.event { TestMessage() }
             return message
         }
 
-        log.warn { () -> LogMessage in
+        log.warn {
             log.warn { TestMessage() }
             return message
         }
 
-        log.error { () -> LogMessage in
+        log.error {
             log.error { TestMessage() }
             return message
         }

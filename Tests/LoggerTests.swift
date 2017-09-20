@@ -160,11 +160,11 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(modifiers: modifiers)
 
         // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
+        log.debugMessage { self.message }
+        log.infoMessage { self.message }
+        log.eventMessage { self.message }
+        log.warnMessage { self.message }
+        log.errorMessage { self.message }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
@@ -187,11 +187,11 @@ class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
         let log = logger(writers: writers)
 
         // When
-        log.debug { self.message }
-        log.info { self.message }
-        log.event { self.message }
-        log.warn { self.message }
-        log.error { self.message }
+        log.debugMessage { self.message }
+        log.infoMessage { self.message }
+        log.eventMessage { self.message }
+        log.warnMessage { self.message }
+        log.errorMessage { self.message }
 
         // Then
         XCTAssertEqual(writer1.actualNumberOfWrites, 5, "writer 1 actual number of writes should be 5")

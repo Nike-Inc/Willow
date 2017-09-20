@@ -34,19 +34,19 @@ extension LogLevel {
 }
 
 extension Logger {
-    fileprivate func verbose(message: @autoclosure @escaping () -> String) {
+    fileprivate func verboseMessage(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.verbose)
     }
 
-    fileprivate func verbose(message: @escaping () -> String) {
+    fileprivate func verboseMessage(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.verbose)
     }
 
-    fileprivate func summary(message: @autoclosure @escaping () -> String) {
+    fileprivate func summaryMessage(_ message: @autoclosure @escaping () -> String) {
         logMessage(message, with: LogLevel.summary)
     }
 
-    fileprivate func summary(message: @escaping () -> String) {
+    fileprivate func summaryMessage(_ message: @escaping () -> String) {
         logMessage(message, with: LogLevel.summary)
     }
 }
@@ -173,25 +173,25 @@ class CustomLogLevelTestCase: XCTestCase {
         let (log, writer) = logger(logLevels: .all)
 
         // When / Then
-        log.verbose { "verbose message" }
+        log.verboseMessage { "verbose message" }
         XCTAssertEqual("verbose message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.debug { "debug message" }
+        log.debugMessage { "debug message" }
         XCTAssertEqual("debug message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.info { "info message" }
+        log.infoMessage { "info message" }
         XCTAssertEqual("info message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.summary { "summary message" }
+        log.summaryMessage { "summary message" }
         XCTAssertEqual("summary message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.event { "event message" }
+        log.eventMessage { "event message" }
         XCTAssertEqual("event message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.warn { "warn message" }
+        log.warnMessage { "warn message" }
         XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.error { "error message" }
+        log.errorMessage { "error message" }
         XCTAssertEqual("error message", writer.message ?? "", "Expected message should match actual writer message")
 
         // Then
@@ -204,25 +204,25 @@ class CustomLogLevelTestCase: XCTestCase {
         let (log, writer) = logger(logLevels: logLevels)
 
         // When / Then
-        log.verbose { "verbose message" }
+        log.verboseMessage { "verbose message" }
         XCTAssertEqual("verbose message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.debug { "debug message" }
+        log.debugMessage { "debug message" }
         XCTAssertEqual("verbose message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.info { "info message" }
+        log.infoMessage { "info message" }
         XCTAssertEqual("info message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.summary { "summary message" }
+        log.summaryMessage { "summary message" }
         XCTAssertEqual("summary message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.event { "event message" }
+        log.eventMessage { "event message" }
         XCTAssertEqual("summary message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.warn { "warn message" }
+        log.warnMessage { "warn message" }
         XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
 
-        log.error { "error message" }
+        log.errorMessage { "error message" }
         XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
 
         // Then
