@@ -42,7 +42,7 @@ public class Connection {
     }
 
     public static func makeInfoCall() {
-        log.info("Making call that logs info message")
+        log.infoMessage("Making call that logs info message")
     }
 
     public static func makeEventCall() {
@@ -50,7 +50,7 @@ public class Connection {
     }
 
     public static func makeWarnCall() {
-        log.warn("Making call that logs warn message")
+        log.warnMessage("Making call that logs warn message")
     }
 
     public static func makeErrorCall() {

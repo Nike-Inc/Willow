@@ -26,11 +26,11 @@ import Foundation
 
 public class Request {
     public static func makeDebugRequest() {
-        log.debug("Making request that logs debug message")
+        log.debugMessage("Making request that logs debug message")
     }
 
     public static func makeInfoRequest() {
-        log.info("Making request that logs info message")
+        log.infoMessage("Making request that logs info message")
     }
 
     public static func makeEventRequest() {
@@ -44,7 +44,7 @@ public class Request {
     }
 
     public static func makeWarnRequest() {
-        log.warn("Making request that logs warn message")
+        log.warnMessage("Making request that logs warn message")
     }
 
     public static func makeErrorRequest() {
