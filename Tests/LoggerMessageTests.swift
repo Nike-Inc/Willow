@@ -28,9 +28,9 @@ import XCTest
 
 struct TestMessage: LogMessage {
     let name: String
-    let attributes: [String : Any]
+    let attributes: [String: Any]
 
-    init(_ name: String = "", attributes: [String : Any] = [:]) {
+    init(_ name: String = "", attributes: [String: Any] = [:]) {
         self.name = name
         self.attributes = attributes
     }
