@@ -1,5 +1,5 @@
 //
-//  ModifierTests.swift
+//  LogModifierTests.swift
 //
 //  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
