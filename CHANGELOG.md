@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 `Willow` adheres to [Semantic Versioning](http://semver.org/).
 
+#### 5.x Releases
+
+- `5.0.x` Releases - [5.0.0](#500)
+
 #### 4.x Releases
 
 - `4.0.x` Releases - [4.0.0](#400)
@@ -20,6 +24,31 @@ All notable changes to this project will be documented in this file.
 - `1.2.x` Releases - [1.2.0](#120)
 - `1.1.x` Releases - [1.1.0](#110)
 - `1.0.x` Releases - [1.0.0](#100)
+
+---
+
+## [5.0.0](https://github.com/Nike-Inc/Willow/releases/tag/5.0.0)
+
+Released on 2017-09-20. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/6?closed=1).
+
+#### Added
+
+- Migration Guide for Willow 5 and added it to the README.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#32](https://github.com/Nike-Inc/Willow/pull/32).
+
+#### Updated
+
+- Log message string APIs to include `Message` suffix to remove ambiguity with `LogMessage` APIs.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#32](https://github.com/Nike-Inc/Willow/pull/32).
+- The README to match the updated APIs.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#32](https://github.com/Nike-Inc/Willow/pull/32).
+- The `Package` file to be compatible with SPM v4.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#32](https://github.com/Nike-Inc/Willow/pull/32).
 
 ---
 
