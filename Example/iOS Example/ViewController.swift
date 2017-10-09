@@ -1,7 +1,7 @@
 //
 //  ViewController.swift
 //
-//  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
+//  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -172,8 +172,7 @@ class ViewController: UIViewController {
                                 queue.async {
                                     log.info {
                                         let infoNumber = 1337
-                                        log.debug { [1337: "wootx0rz"] }
-                                        return infoNumber
+                                        return [infoNumber: "Logging info message"]
                                     }
                                 }
 

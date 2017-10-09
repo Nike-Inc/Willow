@@ -1,7 +1,7 @@
 //
 //  LoggerMessageTests.swift
 //
-//  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
+//  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,9 @@ import XCTest
 
 struct TestMessage: LogMessage {
     let name: String
-    let attributes: [String : Any]
+    let attributes: [String: Any]
 
-    init(_ name: String = "", attributes: [String : Any] = [:]) {
+    init(_ name: String = "", attributes: [String: Any] = [:]) {
         self.name = name
         self.attributes = attributes
     }
@@ -174,27 +174,27 @@ class SynchronousLoggerMessageLogLevelTestCase: SynchronousLoggerTestCase {
         let message = TestMessage()
 
         // When
-        log.debug { () -> CustomStringConvertible in
+        log.debug {
             log.debug { message }
             return message
         }
 
-        log.info { () -> CustomStringConvertible in
+        log.info {
             log.info { message }
             return message
         }
 
-        log.event { () -> CustomStringConvertible in
+        log.event {
             log.event { message }
             return message
         }
 
-        log.warn { () -> CustomStringConvertible in
+        log.warn {
             log.warn { message }
             return message
         }
 
-        log.error { () -> CustomStringConvertible in
+        log.error {
             log.error { message }
             return message
         }
@@ -428,27 +428,27 @@ class AsynchronousLoggerMessageLogLevelTestCase: AsynchronousLoggerTestCase {
         let message = TestMessage()
 
         // When
-        log.debug { () -> CustomStringConvertible in
+        log.debug {
             log.debug { TestMessage() }
             return message
         }
 
-        log.info { () -> CustomStringConvertible in
+        log.info {
             log.info { TestMessage() }
             return message
         }
 
-        log.event { () -> CustomStringConvertible in
+        log.event {
             log.event { TestMessage() }
             return message
         }
 
-        log.warn { () -> CustomStringConvertible in
+        log.warn {
             log.warn { TestMessage() }
             return message
         }
 
-        log.error { () -> CustomStringConvertible in
+        log.error {
             log.error { TestMessage() }
             return message
         }

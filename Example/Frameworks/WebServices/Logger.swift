@@ -1,7 +1,7 @@
 //
 //  Logger.swift
 //
-//  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
+//  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -59,16 +59,18 @@ enum Message: Willow.LogMessage {
 
         case let .requestCompleted(request, response):
             keyPathAttributes[.url] = request.url
-            keyPathAttributes[.respopnseCode] = response.statusCode
+            keyPathAttributes[.responseCode] = response.statusCode
             success = true
 
         case let .requestFailed(request, response, error):
             keyPathAttributes[.url] = request.url
-            keyPathAttributes[.respopnseCode] = response.statusCode
+            keyPathAttributes[.responseCode] = response.statusCode
+
             if let error = error {
-                keyPathAttributes[.errorDescription] = message(forError: error)
-                keyPathAttributes[.errorCode] = code(forError: error)
+                keyPathAttributes[.errorDescription] = message(for: error)
+                keyPathAttributes[.errorCode] = code(for: error)
             }
+
             success = false
         }
 
@@ -104,18 +106,18 @@ enum Message: Willow.LogMessage {
     private enum KeyPath: String {
         case url                = "url"
         case result             = "result"
-        case respopnseCode      = "response_code"
+        case responseCode       = "response_code"
         case errorDescription   = "error_description"
         case errorCode          = "error_code"
         case frameworkName      = "framework_name"
         case frameworkVersion   = "framework_version"
     }
 
-    private func code(forError error: Error) -> Int {
+    private func code(for error: Error) -> Int {
         return (error as NSError).code
     }
 
-    private func message(forError error: Error) -> String {
+    private func message(for error: Error) -> String {
         return (error as NSError).localizedDescription
     }
 }

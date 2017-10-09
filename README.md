@@ -55,6 +55,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - [Willow 2.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%202.0%20Migration%20Guide.md)
 - [Willow 3.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%203.0%20Migration%20Guide.md)
 - [Willow 4.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%204.0%20Migration%20Guide.md)
+- [Willow 5.0 Migration Guide](https://github.com/Nike-Inc/Willow/blob/master/Documentation/Willow%205.0%20Migration%20Guide.md)
 
 ## Communication
 
@@ -74,16 +75,16 @@ You can install it with the following command:
 [sudo] gem install cocoapods
 ```
 
-> CocoaPods 1.1+ is required.
+> CocoaPods 1.3+ is required.
 
 To integrate Willow into your project, specify it in your [Podfile](http://guides.cocoapods.org/using/the-podfile.html):
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '10.0'
+platform :ios, '11.0'
 use_frameworks!
 
-pod 'Willow', '~> 4.0'
+pod 'Willow', '~> 5.0'
 ```
 
 Then, run the following command:
@@ -106,7 +107,7 @@ $ brew install carthage
 To integrate Willow into your Xcode project using Carthage, specify it in your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```
-github "Nike-Inc/Willow" ~> 4.0
+github "Nike-Inc/Willow" ~> 5.0
 ```
 
 Run `carthage update` to build the framework and drag the built `Willow.framework` into your Xcode project.
@@ -120,7 +121,7 @@ Once you have your Swift package set up, adding Willow as a dependency is as eas
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Nike-Inc/Willow.git", majorVersion: 4)
+    .package(url: "https://github.com/Nike-Inc/Willow.git", majorVersion: 5)
 ]
 ```
 
@@ -162,13 +163,62 @@ If two `print` calls are happening simultaneously from two different queues (thr
 
 ### Logging Messages and String Messages
 
-Willow can log two different types: Messages and Strings. 
+Willow can log two different types of objects: Messages and Strings.
 
- - Messages are structured data with a name and a dictionary of attributes.
- Willow declares the `LogMessage` protocol which frameworks and applications can use as the basis for concrete implementations.
- Messages are a good choice if you want to provide context information along with the log text (e.g. routing log information to an external system like New Relic).
+#### Log Messages
 
- - Strings are just `Strings` with no additional data.
+Messages are structured data with a name and a dictionary of attributes.
+Willow declares the `LogMessage` protocol which frameworks and applications can use as the basis for concrete implementations.
+Messages are a good choice if you want to provide context information along with the log text (e.g. routing log information to an external system like New Relic).
+
+```swift
+enum Message: LogMessage {
+    case requestStarted(url: URL)
+    case requestCompleted(url: URL, response: HTTPURLResponse)
+
+    var name: String {
+        switch self {
+        case .requestStarted:   return "Request started"
+        case .requestCompleted: return "Request completed"
+        }
+    }
+
+    var attributes: [String: Any] {
+        switch self {
+        case let .requestStarted(url):
+            return ["url": url]
+
+        case let .requestCompleted(url, response):
+            return ["url": url, "response_code": response.statusCode]
+        }
+    }
+}
+
+let url = URL(string: "https://httpbin.org/get")!
+
+log.debug(Message.requestStarted(url: url))
+log.info(Message.requestStarted(url: url))
+log.event(Message.requestStarted(url: url))
+log.warn(Message.requestStarted(url: url))
+log.error(Message.requestStarted(url: url))
+```
+
+#### Log Message Strings
+
+Log message strings are just `String` instances with no additional data.
+
+```swift
+let url = URL(string: "https://httpbin.org/get")!
+
+log.debugMessage("Request Started: \(url)")
+log.infoMessage("Request Started: \(url)")
+log.eventMessage("Request Started: \(url)")
+log.warnMessage("Request Started: \(url)")
+log.errorMessage("Request Started: \(url)")
+```
+
+> The log message string APIs have the `Message` suffix on the end to avoid ambiguity with the log message APIs.
+> The multi-line escaping closure APIs collide without the suffix.
 
 ### Logging Messages with Closures
 
@@ -181,20 +231,20 @@ Developers should be able to focus on the task at hand and not remembering how t
 let log = Logger()
 
 // Option 1
-log.debug("Debug Message")    // Debug Message
-log.info("Info Message")      // Info Message
-log.event("Event Message")    // Event Message
-log.warn("Warn Message")      // Warn Message
-log.error("Error Message")    // Error Message
+log.debugMessage("Debug Message")    // Debug Message
+log.infoMessage("Info Message")      // Info Message
+log.eventMessage("Event Message")    // Event Message
+log.warnMessage("Warn Message")      // Warn Message
+log.errorMessage("Error Message")    // Error Message
 
 // or
 
 // Option 2
-log.debug { "Debug Message" } // Debug Message
-log.info { "Info Message" }   // Info Message
-log.event { "Event Message" } // Event Message
-log.warn { "Warn Message" }   // Warn Message
-log.error { "Error Message" } // Error Message
+log.debugMessage { "Debug Message" } // Debug Message
+log.infoMessage { "Info Message" }   // Info Message
+log.eventMessage { "Event Message" } // Event Message
+log.warnMessage { "Warn Message" }   // Warn Message
+log.errorMessage { "Error Message" } // Error Message
 ```
 
 Both of these approaches are equivalent.
@@ -215,14 +265,14 @@ We want to make sure logic is encapsulated and very performant.
 `Willow` log level closures allow you to cleanly wrap all the logic to build up the message.
 
 ```swift
-log.debug {
+log.debugMessage {
     // First let's run a giant for loop to collect some info
     // Now let's scan through the results to get some aggregate values
     // Now I need to format the data
     return "Computed Data Value: \(dataValue)"
 }
 
-log.info {
+log.infoMessage {
     let countriesString = ",".join(countriesArray)
     return "Countries: \(countriesString)"
 }
@@ -361,7 +411,7 @@ Let's walk through using the `TimestampModifier` (prefixes the message with a ti
 
 ```swift
 class EmojiModifier: LogModifier {
-    func modify(_ message: String, with logLevel: Logger.LogLevel) -> String {
+    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         return "🚀🚀🚀 \(message)"
     }
 }
@@ -385,7 +435,7 @@ In order to use it, all you need to do is to create the `LogModifier` instance a
 let writers = [OSLogWriter(subsystem: "com.nike.willow.example", category: "testing")]
 let log = Logger(logLevels: [.all], writers: writers)
 
-log.debug("Hello world...coming to your from the os_log APIs!")
+log.debugMessage("Hello world...coming to your from the os_log APIs!")
 ```
 
 #### Multiple Writers
@@ -444,12 +494,12 @@ Now that we have a custom log level called `verbose`, we need to extend the `Log
 
 ```swift
 extension Logger {
-    public func verbose(_ message: @autoclosure @escaping () -> String) {
-    	logMessage(message, withLogLevel: .verbose)
+    public func verboseMessage(_ message: @autoclosure @escaping () -> String) {
+    	log(message, withLogLevel: .verbose)
     }
 
-    public func verbose(_ message: @escaping () -> String) {
-    	logMessage(message, withLogLevel: .verbose)
+    public func verboseMessage(_ message: @escaping () -> String) {
+    	log(message, withLogLevel: .verbose)
     }
 }
 ```
@@ -458,7 +508,7 @@ Finally, using the new log level is a simple as...
 
 ```swift
 let log = Logger(logLevels: [.all], writers: [ConsoleWriter()])
-log.verbose("My first verbose log message!")
+log.verboseMessage("My first verbose log message!")
 ```
 
 > The `all` log level contains a bitmask where all bits are set to 1.
@@ -473,7 +523,7 @@ Let's walk through a quick example of a `Math` framework sharing a `Logger` with
 
 ```swift
 //=========== Inside Math.swift ===========
-public var log = Logger(logLevels [.warn, .error], writers: [ConsoleWriter()]) // We're going to replace this
+public var log: Logger?
 
 //=========== Calculator.swift ===========
 import Math
@@ -481,7 +531,7 @@ import Math
 let writers: [LogMessageWriter] = [FileWriter(), ConsoleWriter()]
 var log = Logger(logLevels: [.all], writers: writers)
 
-// Replace the Math.log with the Calculator.log to share the same Logger instance
+// Set the Math.log instance to the Calculator.log to share the same Logger instance
 Math.log = log
 ```
 
@@ -493,11 +543,11 @@ The previous example showed how to share `Logger` instances between multiple fra
 Something more likely though is that you would want to have each third party library or internal framework to have their own `Logger` with their own configuration.
 The one thing that you really want to share is the `NSRecursiveLock` or `DispatchQueue` that they run on.
 This will ensure all your logging is thread-safe.
-Here's the previous example demonstrating how to create multiple `Logger` instances with different configurations and share the queue.
+Here's the previous example demonstrating how to create multiple `Logger` instances and still share the queue.
 
 ```swift
 //=========== Inside Math.swift ===========
-public var log = Logger(logLevels: [.warn, .error], writers: [ConsoleWriter()]) // We're going to replace this
+public var log: Logger?
 
 //=========== Calculator.swift ===========
 import Math
@@ -507,10 +557,19 @@ let sharedQueue = DispatchQueue(label: "com.math.logger", qos: .utility)
 
 // Create the Calculator.log with multiple writers and a .Debug log level
 let writers: [LogMessageWriter] = [FileWriter(), ConsoleWriter()]
-var log = Logger(logLevels: [.all], writers: writers, executionMethod: .asynchronous(queue: sharedQueue))
+
+var log = Logger(
+    logLevels: [.all],
+    writers: writers,
+    executionMethod: .asynchronous(queue: sharedQueue)
+)
 
 // Replace the Math.log with a new instance with all the same configuration values except a shared queue
-Math.log = Logger(logLevels: math.log.logLevel, writers: math.log.writers, executionMethod: .asynchronous(queue: sharedQueue))
+Math.log = Logger(
+    logLevels: log.logLevels,
+    writers: [ConsoleWriter()],
+    executionMethod: .asynchronous(queue: sharedQueue)
+)
 ```
 
 `Willow` is a very lightweight library, but its flexibility allows it to become very powerful if you so wish.

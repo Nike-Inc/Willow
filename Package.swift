@@ -1,7 +1,9 @@
+// swift-tools-version:4.0
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 //
 //  Package.swift
 //
-//  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
+//  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,4 +26,13 @@
 
 import PackageDescription
 
-let package = Package(name: "Willow", swiftLanguageVersions: [4], exclude: ["Tests"])
+let package = Package(
+    name: "Willow",
+    products: [
+        .library(name: "Willow", targets: ["Willow"])
+    ],
+    targets: [
+        .target(name: "Willow", path: "", sources: ["Source"])
+    ],
+    swiftLanguageVersions: [4]
+)
