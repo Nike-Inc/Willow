@@ -24,13 +24,100 @@
 
 import Foundation
 
+public protocol Loggable {
+    associatedtype Message where Message == () -> CustomStringConvertible
+}
+
+public extension Loggable {
+    /// Writes out the given message using the logger if the debug log level is set.
+    ///
+    /// - Parameter message: An autoclosure returning the message to log.
+    public func debug(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.debug)
+    }
+
+    /// Writes out the given message using the logger if the debug log level is set.
+    ///
+    /// - Parameter message: A closure returning the message to log.
+    public func debug(_ message: @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.debug)
+    }
+
+    /// Writes out the given message using the logger if the info log level is set.
+    ///
+    /// - Parameter message: An autoclosure returning the message to log.
+    public func info(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.info)
+    }
+
+    /// Writes out the given message using the logger if the info log level is set.
+    ///
+    /// - Parameter message: A closure returning the message to log.
+    public func info(_ message: @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.info)
+    }
+
+    /// Writes out the given message using the logger if the event log level is set.
+    ///
+    /// - Parameter message: An autoclosure returning the message to log.
+    public func event(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.event)
+    }
+
+    /// Writes out the given message using the logger if the event log level is set.
+    ///
+    /// - Parameter message: A closure returning the message to log.
+    public func event(_ message: @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.event)
+    }
+
+    /// Writes out the given message using the logger if the warn log level is set.
+    ///
+    /// - Parameter message: An autoclosure returning the message to log.
+    public func warn(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.warn)
+    }
+
+    /// Writes out the given message using the logger if the warn log level is set.
+    ///
+    /// - Parameter message: A closure returning the message to log.
+    public func warn(_ message: @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.warn)
+    }
+
+    /// Writes out the given message using the logger if the error log level is set.
+    ///
+    /// - Parameter message: An autoclosure returning the message to log.
+    public func error(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.error)
+    }
+
+    /// Writes out the given message using the logger if the error log level is set.
+    ///
+    /// - Parameter message: A closure returning the message to log.
+    public func error(_ message: @escaping () -> CustomStringConvertible) {
+        logMessage(message, with: LogLevel.error)
+    }
+
+    /// Writes out the given message closure string with the logger if the log level is allowed.
+    ///
+    /// - Parameters:
+    ///   - message:  A closure returning the message to log.
+    ///   - logLevel: The log level associated with the message closure.
+    public func logMessage(_ message: @escaping () -> (CustomStringConvertible), with logLevel: LogLevel) {
+        print(message())
+    }
+}
+
 /// The Logger class is a fully thread-safe, synchronous or asynchronous logging solution using dependency injection
 /// to allow custom Modifiers and Writers. It also manages all the logic to determine whether to log a particular
 /// message with a given log level.
 ///
 /// Loggers can only be configured during initialization. If you need to change a logger at runtime, it is advised to
 /// create an additional logger with a custom configuration to fit your needs.
-open class Logger {
+open class Logger: Loggable {
+
+    public typealias Message = () -> CustomStringConvertible
 
     // MARK: - Helper Types
 
@@ -85,70 +172,70 @@ open class Logger {
     /// Writes out the given message using the logger if the debug log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    open func debug(_ message: @autoclosure @escaping () -> LogMessage) {
+    open func debug(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.debug)
     }
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    open func debug(_ message: @escaping () -> LogMessage) {
+    open func debug(_ message: @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.debug)
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    open func info(_ message: @autoclosure @escaping () -> LogMessage) {
+    open func info(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.info)
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    open func info(_ message: @escaping () -> LogMessage) {
+    open func info(_ message: @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.info)
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    open func event(_ message: @autoclosure @escaping () -> LogMessage) {
+    open func event(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.event)
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    open func event(_ message: @escaping () -> LogMessage) {
+    open func event(_ message: @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.event)
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    open func warn(_ message: @autoclosure @escaping () -> LogMessage) {
+    open func warn(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.warn)
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    open func warn(_ message: @escaping () -> LogMessage) {
+    open func warn(_ message: @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.warn)
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    open func error(_ message: @autoclosure @escaping () -> LogMessage) {
+    open func error(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.error)
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    open func error(_ message: @escaping () -> LogMessage) {
+    open func error(_ message: @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.error)
     }
 
@@ -157,97 +244,7 @@ open class Logger {
     /// - Parameters:
     ///   - message:  A closure returning the message to log.
     ///   - logLevel: The log level associated with the message closure.
-    open func logMessage(_ message: @escaping () -> (LogMessage), with logLevel: LogLevel) {
-        guard enabled && logLevelAllowed(logLevel) else { return }
-
-        switch executionMethod {
-        case .synchronous(let lock):
-            lock.lock() ; defer { lock.unlock() }
-            logMessage(message(), with: logLevel)
-
-        case .asynchronous(let queue):
-            queue.async { self.logMessage(message(), with: logLevel) }
-        }
-    }
-
-    // MARK: - Log String Messages
-
-    /// Writes out the given message using the logger if the debug log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func debug(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.debug)
-    }
-
-    /// Writes out the given message using the logger if the debug log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    open func debug(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.debug)
-    }
-
-    /// Writes out the given message using the logger if the info log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func info(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.info)
-    }
-
-    /// Writes out the given message using the logger if the info log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    open func info(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.info)
-    }
-
-    /// Writes out the given message using the logger if the event log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func event(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.event)
-    }
-
-    /// Writes out the given message using the logger if the event log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    open func event(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.event)
-    }
-
-    /// Writes out the given message using the logger if the warn log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func warn(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.warn)
-    }
-
-    /// Writes out the given message using the logger if the warn log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    open func warn(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.warn)
-    }
-
-    /// Writes out the given message using the logger if the error log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func error(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.error)
-    }
-
-    /// Writes out the given message using the logger if the error log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    open func error(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.error)
-    }
-
-    /// Writes out the given message closure string with the logger if the log level is allowed.
-    ///
-    /// - Parameters:
-    ///   - message:      A closure returning the message to log.
-    ///   - withLogLevel: The log level associated with the message closure.
-    open func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel) {
+    open func logMessage(_ message: @escaping () -> (CustomStringConvertible), with logLevel: LogLevel) {
         guard enabled && logLevelAllowed(logLevel) else { return }
 
         switch executionMethod {
@@ -266,13 +263,7 @@ open class Logger {
         return logLevels.contains(logLevel)
     }
 
-    private func logMessage(_ message: String, with logLevel: LogLevel) {
-        writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
-    }
-
-    // MARK: - Private - Log Message Helpers
-
-    private func logMessage(_ message: LogMessage, with logLevel: LogLevel) {
+    private func logMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) {
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
     }
 }
@@ -285,7 +276,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the debug log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    public func debug(_ message: @autoclosure @escaping () -> String) {
+    public func debug(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.debug(message)
     }
@@ -293,7 +284,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the debug log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    public func debug(_ message: @escaping () -> String) {
+    public func debug(_ message: @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.debug(message)
     }
@@ -301,7 +292,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the info log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    public func info(_ message: @autoclosure @escaping () -> String) {
+    public func info(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.info(message)
     }
@@ -309,7 +300,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the info log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    public func info(_ message: @escaping () -> String) {
+    public func info(_ message: @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.info(message)
     }
@@ -317,7 +308,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the event log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    public func event(_ message: @autoclosure @escaping () -> String) {
+    public func event(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.event(message)
     }
@@ -325,7 +316,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the event log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    public func event(_ message: @escaping () -> String) {
+    public func event(_ message: @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.event(message)
     }
@@ -333,7 +324,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the warn log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    public func warn(_ message: @autoclosure @escaping () -> String) {
+    public func warn(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.warn(message)
     }
@@ -341,7 +332,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the warn log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    public func warn(_ message: @escaping () -> String) {
+    public func warn(_ message: @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.warn(message)
     }
@@ -349,7 +340,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the error log level is set.
     ///
     /// - Parameter message: An autoclosure returning the message to log.
-    public func error(_ message: @autoclosure @escaping () -> String) {
+    public func error(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.error(message)
     }
@@ -357,87 +348,7 @@ extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the error log level is set.
     ///
     /// - Parameter message: A closure returning the message to log.
-    public func error(_ message: @escaping () -> String) {
-        guard case let .some(log) = self else { return }
-        log.error(message)
-    }
-
-    /// Writes out the given message using the optional logger if the debug log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    public func debug(_ message: @autoclosure @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.debug(message)
-    }
-
-    /// Writes out the given message using the optional logger if the debug log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    public func debug(_ message: @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.debug(message)
-    }
-
-    /// Writes out the given message using the optional logger if the info log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    public func info(_ message: @autoclosure @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.info(message)
-    }
-
-    /// Writes out the given message using the optional logger if the info log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    public func info(_ message: @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.info(message)
-    }
-
-    /// Writes out the given message using the optional logger if the event log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    public func event(_ message: @autoclosure @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.event(message)
-    }
-
-    /// Writes out the given message using the optional logger if the event log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    public func event(_ message: @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.event(message)
-    }
-
-    /// Writes out the given message using the optional logger if the warn log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    public func warn(_ message: @autoclosure @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.warn(message)
-    }
-
-    /// Writes out the given message using the optional logger if the warn log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-    public func warn(_ message: @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.warn(message)
-    }
-
-    /// Writes out the given message using the optional logger if the error log level is set.
-    ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    public func error(_ message: @autoclosure @escaping () -> LogMessage) {
-        guard case let .some(log) = self else { return }
-        log.error(message)
-    }
-
-    /// Writes out the given message using the optional logger if the error log level is set.
-    ///
-    /// - Parameter message: A closure returning the message to log.
-public func error(_ message: @escaping () -> LogMessage) {
+    public func error(_ message: @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.error(message)
     }

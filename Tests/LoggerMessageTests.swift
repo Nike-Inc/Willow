@@ -174,27 +174,27 @@ class SynchronousLoggerMessageLogLevelTestCase: SynchronousLoggerTestCase {
         let message = TestMessage()
 
         // When
-        log.debug { () -> LogMessage in
+        log.debug { () -> CustomStringConvertible in
             log.debug { message }
             return message
         }
 
-        log.info { () -> LogMessage in
+        log.info { () -> CustomStringConvertible in
             log.info { message }
             return message
         }
 
-        log.event { () -> LogMessage in
+        log.event { () -> CustomStringConvertible in
             log.event { message }
             return message
         }
 
-        log.warn { () -> LogMessage in
+        log.warn { () -> CustomStringConvertible in
             log.warn { message }
             return message
         }
 
-        log.error { () -> LogMessage in
+        log.error { () -> CustomStringConvertible in
             log.error { message }
             return message
         }
@@ -428,27 +428,27 @@ class AsynchronousLoggerMessageLogLevelTestCase: AsynchronousLoggerTestCase {
         let message = TestMessage()
 
         // When
-        log.debug { () -> LogMessage in
+        log.debug { () -> CustomStringConvertible in
             log.debug { TestMessage() }
             return message
         }
 
-        log.info { () -> LogMessage in
+        log.info { () -> CustomStringConvertible in
             log.info { TestMessage() }
             return message
         }
 
-        log.event { () -> LogMessage in
+        log.event { () -> CustomStringConvertible in
             log.event { TestMessage() }
             return message
         }
 
-        log.warn { () -> LogMessage in
+        log.warn { () -> CustomStringConvertible in
             log.warn { TestMessage() }
             return message
         }
 
-        log.error { () -> LogMessage in
+        log.error { () -> CustomStringConvertible in
             log.error { TestMessage() }
             return message
         }
@@ -471,10 +471,11 @@ class AsynchronousLoggerMessageLogLevelTestCase: AsynchronousLoggerTestCase {
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites)
-        XCTAssertEqual(writer.lastMessage?.name, message.name)
-        XCTAssertEqual(writer.lastMessage?.attributes.count, message.attributes.count)
-        XCTAssertEqual(writer.lastMessage?.attributes["Attr1"] as? String, "Value")
-        XCTAssertEqual(writer.lastMessage?.attributes["Attr2"] as? Int, 42)
+        guard let lastMessageDescription = writer.lastMessage else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(lastMessageDescription.description.contains(message.description))
     }
 }
 

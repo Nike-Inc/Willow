@@ -25,10 +25,15 @@
 import Foundation
 
 /// A LogMessage is a detailed log entry with a name and a dictionary of associated attributes.
-public protocol LogMessage {
+public protocol LogMessage: CustomStringConvertible {
     /// Name of this message.
     var name: String { get }
 
     /// Attributes associated with this message.
     var attributes: [String: Any] { get }
+}
+extension LogMessage  {
+    public var description: String {
+        return "\(name): \(attributes)"
+    }
 }

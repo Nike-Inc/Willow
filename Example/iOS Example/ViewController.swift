@@ -163,11 +163,18 @@ class ViewController: UIViewController {
 
                             for _ in range {
                                 queue.async {
-                                    log.debug { "Logging debug message" }
+                                    log.debug {
+                                        let debugMessage = "Logging debug message"
+                                        return debugMessage
+                                    }
                                 }
 
                                 queue.async {
-                                    log.info { "Logging info message" }
+                                    log.info {
+                                        let infoNumber = 1337
+                                        log.debug { [1337: "wootx0rz"] }
+                                        return infoNumber
+                                    }
                                 }
 
                                 queue.async {

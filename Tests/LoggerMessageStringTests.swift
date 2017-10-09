@@ -155,27 +155,27 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .all)
 
         // When
-        log.debug { () -> String in
+        log.debug { () -> CustomStringConvertible in
             log.debug { "" }
             return ""
         }
 
-        log.info { () -> String in
+        log.info { () -> CustomStringConvertible in
             log.info { "" }
             return ""
         }
 
-        log.event { () -> String in
+        log.event { () -> CustomStringConvertible in
             log.event { "" }
             return ""
         }
 
-        log.warn { () -> String in
+        log.warn { () -> CustomStringConvertible in
             log.warn { "" }
             return ""
         }
 
-        log.error { () -> String in
+        log.error { () -> CustomStringConvertible in
             log.error { "" }
             return ""
         }
@@ -396,27 +396,27 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .all, expectedNumberOfWrites: 10)
 
         // When
-        log.debug { () -> String in
+        log.debug { () -> CustomStringConvertible in
             log.debug { "" }
             return ""
         }
 
-        log.info { () -> String in
+        log.info { () -> CustomStringConvertible in
             log.info { "" }
             return ""
         }
 
-        log.event { () -> String in
+        log.event { () -> CustomStringConvertible in
             log.event { "" }
             return ""
         }
 
-        log.warn { () -> String in
+        log.warn { () -> CustomStringConvertible in
             log.warn { "" }
             return ""
         }
 
-        log.error { () -> String in
+        log.error { () -> CustomStringConvertible in
             log.error { "" }
             return ""
         }

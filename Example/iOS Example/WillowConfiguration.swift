@@ -35,6 +35,7 @@ struct WillowConfiguration {
     // MARK: - Modifiers
 
     private struct PrefixModifier: LogModifier {
+
         let prefix: String
         let name: String
 
@@ -43,7 +44,7 @@ struct WillowConfiguration {
             self.name = name
         }
 
-        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) -> CustomStringConvertible {
             switch logLevel {
             case .warn:  return "🚨🚨🚨 [\(name)] => \(message)"
             case .error: return "💣💥💣💥 [\(name)] => \(message)"
@@ -55,19 +56,11 @@ struct WillowConfiguration {
     // MARK: Writers
 
     private class ServiceWriter: LogWriter {
-        func writeMessage(_ message: String, logLevel: LogLevel) {
+        func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
             // Send the message as-is to our external logging service
             let attributes: [String: Any] = ["LogLevel": logLevel.description]
 
-             ServiceSDK.recordBreadcrumb(message, attributes: attributes)
-        }
-
-        func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-            // Send the message as-is to our external logging service
-            var attributes = message.attributes
-            attributes["LogLevel"] = logLevel.description
-
-            ServiceSDK.recordBreadcrumb(message.name, attributes: attributes)
+             ServiceSDK.recordBreadcrumb(message.description, attributes: attributes)
         }
     }
 

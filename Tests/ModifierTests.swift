@@ -40,8 +40,8 @@ class TimestampModifierTestCase: XCTestCase {
         for (index, _) in logLevels.enumerated() {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
-            XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
-            XCTAssertEqual(actualMessage.characters.count, 36, "Actual message 36 characters")
+            XCTAssertTrue(actualMessage.description.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
+            XCTAssertEqual(actualMessage.description.characters.count, 36, "Actual message 36 characters")
         }
     }
 }

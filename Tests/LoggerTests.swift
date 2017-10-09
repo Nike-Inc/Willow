@@ -36,29 +36,18 @@ import XCTest
 
 class SynchronousTestWriter: LogModifierWriter {
     private(set) var actualNumberOfWrites: Int = 0
-    private(set) var message: String?
-    private(set) var modifiedMessages = [String]()
+    private(set) var message: CustomStringConvertible?
+    private(set) var modifiedMessages = [CustomStringConvertible]()
 
     let modifiers: [LogModifier]
-    var lastMessage: LogMessage?
+    var lastMessage: CustomStringConvertible?
 
     init(modifiers: [LogModifier] = []) {
         self.modifiers = modifiers
     }
 
-    func writeMessage(_ message: String, logLevel: LogLevel) {
+    func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
         var mutableMessage = message
-
-        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
-        modifiedMessages.append(mutableMessage)
-
-        self.message = mutableMessage
-
-        actualNumberOfWrites += 1
-    }
-
-    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-        var mutableMessage = "\(message.name): \(message.attributes)"
 
         lastMessage = message
 
@@ -83,15 +72,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
         super.init(modifiers: modifiers)
     }
 
-    override func writeMessage(_ message: String, logLevel: LogLevel) {
-        super.writeMessage(message, logLevel: logLevel)
-
-        if actualNumberOfWrites == expectedNumberOfWrites {
-            expectation.fulfill()
-        }
-    }
-
-    override func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    override func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
         super.writeMessage(message, logLevel: logLevel)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
@@ -103,7 +84,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
 // MARK: -
 
 class PrefixModifier: LogModifier {
-    func modifyMessage(_ message: String, with: LogLevel) -> String {
+    func modifyMessage(_ message: CustomStringConvertible, with: LogLevel) -> CustomStringConvertible {
         return "[Willow] \(message)"
     }
 }
@@ -149,7 +130,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
 
 class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     private struct SymbolModifier: LogModifier {
-        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) -> CustomStringConvertible {
             return "+=+-+ \(message)"
         }
     }
@@ -171,7 +152,7 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
         XCTAssertEqual(writer.modifiedMessages.count, 5, "Formatted message count should be 5")
 
         let expected = "+=+-+ [Willow] Test Message"
-        writer.modifiedMessages.forEach { XCTAssertEqual($0, expected) }
+        writer.modifiedMessages.forEach { XCTAssertEqual($0.description, expected) }
     }
 }
 

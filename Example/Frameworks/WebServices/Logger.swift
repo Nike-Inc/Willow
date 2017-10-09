@@ -34,6 +34,7 @@ public var log: Logger?
 /// Note that where you might have had separate (but similar) strings in the past for messages,
 /// you can now consolidate into a single message with attributes now providing unique details
 enum Message: Willow.LogMessage {
+
     case requestStarted(request: URLRequest)
     case requestCompleted(request: URLRequest, response: HTTPURLResponse)
     case requestFailed(request: URLRequest, response: HTTPURLResponse, error: Error?)
@@ -79,6 +80,12 @@ enum Message: Willow.LogMessage {
         // Map to the expected types
         var attributes: [String: Any] = [:]
         keyPathAttributes.forEach { attributes[$0.key.rawValue] = $0.value }
+
+        // MARK: Custom String Convertible
+
+        var description: String {
+            return "\(name): \(attributes)"
+        }
 
         return attributes
     }
