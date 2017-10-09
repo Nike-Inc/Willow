@@ -37,23 +37,23 @@ extension LogLevel {
 
 // Extend Logger to have `sql` log level functions.
 extension Logger {
-    func sql(_ message: @autoclosure @escaping () -> LogMessage) {
+    func sql(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.Database.sql)
     }
 
-    func sql(_ message: @escaping () -> LogMessage) {
+    func sql(_ message: @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.Database.sql)
     }
 }
 
 // Extend Logger optional support to have `sql` log level functions.
 extension Optional where Wrapped == Logger {
-    func sql(_ message: @autoclosure @escaping () -> LogMessage) {
+    func sql(_ message: @autoclosure @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.logMessage(message, with: LogLevel.Database.sql)
     }
 
-    func sql(_ message: @escaping () -> LogMessage) {
+    func sql(_ message: @escaping () -> CustomStringConvertible) {
         guard case let .some(log) = self else { return }
         log.logMessage(message, with: LogLevel.Database.sql)
     }

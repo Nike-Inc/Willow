@@ -471,10 +471,11 @@ class AsynchronousLoggerMessageLogLevelTestCase: AsynchronousLoggerTestCase {
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, writer.expectedNumberOfWrites)
-        XCTAssertEqual(writer.lastMessage?.name, message.name)
-        XCTAssertEqual(writer.lastMessage?.attributes.count, message.attributes.count)
-        XCTAssertEqual(writer.lastMessage?.attributes["Attr1"] as? String, "Value")
-        XCTAssertEqual(writer.lastMessage?.attributes["Attr2"] as? Int, 42)
+        guard let lastMessageDescription = writer.lastMessage else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(lastMessageDescription.description.contains(message.description))
     }
 }
 

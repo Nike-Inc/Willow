@@ -78,23 +78,23 @@ class ViewController: UIViewController {
                 items: [
                     Item(
                         title: "Log Debug Message",
-                        action: { log.debugMessage { "Logging Debug Message" } }
+                        action: { log.debug { "Logging Debug Message" } }
                     ),
                     Item(
                         title: "Log Info Message",
-                        action: { log.infoMessage { "Logging Info Message" } }
+                        action: { log.info { "Logging Info Message" } }
                     ),
                     Item(
                         title: "Log Event Message",
-                        action: { log.eventMessage { "Logging Event Message" } }
+                        action: { log.event { "Logging Event Message" } }
                     ),
                     Item(
                         title: "Log Warn Message",
-                        action: { log.warnMessage { "Logging Warn Message" } }
+                        action: { log.warn { "Logging Warn Message" } }
                     ),
                     Item(
                         title: "Log Error Message",
-                        action: { log.errorMessage { "Logging Error Message" } }
+                        action: { log.error { "Logging Error Message" } }
                     )
                 ]
             ),
@@ -162,11 +162,31 @@ class ViewController: UIViewController {
                             let queue = DispatchQueue.global()
 
                             for _ in range {
-                                queue.async { log.debugMessage("Logging debug message") }
-                                queue.async { log.infoMessage("Logging info message") }
-                                queue.async { log.eventMessage("Logging event message") }
-                                queue.async { log.warnMessage("Logging warn message") }
-                                queue.async { log.errorMessage("Logging error message") }
+                                queue.async {
+                                    log.debug {
+                                        let debugMessage = "Logging debug message"
+                                        return debugMessage
+                                    }
+                                }
+
+                                queue.async {
+                                    log.info {
+                                        let infoNumber = 1337
+                                        return [infoNumber: "Logging info message"]
+                                    }
+                                }
+
+                                queue.async {
+                                    log.event { "Logging event message" }
+                                }
+
+                                queue.async {
+                                    log.warn { "Logging warn message" }
+                                }
+
+                                queue.async {
+                                    log.error { "Logging error message" }
+                                }
                             }
                         }
                     ),
@@ -178,11 +198,11 @@ class ViewController: UIViewController {
 
                             for _ in range {
                                 queue.async {
-                                    log.debugMessage("Logging debug message")
-                                    log.infoMessage("Logging info message")
-                                    log.eventMessage("Logging event message")
-                                    log.warnMessage("Logging warn message")
-                                    log.errorMessage("Logging error message")
+                                    log.debug { "Logging debug message" }
+                                    log.info { "Logging info message" }
+                                    log.event { "Logging event message" }
+                                    log.warn { "Logging warn message" }
+                                    log.error { "Logging error message" }
                                 }
 
                                 queue.async {

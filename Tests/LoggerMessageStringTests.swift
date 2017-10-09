@@ -1,7 +1,7 @@
 //
 //  LoggerMessageStringTests.swift
 //
-//  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
+//  Copyright (c) 2015-2017 Nike, Inc. (https://www.nike.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .off)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 0, "Actual number of writes should be 0")
@@ -49,11 +49,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .debug)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -64,11 +64,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .info)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -79,11 +79,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .event)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -94,11 +94,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .warn)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -109,11 +109,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .error)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -124,11 +124,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .all)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
@@ -140,11 +140,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: logLevels)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 3, "Actual number of writes should be 3")
@@ -155,28 +155,28 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .all)
 
         // When
-        log.debugMessage {
-            log.debugMessage { "" }
+        log.debug { () -> CustomStringConvertible in
+            log.debug { "" }
             return ""
         }
 
-        log.infoMessage {
-            log.infoMessage { "" }
+        log.info { () -> CustomStringConvertible in
+            log.info { "" }
             return ""
         }
 
-        log.eventMessage {
-            log.eventMessage { "" }
+        log.event { () -> CustomStringConvertible in
+            log.event { "" }
             return ""
         }
 
-        log.warnMessage {
-            log.warnMessage { "" }
+        log.warn { () -> CustomStringConvertible in
+            log.warn { "" }
             return ""
         }
 
-        log.errorMessage {
-            log.errorMessage { "" }
+        log.error { () -> CustomStringConvertible in
+            log.error { "" }
             return ""
         }
 
@@ -189,11 +189,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .debug)
 
         // When
-        log.debugMessage("")
-        log.infoMessage("")
-        log.eventMessage("")
-        log.warnMessage("")
-        log.errorMessage("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -204,11 +204,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .info)
 
         // When
-        log.debugMessage("")
-        log.infoMessage("")
-        log.eventMessage("")
-        log.warnMessage("")
-        log.errorMessage("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -219,11 +219,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .event)
 
         // When
-        log.debugMessage("")
-        log.infoMessage("")
-        log.eventMessage("")
-        log.warnMessage("")
-        log.errorMessage("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -234,11 +234,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .warn)
 
         // When
-        log.debugMessage("")
-        log.infoMessage("")
-        log.eventMessage("")
-        log.warnMessage("")
-        log.errorMessage("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -249,11 +249,11 @@ class SynchronousLoggerLogLevelTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .error)
 
         // When
-        log.debugMessage("")
-        log.infoMessage("")
-        log.eventMessage("")
-        log.warnMessage("")
-        log.errorMessage("")
+        log.debug("")
+        log.info("")
+        log.event("")
+        log.warn("")
+        log.error("")
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 1, "Actual number of writes should be 1")
@@ -268,11 +268,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .off, expectedNumberOfWrites: 0)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // This is an interesting test because we have to wait to make sure nothing happened. This makes it
         // very difficult to fullfill the expectation. For now, we are using a dispatch_after that fires
@@ -293,11 +293,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .debug, expectedNumberOfWrites: 1)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -310,11 +310,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .info, expectedNumberOfWrites: 1)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -327,11 +327,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .event, expectedNumberOfWrites: 1)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -344,11 +344,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .warn, expectedNumberOfWrites: 1)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -361,11 +361,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .error, expectedNumberOfWrites: 1)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -379,11 +379,11 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: logLevels, expectedNumberOfWrites: 3)
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -396,28 +396,28 @@ class AsynchronousLoggerLogLevelTestCase: AsynchronousLoggerTestCase {
         let (log, writer) = logger(logLevels: .all, expectedNumberOfWrites: 10)
 
         // When
-        log.debugMessage {
-            log.debugMessage { "" }
+        log.debug { () -> CustomStringConvertible in
+            log.debug { "" }
             return ""
         }
 
-        log.infoMessage {
-            log.infoMessage { "" }
+        log.info { () -> CustomStringConvertible in
+            log.info { "" }
             return ""
         }
 
-        log.eventMessage {
-            log.eventMessage { "" }
+        log.event { () -> CustomStringConvertible in
+            log.event { "" }
             return ""
         }
 
-        log.warnMessage {
-            log.warnMessage { "" }
+        log.warn { () -> CustomStringConvertible in
+            log.warn { "" }
             return ""
         }
 
-        log.errorMessage {
-            log.errorMessage { "" }
+        log.error { () -> CustomStringConvertible in
+            log.error { "" }
             return ""
         }
 
@@ -437,11 +437,11 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
         log.enabled = true
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be equal to 5")
@@ -453,11 +453,11 @@ class SynchronousLoggerEnabledTestCase: SynchronousLoggerTestCase {
         log.enabled = false
 
         // When
-        log.debugMessage { "" }
-        log.infoMessage { "" }
-        log.eventMessage { "" }
-        log.warnMessage { "" }
-        log.errorMessage { "" }
+        log.debug { "" }
+        log.info { "" }
+        log.event { "" }
+        log.warn { "" }
+        log.error { "" }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 0, "Actual number of writes should be equal to 0")
