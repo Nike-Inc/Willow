@@ -31,18 +31,19 @@ class TestConsoleWriter: ConsoleWriter {
     var codes = [Int]()
 
     override func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
-        var finalMessage: String = ""
-        if let logMessage = message as? LogMessage {
-            for (_, value) in logMessage.attributes {
-                guard let code = value as? Int else {
-                    continue
-                }
-                codes.append(code)
-            }
-            finalMessage = "Valid Codes: \(codes.filter { $0 >= 200 && $0 <= 300 })"
-        }
-        finalMessage += modifyMessage(message, logLevel: logLevel).description
+        super.writeMessage(message.description, logLevel: logLevel)
+    }
 
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        var finalMessage: String = ""
+        for (_, value) in message.attributes {
+            guard let code = value as? Int else {
+                continue
+            }
+            codes.append(code)
+        }
+        finalMessage = "Valid Codes: \(codes.filter { $0 >= 200 && $0 <= 300 })"
+        finalMessage += modifyMessage(message, logLevel: logLevel).description
         super.writeMessage(finalMessage as CustomStringConvertible, logLevel: logLevel)
     }
 }
@@ -85,6 +86,10 @@ class ConsoleWriterTestCase: XCTestCase {
         init(_ name: String = "", attributes: [String: Any] = [:]) {
             self.name = name
             self.attributes = attributes
+        }
+
+        func description() -> String {
+            return "NIKE Willow Tests ~~ \(name): \(attributes)"
         }
     }
 
