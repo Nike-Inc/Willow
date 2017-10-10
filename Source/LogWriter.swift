@@ -30,6 +30,7 @@ import os
 /// party service, etc.
 public protocol LogWriter {
     func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel)
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel)
 }
 
 public extension LogWriter {
@@ -123,6 +124,11 @@ open class ConsoleWriter: LogModifierWriter {
             #endif
         }
     }
+
+    open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        writeMessage(message.description, logLevel: logLevel)
+    }
+
 }
 
 // MARK: -
@@ -166,6 +172,10 @@ open class OSLogWriter: LogModifierWriter {
         let type = logType(forLogLevel: logLevel)
 
         os_log("%@", log: log, type: type, message.description)
+    }
+
+    open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        writeMessage(message.description, logLevel: logLevel)
     }
 
     private func logType(forLogLevel logLevel: LogLevel) -> OSLogType {

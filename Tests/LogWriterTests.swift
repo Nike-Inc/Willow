@@ -34,7 +34,7 @@ class TestConsoleWriter: ConsoleWriter {
         super.writeMessage(message.description, logLevel: logLevel)
     }
 
-    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    override func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
         var finalMessage: String = ""
         for (_, value) in message.attributes {
             guard let code = value as? Int else {

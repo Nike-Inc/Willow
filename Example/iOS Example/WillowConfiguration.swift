@@ -62,6 +62,13 @@ struct WillowConfiguration {
 
              ServiceSDK.recordBreadcrumb(message.description, attributes: attributes)
         }
+
+        func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+            // Send the message as-is to our external logging service
+            var attributes = message.attributes
+            attributes["LogLevel"] = logLevel.description
+            ServiceSDK.recordBreadcrumb(message.description, attributes: attributes)
+        }
     }
 
     // MARK: - Configure

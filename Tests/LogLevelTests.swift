@@ -61,6 +61,11 @@ class TestWriter: LogWriter {
         self.message = message
         actualNumberOfWrites += 1
     }
+
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        self.message = message
+        actualNumberOfWrites += 1
+    }
 }
 
 // MARK: - Test Cases

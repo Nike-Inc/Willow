@@ -58,6 +58,19 @@ class SynchronousTestWriter: LogModifierWriter {
 
         actualNumberOfWrites += 1
     }
+
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        var mutableMessage = "\(message.name): \(message.attributes)"
+
+        lastMessage = message
+
+        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel).description }
+        modifiedMessages.append(mutableMessage)
+
+        self.message = mutableMessage
+
+        actualNumberOfWrites += 1
+    }
 }
 
 // MARK: -
