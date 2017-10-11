@@ -29,8 +29,35 @@ import os
 /// the conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
 /// party service, etc.
 public protocol LogWriter {
-    func writeMessage(_ message: String, logLevel: LogLevel)
+    func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel)
     func writeMessage(_ message: LogMessage, logLevel: LogLevel)
+}
+
+public extension LogWriter {
+    
+    /// Writes the message to the console using the global `print` function.
+    ///
+    /// Each modifier is run over the message in the order they are provided before writing the message to
+    /// the console.
+    ///
+    /// - Parameters:
+    ///   - message:   The original message to write to the console.
+    ///   - logLevel:  The log level associated with the message.
+    public func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
+        print(message)
+    }
+
+    /// Writes the message to the console using the global `print` function.
+    ///
+    /// Each modifier is run over the message in the order they are provided before writing the message to
+    /// the console.
+    ///
+    /// - Parameters:
+    ///   - message:   The original message to write to the console.
+    ///   - logLevel:  The log level associated with the message.
+    public func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        print(message.description)
+    }
 }
 
 /// LogModifierWriter extends LogWriter to allow for standard writers that utilize MessageModifiers
@@ -40,7 +67,7 @@ public protocol LogModifierWriter: LogWriter {
     var modifiers: [LogModifier] { get }
 }
 
-extension LogModifierWriter {
+public extension LogModifierWriter {
     /// Apply all of the LogMessageModifiers to the incoming message and return a new message.
     /// The modifiers are run in the order they are stored in `modifiers`.
     ///
@@ -49,7 +76,7 @@ extension LogModifierWriter {
     ///   - logLevel: Log level of message.
     ///
     /// - Returns: The result of executing all the modifiers on the original message.
-    public func modifyMessage(_ message: String, logLevel: LogLevel) -> String {
+    public func modifyMessage(_ message: CustomStringConvertible, logLevel: LogLevel) -> CustomStringConvertible {
         var message = message
         modifiers.forEach { message = $0.modifyMessage(message, with: logLevel) }
         return message
@@ -61,6 +88,8 @@ extension LogModifierWriter {
 /// The ConsoleWriter class runs all modifiers in the order they were created and prints the resulting message
 /// to the console.
 open class ConsoleWriter: LogModifierWriter {
+    public typealias Message = () -> CustomStringConvertible
+
     /// Used to define whether to use the print or NSLog functions when logging to the console.
     ///
     /// During development, it is recommendeded to use the `.print` case. When deploying to production, the `.nslog`
@@ -96,31 +125,22 @@ open class ConsoleWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
-    open func writeMessage(_ message: String, logLevel: LogLevel) {
-        let message = modifyMessage(message, logLevel: logLevel)
+    open func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
+        let message = modifyMessage("\(message)", logLevel: logLevel)
 
         switch method {
         case .print: print(message)
-        case .nslog: NSLog("%@", message)
+        case .nslog:
+            #if os(macOS)
+                NSLog("%@", message)
+            #endif
         }
     }
 
-    /// Writes the message to the console using the global `print` function.
-    ///
-    /// Each modifier is run over the message in the order they are provided before writing the message to
-    /// the console.
-    ///
-    /// - Parameters:
-    ///   - message:   The original message to write to the console.
-    ///   - logLevel:  The log level associated with the message.
     open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-        let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
-
-        switch method {
-        case .print: print(message)
-        case .nslog: NSLog("%@", message)
-        }
+        writeMessage(message.description, logLevel: logLevel)
     }
+
 }
 
 // MARK: -
@@ -129,6 +149,8 @@ open class ConsoleWriter: LogModifierWriter {
 /// off to an OSLog with the specified subsystem and category.
 @available(iOS 10.0, macOS 10.12.0, tvOS 10.0, watchOS 3.0, *)
 open class OSLogWriter: LogModifierWriter {
+    public typealias Message = () -> (CustomStringConvertible)
+
     open let subsystem: String
     open let category: String
 
@@ -157,26 +179,15 @@ open class OSLogWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
-    open func writeMessage(_ message: String, logLevel: LogLevel) {
+    open func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
         let message = modifyMessage(message, logLevel: logLevel)
         let type = logType(forLogLevel: logLevel)
 
-        os_log("%@", log: log, type: type, message)
+        os_log("%@", log: log, type: type, message.description)
     }
 
-    /// Writes the breadrumb to the `OSLog` using the `os_log` function.
-    ///
-    /// Each modifier is run over the breadrumb in the order they are provided before writing the breadrumb to
-    /// the console.
-    ///
-    /// - Parameters:
-    ///   - message:   The original breadrumb to write to the console
-    ///   - logLevel:  The log level associated with the message.
     open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-        let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
-        let type = logType(forLogLevel: logLevel)
-
-        os_log("%@", log: log, type: type, message)
+        writeMessage(message.description, logLevel: logLevel)
     }
 
     private func logType(forLogLevel logLevel: LogLevel) -> OSLogType {

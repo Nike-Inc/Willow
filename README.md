@@ -495,11 +495,11 @@ Now that we have a custom log level called `verbose`, we need to extend the `Log
 ```swift
 extension Logger {
     public func verboseMessage(_ message: @autoclosure @escaping () -> String) {
-    	logMessage(message, withLogLevel: .verbose)
+    	log(message, withLogLevel: .verbose)
     }
 
     public func verboseMessage(_ message: @escaping () -> String) {
-    	logMessage(message, withLogLevel: .verbose)
+    	log(message, withLogLevel: .verbose)
     }
 }
 ```

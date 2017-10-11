@@ -36,18 +36,20 @@ import Cocoa
 
 class SynchronousTestWriter: LogModifierWriter {
     private(set) var actualNumberOfWrites: Int = 0
-    private(set) var message: String?
-    private(set) var modifiedMessages = [String]()
+    private(set) var message: CustomStringConvertible?
+    private(set) var modifiedMessages = [CustomStringConvertible]()
 
     let modifiers: [LogModifier]
-    var lastMessage: LogMessage?
+    var lastMessage: CustomStringConvertible?
 
     init(modifiers: [LogModifier] = []) {
         self.modifiers = modifiers
     }
 
-    func writeMessage(_ message: String, logLevel: LogLevel) {
+    func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
         var mutableMessage = message
+
+        lastMessage = message
 
         modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
         modifiedMessages.append(mutableMessage)
@@ -62,7 +64,7 @@ class SynchronousTestWriter: LogModifierWriter {
 
         lastMessage = message
 
-        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel).description }
         modifiedMessages.append(mutableMessage)
 
         self.message = mutableMessage
@@ -83,15 +85,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
         super.init(modifiers: modifiers)
     }
 
-    override func writeMessage(_ message: String, logLevel: LogLevel) {
-        super.writeMessage(message, logLevel: logLevel)
-
-        if actualNumberOfWrites == expectedNumberOfWrites {
-            expectation.fulfill()
-        }
-    }
-
-    override func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    override func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
         super.writeMessage(message, logLevel: logLevel)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
@@ -103,7 +97,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
 // MARK: -
 
 class PrefixModifier: LogModifier {
-    func modifyMessage(_ message: String, with: LogLevel) -> String {
+    func modifyMessage(_ message: CustomStringConvertible, with: LogLevel) -> CustomStringConvertible {
         return "[Willow] \(message)"
     }
 }
@@ -149,7 +143,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
 
 class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     private struct SymbolModifier: LogModifier {
-        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) -> CustomStringConvertible {
             return "+=+-+ \(message)"
         }
     }
@@ -160,18 +154,18 @@ class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
         let (log, writer) = logger(modifiers: modifiers)
 
         // When
-        log.debugMessage { self.message }
-        log.infoMessage { self.message }
-        log.eventMessage { self.message }
-        log.warnMessage { self.message }
-        log.errorMessage { self.message }
+        log.debug { self.message }
+        log.info { self.message }
+        log.event { self.message }
+        log.warn { self.message }
+        log.error { self.message }
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 5, "Actual number of writes should be 5")
         XCTAssertEqual(writer.modifiedMessages.count, 5, "Formatted message count should be 5")
 
         let expected = "+=+-+ [Willow] Test Message"
-        writer.modifiedMessages.forEach { XCTAssertEqual($0, expected) }
+        writer.modifiedMessages.forEach { XCTAssertEqual($0.description, expected) }
     }
 }
 
@@ -187,11 +181,11 @@ class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
         let log = logger(writers: writers)
 
         // When
-        log.debugMessage { self.message }
-        log.infoMessage { self.message }
-        log.eventMessage { self.message }
-        log.warnMessage { self.message }
-        log.errorMessage { self.message }
+        log.debug { self.message }
+        log.info { self.message }
+        log.event { self.message }
+        log.warn { self.message }
+        log.error { self.message }
 
         // Then
         XCTAssertEqual(writer1.actualNumberOfWrites, 5, "writer 1 actual number of writes should be 5")

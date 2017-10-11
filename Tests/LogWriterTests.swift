@@ -27,6 +27,28 @@ import os
 import Willow
 import XCTest
 
+class TestConsoleWriter: ConsoleWriter {
+    var codes = [Int]()
+
+    override func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
+        XCTFail("LogMessage was routed through CustomStringConvertible.")
+        super.writeMessage(message.description, logLevel: logLevel)
+    }
+
+    override func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        var finalMessage: String = ""
+        for (_, value) in message.attributes {
+            guard let code = value as? Int else {
+                continue
+            }
+            codes.append(code)
+        }
+        finalMessage = "Valid Codes: \(codes.filter { $0 >= 200 && $0 <= 300 })"
+        finalMessage += modifyMessage(message, logLevel: logLevel).description
+        super.writeMessage(finalMessage as CustomStringConvertible, logLevel: logLevel)
+    }
+}
+
 class ConsoleWriterTestCase: XCTestCase {
     func testThatConsoleWriterCanBeInitialized() {
         // Given
@@ -56,6 +78,33 @@ class ConsoleWriterTestCase: XCTestCase {
 
         // When, Then
         writer.writeMessage(message, logLevel: logLevel)
+    }
+
+    struct TestMessage: LogMessage {
+        let name: String
+        let attributes: [String: Any]
+
+        init(_ name: String = "", attributes: [String: Any] = [:]) {
+            self.name = name
+            self.attributes = attributes
+        }
+
+        func description() -> String {
+            return "NIKE Willow Tests ~~ \(name): \(attributes)"
+        }
+    }
+
+    func testThatLogMessageAttributesCanBeExposedToWriters() {
+        // Given
+        let message: LogMessage = TestMessage("testMessage", attributes: ["aCode": 1337, "bCode": 4000, "cCode": 9001, "dCode": 42])
+        let logLevel = LogLevel.info
+        let writer = TestConsoleWriter(method: .print)
+        let logger = Logger(logLevels: .all, writers: [writer])
+
+        // When, Then
+        writer.writeMessage(message, logLevel: logLevel)
+        logger.info { message }
+        XCTAssert(Set(writer.codes) == Set([1337, 4000, 9001, 42]))
     }
 }
 
@@ -89,3 +138,20 @@ class OSLogWriterTestCase: XCTestCase {
         writer.writeMessage(message, logLevel: logLevel)
     }
 }
+
+class TestModifier: LogModifier {
+    public init() {}
+    open func modifyMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) -> CustomStringConvertible {
+        guard let logMessage = message as? LogMessage else {
+            XCTFail()
+            return "fail" as CustomStringConvertible
+        }
+        if logMessage.attributes.keys.contains("pass") {
+            return "pass" as CustomStringConvertible
+        } else {
+            XCTFail()
+            return "fail" as CustomStringConvertible
+        }
+    }
+}
+

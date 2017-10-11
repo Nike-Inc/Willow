@@ -24,8 +24,8 @@ For example, the following call was ambiguous in Willow 4:
 
 ```swift
 log.event {
-    let value = 10
-    return "Total value is: \(value)"
+let value = 10
+return "Total value is: \(value)"
 }
 ```
 
@@ -33,8 +33,8 @@ The only way to correct the ambiguity error is to declare the closure signature 
 
 ```swift
 log.event { () -> String in
-    let value = 10
-    return "Total value is: \(value)"
+let value = 10
+return "Total value is: \(value)"
 }
 ```
 
@@ -45,8 +45,8 @@ To resolve this issue in Willow 5, we've modified the log message string APIs to
 
 ```swift
 log.eventMessage {
-    let value = 10
-    return "Total value is: \(value)"
+let value = 10
+return "Total value is: \(value)"
 }
 ```
 
@@ -62,8 +62,7 @@ The `Optional<Logger>` extension APIs have also been updated to use the `Message
 var log: Logger?
 
 log.eventMessage {
-    let value = 10
-    return "Total value is: \(value)"
+let value = 10
+return "Total value is: \(value)"
 }
 ```
-

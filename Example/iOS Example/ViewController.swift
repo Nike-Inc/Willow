@@ -41,6 +41,20 @@ class ViewController: UIViewController {
         let action: () -> Void
     }
 
+    struct ExampleLogMessage: LogMessage {
+        let name: String
+        let attributes: [String: Any]
+
+        init(_ name: String = "", attributes: [String: Any] = [:]) {
+            self.name = name
+            self.attributes = attributes
+        }
+
+        func description() -> String {
+            return "Willow Example ~~ \(name): \(attributes)"
+        }
+    }
+
     // MARK: Properties
 
     fileprivate static let cellIdentifier = "CellID"
@@ -78,23 +92,23 @@ class ViewController: UIViewController {
                 items: [
                     Item(
                         title: "Log Debug Message",
-                        action: { log.debugMessage { "Logging Debug Message" } }
+                        action: { log.debug { "Logging Debug Message" } }
                     ),
                     Item(
                         title: "Log Info Message",
-                        action: { log.infoMessage { "Logging Info Message" } }
+                        action: { log.info { "Logging Info Message" } }
                     ),
                     Item(
                         title: "Log Event Message",
-                        action: { log.eventMessage { "Logging Event Message" } }
+                        action: { log.event { "Logging Event Message" } }
                     ),
                     Item(
                         title: "Log Warn Message",
-                        action: { log.warnMessage { "Logging Warn Message" } }
+                        action: { log.warn { "Logging Warn Message" } }
                     ),
                     Item(
                         title: "Log Error Message",
-                        action: { log.errorMessage { "Logging Error Message" } }
+                        action: { log.error { "Logging Error Message" } }
                     )
                 ]
             ),
@@ -162,11 +176,31 @@ class ViewController: UIViewController {
                             let queue = DispatchQueue.global()
 
                             for _ in range {
-                                queue.async { log.debugMessage("Logging debug message") }
-                                queue.async { log.infoMessage("Logging info message") }
-                                queue.async { log.eventMessage("Logging event message") }
-                                queue.async { log.warnMessage("Logging warn message") }
-                                queue.async { log.errorMessage("Logging error message") }
+                                queue.async {
+                                    log.debug {
+                                        let debugMessage = "Logging debug message"
+                                        return debugMessage
+                                    }
+                                }
+
+                                queue.async {
+                                    log.info {
+                                        let infoNumber = 1337
+                                        return [infoNumber: "Logging info message"]
+                                    }
+                                }
+
+                                queue.async {
+                                    log.event { "Logging event message" }
+                                }
+
+                                queue.async {
+                                    log.warn { "Logging warn message" }
+                                }
+
+                                queue.async {
+                                    log.error { "Logging error message" }
+                                }
                             }
                         }
                     ),
@@ -178,11 +212,11 @@ class ViewController: UIViewController {
 
                             for _ in range {
                                 queue.async {
-                                    log.debugMessage("Logging debug message")
-                                    log.infoMessage("Logging info message")
-                                    log.eventMessage("Logging event message")
-                                    log.warnMessage("Logging warn message")
-                                    log.errorMessage("Logging error message")
+                                    log.debug { "Logging debug message" }
+                                    log.info { "Logging info message" }
+                                    log.event { "Logging event message" }
+                                    log.warn { "Logging warn message" }
+                                    log.error { "Logging error message" }
                                 }
 
                                 queue.async {
@@ -201,6 +235,110 @@ class ViewController: UIViewController {
                                     Request.makeWarnRequest()
                                     Request.makeErrorRequest()
                                 }
+                            }
+                        }
+                    )
+                ]
+            ),
+            Section(
+                title: "LogMessages w/Attribtues",
+                items: [
+                    Item(
+                        title: "Log Debug Message",
+                        action: {
+                            log.debug {
+                                let message = "logging debug message"
+                                let attributes = [
+                                    "Memory leaks": 0,
+                                    "Crash rate": 0.0,
+                                    "Webservice failure rate": 0.0
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                        }
+                    ),
+                    Item(
+                        title: "Log Info Message",
+                        action: {
+                            log.info {
+                                let message = "logging info message"
+                                let attributes: [String: Any] = [
+                                    "locale": Locale.current,
+                                    "timeZone": TimeZone.current,
+                                    "orientation": String(describing: UIDevice.current.orientation),
+                                    "deviceModel": UIDevice.current.model,
+                                    "deviceName": UIDevice.current.name
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                    }
+                    ),
+                    Item(
+                        title: "Log Event Message",
+                        action: {
+                            log.event {
+                                let message = "logging event message"
+                                let attributes: [String: Any] = [
+                                    "viewController": self,
+                                    "time": Date(),
+                                    "event": "clicked Log Event Message button"
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                    }
+                    ),
+                    Item(
+                        title: "Log Warn Message",
+                        action: {
+                            log.warn {
+                                let message = "logging warn message"
+                                let attributes: [String: Any] = [
+                                    "warnAction": {
+                                        func action() {
+                                            DispatchQueue.main.async {
+                                                guard let window = UIApplication.shared.keyWindow else {
+                                                    return
+                                                }
+                                                guard let rootVC = window.rootViewController else {
+                                                    return
+                                                }
+                                                var currentVC: UIViewController = rootVC
+                                                for child in rootVC.childViewControllers {
+                                                    if child.isBeingPresented {
+                                                        currentVC = child
+                                                    }
+                                                }
+                                                if currentVC.isBeingDismissed {
+                                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(50000.0))) { action() }
+                                                } else {
+                                                    let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                                    currentVC.present(alert, animated: false, completion: nil)
+                                                }
+                                            }
+                                        }
+                                        action()
+                                    }
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                        }
+                    ),
+                    Item(
+                        title: "Log Error Message",
+                        action: {
+                            log.error {
+                                let message = "logging warn message"
+                                let attributes: [String: Any] = [
+                                    "code": 1234,
+                                    "error": NSError(domain: "com.willow.error", code: 1234, userInfo: [NSLocalizedDescriptionKey: "Error Description", NSLocalizedFailureReasonErrorKey: "Failure due to total system failure", NSLocalizedRecoverySuggestionErrorKey: "Restart the app"])
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
                             }
                         }
                     )

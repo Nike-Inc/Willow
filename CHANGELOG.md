@@ -27,6 +27,16 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [6.0.0](https://github.com/Nike-Inc/Willow/releases/tag/5.0.0)
+
+#### Updated
+
+- Log message string APIs no longer include `Message` suffix to remove ambiguity with `LogMessage` APIs. (Back to 4.0.x behavior.)
+  - Updated by [Jonathan Gilbert](https://github.com/gistya) in Pull Request *TODO: enter the PR this gets merged with*
+- The README to match the updated APIs.
+  - Updated by  [Jonathan Gilbert](https://github.com/gistya) in Pull Request *TODO: enter the PR this gets merged with*
+
+
 ## [5.0.0](https://github.com/Nike-Inc/Willow/releases/tag/5.0.0)
 
 Released on 2017-09-20. All issues associated with this milestone can be found using this

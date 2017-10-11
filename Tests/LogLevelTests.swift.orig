@@ -34,6 +34,7 @@ extension LogLevel {
 }
 
 extension Logger {
+<<<<<<< HEAD
     fileprivate func verbose(message: @autoclosure @escaping () -> CustomStringConvertible) {
         logMessage(message, with: LogLevel.verbose)
     }
@@ -47,6 +48,21 @@ extension Logger {
     }
 
     fileprivate func summary(message: @escaping () -> CustomStringConvertible) {
+=======
+    fileprivate func verboseMessage(_ message: @autoclosure @escaping () -> String) {
+        logMessage(message, with: LogLevel.verbose)
+    }
+
+    fileprivate func verboseMessage(_ message: @escaping () -> String) {
+        logMessage(message, with: LogLevel.verbose)
+    }
+
+    fileprivate func summaryMessage(_ message: @autoclosure @escaping () -> String) {
+        logMessage(message, with: LogLevel.summary)
+    }
+
+    fileprivate func summaryMessage(_ message: @escaping () -> String) {
+>>>>>>> master
         logMessage(message, with: LogLevel.summary)
     }
 }
@@ -58,11 +74,6 @@ class TestWriter: LogWriter {
     private(set) var message: CustomStringConvertible?
 
     func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
-        self.message = message
-        actualNumberOfWrites += 1
-    }
-
-    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
         self.message = message
         actualNumberOfWrites += 1
     }
@@ -173,6 +184,7 @@ class CustomLogLevelTestCase: XCTestCase {
         let (log, writer) = logger(logLevels: .all)
 
         // When / Then
+<<<<<<< HEAD
         log.verbose { "verbose message" }
         XCTAssertEqual("verbose message", writer.message?.description ?? "", "Expected message should match actual writer message")
 
@@ -193,6 +205,28 @@ class CustomLogLevelTestCase: XCTestCase {
 
         log.error { "error message" }
         XCTAssertEqual("error message", writer.message?.description ?? "", "Expected message should match actual writer message")
+=======
+        log.verboseMessage { "verbose message" }
+        XCTAssertEqual("verbose message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.debugMessage { "debug message" }
+        XCTAssertEqual("debug message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.infoMessage { "info message" }
+        XCTAssertEqual("info message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.summaryMessage { "summary message" }
+        XCTAssertEqual("summary message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.eventMessage { "event message" }
+        XCTAssertEqual("event message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.warnMessage { "warn message" }
+        XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.errorMessage { "error message" }
+        XCTAssertEqual("error message", writer.message ?? "", "Expected message should match actual writer message")
+>>>>>>> master
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 7, "Actual number of writes should be 7")
@@ -204,6 +238,7 @@ class CustomLogLevelTestCase: XCTestCase {
         let (log, writer) = logger(logLevels: logLevels)
 
         // When / Then
+<<<<<<< HEAD
         log.verbose { "verbose message" }
         XCTAssertEqual("verbose message", writer.message?.description ?? "", "Expected message should match actual writer message")
 
@@ -224,6 +259,28 @@ class CustomLogLevelTestCase: XCTestCase {
 
         log.error { "error message" }
         XCTAssertEqual("warn message", writer.message?.description ?? "", "Expected message should match actual writer message")
+=======
+        log.verboseMessage { "verbose message" }
+        XCTAssertEqual("verbose message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.debugMessage { "debug message" }
+        XCTAssertEqual("verbose message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.infoMessage { "info message" }
+        XCTAssertEqual("info message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.summaryMessage { "summary message" }
+        XCTAssertEqual("summary message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.eventMessage { "event message" }
+        XCTAssertEqual("summary message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.warnMessage { "warn message" }
+        XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
+
+        log.errorMessage { "error message" }
+        XCTAssertEqual("warn message", writer.message ?? "", "Expected message should match actual writer message")
+>>>>>>> master
 
         // Then
         XCTAssertEqual(writer.actualNumberOfWrites, 4, "Actual number of writes should be 4")

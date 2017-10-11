@@ -27,7 +27,7 @@ import Foundation
 /// The LogModifier protocol defines a single method for modifying a log message after it has been constructed.
 /// This is very flexible allowing any object that conforms to modify messages in any way it wants.
 public protocol LogModifier {
-    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
+    func modifyMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) -> CustomStringConvertible
 }
 
 // MARK: -
@@ -52,8 +52,8 @@ open class TimestampModifier: LogModifier {
     ///   - logLevel: The log level set for the message.
     ///
     /// - Returns: A newly formatted message.
-    open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    open func modifyMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) -> CustomStringConvertible {
         let timestampString = timestampFormatter.string(from: Date())
-        return "\(timestampString) \(message)"
+        return "\(timestampString) \(message)" as CustomStringConvertible
     }
 }
