@@ -249,13 +249,23 @@ open class Logger: Loggable {
     open func logMessage(_ message: @escaping () -> (CustomStringConvertible), with logLevel: LogLevel) {
         guard enabled && logLevelAllowed(logLevel) else { return }
 
+        let routeMessage: (Message) -> () = { [unowned self] message in
+            let msg = message()
+            if let logMsg = msg as? LogMessage {
+                self.logMessage(logMsg, with: logLevel)
+            } else {
+                self.logMessage(msg, with: logLevel)
+            }
+        }
+
         switch executionMethod {
         case .synchronous(let lock):
             lock.lock() ; defer { lock.unlock() }
-            logMessage(message(), with: logLevel)
-
+            routeMessage(message)
         case .asynchronous(let queue):
-            queue.async { self.logMessage(message(), with: logLevel) }
+            queue.async {
+                routeMessage(message)
+            }
         }
     }
 
@@ -266,6 +276,10 @@ open class Logger: Loggable {
     }
 
     private func logMessage(_ message: CustomStringConvertible, with logLevel: LogLevel) {
+        writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
+    }
+
+    private func logMessage(_ message: LogMessage, with logLevel: LogLevel) {
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
     }
 }

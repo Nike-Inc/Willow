@@ -66,6 +66,11 @@ struct WillowConfiguration {
         func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
             // Send the message as-is to our external logging service
             var attributes = message.attributes
+            if attributes.contains(where: { $0.key == "warnAction" }) {
+                if let showWarning = attributes["warnAction"] as? () -> () {
+                    showWarning()
+                }
+            }
             attributes["LogLevel"] = logLevel.description
             ServiceSDK.recordBreadcrumb(message.description, attributes: attributes)
         }

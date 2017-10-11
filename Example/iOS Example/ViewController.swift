@@ -41,6 +41,20 @@ class ViewController: UIViewController {
         let action: () -> Void
     }
 
+    struct ExampleLogMessage: LogMessage {
+        let name: String
+        let attributes: [String: Any]
+
+        init(_ name: String = "", attributes: [String: Any] = [:]) {
+            self.name = name
+            self.attributes = attributes
+        }
+
+        func description() -> String {
+            return "Willow Example ~~ \(name): \(attributes)"
+        }
+    }
+
     // MARK: Properties
 
     fileprivate static let cellIdentifier = "CellID"
@@ -221,6 +235,110 @@ class ViewController: UIViewController {
                                     Request.makeWarnRequest()
                                     Request.makeErrorRequest()
                                 }
+                            }
+                        }
+                    )
+                ]
+            ),
+            Section(
+                title: "LogMessages w/Attribtues",
+                items: [
+                    Item(
+                        title: "Log Debug Message",
+                        action: {
+                            log.debug {
+                                let message = "logging debug message"
+                                let attributes = [
+                                    "Memory leaks": 0,
+                                    "Crash rate": 0.0,
+                                    "Webservice failure rate": 0.0
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                        }
+                    ),
+                    Item(
+                        title: "Log Info Message",
+                        action: {
+                            log.info {
+                                let message = "logging info message"
+                                let attributes: [String: Any] = [
+                                    "locale": Locale.current,
+                                    "timeZone": TimeZone.current,
+                                    "orientation": String(describing: UIDevice.current.orientation),
+                                    "deviceModel": UIDevice.current.model,
+                                    "deviceName": UIDevice.current.name
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                    }
+                    ),
+                    Item(
+                        title: "Log Event Message",
+                        action: {
+                            log.event {
+                                let message = "logging event message"
+                                let attributes: [String: Any] = [
+                                    "viewController": self,
+                                    "time": Date(),
+                                    "event": "clicked Log Event Message button"
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                    }
+                    ),
+                    Item(
+                        title: "Log Warn Message",
+                        action: {
+                            log.warn {
+                                let message = "logging warn message"
+                                let attributes: [String: Any] = [
+                                    "warnAction": {
+                                        func action() {
+                                            DispatchQueue.main.async {
+                                                guard let window = UIApplication.shared.keyWindow else {
+                                                    return
+                                                }
+                                                guard let rootVC = window.rootViewController else {
+                                                    return
+                                                }
+                                                var currentVC: UIViewController = rootVC
+                                                for child in rootVC.childViewControllers {
+                                                    if child.isBeingPresented {
+                                                        currentVC = child
+                                                    }
+                                                }
+                                                if currentVC.isBeingDismissed {
+                                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(50000.0))) { action() }
+                                                } else {
+                                                    let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                                    currentVC.present(alert, animated: false, completion: nil)
+                                                }
+                                            }
+                                        }
+                                        action()
+                                    }
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
+                            }
+                        }
+                    ),
+                    Item(
+                        title: "Log Error Message",
+                        action: {
+                            log.error {
+                                let message = "logging warn message"
+                                let attributes: [String: Any] = [
+                                    "code": 1234,
+                                    "error": NSError(domain: "com.willow.error", code: 1234, userInfo: [NSLocalizedDescriptionKey: "Error Description", NSLocalizedFailureReasonErrorKey: "Failure due to total system failure", NSLocalizedRecoverySuggestionErrorKey: "Restart the app"])
+                                ]
+                                let logMessage = ExampleLogMessage(message, attributes: attributes)
+                                return logMessage
                             }
                         }
                     )

@@ -46,6 +46,18 @@ public extension LogWriter {
     public func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
         print(message)
     }
+
+    /// Writes the message to the console using the global `print` function.
+    ///
+    /// Each modifier is run over the message in the order they are provided before writing the message to
+    /// the console.
+    ///
+    /// - Parameters:
+    ///   - message:   The original message to write to the console.
+    ///   - logLevel:  The log level associated with the message.
+    public func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        print(message.description)
+    }
 }
 
 /// LogModifierWriter extends LogWriter to allow for standard writers that utilize MessageModifiers

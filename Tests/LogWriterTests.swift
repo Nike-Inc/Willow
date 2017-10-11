@@ -31,6 +31,7 @@ class TestConsoleWriter: ConsoleWriter {
     var codes = [Int]()
 
     override func writeMessage(_ message: CustomStringConvertible, logLevel: LogLevel) {
+        XCTFail("LogMessage was routed through CustomStringConvertible.")
         super.writeMessage(message.description, logLevel: logLevel)
     }
 
@@ -98,9 +99,11 @@ class ConsoleWriterTestCase: XCTestCase {
         let message: LogMessage = TestMessage("testMessage", attributes: ["aCode": 1337, "bCode": 4000, "cCode": 9001, "dCode": 42])
         let logLevel = LogLevel.info
         let writer = TestConsoleWriter(method: .print)
+        let logger = Logger(logLevels: .all, writers: [writer])
 
         // When, Then
         writer.writeMessage(message, logLevel: logLevel)
+        logger.info { message }
         XCTAssert(Set(writer.codes) == Set([1337, 4000, 9001, 42]))
     }
 }
