@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 5.x Releases
 
-- `5.0.x` Releases - [5.0.0](#500)
+- `5.0.x` Releases - [5.0.0](#500)|[5.0.1](#501)
 
 #### 4.x Releases
 
@@ -26,6 +26,17 @@ All notable changes to this project will be documented in this file.
 - `1.0.x` Releases - [1.0.0](#100)
 
 ---
+
+## [5.0.1](https://github.com/Nike-Inc/Willow/releases/tag/5.0.1)
+
+Released on 2017-12-15. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/7?closed=1).
+
+#### Updated
+
+- The Xcode project and Travis CI to support Xcode 9.2.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#35](https://github.com/Nike-Inc/Willow/pull/35).
 
 ## [5.0.0](https://github.com/Nike-Inc/Willow/releases/tag/5.0.0)
 
