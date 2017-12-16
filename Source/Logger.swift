@@ -53,7 +53,7 @@ open class Logger {
     /// Controls whether to allow log messages to be sent to the writers.
     open var enabled = true
 
-    // Log levels this logger is configured for.
+    /// Log levels this logger is configured for.
     open let logLevels: LogLevel
 
     /// The array of writers to use when messages are written.
