@@ -29,8 +29,8 @@ All notable changes to this project will be documented in this file.
 
 ## [5.0.1](https://github.com/Nike-Inc/Willow/releases/tag/5.0.1)
 
-Released on 2017-12-15. All issues associated with this milestone can be found using this
-[filter](https://github.com/Nike-Inc/Willow/milestone/7?closed=1).
+Released on 2018-01-02. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/9?closed=1).
 
 #### Updated
 
