@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 5.x Releases
 
-- `5.0.x` Releases - [5.0.0](#500)|[5.0.1](#501)
+- `5.0.x` Releases - [5.0.0](#500) | [5.0.1](#501) | [5.0.2](#502)
 
 #### 4.x Releases
 
@@ -26,6 +26,26 @@ All notable changes to this project will be documented in this file.
 - `1.0.x` Releases - [1.0.0](#100)
 
 ---
+
+## [5.0.2](https://github.com/Nike-Inc/Willow/releases/tag/5.0.2)
+
+Released on 2018-04-10. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/11?closed=1).
+
+#### Updated
+
+- The Xcode project to support Xcode 9.3.
+  - Updated by [Colby Williams](https://github.com/colbylwilliams) in Pull Request
+  [#38](https://github.com/Nike-Inc/Willow/pull/38).
+- The Travis-CI YAML file to support Xcode 9.3.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#39](https://github.com/Nike-Inc/Willow/pull/39).
+
+#### Fixed
+
+- Compiler warnings in the test suite on Xcode 9.3 for the `characters` property on `String`.
+  - Fixed by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#39](https://github.com/Nike-Inc/Willow/pull/39).
 
 ## [5.0.1](https://github.com/Nike-Inc/Willow/releases/tag/5.0.1)
 
