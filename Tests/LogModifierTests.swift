@@ -41,7 +41,7 @@ class TimestampModifierTestCase: XCTestCase {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
-            XCTAssertEqual(actualMessage.characters.count, 36, "Actual message 36 characters")
+            XCTAssertEqual(actualMessage.count, 36, "Actual message 36 characters")
         }
     }
 }
