@@ -101,16 +101,3 @@ extension LogLevel: CustomStringConvertible {
         }
     }
 }
-
-// MARK: - Equatable
-
-/// Returns whether the `lhs` and `rhs` instances are equal.
-///
-/// - Parameters:
-///   - lhs: The left-hand side `LogLevel` instance to compare.
-///   - rhs: The right-hand side `LogLevel` instance to compare.
-///
-/// - Returns: Whether the two instances are equal.
-public func ==(lhs: LogLevel, rhs: LogLevel) -> Bool {
-    return lhs.rawValue == rhs.rawValue
-}
