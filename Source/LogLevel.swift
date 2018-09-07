@@ -27,7 +27,7 @@ import Foundation
 /// The `LogLevel` struct defines all the default log levels for Willow. Each default log level has a defined bitmask
 /// that is used to satisfy the raw value backing the log level. The empty bits that remain allow custom log levels to
 /// be inter-mixed with the default log levels very easily.
-public struct LogLevel: OptionSet {
+public struct LogLevel: OptionSet, Equatable, Hashable {
 
     // MARK: Properties
 
@@ -74,13 +74,6 @@ public struct LogLevel: OptionSet {
     ///
     /// - Returns: A new log level instance.
     public init(rawValue: RawValue) { self.rawValue = rawValue }
-}
-
-// MARK: - Hashable
-
-extension LogLevel: Equatable, Hashable {
-    /// Returns the hash value using the raw bitmask value of the `LogLevel`.
-    public var hashValue: Int { return rawValue.hashValue }
 }
 
 // MARK: - CustomStringConvertible
