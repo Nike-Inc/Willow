@@ -33,9 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - App State
 
+#if swift(>=4.2)
+    typealias LaunchOptions = [UIApplication.LaunchOptionsKey: Any]
+#else
+    typealias LaunchOptions = [UIApplicationLaunchOptionsKey: Any]
+#endif
+
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+        didFinishLaunchingWithOptions launchOptions: LaunchOptions?)
         -> Bool
     {
         WillowConfiguration.configure()

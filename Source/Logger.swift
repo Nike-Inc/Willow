@@ -54,13 +54,13 @@ open class Logger {
     open var enabled = true
 
     /// Log levels this logger is configured for.
-    open let logLevels: LogLevel
+    public let logLevels: LogLevel
 
     /// The array of writers to use when messages are written.
-    open let writers: [LogWriter]
+    public let writers: [LogWriter]
 
     /// The execution method used when logging a message.
-    open let executionMethod: ExecutionMethod
+    public let executionMethod: ExecutionMethod
 
     // MARK: - Initialization
 
