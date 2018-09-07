@@ -74,7 +74,7 @@ class LogLevelTestCase: XCTestCase {
 
     // MARK: Tests
 
-    func testLogLevelHashValues() {
+    func testLogLevelRawValues() {
         // Given, When
         let off = LogLevel.off
         let debug = LogLevel.debug
@@ -84,12 +84,12 @@ class LogLevelTestCase: XCTestCase {
         let error = LogLevel.error
 
         // Then
-        XCTAssertEqual(off.hashValue, 0)
-        XCTAssertEqual(debug.hashValue, 1)
-        XCTAssertEqual(info.hashValue, 2)
-        XCTAssertEqual(event.hashValue, 4)
-        XCTAssertEqual(warn.hashValue, 8)
-        XCTAssertEqual(error.hashValue, 16)
+        XCTAssertEqual(off.rawValue, 0)
+        XCTAssertEqual(debug.rawValue, 1)
+        XCTAssertEqual(info.rawValue, 2)
+        XCTAssertEqual(event.rawValue, 4)
+        XCTAssertEqual(warn.rawValue, 8)
+        XCTAssertEqual(error.rawValue, 16)
     }
 
     func testLogLevelDescriptions() {
