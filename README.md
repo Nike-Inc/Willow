@@ -47,8 +47,8 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 ## Requirements
 
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 9.0+
-- Swift 4.0+
+- Xcode 9.3+
+- Swift 4.1+
 
 ## Migration Guides
 
