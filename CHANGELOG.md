@@ -27,6 +27,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## Unreleased
+
+#### Updated
+
+- The Xcode workspace to be compatible with Xcode 10 and Swift 4.2.
+
+---
+
 ## [5.0.2](https://github.com/Nike-Inc/Willow/releases/tag/5.0.2)
 
 Released on 2018-04-10. All issues associated with this milestone can be found using this
