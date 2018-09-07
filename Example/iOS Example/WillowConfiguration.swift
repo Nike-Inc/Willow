@@ -28,7 +28,7 @@ import UIKit
 import WebServices
 import Willow
 
-var log: Logger!
+var log: Logger = .disabled
 
 struct WillowConfiguration {
 

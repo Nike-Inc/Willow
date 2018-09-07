@@ -50,6 +50,9 @@ open class Logger {
 
    // MARK: - Properties
 
+    /// A logger that does not output any messages to writers.
+    public static let disabled: Logger = NoOpLogger()
+
     /// Controls whether to allow log messages to be sent to the writers.
     open var enabled = true
 
@@ -270,10 +273,19 @@ open class Logger {
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
     }
 
-    // MARK: - Private - Log Message Helpers
-
     private func logMessage(_ message: LogMessage, with logLevel: LogLevel) {
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
+    }
+
+    // MARK: - Private - No-Op Logger
+
+    private final class NoOpLogger: Logger {
+        init() {
+            super.init(logLevels: .off, writers: [])
+            enabled = false
+        }
+
+        override func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel) {}
     }
 }
 
@@ -281,6 +293,7 @@ open class Logger {
 
 /// This allows for the use of a `Logger?` variable without the calling code needing to
 /// guard or optionally unwrap before using the log.
+@available(*, deprecated: 5.1.0, message: "Use a non-optional `Logger` variable")
 extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the debug log level is set.
     ///
