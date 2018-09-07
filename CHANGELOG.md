@@ -29,9 +29,21 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+#### Added
+
+- A `Logger.disabled` static variable that can be assigned to a `Logger` variable. This `Logger` will not write any messages sent to it.
+
 #### Updated
 
 - The Xcode workspace to be compatible with Xcode 10 and Swift 4.2.
+
+#### Deprecated
+
+- The `Optional<Logger>` extensions are now deprecated. Use a non-optional `Logger` variable: `var log: Logger? = nil` → `var log: Logger = .disabled`.
+
+#### Removed
+
+#### Fixed
 
 ---
 

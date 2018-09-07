@@ -62,8 +62,7 @@ extension Optional where Wrapped == Logger {
 // MARK: -
 
 /// The single `Logger` instance used throughout Database.
-/// Note that the extension for Optional<Logger> allows for the safe use of `log` without unwrapping.
-public var log: Logger?
+public var log: Logger = .disabled
 
 /// Message type used by the Database framework.
 /// With this implementation you would have an enum case for each distinct message to be written.
