@@ -101,7 +101,7 @@
 		4CD142361F572F6C002D6006 /* Willow 2.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 2.0 Migration Guide.md"; path = "Documentation/Willow 2.0 Migration Guide.md"; sourceTree = "<group>"; };
 		4CD142371F572F6C002D6006 /* Willow 3.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 3.0 Migration Guide.md"; path = "Documentation/Willow 3.0 Migration Guide.md"; sourceTree = "<group>"; };
 		4CD142381F572F6C002D6006 /* Willow 4.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 4.0 Migration Guide.md"; path = "Documentation/Willow 4.0 Migration Guide.md"; sourceTree = "<group>"; };
-		4CD9E067207C3DF700D02902 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; name = .travis.yml; path = .travis.yml; sourceTree = "<group>"; };
+		4CD9E067207C3DF700D02902 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		4CF3EBD71F72FB5D00ECFA06 /* Willow 5.0 Migration Guide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Willow 5.0 Migration Guide.md"; path = "Documentation/Willow 5.0 Migration Guide.md"; sourceTree = "<group>"; };
 		4CF89C8B1A6E2F60001BFDE1 /* Willow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Willow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF89C951A6E2F60001BFDE1 /* WillowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WillowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };

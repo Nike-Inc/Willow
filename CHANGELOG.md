@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 5.x Releases
 
+- `5.1.x` Releases - [5.1.0](#510)
 - `5.0.x` Releases - [5.0.0](#500) | [5.0.1](#501) | [5.0.2](#502)
 
 #### 4.x Releases
@@ -31,19 +32,46 @@ All notable changes to this project will be documented in this file.
 
 #### Added
 
-- A `Logger.disabled` static variable that can be assigned to a `Logger` variable. This `Logger` will not write any messages sent to it.
-
 #### Updated
 
-- The Xcode workspace to be compatible with Xcode 10 and Swift 4.2.
-
 #### Deprecated
-
-- The `Optional<Logger>` extensions are now deprecated. Use a non-optional `Logger` variable: `var log: Logger? = nil` → `var log: Logger = .disabled`.
 
 #### Removed
 
 #### Fixed
+
+---
+
+## [5.1.0](https://github.com/Nike-Inc/Willow/releases/tag/5.1.0)
+
+Released on 2018-09-17. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/10?closed=1).
+
+#### Added
+
+- A `Logger.disabled` static variable that can be assigned to a `Logger` variable.
+  This `Logger` will not write any messages sent to it.
+  - Added by [Eric Jensen](https://github.com/ejensen) in Pull Request
+  [#42](https://github.com/Nike-Inc/Willow/pull/42).
+
+#### Updated
+
+- The Xcode workspace to be compatible with Xcode 10 and Swift 4.2.
+  - Updated by [Eric Jensen](https://github.com/ejensen) in Pull Request
+  [#40](https://github.com/Nike-Inc/Willow/pull/40).
+- The podspec `swift-version` to `4.2`.
+  - Updated by [Eric Jensen](https://github.com/ejensen) in Pull Request
+  [#43](https://github.com/Nike-Inc/Willow/pull/43).
+- The Travis-CI yaml file to build with Xcode 10 by leveraging bundler and a Gemfile.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#44](https://github.com/Nike-Inc/Willow/pull/44).
+
+#### Deprecated
+
+- The `Optional<Logger>` extensions are now deprecated.
+  Use a non-optional `Logger` variable: `var log: Logger? = nil` → `var log: Logger = .disabled`.
+  - Deprecated by [Eric Jensen](https://github.com/ejensen) in Pull Request
+  [#42](https://github.com/Nike-Inc/Willow/pull/42).
 
 ---
 
