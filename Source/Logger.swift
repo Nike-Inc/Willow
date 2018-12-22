@@ -46,6 +46,7 @@ open class Logger {
     public enum ExecutionMethod {
         case synchronous(lock: NSRecursiveLock)
         case asynchronous(queue: DispatchQueue)
+        case asyncGroup(queue: DispatchQueue, group: DispatchGroup)
     }
 
    // MARK: - Properties
@@ -170,6 +171,11 @@ open class Logger {
 
         case .asynchronous(let queue):
             queue.async { self.logMessage(message(), with: logLevel) }
+            
+        case .asyncGroup(let queue, let group):
+            queue.async(group: group, execute: DispatchWorkItem {
+                self.logMessage(message(), with: logLevel)
+            })
         }
     }
 
@@ -260,6 +266,11 @@ open class Logger {
 
         case .asynchronous(let queue):
             queue.async { self.logMessage(message(), with: logLevel) }
+            
+        case .asyncGroup(let queue, let group):
+            queue.async(group: group, execute: DispatchWorkItem {
+                self.logMessage(message(), with: logLevel)
+            })
         }
     }
 
