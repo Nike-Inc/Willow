@@ -45,10 +45,10 @@ open class Logger {
     /// - asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
     public enum ExecutionMethod {
         case synchronous(lock: NSRecursiveLock)
-        case asynchronous(queue: DispatchQueue, group: DispatchGroup?)
+        case asynchronous(queue: DispatchQueue)
     }
 
-   // MARK: - Properties
+    // MARK: - Properties
 
     /// A logger that does not output any messages to writers.
     public static let disabled: Logger = NoOpLogger()
@@ -64,6 +64,9 @@ open class Logger {
 
     /// The execution method used when logging a message.
     public let executionMethod: ExecutionMethod
+    
+    /// The dispatch group used for asynchronous logging.
+    private let dispatchGroup: DispatchGroup?
 
     // MARK: - Initialization
 
@@ -81,6 +84,18 @@ open class Logger {
         self.logLevels = logLevels
         self.writers = writers
         self.executionMethod = executionMethod
+        
+        switch executionMethod {
+        case .asynchronous(_):
+            dispatchGroup = DispatchGroup()
+        default:
+            dispatchGroup = nil
+        }
+    }
+    
+    /// Waits for all logs to be written to the writers.
+    public func waitForAllLogsCompletion() {
+        dispatchGroup?.wait()
     }
 
     // MARK: - Log Messages
@@ -168,8 +183,8 @@ open class Logger {
             lock.lock() ; defer { lock.unlock() }
             logMessage(message(), with: logLevel)
 
-        case .asynchronous(let queue, let group):
-            queue.async(group: group) {
+        case .asynchronous(let queue):
+            queue.async(group: dispatchGroup) {
                 self.logMessage(message(), with: logLevel)
             }
             
@@ -261,8 +276,8 @@ open class Logger {
             lock.lock() ; defer { lock.unlock() }
             logMessage(message(), with: logLevel)
 
-        case .asynchronous(let queue, let group):
-            queue.async(group: group) {
+        case .asynchronous(let queue):
+            queue.async(group: dispatchGroup) {
                 self.logMessage(message(), with: logLevel)
             }
         }
