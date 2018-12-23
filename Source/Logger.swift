@@ -45,8 +45,7 @@ open class Logger {
     /// - asynchronous: Logs messages asynchronously on the dispatch queue in a serial order.
     public enum ExecutionMethod {
         case synchronous(lock: NSRecursiveLock)
-        case asynchronous(queue: DispatchQueue)
-        case asyncGroup(queue: DispatchQueue, group: DispatchGroup)
+        case asynchronous(queue: DispatchQueue, group: DispatchGroup?)
     }
 
    // MARK: - Properties
@@ -169,13 +168,11 @@ open class Logger {
             lock.lock() ; defer { lock.unlock() }
             logMessage(message(), with: logLevel)
 
-        case .asynchronous(let queue):
-            queue.async { self.logMessage(message(), with: logLevel) }
-            
-        case .asyncGroup(let queue, let group):
-            queue.async(group: group, execute: DispatchWorkItem {
+        case .asynchronous(let queue, let group):
+            queue.async(group: group) {
                 self.logMessage(message(), with: logLevel)
-            })
+            }
+            
         }
     }
 
@@ -264,13 +261,10 @@ open class Logger {
             lock.lock() ; defer { lock.unlock() }
             logMessage(message(), with: logLevel)
 
-        case .asynchronous(let queue):
-            queue.async { self.logMessage(message(), with: logLevel) }
-            
-        case .asyncGroup(let queue, let group):
-            queue.async(group: group, execute: DispatchWorkItem {
+        case .asynchronous(let queue, let group):
+            queue.async(group: group) {
                 self.logMessage(message(), with: logLevel)
-            })
+            }
         }
     }
 

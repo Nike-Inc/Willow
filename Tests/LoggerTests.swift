@@ -139,7 +139,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
         let expectation = self.expectation(description: "Test writer should receive expected number of writes")
         let writer = AsynchronousTestWriter(expectation: expectation, expectedNumberOfWrites: expectedNumberOfWrites, modifiers: modifiers)
         let queue = DispatchQueue(label: "async-logger-test-queue", qos: .utility)
-        let logger = Logger(logLevels: logLevels, writers: [writer], executionMethod: .asynchronous(queue: queue))
+        let logger = Logger(logLevels: logLevels, writers: [writer], executionMethod: .asynchronous(queue: queue, group: nil))
 
         return (logger, writer)
     }
