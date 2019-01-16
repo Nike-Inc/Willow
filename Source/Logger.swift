@@ -165,8 +165,9 @@ open class Logger {
 
         switch executionMethod {
         case .synchronous(let lock):
+            let message = message()
             lock.lock() ; defer { lock.unlock() }
-            logMessage(message(), with: logLevel)
+            logMessage(message, with: logLevel)
 
         case .asynchronous(let queue):
             queue.async { self.logMessage(message(), with: logLevel) }
