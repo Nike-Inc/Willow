@@ -23,7 +23,10 @@
 //
 
 import Foundation
+
+#if canImport(os)
 import os
+#endif
 
 /// The LogWriter protocol defines a single API for writing a log message. The message can be written in any way
 /// the conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
@@ -101,7 +104,7 @@ open class ConsoleWriter: LogModifierWriter {
 
         switch method {
         case .print: print(message)
-        case .nslog: NSLog("%@", message)
+        case .nslog: message.withCString { NSLog("%s", $0) }
         }
     }
 
@@ -118,13 +121,14 @@ open class ConsoleWriter: LogModifierWriter {
 
         switch method {
         case .print: print(message)
-        case .nslog: NSLog("%@", message)
+        case .nslog: message.withCString { NSLog("%s", $0) }
         }
     }
 }
 
 // MARK: -
 
+#if canImport(os)
 /// The OSLogWriter class runs all modifiers in the order they were created and passes the resulting message
 /// off to an OSLog with the specified subsystem and category.
 @available(iOS 10.0, macOS 10.12.0, tvOS 10.0, watchOS 3.0, *)
@@ -189,3 +193,4 @@ open class OSLogWriter: LogModifierWriter {
         }
     }
 }
+#endif
