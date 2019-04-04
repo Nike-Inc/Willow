@@ -104,7 +104,7 @@ open class ConsoleWriter: LogModifierWriter {
 
         switch method {
         case .print: print(message)
-        case .nslog: message.withCString { NSLog("%s", $0) }
+        case .nslog: NSLog(message)
         }
     }
 
@@ -121,7 +121,7 @@ open class ConsoleWriter: LogModifierWriter {
 
         switch method {
         case .print: print(message)
-        case .nslog: message.withCString { NSLog("%s", $0) }
+        case .nslog: NSLog(message)
         }
     }
 }
