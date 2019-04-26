@@ -188,7 +188,7 @@ open class OSLogWriter: LogModifierWriter {
         switch logLevel {
         case LogLevel.debug: return .debug
         case LogLevel.info:  return .info
-        case LogLevel.warn:  return .error
+        case LogLevel.warn:  return .default
         case LogLevel.error: return .error
         default:             return .default
         }
