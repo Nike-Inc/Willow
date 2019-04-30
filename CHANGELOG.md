@@ -33,6 +33,10 @@ All notable changes to this project will be documented in this file.
 #### Added
 
 #### Updated
+- To Swift 5 with backwards compatability with 4.2 and Xcode 10.1
+  - Updated by [Greg Tropino](https://github.com/gtrop1) in Pull Request
+  [#54](https://github.com/Nike-Inc/Willow/pull/54).
+
 
 #### Deprecated
 
