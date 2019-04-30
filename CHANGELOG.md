@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 5.x Releases
 
+- `5.2.x` Releases - [5.2.0](#520)
 - `5.1.x` Releases - [5.1.0](#510)
 - `5.0.x` Releases - [5.0.0](#500) | [5.0.1](#501) | [5.0.2](#502)
 
@@ -33,16 +34,24 @@ All notable changes to this project will be documented in this file.
 #### Added
 
 #### Updated
-- To Swift 5 with backwards compatability with 4.2 and Xcode 10.1
-  - Updated by [Greg Tropino](https://github.com/gtrop1) in Pull Request
-  [#54](https://github.com/Nike-Inc/Willow/pull/54).
-
 
 #### Deprecated
 
 #### Removed
 
 #### Fixed
+
+---
+
+## [5.2.0](https://github.com/Nike-Inc/Willow/releases/tag/5.2.0)
+
+#### Updated
+- To Swift 5 with backwards compatability with 4.2 and Xcode 10.1.
+  - Updated by [Greg Tropino](https://github.com/gtrop1) in Pull Request
+[#54](https://github.com/Nike-Inc/Willow/pull/54).
+- `OSLogLevel` to now be overridable and the default mapping.
+  - Updated by [Eric Jensen](https://github.com/ejensen) in Pull Request
+ [#53](https://github.com/Nike-Inc/Willow/pull/53) in regards to Issue [#45](https://github.com/Nike-Inc/Willow/issues/45).
 
 ---
 
