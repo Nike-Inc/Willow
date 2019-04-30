@@ -127,7 +127,6 @@ open class ConsoleWriter: LogModifierWriter {
 
 /// The OSLogWriter class runs all modifiers in the order they were created and passes the resulting message
 /// off to an OSLog with the specified subsystem and category.
-@available(iOS 10.0, macOS 10.12.0, tvOS 10.0, watchOS 3.0, *)
 open class OSLogWriter: LogModifierWriter {
     public let subsystem: String
     public let category: String
