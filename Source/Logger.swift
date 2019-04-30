@@ -294,7 +294,7 @@ open class Logger {
 
 /// This allows for the use of a `Logger?` variable without the calling code needing to
 /// guard or optionally unwrap before using the log.
-@available(*, deprecated: 5.1.0, message: "Use a non-optional `Logger` variable")
+@available(*, deprecated, message: "Use a non-optional `Logger` variable")
 extension Optional where Wrapped == Logger {
     /// Writes out the given message using the optional logger if the debug log level is set.
     ///

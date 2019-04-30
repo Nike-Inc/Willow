@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "Willow"
-  s.version = "5.1.0"
+  s.version = "5.2.0"
   s.license = "MIT"
   s.summary = "A powerful, yet lightweight logging library written in Swift."
   s.homepage = "https://github.com/Nike-Inc/Willow"
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
 
   s.source = { :git => "https://github.com/Nike-Inc/Willow.git", :tag => s.version }
   s.source_files = "Source/*.swift"
-  s.swift_version = "4.2"
+  s.swift_versions = ["4.2", "5.0"]
 
   s.ios.deployment_target = "9.0"
   s.osx.deployment_target = "10.11"
