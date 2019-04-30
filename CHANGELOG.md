@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 `Willow` adheres to [Semantic Versioning](http://semver.org/).
 
+#### 6.x Releases
+
+- `6.0.x` Releases - [6.0.0](#600)
+
 #### 5.x Releases
 
 - `5.2.x` Releases - [5.2.0](#520)
@@ -38,12 +42,19 @@ All notable changes to this project will be documented in this file.
 #### Deprecated
 
 #### Removed
+
+#### Fixed
+
+---
+
+## [6.0.0](https://github.com/Nike-Inc/Willow/releases/tag/5.2.0)
+Released on 2019-04-30. All issues associated with this milestone can be found using this [filter](https://github.com/Nike-Inc/Willow/milestone/12?closed=1).
+
+#### Removed
 - Swift 4.2 support.
   - Removed by [Greg Tropino](https://github.com/gtrop1) in Pull Request [#54](https://github.com/Nike-Inc/Willow/pull/55).
 - Deprecated functions on `Optional` Logger extension.
   - Removed by [Greg Tropino](https://github.com/gtrop1) in Pull Request [#54](https://github.com/Nike-Inc/Willow/pull/55).
-
-#### Fixed
 
 ---
 
