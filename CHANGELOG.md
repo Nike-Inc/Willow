@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 #### 5.x Releases
 
-- `5.2.x` Releases - [5.2.0](#520)
+- `5.2.x` Releases - [5.2.0](#520) | [5.2.1](#521)
 - `5.1.x` Releases - [5.1.0](#510)
 - `5.0.x` Releases - [5.0.0](#500) | [5.0.1](#501) | [5.0.2](#502)
 
@@ -40,6 +40,16 @@ All notable changes to this project will be documented in this file.
 #### Removed
 
 #### Fixed
+
+---
+
+## [5.2.1](https://github.com/Nike-Inc/Willow/releases/tag/5.2.1)
+Released on 2019-05-02. All issues associated with this milestone can be found using this
+[filter](https://github.com/Nike-Inc/Willow/milestone/14?closed=1).
+
+#### Fixed
+- Issue where Swift version was incorrectly set to 5.0 when it should have been 4.2.
+  - Fixed by [Greg Tropino](https://github.com/gtrop1) in Pull Request [#55](https://github.com/Nike-Inc/Willow/pull/55).
 
 ---
 
