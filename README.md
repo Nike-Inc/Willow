@@ -391,7 +391,7 @@ class PrefixModifier: LogModifier {
 }
 
 let prefixModifiers = [PrefixModifier()]
-let writers = [ConsoleWriter(modifiers: prefixModifier)]
+let writers = [ConsoleWriter(modifiers: prefixModifiers)]
 let log = Logger(logLevels: [.debug, .info], writers: writers)
 ```
 
