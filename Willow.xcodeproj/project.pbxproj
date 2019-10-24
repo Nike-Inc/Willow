@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26FAB8C7236058A80040B628 /* LogSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FAB8C6236058A80040B628 /* LogSource.swift */; };
+		26FAB8C8236058A80040B628 /* LogSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FAB8C6236058A80040B628 /* LogSource.swift */; };
+		26FAB8C9236058A80040B628 /* LogSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FAB8C6236058A80040B628 /* LogSource.swift */; };
+		26FAB8CA236058A80040B628 /* LogSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FAB8C6236058A80040B628 /* LogSource.swift */; };
 		321F2DF335043A818DBEC881 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		4C0CE38D1CFF3FB600D57B03 /* LogWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */; };
 		4C0CE38E1CFF3FB600D57B03 /* LogWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */; };
@@ -80,6 +84,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		26FAB8C6236058A80040B628 /* LogSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSource.swift; sourceTree = "<group>"; };
 		4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogWriterTests.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* LogModifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogModifierTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
@@ -178,6 +183,7 @@
 				4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */,
 				55B859C21F44FC9F0012F5F4 /* LogMessage.swift */,
 				4CA86F641AEC465E005E6475 /* LogModifier.swift */,
+				26FAB8C6236058A80040B628 /* LogSource.swift */,
 				4CA86F671AEC466A005E6475 /* LogWriter.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
 			);
@@ -575,6 +581,7 @@
 				55B859C51F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4C8835371C82530300F70419 /* Logger.swift in Sources */,
 				4C8835391C82530300F70419 /* LogLevel.swift in Sources */,
+				26FAB8C9236058A80040B628 /* LogSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +607,7 @@
 				55B859C61F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4CA33F351B7556FC0047C307 /* Logger.swift in Sources */,
 				4CA33F371B7556FC0047C307 /* LogLevel.swift in Sources */,
+				26FAB8CA236058A80040B628 /* LogSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,6 +620,7 @@
 				55B859C41F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4C83FB2E1AEC1959003FEA49 /* LogLevel.swift in Sources */,
 				4CA86F631AEC4654005E6475 /* Logger.swift in Sources */,
+				26FAB8C8236058A80040B628 /* LogSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +646,7 @@
 				55B859C31F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4C83FB2D1AEC1959003FEA49 /* LogLevel.swift in Sources */,
 				4CA86F621AEC4654005E6475 /* Logger.swift in Sources */,
+				26FAB8C7236058A80040B628 /* LogSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

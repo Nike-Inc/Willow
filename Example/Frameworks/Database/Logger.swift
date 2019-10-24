@@ -37,25 +37,53 @@ extension LogLevel {
 
 // Extend Logger to have `sql` log level functions.
 extension Logger {
-    func sql(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.Database.sql)
+    func sql(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.Database.sql, at: logSource)
     }
 
-    func sql(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.Database.sql)
+    func sql(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.Database.sql, at: logSource)
     }
 }
 
 // Extend Logger optional support to have `sql` log level functions.
 extension Optional where Wrapped == Logger {
-    func sql(_ message: @autoclosure @escaping () -> LogMessage) {
+    func sql(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
         guard case let .some(log) = self else { return }
-        log.logMessage(message, with: LogLevel.Database.sql)
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        log.logMessage(message, with: LogLevel.Database.sql, at: logSource)
     }
 
-    func sql(_ message: @escaping () -> LogMessage) {
+    func sql(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
         guard case let .some(log) = self else { return }
-        log.logMessage(message, with: LogLevel.Database.sql)
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        log.logMessage(message, with: LogLevel.Database.sql, at: logSource)
     }
 }
 

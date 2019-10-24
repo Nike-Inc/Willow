@@ -32,9 +32,10 @@ class TimestampModifierTestCase: XCTestCase {
         let modifier = TimestampModifier()
         let message = "Test Message"
         let logLevels: [LogLevel] = [.error, .warn, .event, .info, .debug]
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
 
         // When
-        var actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0) }
+        let actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0, at: logSource) }
 
         // Then
         for (index, _) in logLevels.enumerated() {
@@ -43,5 +44,39 @@ class TimestampModifierTestCase: XCTestCase {
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")
             XCTAssertEqual(actualMessage.count, 36, "Actual message 36 characters")
         }
+    }
+}
+
+class SourceModifierTestCase: XCTestCase {
+    func testThatItModifiesAMessageLogLevelIndependent() {
+        // Given
+        let modifier = SourceModifier()
+        let message = "A Message"
+        let logLevels: [LogLevel] = [.error, .warn, .event, .info, .debug]
+        let logSource = LogSource(file: "File", function: "Function", line: 1, column: 2)
+
+        // When
+        let actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0, at: logSource) }
+
+        // Then
+        let messageSet = Set(actualMessages)
+        XCTAssertEqual(1, messageSet.count, "All actual messages should be equal")
+    }
+
+    func testThatItModifiesAMessageRespectingFileAndLineOfSource() {
+        // Given
+        let modifier = SourceModifier()
+        let message = "Test Message"
+        let logLevel = LogLevel.debug
+        let logFile: StaticString = "LogFile"
+        let logLine: UInt = 42
+        let logSource = LogSource(file: logFile, function: "", line: logLine, column: 0)
+
+        // When
+        let actualMessage = modifier.modifyMessage(message, with: logLevel, at: logSource)
+
+        // Then
+        let expectedMessage = "\(logFile):\(logLine) \(message)"
+        XCTAssertEqual(actualMessage, expectedMessage, "Actual message should equal the expected")
     }
 }

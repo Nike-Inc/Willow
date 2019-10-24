@@ -35,19 +35,23 @@ extension LogLevel {
 
 extension Logger {
     fileprivate func verboseMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.verbose)
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
+        logMessage(message, with: LogLevel.verbose, at: logSource)
     }
 
     fileprivate func verboseMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.verbose)
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
+        logMessage(message, with: LogLevel.verbose, at: logSource)
     }
 
     fileprivate func summaryMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.summary)
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
+        logMessage(message, with: LogLevel.summary, at: logSource)
     }
 
     fileprivate func summaryMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.summary)
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
+        logMessage(message, with: LogLevel.summary, at: logSource)
     }
 }
 
@@ -57,12 +61,12 @@ class TestWriter: LogWriter {
     private(set) var actualNumberOfWrites: Int = 0
     private(set) var message: String?
 
-    func writeMessage(_ message: String, logLevel: LogLevel) {
+    func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
         self.message = message
         actualNumberOfWrites += 1
     }
 
-    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
         self.message = "\(message.name): \(message.attributes)"
         actualNumberOfWrites += 1
     }

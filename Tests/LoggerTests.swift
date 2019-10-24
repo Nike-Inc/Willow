@@ -46,10 +46,10 @@ class SynchronousTestWriter: LogModifierWriter {
         self.modifiers = modifiers
     }
 
-    func writeMessage(_ message: String, logLevel: LogLevel) {
+    func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
         var mutableMessage = message
 
-        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel, at: logSource) }
         modifiedMessages.append(mutableMessage)
 
         self.message = mutableMessage
@@ -57,12 +57,12 @@ class SynchronousTestWriter: LogModifierWriter {
         actualNumberOfWrites += 1
     }
 
-    func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
         var mutableMessage = "\(message.name): \(message.attributes)"
 
         lastMessage = message
 
-        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel) }
+        modifiers.forEach { mutableMessage = $0.modifyMessage(mutableMessage, with: logLevel, at: logSource) }
         modifiedMessages.append(mutableMessage)
 
         self.message = mutableMessage
@@ -83,16 +83,16 @@ class AsynchronousTestWriter: SynchronousTestWriter {
         super.init(modifiers: modifiers)
     }
 
-    override func writeMessage(_ message: String, logLevel: LogLevel) {
-        super.writeMessage(message, logLevel: logLevel)
+    override func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
+        super.writeMessage(message, logLevel: logLevel, logSource: logSource)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
             expectation.fulfill()
         }
     }
 
-    override func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-        super.writeMessage(message, logLevel: logLevel)
+    override func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
+        super.writeMessage(message, logLevel: logLevel, logSource: logSource)
 
         if actualNumberOfWrites == expectedNumberOfWrites {
             expectation.fulfill()
@@ -103,7 +103,7 @@ class AsynchronousTestWriter: SynchronousTestWriter {
 // MARK: -
 
 class PrefixModifier: LogModifier {
-    func modifyMessage(_ message: String, with: LogLevel) -> String {
+    func modifyMessage(_ message: String, with: LogLevel, at: LogSource) -> String {
         return "[Willow] \(message)"
     }
 }
@@ -149,7 +149,7 @@ class AsynchronousLoggerTestCase: SynchronousLoggerTestCase {
 
 class SynchronousLoggerMultiModifierTestCase: SynchronousLoggerTestCase {
     private struct SymbolModifier: LogModifier {
-        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String {
             return "+=+-+ \(message)"
         }
     }
@@ -199,3 +199,145 @@ class SynchronousLoggerMultiWriterTestCase: SynchronousLoggerTestCase {
         XCTAssertEqual(writer3.actualNumberOfWrites, 5, "writer 3 actual number of writes should be 5")
     }
 }
+
+// MARK: -
+
+class LoggerSourceTestCase: SynchronousLoggerTestCase {
+    private class SourceModifier: LogModifier {
+        private(set) var logSources: [LogSource] = []
+
+        func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String {
+            logSources.append(logSource)
+            return message
+        }
+    }
+
+    private class TestMessage: LogMessage {
+        var name: String = "Message Name"
+        var attributes: [String : Any] = [:]
+    }
+
+    func testThatSourcesAreEqual() {
+        // Given
+        let source1 = LogSource(file: "File", function: "Function", line: 1, column: 11)
+        let source2 = LogSource(file: "File", function: "Function", line: 1, column: 11)
+
+        // When
+        let result = source1 == source2
+
+        // Then
+        XCTAssertTrue(result, "Comparision should be true for equal sources")
+    }
+
+    func testThatSourcesAreNotEqual() {
+        // Given
+        let baseSource = LogSource(file: "File", function: "Function", line: 0, column: 10)
+        let variations = [
+            LogSource(file: "Difference", function: "Function", line: 0, column: 10),
+            LogSource(file: "File", function: "Difference", line: 0, column: 10),
+            LogSource(file: "File", function: "Function", line: 1, column: 10),
+            LogSource(file: "File", function: "Function", line: 0, column: 11)
+        ]
+
+        // When
+        let results = variations.map { $0 == baseSource }
+
+        // Then
+        results.enumerated().forEach { XCTAssertFalse($0.element, "Variation at index \($0.offset) should be different to the base source") }
+    }
+
+    func testThatStringMessageClosuresPassLogSourcesToTheModifier() {
+        // Given
+        let sourceModifier = SourceModifier()
+        let (log, _) = logger(modifiers: [sourceModifier])
+        let logSources = [
+            LogSource(file: "DebugFile", function: "DebugFunction", line: 1, column: 11),
+            LogSource(file: "InfoFile", function: "InfoFunction", line: 2, column: 12),
+            LogSource(file: "EventFile", function: "EventFunction", line: 3, column: 13),
+            LogSource(file: "WarnFile", function: "WarnFunction", line: 4, column: 14),
+            LogSource(file: "ErrorFile", function: "ErrorFunction", line: 5, column: 15)
+        ]
+
+        // When
+        log.debugMessage(file: logSources[0].file, function: logSources[0].function, line: logSources[0].line, column: logSources[0].column) { self.message }
+        log.infoMessage(file: logSources[1].file, function: logSources[1].function, line: logSources[1].line, column: logSources[1].column) { self.message }
+        log.eventMessage(file: logSources[2].file, function: logSources[2].function, line: logSources[2].line, column: logSources[2].column) { self.message }
+        log.warnMessage(file: logSources[3].file, function: logSources[3].function, line: logSources[3].line, column: logSources[3].column) { self.message }
+        log.errorMessage(file: logSources[4].file, function: logSources[4].function, line: logSources[4].line, column: logSources[4].column) { self.message }
+
+        // Then
+        XCTAssertEqual(sourceModifier.logSources, logSources, "Actual sources should be equal to provided log sources")
+    }
+
+    func testThatStringMessagesPassLogSourcesToTheModifier() {
+        // Given
+        let sourceModifier = SourceModifier()
+        let (log, _) = logger(modifiers: [sourceModifier])
+        let logSources = [
+            LogSource(file: "Debug", function: "Debug", line: 21, column: 31),
+            LogSource(file: "Info", function: "Info", line: 22, column: 32),
+            LogSource(file: "Event", function: "Event", line: 23, column: 33),
+            LogSource(file: "Warn", function: "Warn", line: 24, column: 34),
+            LogSource(file: "Error", function: "Error", line: 25, column: 35)
+        ]
+
+        // When
+        log.debugMessage(file: logSources[0].file, function: logSources[0].function, line: logSources[0].line, column: logSources[0].column, self.message)
+        log.infoMessage(file: logSources[1].file, function: logSources[1].function, line: logSources[1].line, column: logSources[1].column, self.message)
+        log.eventMessage(file: logSources[2].file, function: logSources[2].function, line: logSources[2].line, column: logSources[2].column, self.message)
+        log.warnMessage(file: logSources[3].file, function: logSources[3].function, line: logSources[3].line, column: logSources[3].column, self.message)
+        log.errorMessage(file: logSources[4].file, function: logSources[4].function, line: logSources[4].line, column: logSources[4].column, self.message)
+
+        // Then
+        XCTAssertEqual(sourceModifier.logSources, logSources, "Actual sources should be equal to provided log sources")
+    }
+
+    func testThatLogMessageClosuresPassLogSourcesToTheModifier() {
+        // Given
+        let testMessage = TestMessage()
+        let sourceModifier = SourceModifier()
+        let (log, _) = logger(modifiers: [sourceModifier])
+        let logSources = [
+            LogSource(file: "DebugFile", function: "DebugFunction", line: 1, column: 11),
+            LogSource(file: "InfoFile", function: "InfoFunction", line: 2, column: 12),
+            LogSource(file: "EventFile", function: "EventFunction", line: 3, column: 13),
+            LogSource(file: "WarnFile", function: "WarnFunction", line: 4, column: 14),
+            LogSource(file: "ErrorFile", function: "ErrorFunction", line: 5, column: 15)
+        ]
+
+        // When
+        log.debug(file: logSources[0].file, function: logSources[0].function, line: logSources[0].line, column: logSources[0].column) { testMessage }
+        log.info(file: logSources[1].file, function: logSources[1].function, line: logSources[1].line, column: logSources[1].column) { testMessage }
+        log.event(file: logSources[2].file, function: logSources[2].function, line: logSources[2].line, column: logSources[2].column) { testMessage }
+        log.warn(file: logSources[3].file, function: logSources[3].function, line: logSources[3].line, column: logSources[3].column) { testMessage }
+        log.error(file: logSources[4].file, function: logSources[4].function, line: logSources[4].line, column: logSources[4].column) { testMessage }
+
+        // Then
+        XCTAssertEqual(sourceModifier.logSources, logSources, "Actual sources should be equal to provided log sources")
+    }
+
+    func testThatLogMessagesPassLogSourcesToTheModifier() {
+        // Given
+        let testMessage = TestMessage()
+        let sourceModifier = SourceModifier()
+        let (log, _) = logger(modifiers: [sourceModifier])
+        let logSources = [
+            LogSource(file: "Debug", function: "Debug", line: 21, column: 31),
+            LogSource(file: "Info", function: "Info", line: 22, column: 32),
+            LogSource(file: "Event", function: "Event", line: 23, column: 33),
+            LogSource(file: "Warn", function: "Warn", line: 24, column: 34),
+            LogSource(file: "Error", function: "Error", line: 25, column: 35)
+        ]
+
+        // When
+        log.debug(file: logSources[0].file, function: logSources[0].function, line: logSources[0].line, column: logSources[0].column, testMessage)
+        log.info(file: logSources[1].file, function: logSources[1].function, line: logSources[1].line, column: logSources[1].column, testMessage)
+        log.event(file: logSources[2].file, function: logSources[2].function, line: logSources[2].line, column: logSources[2].column, testMessage)
+        log.warn(file: logSources[3].file, function: logSources[3].function, line: logSources[3].line, column: logSources[3].column, testMessage)
+        log.error(file: logSources[4].file, function: logSources[4].function, line: logSources[4].line, column: logSources[4].column, testMessage)
+
+        // Then
+        XCTAssertEqual(sourceModifier.logSources, logSources, "Actual sources should be equal to provided log sources")
+    }
+}
+
