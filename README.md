@@ -338,8 +338,8 @@ This is made possible in `Willow` through the `LogWriter` protocol.
 
 ```swift
 public protocol LogWriter {
-    func writeMessage(_ message: String, logLevel: LogLevel)
-    func writeMessage(_ message: Message, logLevel: LogLevel)
+    func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource)
+    func writeMessage(_ message: Message, logLevel: LogLevel, logSource: LogSource)
 }
 ```
 
@@ -350,11 +350,11 @@ Here's a quick look at a simple write that writes to the console.
 
 ```swift
 open class ConsoleWriter: LogMessageWriter {
-    open func writeMessage(_ message: String, logLevel: LogLevel) {
+    open func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
         print(message)
     }
 
-    open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+    open func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
         let message = "\(message.name): \(message.attributes)"
         print(message)
     }
@@ -370,22 +370,22 @@ This is where `LogModifier` objects come in.
 
 ```swift
 public protocol LogModifier {
-    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
+    func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String
 }
 ```
 
 The `LogModifier` protocol has only a single API.
-It receives the `message` and `logLevel` and returns a newly formatted `String`.
+It receives the `message` , `logLevel` and `logSource` and returns a newly formatted `String`.
 This is about as flexible as you can get.
 
 As an added layer of convenience, writers intending to output strings (e.g. writing to the console, files, etc.) can conform to the `LogModifierWritier` protocol.
-The `LogModifierWriter` protocol adds an array of `LogModifier` objects to the `LogWriter` that can be applied to the message before it is output using the `modifyMessage(_:logLevel)` API in the extension.
+The `LogModifierWriter` protocol adds an array of `LogModifier` objects to the `LogWriter` that can be applied to the message before it is output using the `modifyMessage(_:logLevel:logSource:)` API in the extension.
 
 Let's walk through a simple example for adding a prefix to a logger for the `debug` and `info` log levels.
 
 ```swift
 class PrefixModifier: LogModifier {
-    func modifyMessage(_ message: String, with logLevel: Logger.LogLevel) -> String {
+    func modifyMessage(_ message: String, with logLevel: Logger.LogLevel, at logSource: LogSource) -> String {
         return "[Willow] \(message)"
     }
 }
@@ -395,11 +395,11 @@ let writers = [ConsoleWriter(modifiers: prefixModifiers)]
 let log = Logger(logLevels: [.debug, .info], writers: writers)
 ```
 
-To apply modifiers consistently to strings, `LogModifierWriter` objects should call `modifyMessage(_:logLevel)` to create a new string based on the original string with all the modifiers applied in order.
+To apply modifiers consistently to strings, `LogModifierWriter` objects should call `modifyMessage(_:logLevel:logSource:)` to create a new string based on the original string with all the modifiers applied in order.
 
 ```swift
-open func writeMessage(_ message: String, logLevel: LogLevel) {
-    let message = modifyMessage(message, logLevel: logLevel)
+open func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
+    let message = modifyMessage(message, logLevel: logLevel, logSource: LogSource)
     print(message)
 }
 ```
@@ -407,16 +407,16 @@ open func writeMessage(_ message: String, logLevel: LogLevel) {
 #### Multiple Modifiers
 
 Multiple `LogModifier` objects can be stacked together onto a single log level to perform multiple actions.
-Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with an `EmojiModifier`.
+Let's walk through using the `TimestampModifier` (prefixes the message with a timestamp) in combination with `SourceModifier` (prefixes the message with the filename and line number where the message was logged) and an `EmojiModifier`.
 
 ```swift
 class EmojiModifier: LogModifier {
-    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String {
         return "🚀🚀🚀 \(message)"
     }
 }
 
-let writers: = [ConsoleWriter(modifiers: [EmojiModifier(), TimestampModifier()])]
+let writers: = [ConsoleWriter(modifiers: [EmojiModifier(), TimestampModifier(), SourceModifier()])]
 let log = Logger(logLevels: [.all], writers: writers)
 ```
 

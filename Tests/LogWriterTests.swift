@@ -32,30 +32,33 @@ class ConsoleWriterTestCase: XCTestCase {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
         let writer = ConsoleWriter()
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel)
+        writer.writeMessage(message, logLevel: logLevel, logSource: logSource)
     }
 
     func testThatConsoleWriterCanWriteMessageToConsoleWithPrint() {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
         let writer = ConsoleWriter(method: .print)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel)
+        writer.writeMessage(message, logLevel: logLevel, logSource: logSource)
     }
 
     func testThatConsoleWriterCanWriteMessageToConsoleWithNSLog() {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
         let writer = ConsoleWriter(method: .nslog)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel)
+        writer.writeMessage(message, logLevel: logLevel, logSource: logSource)
     }
 }
 
@@ -69,19 +72,21 @@ class OSLogWriterTestCase: XCTestCase {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
         let writer = OSLogWriter(subsystem: subsystem, category: category)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel)
+        writer.writeMessage(message, logLevel: logLevel, logSource: logSource)
     }
 
     func testThatOSLogWriterCanWriteMessageUsingOSLog() {
         // Given
         let message = "Test Message"
         let logLevel: LogLevel = .all
+        let logSource = LogSource(file: #file, function: #function, line: #line, column: #column)
         let writer = OSLogWriter(subsystem: subsystem, category: category)
 
         // When, Then
-        writer.writeMessage(message, logLevel: logLevel)
+        writer.writeMessage(message, logLevel: logLevel, logSource: logSource)
     }
 }

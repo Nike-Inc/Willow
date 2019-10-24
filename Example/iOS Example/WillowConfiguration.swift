@@ -43,7 +43,7 @@ struct WillowConfiguration {
             self.name = name
         }
 
-        func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+        func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String {
             switch logLevel {
             case .warn:  return "🚨🚨🚨 [\(name)] => \(message)"
             case .error: return "💣💥💣💥 [\(name)] => \(message)"
@@ -55,14 +55,14 @@ struct WillowConfiguration {
     // MARK: Writers
 
     private class ServiceWriter: LogWriter {
-        func writeMessage(_ message: String, logLevel: LogLevel) {
+        func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
             // Send the message as-is to our external logging service
             let attributes: [String: Any] = ["LogLevel": logLevel.description]
 
              ServiceSDK.recordBreadcrumb(message, attributes: attributes)
         }
 
-        func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
+        func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
             // Send the message as-is to our external logging service
             var attributes = message.attributes
             attributes["LogLevel"] = logLevel.description
@@ -125,7 +125,8 @@ struct WillowConfiguration {
     {
         let prefixModifier = PrefixModifier(prefix: prefix, name: name)
         let timestampModifier = TimestampModifier()
-        let writers: [LogWriter] = [ConsoleWriter(modifiers: [prefixModifier, timestampModifier]), ServiceWriter()]
+        let sourceModifier = SourceModifier()
+        let writers: [LogWriter] = [ConsoleWriter(modifiers: [prefixModifier, timestampModifier, sourceModifier]), ServiceWriter()]
 
         return Logger(logLevels: logLevels, writers: writers, executionMethod: executionMethod)
     }

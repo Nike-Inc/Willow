@@ -29,8 +29,8 @@ import os
 /// the conforming object sees fit. For example, it could write to the console, write to a file, remote log to a third
 /// party service, etc.
 public protocol LogWriter {
-    func writeMessage(_ message: String, logLevel: LogLevel)
-    func writeMessage(_ message: LogMessage, logLevel: LogLevel)
+    func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource)
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource)
 }
 
 /// LogModifierWriter extends LogWriter to allow for standard writers that utilize MessageModifiers
@@ -45,13 +45,14 @@ extension LogModifierWriter {
     /// The modifiers are run in the order they are stored in `modifiers`.
     ///
     /// - Parameters:
-    ///   - message:  Original message.
-    ///   - logLevel: Log level of message.
+    ///   - message:    Original message.
+    ///   - logLevel:   Log level of message.
+    ///   - logSource:  The souce of the log message.
     ///
     /// - Returns: The result of executing all the modifiers on the original message.
-    public func modifyMessage(_ message: String, logLevel: LogLevel) -> String {
+    public func modifyMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) -> String {
         var message = message
-        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel) }
+        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel, at: logSource) }
         return message
     }
 }
@@ -96,8 +97,9 @@ open class ConsoleWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
-    open func writeMessage(_ message: String, logLevel: LogLevel) {
-        let message = modifyMessage(message, logLevel: logLevel)
+    ///   - logSource:  The souce of the log message.
+    open func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
+        let message = modifyMessage(message, logLevel: logLevel, logSource: logSource)
 
         switch method {
         case .print: print(message)
@@ -113,8 +115,9 @@ open class ConsoleWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
-    open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-        let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
+    ///   - logSource:  The souce of the log message.
+    open func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
+        let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel, logSource: logSource)
 
         switch method {
         case .print: print(message)
@@ -156,8 +159,9 @@ open class OSLogWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original message to write to the console.
     ///   - logLevel:  The log level associated with the message.
-    open func writeMessage(_ message: String, logLevel: LogLevel) {
-        let message = modifyMessage(message, logLevel: logLevel)
+    ///   - logSource:  The souce of the log message.
+    open func writeMessage(_ message: String, logLevel: LogLevel, logSource: LogSource) {
+        let message = modifyMessage(message, logLevel: logLevel, logSource: logSource)
         let type = logType(forLogLevel: logLevel)
 
         os_log("%@", log: log, type: type, message)
@@ -171,8 +175,9 @@ open class OSLogWriter: LogModifierWriter {
     /// - Parameters:
     ///   - message:   The original breadrumb to write to the console
     ///   - logLevel:  The log level associated with the message.
-    open func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
-        let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
+    ///   - logSource:  The souce of the log message.
+    open func writeMessage(_ message: LogMessage, logLevel: LogLevel, logSource: LogSource) {
+        let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel, logSource: logSource)
         let type = logType(forLogLevel: logLevel)
 
         os_log("%@", log: log, type: type, message)

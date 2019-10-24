@@ -48,7 +48,7 @@ open class Logger {
         case asynchronous(queue: DispatchQueue)
     }
 
-   // MARK: - Properties
+    // MARK: - Properties
 
     /// A logger that does not output any messages to writers.
     public static let disabled: Logger = NoOpLogger()
@@ -87,90 +87,201 @@ open class Logger {
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func debug(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.debug)
+    open func debug(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.debug, at: logSource)
     }
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func debug(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.debug)
+    open func debug(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.debug, at: logSource)
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func info(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.info)
+    open func info(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.info, at: logSource)
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func info(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.info)
+    open func info(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.info, at: logSource)
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func event(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.event)
+    open func event(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.event, at: logSource)
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func event(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.event)
+    open func event(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.event, at: logSource)
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func warn(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.warn)
+    open func warn(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.warn, at: logSource)
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func warn(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.warn)
+    open func warn(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.warn, at: logSource)
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func error(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.error)
+    open func error(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.error, at: logSource)
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func error(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.error)
+    open func error(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> LogMessage
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.error, at: logSource)
     }
 
     /// Writes out the given message closure string with the logger if the log level is allowed.
     ///
     /// - Parameters:
-    ///   - message:  A closure returning the message to log.
-    ///   - logLevel: The log level associated with the message closure.
-    open func logMessage(_ message: @escaping () -> (LogMessage), with logLevel: LogLevel) {
+    ///   - message:   A closure returning the message to log.
+    ///   - logLevel:  The log level associated with the message closure.
+    ///   - logSource: The souce of the log message.
+    open func logMessage(_ message: @escaping () -> (LogMessage), with logLevel: LogLevel, at logSource: LogSource) {
         guard enabled && logLevelAllowed(logLevel) else { return }
 
         switch executionMethod {
         case .synchronous(let lock):
             let message = message()
             lock.lock() ; defer { lock.unlock() }
-            logMessage(message, with: logLevel)
+            logMessage(message, with: logLevel, at: logSource)
 
         case .asynchronous(let queue):
-            queue.async { self.logMessage(message(), with: logLevel) }
+            queue.async { self.logMessage(message(), with: logLevel, at: logSource) }
         }
     }
 
@@ -178,89 +289,200 @@ open class Logger {
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func debugMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.debug)
+    open func debugMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.debug, at: logSource)
     }
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func debugMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.debug)
+    open func debugMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.debug, at: logSource)
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func infoMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.info)
+    open func infoMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.info, at: logSource)
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func infoMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.info)
+    open func infoMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.info, at: logSource)
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func eventMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.event)
+    open func eventMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.event, at: logSource)
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func eventMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.event)
+    open func eventMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.event, at: logSource)
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func warnMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.warn)
+    open func warnMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.warn, at: logSource)
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func warnMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.warn)
+    open func warnMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.warn, at: logSource)
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: An autoclosure returning the message to log.
-    open func errorMessage(_ message: @autoclosure @escaping () -> String) {
-        logMessage(message, with: LogLevel.error)
+    open func errorMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @autoclosure @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.error, at: logSource)
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
+    /// - Parameter file: The name of the file where the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter function: The name of the function in which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter line: The line number on which the message is logged. Do not provide a value; keep the default instead.
+    /// - Parameter column: The column number in which the message is logged. Do not provide a value; keep the default instead.
     /// - Parameter message: A closure returning the message to log.
-    open func errorMessage(_ message: @escaping () -> String) {
-        logMessage(message, with: LogLevel.error)
+    open func errorMessage(
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        column: UInt = #column,
+        _ message: @escaping () -> String
+    ) {
+        let logSource = LogSource(file: file, function: function, line: line, column: column)
+        logMessage(message, with: LogLevel.error, at: logSource)
     }
 
     /// Writes out the given message closure string with the logger if the log level is allowed.
     ///
     /// - Parameters:
-    ///   - message:      A closure returning the message to log.
-    ///   - withLogLevel: The log level associated with the message closure.
-    open func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel) {
+    ///   - message:    A closure returning the message to log.
+    ///   - logLevel:   The log level associated with the message closure.
+    ///   - logSource:  The souce of the log message.
+    open func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel, at logSource: LogSource) {
         guard enabled && logLevelAllowed(logLevel) else { return }
 
         switch executionMethod {
         case .synchronous(let lock):
             lock.lock() ; defer { lock.unlock() }
-            logMessage(message(), with: logLevel)
+            logMessage(message(), with: logLevel, at: logSource)
 
         case .asynchronous(let queue):
-            queue.async { self.logMessage(message(), with: logLevel) }
+            queue.async { self.logMessage(message(), with: logLevel, at: logSource) }
         }
     }
 
@@ -270,12 +492,12 @@ open class Logger {
         return logLevels.contains(logLevel)
     }
 
-    private func logMessage(_ message: String, with logLevel: LogLevel) {
-        writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
+    private func logMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) {
+        writers.forEach { $0.writeMessage(message, logLevel: logLevel, logSource: logSource) }
     }
 
-    private func logMessage(_ message: LogMessage, with logLevel: LogLevel) {
-        writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
+    private func logMessage(_ message: LogMessage, with logLevel: LogLevel, at logSource: LogSource) {
+        writers.forEach { $0.writeMessage(message, logLevel: logLevel, logSource: logSource) }
     }
 
     // MARK: - Private - No-Op Logger
@@ -286,6 +508,6 @@ open class Logger {
             enabled = false
         }
 
-        override func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel) {}
+        override func logMessage(_ message: @escaping () -> String, with logLevel: LogLevel, at logSource: LogSource) {}
     }
 }

@@ -27,7 +27,7 @@ import Foundation
 /// The LogModifier protocol defines a single method for modifying a log message after it has been constructed.
 /// This is very flexible allowing any object that conforms to modify messages in any way it wants.
 public protocol LogModifier {
-    func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
+    func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String
 }
 
 // MARK: -
@@ -48,12 +48,36 @@ open class TimestampModifier: LogModifier {
     /// Applies a timestamp to the beginning of the message.
     ///
     /// - Parameters:
-    ///   - message:  The original message to format.
-    ///   - logLevel: The log level set for the message.
+    ///   - message:    The original message to format.
+    ///   - logLevel:   The log level set for the message.
+    ///   - logSource:  The souce of the log message.
     ///
     /// - Returns: A newly formatted message.
-    open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    open func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String {
         let timestampString = timestampFormatter.string(from: Date())
         return "\(timestampString) \(message)"
+    }
+}
+
+// MARK: -
+
+/// The SourceModifier class adds the source of a message to the beginning of the message in a readable format.
+open class SourceModifier: LogModifier {
+    /// Initializes a `SourceModifier` instance.
+    ///
+    /// - Returns: A new `SourceModifier` instance.
+    public init() {}
+
+    /// Adds the source of the message to the beginning of the message.
+    ///
+    /// - Parameters:
+    ///   - message:    The original message to format.
+    ///   - logLevel:   The log level set for the message.
+    ///   - logSource:  The souce of the log message.
+    ///
+    /// - Returns: A newly formatted message.
+    open func modifyMessage(_ message: String, with logLevel: LogLevel, at logSource: LogSource) -> String {
+        let fileUrl = URL(fileURLWithPath: String(describing: logSource.file))
+        return "\(fileUrl.lastPathComponent):\(logSource.line) \(message)"
     }
 }
