@@ -130,6 +130,9 @@ open class ConsoleWriter: LogModifierWriter {
 open class OSLogWriter: LogModifierWriter {
     public let subsystem: String
     public let category: String
+    public let preserve: Bool
+    private let format: StaticString
+    
 
     /// Array of modifiers that the writer should execute (in order) on incoming messages.
     public let modifiers: [LogModifier]
@@ -141,10 +144,12 @@ open class OSLogWriter: LogModifierWriter {
     /// - Parameters:
     ///   - subsystem: The subsystem.
     ///   - category:  The category.
-    public init(subsystem: String, category: String, modifiers: [LogModifier] = []) {
+    public init(subsystem: String, category: String, modifiers: [LogModifier] = [], preserve: Bool = true) {
         self.subsystem = subsystem
         self.category = category
         self.modifiers = modifiers
+        self.preserve = preserve
+        self.format = preserve ? "%{public}@" :"%@"
         self.log = OSLog(subsystem: subsystem, category: category)
     }
 
@@ -160,7 +165,7 @@ open class OSLogWriter: LogModifierWriter {
         let message = modifyMessage(message, logLevel: logLevel)
         let type = logType(forLogLevel: logLevel)
 
-        os_log("%@", log: log, type: type, message)
+        os_log(format, log: log, type: type, message)
     }
 
     /// Writes the breadrumb to the `OSLog` using the `os_log` function.
@@ -175,7 +180,7 @@ open class OSLogWriter: LogModifierWriter {
         let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
         let type = logType(forLogLevel: logLevel)
 
-        os_log("%@", log: log, type: type, message)
+        os_log(format, log: log, type: type, message)
     }
 
     /// Returns the `OSLogType` to use for the specified `LogLevel`.
