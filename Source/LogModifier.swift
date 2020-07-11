@@ -28,8 +28,15 @@ import Foundation
 /// This is very flexible allowing any object that conforms to modify messages in any way it wants.
 public protocol LogModifier {
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
+    func modifyMessage(_ message: String, with context: LogMessageContext) -> String
 }
 
+public extension LogModifier {
+    // Default implementation is in terms of original modifyMessage method.
+    func modifyMessage(_ message: String, with context: LogMessageContext) -> String {
+        return modifyMessage(message, with: context.logLevel)
+    }
+}
 // MARK: -
 
 /// The TimestampModifier class applies a timestamp to the beginning of the message.
@@ -54,6 +61,19 @@ open class TimestampModifier: LogModifier {
     /// - Returns: A newly formatted message.
     open func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
         let timestampString = timestampFormatter.string(from: Date())
+        return "\(timestampString) \(message)"
+    }
+    
+    /// Applies a timestamp to the beginning of the message.
+    ///
+    /// - Parameters:
+    ///   - message: The original message to format.
+    ///   - context: Context for this log message.
+    ///
+    /// - Returns: A newly formatted message.
+    open func modifyMessage(_ message: String, with context: LogMessageContext) -> String {
+        let messageDate = Date(timeIntervalSince1970: context.timestamp)
+        let timestampString = timestampFormatter.string(from: messageDate)
         return "\(timestampString) \(message)"
     }
 }
