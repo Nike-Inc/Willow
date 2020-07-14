@@ -33,7 +33,7 @@ public protocol LogMessage {
     var attributes: [String: Any] { get }
 }
 
-extension LogMessage {
+public extension LogMessage {
     /// Convert a LogMessage to a JSON string for output. This can be useful for some logging systems where messages are structured.
     ///
     /// - Parameter context: Optional context information for the  log message.
