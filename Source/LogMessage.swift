@@ -32,3 +32,44 @@ public protocol LogMessage {
     /// Attributes associated with this message.
     var attributes: [String: Any] { get }
 }
+
+extension LogMessage {
+    /// Convert a LogMessage to a JSON string for output. This can be useful for some logging systems where messages are structured.
+    ///
+    /// - Parameter context: Optional context information for the  log message.
+    func asJsonString(context: LogMessageContext? = nil) -> String {
+        
+        var attributesJson: String = ""
+        for (key, value) in attributes {
+            if let convertableValue = value as? CustomStringConvertible {
+                let stringValue = String(describing: convertableValue)
+                if attributesJson.isEmpty {
+                    attributesJson += ", \"attributes\": { "
+                }
+                else {
+                    attributesJson += ", "
+                }
+                attributesJson += """
+    "\(key)": "\(stringValue)"
+    """
+            }
+            else {
+                print("Ignoring key (\(key)); not a CustomStringConvertible!")
+            }
+        }
+        if attributesJson.isEmpty == false {
+            attributesJson += "}"
+        }
+        
+        if let context = context {
+                return """
+            { "name": "\(name)"\(attributesJson), "level": "\(String(describing: context.logLevel))", "file": "\(context.file)", "function": "\(context.function)", "line": \(context.line) }
+            """
+        }
+        else {
+                return """
+            { "name": "\(name)"\(attributesJson) }
+            """
+        }
+    }
+}
