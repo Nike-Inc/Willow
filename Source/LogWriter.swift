@@ -226,6 +226,20 @@ open class OSLogWriter: LogModifierWriter {
     ///   - message:  The original breadrumb to write to the console
     ///   - context:  The context of the log message.
     open func writeMessage(_ message: LogMessage, context: LogMessageContext) {
+        
+        // Filter out any message that is for a different subsystem or category.
+        if let subsystem = context.subsystem {
+            guard subsystem == self.subsystem else {
+                return
+            }
+            
+            if let category = context.category {
+                guard category == self.category else {
+                    return
+                }
+            }
+        }
+        
         let message = modifyMessage("\(message.name): \(message.attributes)", context: context)
         let type = logType(forLogLevel: context.logLevel)
         
