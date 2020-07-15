@@ -30,4 +30,16 @@ public struct LogMessageContext {
     public let file: String
     public let function: String
     public let line: Int
+    public let subsystem: String?
+    public let category: String?
+
+    public init(logLevel: LogLevel, timestamp: TimeInterval, file: String, function: String, line: Int, subsystem: String? = nil, category: String? = nil) {
+        self.logLevel = logLevel
+        self.timestamp = timestamp
+        self.file = file
+        self.function = function
+        self.line = line
+        self.subsystem = subsystem
+        self.category = category
+    }
 }
