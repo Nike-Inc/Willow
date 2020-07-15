@@ -61,17 +61,22 @@ public extension LogMessage {
             attributesJson += "}"
         }
         
-        if let context = context {
+        if let contextData = context {
             var subsystem: String = ""
-            if let subsystemName = context.subsystem {
+            if let subsystemName = contextData.subsystem {
                 subsystem = ", \"subsystem\": \"\(subsystemName)\""
             }
             var category: String = ""
-            if let categoryName = context.category {
+            if let categoryName = contextData.category {
                 category = ", \"category\": \"\(categoryName)\""
             }
+            var context: String = ""
+            context = """
+            , "context": { "level": "\(String(describing: contextData.logLevel))", "file": "\(contextData.file)", "function": "\(contextData.function)", "line": \(contextData.line) \(subsystem) \(category) }
+            """
+            
             return """
-            { "name": "\(name)"\(attributesJson), "level": "\(String(describing: context.logLevel))", "file": "\(context.file)", "function": "\(context.function)", "line": \(context.line) \(subsystem) \(category) }
+            { "message": "\(name)" \(attributesJson) \(context) }
             """
         }
         else {
