@@ -25,6 +25,11 @@
 import Foundation
 
 public struct LogMessageContext {
+    public typealias SessionVendor = () -> String
+    public static var sessionVendor: SessionVendor? = nil
+    public typealias UserVendor = () -> String
+    public static var userVendor: UserVendor? = nil
+    
     public let logLevel: LogLevel
     public let timestamp: TimeInterval
     public let file: String
@@ -32,7 +37,9 @@ public struct LogMessageContext {
     public let line: Int
     public let subsystem: String?
     public let category: String?
-
+    public let session: String?
+    public let user: String?
+    
     public init(logLevel: LogLevel, timestamp: TimeInterval, file: String, function: String, line: Int, subsystem: String? = nil, category: String? = nil) {
         self.logLevel = logLevel
         self.timestamp = timestamp
@@ -41,5 +48,7 @@ public struct LogMessageContext {
         self.line = line
         self.subsystem = subsystem
         self.category = category
+        self.session = LogMessageContext.sessionVendor?()
+        self.user = LogMessageContext.userVendor?()
     }
 }

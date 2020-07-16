@@ -37,7 +37,7 @@ public extension LogMessage {
     /// Convert a LogMessage to a JSON string for output. This can be useful for some logging systems where messages are structured.
     ///
     /// - Parameter context: Optional context information for the  log message.
-    func asJsonString(context: LogMessageContext? = nil) -> String {
+    func asJsonString(context: LogMessageContext? = nil, includeSession: Bool = false, includeUser: Bool = false) -> String {
         
         var attributesJson: String = ""
         for (key, value) in attributes {
@@ -66,13 +66,29 @@ public extension LogMessage {
             if let subsystemName = contextData.subsystem {
                 subsystem = ", \"subsystem\": \"\(subsystemName)\""
             }
+            
             var category: String = ""
             if let categoryName = contextData.category {
                 category = ", \"category\": \"\(categoryName)\""
             }
+            
+            var session: String = ""
+            if includeSession == true {
+                if let sessionName = contextData.session {
+                    session = ", \"session\": \"\(sessionName)\""
+                }
+            }
+            
+            var user: String = ""
+            if includeUser == true {
+                if let userValue = contextData.user {
+                    user = ", \"user\": \"\(userValue)\""
+                }
+            }
+            
             var context: String = ""
             context = """
-            , "context": { "level": "\(String(describing: contextData.logLevel))", "file": "\(contextData.file)", "function": "\(contextData.function)", "line": \(contextData.line) \(subsystem) \(category) }
+            , "context": { "level": "\(String(describing: contextData.logLevel))", "file": "\(contextData.file)", "function": "\(contextData.function)", "line": \(contextData.line) \(subsystem) \(category) \(session) \(user) }
             """
             
             return """
