@@ -45,3 +45,52 @@ class TimestampModifierTestCase: XCTestCase {
         }
     }
 }
+
+class PropertyExpansionModifierTestCase: XCTestCase {
+    func testThatAttributeExpansionWorks() {
+        // Given
+        let modifier = PropertyExpansionModifier()
+        let message = "Method timed out: {attributes.reason}"
+        let attributes = [ "reason": "Service unavailable" ]
+        let logLevels: [LogLevel] = [.error, .warn, .event, .info, .debug]
+        
+        // When
+        let modifiedMessages = logLevels.map { modifier.modifyMessage(message, with: $0, attributes: attributes)}
+        
+        // Then
+        for (index, _) in logLevels.enumerated() {
+            let actualMessage = modifiedMessages[index]
+            let expectedSuffix = "Service unavailable"
+            XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Acutal message should contain expected suffix")
+        }
+    }
+    
+    func testThatContextExpansionWorks() {
+        // Given
+        let modifier = PropertyExpansionModifier()
+        let message = "Entered function: {context.function}"
+        let context = LogMessageContext(logLevel: .error, timestamp: Date().timeIntervalSince1970, file: #file, function: #function, line: #line)
+        
+        // When
+        let modifiedMessage = modifier.modifyMessage(message, with: context, attributes: [:])
+        
+        // Then
+        let expectedSuffix = #function
+        XCTAssertTrue(modifiedMessage.hasSuffix(expectedSuffix), "Acutal message should contain expected suffix")
+    }
+    
+    func testThatContextAndAttributeExpansionWorks() {
+        // Given
+        let modifier = PropertyExpansionModifier()
+        let message = "Method timed out in {context.function}: {attributes.reason}"
+        let context = LogMessageContext(logLevel: .error, timestamp: Date().timeIntervalSince1970, file: #file, function: #function, line: #line)
+        let attributes = [ "reason": "Service unavailable" ]
+
+        // When
+        let modifiedMessage = modifier.modifyMessage(message, with: context, attributes: attributes)
+        
+        // Then
+        let expectedMessage = "Method timed out in \(#function): Service unavailable"
+        XCTAssertEqual(expectedMessage, modifiedMessage, "Actual message should have expanded function name and reason.")
+    }
+}

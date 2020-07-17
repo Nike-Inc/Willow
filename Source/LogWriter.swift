@@ -71,9 +71,9 @@ extension LogModifierWriter {
     ///   - context: Context for log message..
     ///
     /// - Returns: The result of executing all the modifiers on the original message.
-    public func modifyMessage(_ message: String, context: LogMessageContext) -> String {
+    public func modifyMessage(_ message: String, context: LogMessageContext, attributes: [String: Any] = [:]) -> String {
         var message = message
-        modifiers.forEach { message = $0.modifyMessage(message, with: context) }
+        modifiers.forEach { message = $0.modifyMessage(message, with: context, attributes: attributes) }
         return message
     }
 }
