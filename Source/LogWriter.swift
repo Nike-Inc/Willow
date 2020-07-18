@@ -57,9 +57,9 @@ extension LogModifierWriter {
     ///   - logLevel: Log level of message.
     ///
     /// - Returns: The result of executing all the modifiers on the original message.
-    public func modifyMessage(_ message: String, logLevel: LogLevel) -> String {
+    public func modifyMessage(_ message: String, logLevel: LogLevel, attributes: [String: Any] = [:]) -> String {
         var message = message
-        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel) }
+        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel, attributes: attributes) }
         return message
     }
 
