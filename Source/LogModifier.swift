@@ -74,6 +74,7 @@ public extension LogModifier {
 /// * `logLevel` - The log level
 /// * `timestamp` - The timestamp in milliseconds since epoch.
 /// * `file` - The name of the file where the log message was recorded.
+/// * `file.lastPathComponent` - The optional name of the file where the log message was recorded, but only the final path component.
 /// * `function`- The name of the function in which the log message was recorded.
 /// * `line` - The line number where the log message was recorded.
 /// * `subsystem` - The optional application-defined subsystem this log message belongs to.
@@ -123,6 +124,12 @@ open class PropertyExpansionModifier: LogModifier {
         // If no value is available, a property reference will be replaced with the
         // string "missing".
         let missingPropertyValue = "missing"
+        if let lastPathComponent = context.file.components(separatedBy: "/").last {
+            contextProperties["file.lastPathComponent"] = lastPathComponent
+        }
+        else {
+            contextProperties["file.lastPathComponent"] = missingPropertyValue
+        }
         contextProperties["subsystem"] = missingPropertyValue
         contextProperties["category"] = missingPropertyValue
         contextProperties["session"] = missingPropertyValue
