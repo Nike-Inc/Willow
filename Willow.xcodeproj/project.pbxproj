@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23CC2F3024BA326900816649 /* LogMessageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC2F2F24BA326900816649 /* LogMessageContext.swift */; };
+		23CC2F3124BA512700816649 /* LogMessageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC2F2F24BA326900816649 /* LogMessageContext.swift */; };
+		23CC2F3224BA512800816649 /* LogMessageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC2F2F24BA326900816649 /* LogMessageContext.swift */; };
+		23CC2F3324BA512900816649 /* LogMessageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC2F2F24BA326900816649 /* LogMessageContext.swift */; };
 		321F2DF335043A818DBEC881 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		4C0CE38D1CFF3FB600D57B03 /* LogWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */; };
 		4C0CE38E1CFF3FB600D57B03 /* LogWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */; };
@@ -80,6 +84,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		23CC2F2F24BA326900816649 /* LogMessageContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMessageContext.swift; sourceTree = "<group>"; };
 		4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogWriterTests.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* LogModifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogModifierTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
@@ -177,6 +182,7 @@
 				4CA86F611AEC4654005E6475 /* Logger.swift */,
 				4C83FB2C1AEC1959003FEA49 /* LogLevel.swift */,
 				55B859C21F44FC9F0012F5F4 /* LogMessage.swift */,
+				23CC2F2F24BA326900816649 /* LogMessageContext.swift */,
 				4CA86F641AEC465E005E6475 /* LogModifier.swift */,
 				4CA86F671AEC466A005E6475 /* LogWriter.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
@@ -570,6 +576,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CC2F3224BA512800816649 /* LogMessageContext.swift in Sources */,
 				4C88353A1C82530300F70419 /* LogWriter.swift in Sources */,
 				4C8835361C82530300F70419 /* LogModifier.swift in Sources */,
 				55B859C51F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
@@ -595,6 +602,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CC2F3324BA512900816649 /* LogMessageContext.swift in Sources */,
 				4CA33F381B7556FC0047C307 /* LogWriter.swift in Sources */,
 				4CA33F341B7556FC0047C307 /* LogModifier.swift in Sources */,
 				55B859C61F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
@@ -607,6 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CC2F3124BA512700816649 /* LogMessageContext.swift in Sources */,
 				4CA86F691AEC466A005E6475 /* LogWriter.swift in Sources */,
 				4CA86F661AEC465E005E6475 /* LogModifier.swift in Sources */,
 				55B859C41F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
@@ -632,6 +641,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CC2F3024BA326900816649 /* LogMessageContext.swift in Sources */,
 				4CA86F681AEC466A005E6475 /* LogWriter.swift in Sources */,
 				4CA86F651AEC465E005E6475 /* LogModifier.swift in Sources */,
 				55B859C31F44FC9F0012F5F4 /* LogMessage.swift in Sources */,

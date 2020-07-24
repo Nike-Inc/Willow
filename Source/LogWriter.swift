@@ -31,6 +31,14 @@ import os
 public protocol LogWriter {
     func writeMessage(_ message: String, logLevel: LogLevel)
     func writeMessage(_ message: LogMessage, logLevel: LogLevel)
+    func writeMessage(_ message: LogMessage, context: LogMessageContext)
+}
+
+public extension LogWriter {
+    /// Default implementation just delegates to the older writeMessage method that accepts a log level.
+    func writeMessage(_ message: LogMessage, context: LogMessageContext) {
+        self.writeMessage(message, logLevel: context.logLevel)
+    }
 }
 
 /// LogModifierWriter extends LogWriter to allow for standard writers that utilize MessageModifiers
@@ -49,9 +57,23 @@ extension LogModifierWriter {
     ///   - logLevel: Log level of message.
     ///
     /// - Returns: The result of executing all the modifiers on the original message.
-    public func modifyMessage(_ message: String, logLevel: LogLevel) -> String {
+    public func modifyMessage(_ message: String, logLevel: LogLevel, attributes: [String: Any] = [:]) -> String {
         var message = message
-        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel) }
+        modifiers.forEach { message = $0.modifyMessage(message, with: logLevel, attributes: attributes) }
+        return message
+    }
+
+    /// Apply all of the LogMessageModifiers to the incoming message and return a new message.
+    /// The modifiers are run in the order they are stored in `modifiers`.
+    ///
+    /// - Parameters:
+    ///   - message: Original message.
+    ///   - context: Context for log message..
+    ///
+    /// - Returns: The result of executing all the modifiers on the original message.
+    public func modifyMessage(_ message: String, context: LogMessageContext, attributes: [String: Any] = [:]) -> String {
+        var message = message
+        modifiers.forEach { message = $0.modifyMessage(message, with: context, attributes: attributes) }
         return message
     }
 }
@@ -121,6 +143,23 @@ open class ConsoleWriter: LogModifierWriter {
         case .nslog: NSLog("%@", message)
         }
     }
+    
+    /// Writes the message to the console using the global `print` function.
+    ///
+    /// Each modifier is run over the message in the order they are provided before writing the message to
+    /// the console.
+    ///
+    /// - Parameters:
+    ///   - message:  The original message to write to the console.
+    ///   - context:  The context for the log message..
+    open func writeMessage(_ message: LogMessage, context: LogMessageContext) {
+        let message = modifyMessage("\(message.name): \(message.attributes)", context: context)
+        
+        switch method {
+        case .print: print(message)
+        case .nslog: NSLog("%@", message)
+        }
+    }
 }
 
 // MARK: -
@@ -175,6 +214,35 @@ open class OSLogWriter: LogModifierWriter {
         let message = modifyMessage("\(message.name): \(message.attributes)", logLevel: logLevel)
         let type = logType(forLogLevel: logLevel)
 
+        os_log("%@", log: log, type: type, message)
+    }
+    
+    /// Writes the breadrumb to the `OSLog` using the `os_log` function.
+    ///
+    /// Each modifier is run over the breadrumb in the order they are provided before writing the breadrumb to
+    /// the console.
+    ///
+    /// - Parameters:
+    ///   - message:  The original breadrumb to write to the console
+    ///   - context:  The context of the log message.
+    open func writeMessage(_ message: LogMessage, context: LogMessageContext) {
+        
+        // Filter out any message that is for a different subsystem or category.
+        if let subsystem = context.subsystem {
+            guard subsystem == self.subsystem else {
+                return
+            }
+            
+            if let category = context.category {
+                guard category == self.category else {
+                    return
+                }
+            }
+        }
+        
+        let message = modifyMessage("\(message.name): \(message.attributes)", context: context)
+        let type = logType(forLogLevel: context.logLevel)
+        
         os_log("%@", log: log, type: type, message)
     }
 

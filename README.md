@@ -339,7 +339,8 @@ This is made possible in `Willow` through the `LogWriter` protocol.
 ```swift
 public protocol LogWriter {
     func writeMessage(_ message: String, logLevel: LogLevel)
-    func writeMessage(_ message: Message, logLevel: LogLevel)
+    func writeMessage(_ message: LogMessage, logLevel: LogLevel)
+    func writeMessage(_ message: LogMessage, context: LogMessageContext)
 }
 ```
 
@@ -361,6 +362,10 @@ open class ConsoleWriter: LogMessageWriter {
 }
 ```
 
+A default implementation is provided for the third `writeMessage` function in the `LogWriter`. The implementation 
+just calls the version of `writeMessage` that takes a `LogMessage` and `LogLevel`. By including this, it is not
+necessar to implement the new `writeMessage` method that takes a `LogMessageContext` in existing log writers.
+
 ### Log Modifiers
 
 Log message customization is something that `Willow` specializes in.
@@ -371,12 +376,16 @@ This is where `LogModifier` objects come in.
 ```swift
 public protocol LogModifier {
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String
+    func modifyMessage(_ message: String, with context: LogMessageContext) -> String
 }
 ```
 
 The `LogModifier` protocol has only a single API.
 It receives the `message` and `logLevel` and returns a newly formatted `String`.
 This is about as flexible as you can get.
+
+As with the `LogWriter`, a default implementation of the method taking a `LogMessageContext` is provided. It simply delegates the work to the original method,
+using the `LogLevel` found in the context.
 
 As an added layer of convenience, writers intending to output strings (e.g. writing to the console, files, etc.) can conform to the `LogModifierWritier` protocol.
 The `LogModifierWriter` protocol adds an array of `LogModifier` objects to the `LogWriter` that can be applied to the message before it is output using the `modifyMessage(_:logLevel)` API in the extension.

@@ -87,72 +87,112 @@ open class Logger {
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func debug(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.debug)
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
+    /// - Parameter message: A closure returning the message to log.
+    open func debug(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @autoclosure @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .debug, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the debug log level is set.
     ///
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
     /// - Parameter message: A closure returning the message to log.
-    open func debug(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.debug)
+    open func debug(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .debug, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
+    }
+    
+    /// Writes out the given message using the logger if the info log level is set.
+    ///
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
+    /// - Parameter message: A closure returning the message to log.
+    open func info(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @autoclosure @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .info, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the info log level is set.
     ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func info(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.info)
-    }
-
-    /// Writes out the given message using the logger if the info log level is set.
-    ///
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
     /// - Parameter message: A closure returning the message to log.
-    open func info(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.info)
+    open func info(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .info, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func event(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.event)
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
+    /// - Parameter message: A closure returning the message to log.
+    open func event(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @autoclosure @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .event, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the event log level is set.
     ///
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
     /// - Parameter message: A closure returning the message to log.
-    open func event(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.event)
+    open func event(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .event, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func warn(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.warn)
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
+    /// - Parameter message: A closure returning the message to log.
+    open func warn(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @autoclosure @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .warn, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the warn log level is set.
     ///
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
     /// - Parameter message: A closure returning the message to log.
-    open func warn(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.warn)
+    open func warn(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .warn, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
-    /// - Parameter message: An autoclosure returning the message to log.
-    open func error(_ message: @autoclosure @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.error)
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
+    /// - Parameter message: A closure returning the message to log.
+    open func error(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @autoclosure @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .error, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message using the logger if the error log level is set.
     ///
+    /// - Parameter timestamp: When the message was recorded.
+    /// - Parameter file: The file where the message was recorded.
+    /// - Parameter function: The function where the message was recorded.
+    /// - Parameter line: The line number in the file where the message was recorded.
     /// - Parameter message: A closure returning the message to log.
-    open func error(_ message: @escaping () -> LogMessage) {
-        logMessage(message, with: LogLevel.error)
+    open func error(timestamp: TimeInterval = Date().timeIntervalSince1970, file: String = #file, function: String = #function, line: Int = #line, subsystem: String? = nil, category: String? = nil, _ message: @escaping () -> LogMessage) {
+        logMessage(message, with: LogMessageContext(logLevel: .error, timestamp: timestamp, file: file, function: function, line: line, subsystem: subsystem, category: category))
     }
 
     /// Writes out the given message closure string with the logger if the log level is allowed.
@@ -171,6 +211,25 @@ open class Logger {
 
         case .asynchronous(let queue):
             queue.async { self.logMessage(message(), with: logLevel) }
+        }
+    }
+
+    /// Writes out the given message closure string with the logger if the log level is allowed.
+    ///
+    /// - Parameters:
+    ///   - message:  A closure returning the message to log.
+    ///   - context: The context associated with the message closure..
+    open func logMessage(_ message: @escaping () -> (LogMessage), with context: LogMessageContext) {
+        guard enabled && logLevelAllowed(context.logLevel) else { return }
+
+        switch executionMethod {
+        case .synchronous(let lock):
+            let message = message()
+            lock.lock() ; defer { lock.unlock() }
+            logMessage(message, with: context)
+
+        case .asynchronous(let queue):
+            queue.async { self.logMessage(message(), with: context) }
         }
     }
 
@@ -276,6 +335,10 @@ open class Logger {
 
     private func logMessage(_ message: LogMessage, with logLevel: LogLevel) {
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
+    }
+    
+    private func logMessage(_ message: LogMessage, with context: LogMessageContext) {
+        writers.forEach { $0.writeMessage(message, context: context) }
     }
 
     // MARK: - Private - No-Op Logger
