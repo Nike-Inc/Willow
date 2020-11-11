@@ -14,6 +14,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
 - [Installation](#installation)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
+    - [Swift Package Manager](#swift-package-manager)
 - [Usage](#usage)
     - [Creating a Logger](#creating-a-logger)
     - [Logging Messages with Closures](#logging-messages-with-closures)
