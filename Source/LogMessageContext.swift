@@ -25,6 +25,8 @@
 import Foundation
 
 public struct LogMessageContext {
+    public typealias DeviceVendor = () -> String
+    public static var deviceVendor: DeviceVendor? = nil
     public typealias SessionVendor = () -> String
     public static var sessionVendor: SessionVendor? = nil
     public typealias UserVendor = () -> String
@@ -37,6 +39,7 @@ public struct LogMessageContext {
     public let line: Int
     public let subsystem: String?
     public let category: String?
+    public let device: String?
     public let session: String?
     public let user: String?
     
@@ -48,6 +51,7 @@ public struct LogMessageContext {
         self.line = line
         self.subsystem = subsystem
         self.category = category
+        self.device = LogMessageContext.deviceVendor?()
         self.session = LogMessageContext.sessionVendor?()
         self.user = LogMessageContext.userVendor?()
     }
