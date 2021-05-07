@@ -1,6 +1,5 @@
-// swift-tools-version:5.0
 //
-//  Package.swift
+//  Willow.h
 //
 //  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
@@ -23,11 +22,7 @@
 //  THE SOFTWARE.
 //
 
-import PackageDescription
+@import Foundation;
 
-let package = Package(
-    name: "Willow",
-    platforms: [ .macOS(.v10_12), .iOS(.v10), .tvOS(.v10), .watchOS(.v3) ],
-		products: [ .library(name: "Willow", targets: [ "Willow" ]) ],
-		targets: [ .binaryTarget(name: "Willow", path: "Willow.xcframework") ]
-)
+FOUNDATION_EXPORT double WillowVersionNumber;
+FOUNDATION_EXPORT const unsigned char WillowVersionString[];

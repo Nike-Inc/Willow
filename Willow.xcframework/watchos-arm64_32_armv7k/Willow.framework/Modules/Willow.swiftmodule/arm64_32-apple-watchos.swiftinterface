@@ -1,0 +1,154 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-module-flags: -target arm64_32-apple-watchos3.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Willow
+import Foundation
+import Swift
+@_exported import Willow
+import os
+public struct LogMessageContext {
+  public typealias DeviceVendor = () -> Swift.String
+  public static var deviceVendor: Willow.LogMessageContext.DeviceVendor?
+  public typealias SessionVendor = () -> Swift.String
+  public static var sessionVendor: Willow.LogMessageContext.SessionVendor?
+  public typealias UserVendor = () -> Swift.String
+  public static var userVendor: Willow.LogMessageContext.UserVendor?
+  public let logLevel: Willow.LogLevel
+  public let timestamp: Foundation.TimeInterval
+  public let file: Swift.String
+  public let function: Swift.String
+  public let line: Swift.Int
+  public let subsystem: Swift.String?
+  public let category: Swift.String?
+  public let device: Swift.String?
+  public let session: Swift.String?
+  public let user: Swift.String?
+  public init(logLevel: Willow.LogLevel, timestamp: Foundation.TimeInterval, file: Swift.String, function: Swift.String, line: Swift.Int, subsystem: Swift.String? = nil, category: Swift.String? = nil)
+}
+public protocol LogWriter {
+  func writeMessage(_ message: Swift.String, logLevel: Willow.LogLevel)
+  func writeMessage(_ message: Willow.LogMessage, logLevel: Willow.LogLevel)
+  func writeMessage(_ message: Willow.LogMessage, context: Willow.LogMessageContext)
+}
+extension LogWriter {
+  public func writeMessage(_ message: Willow.LogMessage, context: Willow.LogMessageContext)
+}
+public protocol LogModifierWriter : Willow.LogWriter {
+  var modifiers: [Willow.LogModifier] { get }
+}
+extension LogModifierWriter {
+  public func modifyMessage(_ message: Swift.String, logLevel: Willow.LogLevel, attributes: [Swift.String : Any] = [:]) -> Swift.String
+  public func modifyMessage(_ message: Swift.String, context: Willow.LogMessageContext, attributes: [Swift.String : Any] = [:]) -> Swift.String
+}
+open class ConsoleWriter : Willow.LogModifierWriter {
+  public enum Method {
+    case print, nslog
+    public static func == (a: Willow.ConsoleWriter.Method, b: Willow.ConsoleWriter.Method) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let modifiers: [Willow.LogModifier]
+  public init(method: Willow.ConsoleWriter.Method = .print, modifiers: [Willow.LogModifier] = [])
+  open func writeMessage(_ message: Swift.String, logLevel: Willow.LogLevel)
+  open func writeMessage(_ message: Willow.LogMessage, logLevel: Willow.LogLevel)
+  open func writeMessage(_ message: Willow.LogMessage, context: Willow.LogMessageContext)
+  @objc deinit
+}
+open class OSLogWriter : Willow.LogModifierWriter {
+  final public let subsystem: Swift.String
+  final public let category: Swift.String
+  final public let modifiers: [Willow.LogModifier]
+  public init(subsystem: Swift.String, category: Swift.String, modifiers: [Willow.LogModifier] = [])
+  open func writeMessage(_ message: Swift.String, logLevel: Willow.LogLevel)
+  open func writeMessage(_ message: Willow.LogMessage, logLevel: Willow.LogLevel)
+  open func writeMessage(_ message: Willow.LogMessage, context: Willow.LogMessageContext)
+  open func logType(forLogLevel logLevel: Willow.LogLevel) -> os.OSLogType
+  @objc deinit
+}
+public protocol LogModifier {
+  func modifyMessage(_ message: Swift.String, with logLevel: Willow.LogLevel) -> Swift.String
+  func modifyMessage(_ message: Swift.String, with logLevel: Willow.LogLevel, attributes: [Swift.String : Any]) -> Swift.String
+  func modifyMessage(_ message: Swift.String, with context: Willow.LogMessageContext, attributes: [Swift.String : Any]) -> Swift.String
+}
+extension LogModifier {
+  public func modifyMessage(_ message: Swift.String, with logLevel: Willow.LogLevel, attributes: [Swift.String : Any]) -> Swift.String
+  public func modifyMessage(_ message: Swift.String, with context: Willow.LogMessageContext, attributes: [Swift.String : Any]) -> Swift.String
+}
+open class PropertyExpansionModifier : Willow.LogModifier {
+  public init()
+  public func modifyMessage(_ message: Swift.String, with logLevel: Willow.LogLevel) -> Swift.String
+  public func modifyMessage(_ message: Swift.String, with logLevel: Willow.LogLevel, attributes: [Swift.String : Any]) -> Swift.String
+  public func modifyMessage(_ message: Swift.String, with context: Willow.LogMessageContext, attributes: [Swift.String : Any]) -> Swift.String
+  @objc deinit
+}
+open class TimestampModifier : Willow.LogModifier {
+  public init()
+  open func modifyMessage(_ message: Swift.String, with logLevel: Willow.LogLevel) -> Swift.String
+  open func modifyMessage(_ message: Swift.String, with context: Willow.LogMessageContext, attributes: [Swift.String : Any] = [:]) -> Swift.String
+  @objc deinit
+}
+public protocol LogMessage {
+  var name: Swift.String { get }
+  var attributes: [Swift.String : Any] { get }
+}
+extension LogMessage {
+  public func asJsonString(context: Willow.LogMessageContext? = nil, includeSession: Swift.Bool = false, includeUser: Swift.Bool = false) -> Swift.String
+}
+open class Logger {
+  public enum ExecutionMethod {
+    case synchronous(lock: Foundation.NSRecursiveLock)
+    case asynchronous(queue: Dispatch.DispatchQueue)
+  }
+  public static let disabled: Willow.Logger
+  open var enabled: Swift.Bool
+  final public let logLevels: Willow.LogLevel
+  final public let writers: [Willow.LogWriter]
+  final public let executionMethod: Willow.Logger.ExecutionMethod
+  public init(logLevels: Willow.LogLevel, writers: [Willow.LogWriter], executionMethod: Willow.Logger.ExecutionMethod = .synchronous(lock: NSRecursiveLock()))
+  open func debug(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @autoclosure @escaping () -> Willow.LogMessage)
+  open func debug(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @escaping () -> Willow.LogMessage)
+  open func info(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @autoclosure @escaping () -> Willow.LogMessage)
+  open func info(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @escaping () -> Willow.LogMessage)
+  open func event(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @autoclosure @escaping () -> Willow.LogMessage)
+  open func event(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @escaping () -> Willow.LogMessage)
+  open func warn(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @autoclosure @escaping () -> Willow.LogMessage)
+  open func warn(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @escaping () -> Willow.LogMessage)
+  open func error(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @autoclosure @escaping () -> Willow.LogMessage)
+  open func error(timestamp: Foundation.TimeInterval = Date().timeIntervalSince1970, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line, subsystem: Swift.String? = nil, category: Swift.String? = nil, _ message: @escaping () -> Willow.LogMessage)
+  open func logMessage(_ message: @escaping () -> (Willow.LogMessage), with logLevel: Willow.LogLevel)
+  open func logMessage(_ message: @escaping () -> (Willow.LogMessage), with context: Willow.LogMessageContext)
+  open func debugMessage(_ message: @autoclosure @escaping () -> Swift.String)
+  open func debugMessage(_ message: @escaping () -> Swift.String)
+  open func infoMessage(_ message: @autoclosure @escaping () -> Swift.String)
+  open func infoMessage(_ message: @escaping () -> Swift.String)
+  open func eventMessage(_ message: @autoclosure @escaping () -> Swift.String)
+  open func eventMessage(_ message: @escaping () -> Swift.String)
+  open func warnMessage(_ message: @autoclosure @escaping () -> Swift.String)
+  open func warnMessage(_ message: @escaping () -> Swift.String)
+  open func errorMessage(_ message: @autoclosure @escaping () -> Swift.String)
+  open func errorMessage(_ message: @escaping () -> Swift.String)
+  open func logMessage(_ message: @escaping () -> Swift.String, with logLevel: Willow.LogLevel)
+  @objc deinit
+}
+public struct LogLevel : Swift.OptionSet, Swift.Equatable, Swift.Hashable {
+  public typealias RawValue = Swift.UInt
+  public let rawValue: Willow.LogLevel.RawValue
+  public static let off: Willow.LogLevel
+  public static let debug: Willow.LogLevel
+  public static let info: Willow.LogLevel
+  public static let event: Willow.LogLevel
+  public static let warn: Willow.LogLevel
+  public static let error: Willow.LogLevel
+  public static let all: Willow.LogLevel
+  public init(rawValue: Willow.LogLevel.RawValue)
+  public typealias ArrayLiteralElement = Willow.LogLevel
+  public typealias Element = Willow.LogLevel
+}
+extension LogLevel : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension Willow.ConsoleWriter.Method : Swift.Equatable {}
+extension Willow.ConsoleWriter.Method : Swift.Hashable {}

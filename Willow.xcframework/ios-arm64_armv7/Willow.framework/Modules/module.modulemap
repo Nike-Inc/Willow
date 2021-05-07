@@ -1,0 +1,11 @@
+framework module Willow {
+  umbrella header "Willow.h"
+
+  export *
+  module * { export * }
+}
+
+module Willow.Swift {
+    header "Willow-Swift.h"
+    requires objc
+}
