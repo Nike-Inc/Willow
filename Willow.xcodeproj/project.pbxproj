@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F63041B2A4BA24900DB4099 /* LogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041A2A4BA24900DB4099 /* LogFilter.swift */; };
+		2F63041C2A4BA24900DB4099 /* LogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041A2A4BA24900DB4099 /* LogFilter.swift */; };
+		2F63041D2A4BA24900DB4099 /* LogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041A2A4BA24900DB4099 /* LogFilter.swift */; };
+		2F63041E2A4BA24900DB4099 /* LogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041A2A4BA24900DB4099 /* LogFilter.swift */; };
+		2F6304242A4C80F400DB4099 /* LogFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041F2A4C7FDC00DB4099 /* LogFilterTests.swift */; };
+		2F6304252A4C80F800DB4099 /* LogFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041F2A4C7FDC00DB4099 /* LogFilterTests.swift */; };
+		2F6304262A4C80F800DB4099 /* LogFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63041F2A4C7FDC00DB4099 /* LogFilterTests.swift */; };
 		321F2DF335043A818DBEC881 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		4C0CE38D1CFF3FB600D57B03 /* LogWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */; };
 		4C0CE38E1CFF3FB600D57B03 /* LogWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */; };
@@ -80,6 +87,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F63041A2A4BA24900DB4099 /* LogFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFilter.swift; sourceTree = "<group>"; };
+		2F63041F2A4C7FDC00DB4099 /* LogFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFilterTests.swift; sourceTree = "<group>"; };
 		4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogWriterTests.swift; sourceTree = "<group>"; };
 		4C1BBA691A6C518800D39EE1 /* LogModifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogModifierTests.swift; sourceTree = "<group>"; };
 		4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
@@ -180,6 +189,7 @@
 				4CA86F641AEC465E005E6475 /* LogModifier.swift */,
 				4CA86F671AEC466A005E6475 /* LogWriter.swift */,
 				4CA75D451A6C493F00275DC5 /* Supporting Files */,
+				2F63041A2A4BA24900DB4099 /* LogFilter.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -199,6 +209,7 @@
 				557DA8311F3E1954005BC651 /* LoggerMessageStringTests.swift */,
 				557DA8351F3E1A9C005BC651 /* LoggerMessageTests.swift */,
 				4C1BBA6A1A6C518800D39EE1 /* LoggerTests.swift */,
+				2F63041F2A4C7FDC00DB4099 /* LogFilterTests.swift */,
 				4CBE850B1AEA2EFA006A1205 /* LogLevelTests.swift */,
 				4C1BBA691A6C518800D39EE1 /* LogModifierTests.swift */,
 				4C0CE38C1CFF3FB600D57B03 /* LogWriterTests.swift */,
@@ -572,6 +583,7 @@
 			files = (
 				4C88353A1C82530300F70419 /* LogWriter.swift in Sources */,
 				4C8835361C82530300F70419 /* LogModifier.swift in Sources */,
+				2F63041D2A4BA24900DB4099 /* LogFilter.swift in Sources */,
 				55B859C51F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4C8835371C82530300F70419 /* Logger.swift in Sources */,
 				4C8835391C82530300F70419 /* LogLevel.swift in Sources */,
@@ -588,6 +600,7 @@
 				4C88353E1C82530F00F70419 /* LoggerTests.swift in Sources */,
 				557DA8381F3E1A9C005BC651 /* LoggerMessageTests.swift in Sources */,
 				557DA8341F3E1954005BC651 /* LoggerMessageStringTests.swift in Sources */,
+				2F6304262A4C80F800DB4099 /* LogFilterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,6 +610,7 @@
 			files = (
 				4CA33F381B7556FC0047C307 /* LogWriter.swift in Sources */,
 				4CA33F341B7556FC0047C307 /* LogModifier.swift in Sources */,
+				2F63041E2A4BA24900DB4099 /* LogFilter.swift in Sources */,
 				55B859C61F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4CA33F351B7556FC0047C307 /* Logger.swift in Sources */,
 				4CA33F371B7556FC0047C307 /* LogLevel.swift in Sources */,
@@ -609,6 +623,7 @@
 			files = (
 				4CA86F691AEC466A005E6475 /* LogWriter.swift in Sources */,
 				4CA86F661AEC465E005E6475 /* LogModifier.swift in Sources */,
+				2F63041C2A4BA24900DB4099 /* LogFilter.swift in Sources */,
 				55B859C41F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4C83FB2E1AEC1959003FEA49 /* LogLevel.swift in Sources */,
 				4CA86F631AEC4654005E6475 /* Logger.swift in Sources */,
@@ -625,6 +640,7 @@
 				4CC837791A6E347A00B31851 /* LoggerTests.swift in Sources */,
 				557DA8371F3E1A9C005BC651 /* LoggerMessageTests.swift in Sources */,
 				557DA8331F3E1954005BC651 /* LoggerMessageStringTests.swift in Sources */,
+				2F6304252A4C80F800DB4099 /* LogFilterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,6 +650,7 @@
 			files = (
 				4CA86F681AEC466A005E6475 /* LogWriter.swift in Sources */,
 				4CA86F651AEC465E005E6475 /* LogModifier.swift in Sources */,
+				2F63041B2A4BA24900DB4099 /* LogFilter.swift in Sources */,
 				55B859C31F44FC9F0012F5F4 /* LogMessage.swift in Sources */,
 				4C83FB2D1AEC1959003FEA49 /* LogLevel.swift in Sources */,
 				4CA86F621AEC4654005E6475 /* Logger.swift in Sources */,
@@ -650,6 +667,7 @@
 				4C1BBA6B1A6C518800D39EE1 /* LogModifierTests.swift in Sources */,
 				557DA8361F3E1A9C005BC651 /* LoggerMessageTests.swift in Sources */,
 				557DA8321F3E1954005BC651 /* LoggerMessageStringTests.swift in Sources */,
+				2F6304242A4C80F400DB4099 /* LogFilterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,6 +25,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
     - [Creating Custom Log Levels](#creating-custom-log-levels)
     - [Shared Loggers between Frameworks](#shared-loggers-between-frameworks)
     - [Multiple Loggers, One Queue](#multiple-loggers-one-queue)
+    - [Adding Message Filters](#adding-message-filters)
     - [Changing the log level at runtime](#changing-log-levels-at-runtime)
 - [FAQ](#faq)
 - [License](#license)
@@ -577,6 +578,50 @@ Math.log = Logger(
 
 ---
 
+### Adding Message Filters
+
+Sometimes you may wish to have finer-grained control over when some log messages are included. For instance,
+if you wanted to ignore logs that have a given attribute, based on whatever dynamic logic you have.
+
+This is useful if you have a way to toggle log subsystems on/off within the app in a DEBUG/ADHOC scenario.
+
+To define a filter, create a type that implements the ``LogFilter`` protocol.
+
+Here is an example of a filter that can conditionally exclude noisy logs for an analytics subsystem:
+
+```swift
+struct AnalyticsLogFilter: LogFilter {
+    var name: String { "analytics" }
+    
+    func shouldInclude(_ message: LogMessage, logLevel: LogLevel) -> Bool {
+        // only consider those with a given attribute
+        guard message.attributes["subsystem"] == "analytics" else { return true }
+        
+        return logLevel != .debug
+    }
+    
+    func shouldInclude(_ message: String, logLevel: LogLevel) -> Bool {
+        // we don't have any additional context for string messages, so always include
+        return true
+    }
+}
+```
+
+With this filter you can now conditionally add this to the logger:
+
+```swift
+logger.addFilter(AnalyticsLogFilter())
+```
+
+Or later if you want to remove it:
+
+```swift
+logger.removeFilter(named: "analytics")
+// or 
+logger.removeFilters()
+```
+
+Messages that return `false` from the filter will not be emitted.
 
 ### Changing log levels at runtime
 

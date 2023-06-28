@@ -114,6 +114,7 @@ struct WillowConfiguration {
             logLevels: webServicesLogLevels,
             executionMethod: executionMethod
         )
+        WebServices.log.addFilter(HTTPStatusCodeFilter(statusCodeToIgnore: 200))
     }
 
     private static func createLogger(
@@ -135,5 +136,28 @@ struct WillowConfiguration {
 private struct ServiceSDK {
     static func recordBreadcrumb(_ message: String, attributes: [String: Any]) {
         // Implement me...
+    }
+}
+
+// An example of a filter that can exclude certain logs
+struct HTTPStatusCodeFilter: LogFilter {
+    let statusCodeToIgnore: Int
+
+    init(statusCodeToIgnore: Int) {
+        self.statusCodeToIgnore = statusCodeToIgnore
+    }
+
+    func shouldInclude(_ logMessage: Willow.LogMessage, level: Willow.LogLevel) -> Bool {
+        if let responseCode = logMessage.attributes["response_code"] as? Int {
+            print("Ignored: \(logMessage.name), \(logMessage.attributes)")
+            return responseCode != statusCodeToIgnore
+        }
+
+        return true
+    }
+
+    func shouldInclude(_ message: String, level: Willow.LogLevel) -> Bool {
+        // string messages don't have the metadata we use to filter
+        true
     }
 }
