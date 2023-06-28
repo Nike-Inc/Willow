@@ -25,6 +25,7 @@ Willow is a powerful, yet lightweight logging library written in Swift.
     - [Creating Custom Log Levels](#creating-custom-log-levels)
     - [Shared Loggers between Frameworks](#shared-loggers-between-frameworks)
     - [Multiple Loggers, One Queue](#multiple-loggers-one-queue)
+    - [Changing the log level at runtime](#changing-log-levels-at-runtime)
 - [FAQ](#faq)
 - [License](#license)
 - [Creators](#creators)
@@ -575,6 +576,24 @@ Math.log = Logger(
 `Willow` is a very lightweight library, but its flexibility allows it to become very powerful if you so wish.
 
 ---
+
+
+### Changing log levels at runtime
+
+It can be advantageous in DEBUG and ADHOC builds to allow testers to change the log level to include messages
+that would otherwise be too noisy to include by default.
+
+You can change the log level at runtime by calling `logger.setLogLevels(...)`. Note that this is passed an OptionSet,
+so you need to include all of the log levels you want to include.
+
+If you are using the default set of options, you can use the `.minimum` helper method to include all levels above
+a given log level. For instance, to include `.info` and above:
+
+```swift
+logger.setLogLevels(.minimum(.info))
+```
+
+This method is not supported if you are using custom log levels.
 
 ## FAQ
 

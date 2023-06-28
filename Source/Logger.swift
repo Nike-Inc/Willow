@@ -46,6 +46,18 @@ open class Logger {
     public enum ExecutionMethod {
         case synchronous(lock: NSRecursiveLock)
         case asynchronous(queue: DispatchQueue)
+
+        func perform(work: @escaping () -> Void) {
+            switch self {
+            case .synchronous(lock: let lock):
+                lock.lock()
+                defer { lock.unlock() }
+                work()
+
+            case .asynchronous(queue: let queue):
+                queue.async { work() }
+            }
+        }
     }
 
    // MARK: - Properties
@@ -57,7 +69,7 @@ open class Logger {
     open var enabled = true
 
     /// Log levels this logger is configured for.
-    public let logLevels: LogLevel
+    public private(set) var logLevels: LogLevel
 
     /// The array of writers to use when messages are written.
     public let writers: [LogWriter]
@@ -81,6 +93,19 @@ open class Logger {
         self.logLevels = logLevels
         self.writers = writers
         self.executionMethod = executionMethod
+    }
+
+    /// Sets a new log level on the logger. Any previously logged messages will be emitted based on the setting
+    /// at the time they were logged.
+    /// - Parameter level: The new minimum log level
+    public func setLogLevels(_ levels: LogLevel) {
+        executionMethod.perform {
+            // if this is an async serial queue, this work we are in will happen _after_
+            // any of the previously enqueued log messages are written. Therefore, this
+            // ensures that messages enqueued after this call will be using the new log level
+            // filter.
+            self.logLevels = levels
+        }
     }
 
     // MARK: - Log Messages
@@ -267,7 +292,7 @@ open class Logger {
     // MARK: - Private - Log Message Helpers
 
     private func logLevelAllowed(_ logLevel: LogLevel) -> Bool {
-        return logLevels.contains(logLevel)
+        logLevels.contains(logLevel)
     }
 
     private func logMessage(_ message: String, with logLevel: LogLevel) {
