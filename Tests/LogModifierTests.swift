@@ -34,10 +34,10 @@ class TimestampModifierTestCase: XCTestCase {
         let logLevels: [LogLevel] = [.error, .warn, .event, .info, .debug]
 
         // When
-        var actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0) }
+        let actualMessages = logLevels.map { modifier.modifyMessage(message, with: $0) }
 
         // Then
-        for (index, _) in logLevels.enumerated() {
+        for index in logLevels.indices {
             let actualMessage = actualMessages[index]
             let expectedSuffix = " \(message)"
             XCTAssertTrue(actualMessage.hasSuffix(expectedSuffix), "Actual message should contain expected suffix")

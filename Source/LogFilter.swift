@@ -35,16 +35,16 @@ public protocol LogFilter: Hashable {
 
     /// Determines if a log message should be emitted.
     /// - Parameters:
-    ///   - logMessage: A log message struct
-    ///   - level: The log level of the message
-    /// - Returns: true if the log message should be included
+    ///   - logMessage: A log message struct.
+    ///   - level: The log level of the message.
+    /// - Returns: true if the log message should be included.
     func shouldInclude(_ logMessage: LogMessage, level: LogLevel) -> Bool
 
     /// Determines if a log message should be emitted.
     /// - Parameters:
-    ///   - logMessage: A log message string
-    ///   - level: The log level of the message
-    /// - Returns: true if the log message should be included
+    ///   - logMessage: A log message string.
+    ///   - level: The log level of the message.
+    /// - Returns: true if the log message should be included.
     func shouldInclude(_ message: String, level: LogLevel) -> Bool
 }
 
