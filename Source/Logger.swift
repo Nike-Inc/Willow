@@ -47,7 +47,9 @@ open class Logger {
         case synchronous(lock: NSRecursiveLock)
         case asynchronous(queue: DispatchQueue)
 
-        func perform(work: @escaping () -> Void) {
+        /// Performs a block of work using the desired synchronization method (either locks or serial queues).
+        /// - Parameter work: An escaping block of work that needs to be protected against data races.
+        public func perform(work: @escaping () -> Void) {
             switch self {
             case .synchronous(lock: let lock):
                 lock.lock()
