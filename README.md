@@ -591,7 +591,7 @@ Here is an example of a filter that can conditionally exclude noisy logs for an 
 
 ```swift
 struct AnalyticsLogFilter: LogFilter {
-    var name: String { "analytics" }
+    let name = "analytics"
     
     func shouldInclude(_ message: LogMessage, logLevel: LogLevel) -> Bool {
         // only consider those with a given attribute
