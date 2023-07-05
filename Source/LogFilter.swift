@@ -29,7 +29,7 @@ import Foundation
 ///
 /// The canonical default implementation of this is the ``LogLevelFilter``, which will filter out messages that do
 /// not meet the minimum specified log level.
-public protocol LogFilter {
+public protocol LogFilter: Hashable {
     /// An optional identifier to define if you need to remove this log filter later. Defaults to a randomly generated value.
     var name: String { get }
 
@@ -50,4 +50,12 @@ public protocol LogFilter {
 
 public extension LogFilter {
     var name: String { UUID().uuidString }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.name == rhs.name
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
 }

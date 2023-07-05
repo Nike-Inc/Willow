@@ -72,7 +72,7 @@ open class Logger {
     public private(set) var logLevels: LogLevel
 
     // This holds any message filters that have been provided.
-    public private(set) var filters: [LogFilter] = []
+    public private(set) var filters: [any LogFilter] = []
 
     /// The array of writers to use when messages are written.
     public let writers: [LogWriter]
@@ -115,7 +115,7 @@ open class Logger {
 
     /// Adds a log filter to the logger. A filter gives you dynamic control over whether logs are emitted or not, based on content in the ``LogMessage`` struct or message itself.
     /// - Parameter filter: A ``LogFilter`` instance to add.
-    public func addFilter(_ filter: LogFilter) {
+    public func addFilter(_ filter: any LogFilter) {
         executionMethod.perform {
             self.filters.append(filter)
         }
