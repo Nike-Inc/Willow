@@ -26,9 +26,6 @@ import Foundation
 
 /// The ``LogFilter`` protocol defines the requirements to add your own dynamic filters to allow your own code to
 /// decide to filter out (i.e. not log) certain types of log messages based on criteria you define.
-///
-/// The canonical default implementation of this is the ``LogLevelFilter``, which will filter out messages that do
-/// not meet the minimum specified log level.
 public protocol LogFilter: Hashable {
     /// An optional identifier to define if you need to remove this log filter later. Defaults to a randomly generated value.
     var name: String { get }

@@ -1,5 +1,5 @@
 //
-//  LogWriterTests.swift
+//  LogFilterTests.swift
 //
 //  Copyright (c) 2015-present Nike, Inc. (https://www.nike.com)
 //
@@ -30,12 +30,43 @@ import XCTest
 struct TestLogFilter: LogFilter {
     var name: String { "test" }
 
+    let stringToExclude: String
+
     func shouldInclude(_ logMessage: LogMessage, level: LogLevel) -> Bool {
-        !logMessage.name.contains("EXCLUDE")
+        !logMessage.name.contains(stringToExclude)
     }
 
     func shouldInclude(_ message: String, level: LogLevel) -> Bool {
-        !message.contains("EXCLUDE")
+        !message.contains(stringToExclude)
+    }
+}
+
+struct TestLogFilterByAttributes: LogFilter {
+    var name: String { "test2" }
+
+    var excludedGroups: Set<String> = []
+
+    func shouldInclude(_ logMessage: LogMessage, level: LogLevel) -> Bool {
+        guard let groupName = logMessage.attributes["group"] as? String else {
+            return true
+        }
+
+        return !excludedGroups.contains(groupName)
+    }
+
+    func shouldInclude(_ message: String, level: LogLevel) -> Bool {
+        true // don't have attributes here, so no filter
+    }
+}
+
+struct GroupedMessage: LogMessage {
+    var name: String
+    let group: String
+
+    var attributes: [String : Any] {
+        [
+            "group": group
+        ]
     }
 }
 
@@ -61,7 +92,7 @@ class LogFilterTests: XCTestCase {
 
     func testFilterMessages() {
         let logger = Logger(logLevels: .all, writers: [mockWriter])
-        logger.addFilter(TestLogFilter())
+        logger.addFilter(TestLogFilter(stringToExclude: "EXCLUDE"))
 
         logger.infoMessage("message 1")
         logger.infoMessage("message 2 EXCLUDED")
@@ -70,17 +101,40 @@ class LogFilterTests: XCTestCase {
         XCTAssertEqual(mockWriter.messagesWritten.last, "message 1")
     }
 
+    func testFilterMessagesByAttributes() {
+        let logger = Logger(logLevels: .all, writers: [mockWriter])
+        logger.addFilter(TestLogFilterByAttributes(excludedGroups: ["analytics"]))
+
+        logger.info(GroupedMessage(name: "analytics event", group: "analytics"))
+        logger.info(GroupedMessage(name: "checkout event", group: "checkout"))
+
+        XCTAssertEqual(mockWriter.logMessagesWritten.count, 1)
+        XCTAssertEqual(mockWriter.logMessagesWritten.first?.name, "checkout event")
+    }
+
     func testRemovingFilters() {
         let logger = Logger(logLevels: .all, writers: [mockWriter])
-        logger.addFilter(TestLogFilter())
+        logger.infoMessage("example 1 FOO") //expected
+
+        logger.addFilter(TestLogFilter(stringToExclude: "FOO"))
+        logger.infoMessage("example 2 FOO") // not expected
+        XCTAssertFalse(logger.filters.isEmpty)
         logger.removeFilters()
         XCTAssert(logger.filters.isEmpty)
+        logger.infoMessage("example 3 FOO") // expected
 
-        logger.addFilter(TestLogFilter())
+        logger.addFilter(TestLogFilter(stringToExclude: "..."))
         logger.removeFilter(named: "asdf")
         XCTAssertEqual(logger.filters.count, 1)
 
         logger.removeFilter(named: "test")
         XCTAssert(logger.filters.isEmpty)
+
+        // assert only expected messages were logged
+        let expectedMessages = ["example 1 FOO", "example 3 FOO"]
+        XCTAssertEqual(mockWriter.messagesWritten.count, expectedMessages.count)
+        expectedMessages.forEach {
+            XCTAssert(mockWriter.messagesWritten.contains($0))
+        }
     }
 }
