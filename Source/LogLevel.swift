@@ -66,6 +66,23 @@ public struct LogLevel: OptionSet, Equatable, Hashable {
     /// Creates a new default `.all` instance with a bitmask where all bits equal are equal to `1`.
     public static let all = LogLevel(rawValue: allBitmask)
 
+    /// Returns a mask including the minimum log level and above.
+    /// - Parameter minLevel: The minimum ``LogLevel`` to include. Passing in a mask with more than one flag set results in undefined behavior.
+    /// - Returns: A new log level mask.
+    public static func minimum(_ minLevel: LogLevel) -> LogLevel {
+        switch minLevel {
+        case .all, .debug: return .all
+        case .info: return [.info, .event, .warn, .error]
+        case .event: return [.event, .warn, .error]
+        case .warn: return [.warn, .error]
+        case .error: return .error
+        case .off: return []
+        default:
+            // calling this with multiple levels defined is not recommended
+            return minimum(.info)
+        }
+    }
+
     // MARK: Initialization Methods
 
     /// Creates a log level instance with the given raw value.

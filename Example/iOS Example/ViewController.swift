@@ -73,6 +73,23 @@ class ViewController: UIViewController {
 
     private func setUpSections() {
         sections = [
+            Section(title: "Log Filtering", items: [
+                Item(title: "Log level is set to: [\(logLevelFilters[logLevelIndex])] (tap to cycle)", action: { [weak self] in
+                    guard let self else { return }
+
+                    // cycle through log levels
+                    self.logLevelIndex = (self.logLevelIndex + 1).remainderReportingOverflow(dividingBy: self.logLevelFilters.count).partialValue
+
+                    let logLevel = LogLevel.minimum(self.logLevelFilters[self.logLevelIndex])
+                    log.setLogLevels(logLevel)
+                    WebServices.log.setLogLevels(logLevel)
+                    Database.log.setLogLevels(logLevel)
+
+                    // reload the rows so this section is re-rendered
+                    self.setUpSections()
+                    self.tableView.reloadData()
+                })
+            ]),
             Section(
                 title: "Example App",
                 items: [
@@ -208,6 +225,16 @@ class ViewController: UIViewController {
             )
         ]
     }
+
+    private var logLevelIndex = 0
+    private var logLevelFilters: [LogLevel] = [
+        .all,
+        .debug,
+        .info,
+        .event,
+        .warn,
+        .error
+    ]
 
     private func setUpTableView() {
         tableView = {

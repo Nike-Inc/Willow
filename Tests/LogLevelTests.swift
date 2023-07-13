@@ -160,6 +160,16 @@ class LogLevelTestCase: XCTestCase {
 
         XCTAssertNotEqual(error, all)
     }
+
+    func testMinimumLogLevels() {
+        XCTAssertEqual(LogLevel.minimum(.all), .all)
+        XCTAssertEqual(LogLevel.minimum(.debug), .all)
+        XCTAssertEqual(LogLevel.minimum(.info), [.info, .event, .warn, .error])
+        XCTAssertEqual(LogLevel.minimum(.event), [.event, .warn, .error])
+        XCTAssertEqual(LogLevel.minimum(.warn), [.warn, .error])
+        XCTAssertEqual(LogLevel.minimum(.error), [.error])
+        XCTAssertEqual(LogLevel.minimum(.off), .off)
+    }
 }
 
 // MARK: -

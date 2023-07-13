@@ -46,6 +46,20 @@ open class Logger {
     public enum ExecutionMethod {
         case synchronous(lock: NSRecursiveLock)
         case asynchronous(queue: DispatchQueue)
+
+        /// Performs a block of work using the desired synchronization method (either locks or serial queues).
+        /// - Parameter work: An escaping block of work that needs to be protected against data races.
+        public func perform(work: @escaping () -> Void) {
+            switch self {
+            case .synchronous(lock: let lock):
+                lock.lock()
+                defer { lock.unlock() }
+                work()
+
+            case .asynchronous(queue: let queue):
+                queue.async { work() }
+            }
+        }
     }
 
    // MARK: - Properties
@@ -57,7 +71,10 @@ open class Logger {
     open var enabled = true
 
     /// Log levels this logger is configured for.
-    public let logLevels: LogLevel
+    public private(set) var logLevels: LogLevel
+
+    // This holds any message filters that have been provided.
+    public private(set) var filters: [any LogFilter] = []
 
     /// The array of writers to use when messages are written.
     public let writers: [LogWriter]
@@ -81,6 +98,44 @@ open class Logger {
         self.logLevels = logLevels
         self.writers = writers
         self.executionMethod = executionMethod
+    }
+
+    // MARK: -  Filtering & changing log levels
+
+    /// Sets a new log level on the logger. Any previously logged messages will be emitted based on the setting
+    /// at the time they were logged.
+    /// - Parameter level: The new minimum log level
+    public func setLogLevels(_ levels: LogLevel) {
+        executionMethod.perform {
+            // if this is an async serial queue, this work we are in will happen _after_
+            // any of the previously enqueued log messages are written. Therefore, this
+            // ensures that messages enqueued after this call will be using the new log level
+            // filter.
+            self.logLevels = levels
+        }
+    }
+
+    /// Adds a log filter to the logger. A filter gives you dynamic control over whether logs are emitted or not, based on content in the ``LogMessage`` struct or message itself.
+    /// - Parameter filter: A ``LogFilter`` instance to add.
+    public func addFilter(_ filter: any LogFilter) {
+        executionMethod.perform {
+            self.filters.append(filter)
+        }
+    }
+
+    /// Removes a named filter from the list of filters. Must have used a ``LogFilter`` that defines its own custom name.
+    /// - Parameter name: The name of the log filter, defined in the ``LogFilter`` protocol conformance.
+    public func removeFilter(named name: String) {
+        executionMethod.perform {
+            self.filters.removeAll(where: { $0.name == name })
+        }
+    }
+
+    /// Removes all log filters from the logger instance.
+    public func removeFilters() {
+        executionMethod.perform {
+            self.filters = []
+        }
     }
 
     // MARK: - Log Messages
@@ -267,16 +322,21 @@ open class Logger {
     // MARK: - Private - Log Message Helpers
 
     private func logLevelAllowed(_ logLevel: LogLevel) -> Bool {
-        return logLevels.contains(logLevel)
+        logLevels.contains(logLevel)
     }
 
     private func logMessage(_ message: String, with logLevel: LogLevel) {
+        guard filters.allSatisfy({ $0.shouldInclude(message, level: logLevel) }) else { return }
+
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
     }
 
     private func logMessage(_ message: LogMessage, with logLevel: LogLevel) {
+        guard filters.allSatisfy({ $0.shouldInclude(message, level: logLevel) }) else { return }
+
         writers.forEach { $0.writeMessage(message, logLevel: logLevel) }
     }
+
 
     // MARK: - Private - No-Op Logger
 
