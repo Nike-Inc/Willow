@@ -58,7 +58,7 @@ GEM
     rouge (2.0.7)
     ruby-macho (1.4.0)
     thread_safe (0.3.6)
-    tzinfo (1.2.5)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     xcodeproj (1.8.2)
       CFPropertyList (>= 2.3.3, < 4.0)
