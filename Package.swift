@@ -34,7 +34,8 @@ let package = Package(
         .watchOS(.v3)
     ],
     products: [
-        .library(name: "Willow", targets: ["Willow"])
+        .library(name: "Willow", targets: ["Willow"]),
+        .library(name: "Willow-Dyanmic", type: .dynamic, targets: ["Willow"])
     ],
     targets: [
         .target(name: "Willow", path: "Source")
