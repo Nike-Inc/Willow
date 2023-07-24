@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 //
 //  Package.swift
 //
@@ -28,7 +28,7 @@ import PackageDescription
 let package = Package(
     name: "Willow",
     platforms: [
-        .macOS(.v10_12),
+        .macOS(.v10_15),
         .iOS(.v10),
         .tvOS(.v10),
         .watchOS(.v3)
