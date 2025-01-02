@@ -351,7 +351,7 @@ You could write the message to the console, append it to a file, send it to a se
 Here's a quick look at a simple write that writes to the console.
 
 ```swift
-open class ConsoleWriter: LogMessageWriter {
+open class ConsoleWriter: LogWriter {
     open func writeMessage(_ message: String, logLevel: LogLevel) {
         print(message)
     }
