@@ -485,7 +485,7 @@ First, you must create a `LogLevel` extension and add your custom values.
 
 ```swift
 extension LogLevel {
-    private static var verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
+    fileprivate static var verbose = LogLevel(rawValue: 0b00000000_00000000_00000001_00000000)
 }
 ```
 
